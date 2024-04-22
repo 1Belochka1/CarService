@@ -1,0 +1,27 @@
+<div [ngClass]="{'wrapper': true, 'minimize': isMinimize}">
+    <div class="profile">
+        <div class="profile__icon"></div>
+        <div class="profile__title">Белов Михаил</div>
+    </div>
+    {{ idRole }}
+    <hr class="line">
+    <nav class="nav__wrapper">
+        <ul class="nav__list">
+            <li *ngFor="let item of menuItems" class="nav__item">
+                <svg-icon [src]="item.icon" class="nav__icon" svgClass="svg-nav" viewBox="0 0 30 30"/>
+                <div class="nav__title">
+                    {{ item.title }}
+                </div>
+            </li>
+            <li (click)="minimize()" class="nav__item">
+                <svg-icon [ngClass]="{'minimize__icon': isMinimize, 'nav__icon': true}"
+                          src="assets/svg/minimize-min.svg"
+                          svgClass="svg-nav" viewBox="0 0 30 30"/>
+                <div class="nav__title">
+                    Свернуть
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+

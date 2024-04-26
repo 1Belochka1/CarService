@@ -1,0 +1,118 @@
+:host {
+	display: flex;
+	height: 100vh;
+	@apply bg-background;
+}
+
+.wrapper {
+	@apply w-full ;
+
+	.menu {
+		@apply flex flex-col gap-5;
+		@apply w-[var(--width-menu)] h-full px-10 py-5 fixed;
+		@apply bg-menu;
+		@apply text-on-menu;
+
+		transition: all 0.3s ease;
+
+		.profile {
+			align-items: center;
+			display: flex;
+			gap: 0.3125rem;
+
+			padding: 5px 5px 5px 0;
+
+			&__icon {
+				@apply rounded-3xl border border-primary;
+				height: 3.125rem;
+				width: 3.125rem;
+			}
+
+			&__title {
+			}
+		}
+
+		.line {
+			@apply border-2 border-primary;
+		}
+
+		.nav {
+			&__wrapper {
+			}
+
+			&__list {
+				display: flex;
+				flex-direction: column;
+				gap: 1.25rem;
+			}
+
+			&__item {
+				border-radius: 10px;
+				cursor: pointer;
+				display: flex;
+				gap: 0.3125rem;
+
+				padding: 5px 5px 5px 0;
+
+				&:hover {
+					@apply bg-primary text-menu;
+					.svg-nav {
+						@apply stroke-menu;
+					}
+				}
+			}
+
+			&__icon {
+				@apply flex items-center justify-center shrink-0 w-[3.125rem];
+			}
+
+			&__title {
+				align-items: center;
+				display: flex;
+			}
+
+		}
+	}
+
+	.content {
+		@apply py-5 pr-5 pl-[calc(var(--width-menu)+1.25rem)] h-full;
+		transition: padding-left .3s ease;
+	}
+}
+
+
+.minimize {
+	--width-menu: 5rem;
+
+	.menu {
+		@apply px-3;
+
+		.profile {
+			&__title {
+				display: none;
+			}
+		}
+
+		.nav {
+			&__list {
+				@apply items-center;
+			}
+
+			&__item {
+				padding: 5px;
+			}
+
+			&__icon {
+				@apply w-auto;
+			}
+
+			&__title {
+				display: none;
+			}
+		}
+	}
+
+	&__icon {
+		@apply rotate-180;
+	}
+}

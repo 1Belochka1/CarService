@@ -13,10 +13,14 @@ module.exports = {
 			},
 			colors: {
 				'background': 'rgba(var(--color-background),<alpha-value>)',
-				'background-element': 'rgba(var(--color-background-element),<alpha-value>)',
+				'surface': 'rgba(var(--color-surface),<alpha-value>)',
+				'menu': 'rgba(var(--color-menu),<alpha-value>)',
+				'on-menu': 'rgba(var(--color-on-menu),<alpha-value>)',
+				'primary': 'rgba(var(--color-primary),<alpha-value>)',
+				'secondary': 'rgba(var(--color-secondary),<alpha-value>)',
+				// title: 'rgba(var(--color-text-title),<alpha-value>)',
 				// title: 'rgba(var(--color-text-title),<alpha-value>)',
 				// primary: 'rgba(var(--color-text-primary),<alpha-value>)',
-				// secondary: 'rgba(var(--color-text-secondary),<alpha-value>)',
 			}
 		},
 	},

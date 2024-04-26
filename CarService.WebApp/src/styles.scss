@@ -3,25 +3,61 @@
 @tailwind utilities;
 
 :root {
-  --color-background: 179, 179, 179;
-  --color-background-element: 228, 228, 228;
+	--color-background: 179, 179, 179;
+	--color-surface: 228, 228, 228;
+	--color-menu: 1, 22, 39;
+	--color-on-menu: 228, 228, 228;
 
-  @media (max-width: 1280px) {
-    font-size: 10px;
-  }
+	--color-primary: 255, 138, 99;
+	--color-secondary: 247, 23, 53;
+
+	--width-menu: 16.875rem;
+
+	//@media (max-width: 1280px) {
+	//	font-size: 10px;
+	//}
+}
+
+/* W3C standard
+   сейчас только для Firefox */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: blue orange;
+}
+
+/* для Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+	width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: blue;
+	border-radius: 5px;
+	border: 3px solid orange;
+}
+
+* {
+	box-sizing: border-box;
 }
 
 html {
-  @apply font-montserrat;
+	@apply font-montserrat;
 }
 
 body {
 }
 
-.svg-nav {
-  fill: aqua;
-  height: 1.875rem;
+input {
+	@apply outline-none border-none;
+	background: none;
+}
 
-  width: 1.875rem;
+.svg-nav {
+	height: 1.875rem;
+	width: 1.875rem;
+	@apply fill-primary stroke-white;
 }
 

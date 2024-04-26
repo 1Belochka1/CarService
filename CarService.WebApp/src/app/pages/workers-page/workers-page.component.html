@@ -1,0 +1,25 @@
+<div class="wrapper">
+	<div class="toolbox">
+		<div class="search">
+			<input
+				[(ngModel)]="search"
+				class="search__input"
+				id="search"
+				placeholder="Поиск..."
+				type="text"
+			>
+			<label class="search__label" for="search">
+				<svg-icon
+					src="assets/svg/search-min.svg"
+					style="display: block"
+					svgClass="svg-nav"
+					viewBox="0 0 30 30"
+				/>
+			</label>
+		</div>
+		<div class="filters"></div>
+	</div>
+	<div class="content">
+		<app-table [items]="workers" [properties]="tableProp"/>
+	</div>
+</div>

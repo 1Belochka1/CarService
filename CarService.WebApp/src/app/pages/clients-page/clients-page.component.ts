@@ -9,16 +9,7 @@ import {TableComponent} from "../../components/table/table.component";
 	styleUrl: './clients-page.component.scss'
 })
 export class ClientsPageComponent {
-	clients = [
-		{
-			name: 'Клиент ',
-			email: 'kXGZU@example.com',
-			phone: '8-999-999-99-99',
-			address: 'ул. Строителей 1 д. 1 к. 1',
-			car: 'Автомобиль ',
-			requests: 'Заявки '
-		}
-	];
+	clients: any[] = [];
 
 	constructor() {
 		for (let i = 0; i < 100; i++) {

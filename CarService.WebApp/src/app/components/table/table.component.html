@@ -1,7 +1,7 @@
 <table>
 	<thead>
 	<tr>
-		<th>Номер</th>
+		<th *ngIf="isShowNumber">Номер</th>
 		<th *ngFor="let prop of properties">
 			{{ prop.name }}
 		</th>
@@ -9,8 +9,8 @@
 	</thead>
 	<tbody>
 	<tr *ngFor="let item of items;index as i">
-		<td>{{ i }}</td>
-		<td *ngFor="let prop of properties">
+		<td *ngIf="isShowNumber">{{ i }}</td>
+		<td *ngFor="let prop of properties" [attr.data-prop]="prop.name">
 			{{ item[prop.key] }}
 		</td>
 	</tr>

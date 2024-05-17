@@ -1,0 +1,57 @@
+<div class="about-worker">
+	<h2 class="title">
+		О сотруднике
+	</h2>
+	...
+</div>
+<div class="tabs">
+	<app-tabs>
+
+		<app-tabs-content
+			header="Активные работы"
+			[selected]="true"
+			class="tabs__content"
+		>
+
+			<b-table [items]="activeWorks | async">
+				<ng-template bTemplate="body" let-item>
+					<tr>
+						<td>
+							{{ item|json }}
+						</td>
+					</tr>
+				</ng-template>
+			</b-table>
+
+		</app-tabs-content>
+
+		<app-tabs-content
+			header="Завершенные работы"
+			class="tabs__content"
+		>
+
+			<b-table [items]="completedWorks | async">
+				<ng-template bTemplate="body" let-item>
+					<tr>
+						<td>
+							{{ item|json }}
+						</td>
+					</tr>
+				</ng-template>
+			</b-table>
+
+		</app-tabs-content>
+
+		<app-tabs-content
+			header="Услуги работника"
+			class="tabs__content"
+		>
+
+		</app-tabs-content>
+	</app-tabs>
+</div>
+
+
+<!--TODO: MODAL Сделать отображние текщих работ-->
+<!--TODO: MODAL Сделать отображние завершенных работ-->
+<!--TODO: MODAL Сделать отображние и редактирование услуг-->

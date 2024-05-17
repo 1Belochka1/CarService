@@ -1,0 +1,9 @@
+:host {
+  @apply min-h-0;
+}
+
+
+.tabs__content {
+  @apply h-full;
+  padding: var(--padding-content, 0.9375rem);
+}

@@ -1,0 +1,85 @@
+:host {
+  display: block;
+  width: var(--select-width, 150px);
+}
+
+details {
+  position: relative;
+  height: 100%;
+}
+
+details[open] {
+  z-index: 1;
+}
+
+// Для закрытия при клике вне
+details[open] summary:before {
+  content: '';
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+summary {
+  @apply flex items-center bg-surface;
+  cursor: pointer;
+  border-radius: 0.625rem;
+  height: 100%;
+
+  // --------------------------
+  // Отключение стандартного отображения
+  // --------------------------
+
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  // --------------------------
+
+  span {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0.9375rem;
+  }
+}
+
+input[type=radio] {
+  display: none;
+  appearance: none;
+}
+
+ul {
+  @apply flex flex-col gap-1;
+
+  @apply bg-surface list-none text-center overflow-y-auto;
+  @apply border border-solid border-menu;
+  @apply max-h-40;
+
+  padding: 0 0.5rem;
+
+
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: calc(100% + 0.5rem);
+
+  border-radius: 0.625rem;
+
+  & li {
+
+    & label {
+      @apply block py-2 cursor-pointer;
+    }
+
+    &:not(:last-child) {
+      @apply border-b border-solid border-b-menu;
+    }
+  }
+}

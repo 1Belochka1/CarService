@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
-import {RouterLink, RouterOutlet} from "@angular/router";
-import {NgClass, NgForOf} from "@angular/common";
-import {SvgIconComponent} from "angular-svg-icon";
-import {menuItems} from "./menu.data";
+import {Component} from '@angular/core'
+import {RouterLink, RouterOutlet} from '@angular/router'
+import {NgClass, NgForOf} from '@angular/common'
+import {SvgIconComponent} from 'angular-svg-icon'
+import {menuItems} from './menu.data'
+import {DeviceDetectorService} from 'ngx-device-detector'
 
 @Component({
 	selector: 'app-account-page',
@@ -13,11 +14,20 @@ import {menuItems} from "./menu.data";
 })
 export class AccountPageComponent {
 
-	isMinimize: boolean = false;
+	isMinimize: boolean = true
 
-	protected readonly menuItems = menuItems;
+	protected readonly menuItems = menuItems
 
-	minimize() {
+	constructor() {
+	}
+
+	toggleMenu() {
 		this.isMinimize = !this.isMinimize
+	}
+
+	closeMenu(): void {
+		if (!this.isMinimize) {
+			this.isMinimize = true;
+		}
 	}
 }

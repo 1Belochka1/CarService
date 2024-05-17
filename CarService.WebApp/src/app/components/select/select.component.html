@@ -1,0 +1,34 @@
+<details #details>
+    <summary>
+
+        <ng-container *ngFor="let item of items;first as isFirst">
+            <input
+                    type="radio"
+                    name="item"
+                    [id]="item.value"
+                    [title]="item.name"
+                    [value]="item.value"
+                    (change)="change($event)"
+                    [checked]="isFirst"
+            >
+        </ng-container>
+
+
+        <span>
+            {{ items[selectedIndex].name }}
+        </span>
+
+
+    </summary>
+
+    <ul>
+        <ng-container *ngFor="let item of items">
+            <li>
+                <label [for]="item.value" [title]="item.name">
+                    {{ item.name }}
+                </label>
+            </li>
+        </ng-container>
+    </ul>
+
+</details>

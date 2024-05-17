@@ -1,0 +1,20 @@
+:host {
+  @apply flex items-center bg-surface;
+  width: var(--search-width);
+
+  border-radius: 0.625rem;
+}
+
+.search {
+  &__input {
+    padding: 0.9375rem;
+    width: calc(100% - 1.875rem + 0.9375rem);
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-right: 0.9375rem;
+  }
+}

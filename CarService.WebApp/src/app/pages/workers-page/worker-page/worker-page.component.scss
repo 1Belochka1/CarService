@@ -1,0 +1,19 @@
+:host {
+  @apply flex flex-col bg-surface max-h-full h-full;
+
+  //padding: 0.9375rem;
+  border-radius: 0.625rem;
+}
+
+.about-worker {
+  padding: 0.9375rem;
+
+}
+
+.tabs {
+  @apply min-h-0;
+
+  &__content  {
+    --padding-content: 1rem;
+  }
+}

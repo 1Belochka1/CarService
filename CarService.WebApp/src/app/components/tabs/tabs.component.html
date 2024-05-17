@@ -1,0 +1,13 @@
+<div class="tabs__nav nav">
+	<ul class="nav__list">
+		<li *ngFor="let item of items"
+				(click)="open(item.component)"
+				[class.active]="item.component.selected"
+		>
+			{{
+				item.head
+			}}
+		</li>
+	</ul>
+</div>
+<ng-content></ng-content>

@@ -1,0 +1,30 @@
+<div class="pagination" *ngIf="currentPage != null">
+	<button
+		class="pagination__button"
+		(click)="setPage(currentPage - 1)"
+		[disabled]="currentPage == 1"
+	>
+		Назад
+	</button>
+	<div class="pages">
+		<div
+			class="page"
+			(click)="setPage(page)"
+			*ngFor="let page of pages"
+			[ngClass]="{
+				'active': currentPage === page,
+				'prev': currentPage - 1 === page,
+				'visible': (currentPage < 5 && (page == 3 || page == 4)) || (currentPage > totalPages - 3 && (page == totalPages - 3 || page == totalPages - 2))
+				}"
+		>
+			{{ page }}
+		</div>
+	</div>
+	<button
+		class="pagination__button"
+		(click)="setPage(currentPage + 1)"
+		[disabled]="currentPage == totalPages"
+	>
+		Вперед
+	</button>
+</div>

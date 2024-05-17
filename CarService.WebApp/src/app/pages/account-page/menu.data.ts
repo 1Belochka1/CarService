@@ -14,7 +14,7 @@ export const menuItems = [
 	{
 		icon: folder + 'requests-min.svg',
 		title: "Заявки",
-		routerLink: 'statistics'
+		routerLink: 'requests'
 	},
 	{
 		icon: folder + 'chats-min.svg',

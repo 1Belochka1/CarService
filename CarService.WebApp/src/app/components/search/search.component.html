@@ -1,0 +1,16 @@
+<input
+        [(ngModel)]="search"
+        (input)="searchChanged()"
+        class="search__input"
+        id="search"
+        placeholder="Поиск..."
+        type="text"
+>
+<label class="search__label" for="search">
+    <svg-icon
+            src="assets/svg/search-min.svg"
+            style="display: block"
+            svgClass="svg-nav"
+            viewBox="0 0 30 30"
+    />
+</label>

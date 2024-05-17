@@ -1,0 +1,31 @@
+﻿#  carservice.api:
+#    image: carservice.api
+#    build:
+#      context: .
+#      dockerfile: CarService.Api/Dockerfile
+
+volumes:
+  pg_car_service:
+services:
+  pg_db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=carservice
+      - POSTGRES_USER=carservice
+      - POSTGRES_DB=carservice
+    volumes:
+      - pg_car_service:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+      
+  pgadmin:
+     container_name: pgadmin_container
+     image: dpage/pgadmin4
+     environment:
+       PGADMIN_DEFAULT_EMAIL: "root@root.ru"
+       PGADMIN_DEFAULT_PASSWORD: "root"
+     ports:
+        - "5050:80"
+     depends_on:
+        - pg_db 

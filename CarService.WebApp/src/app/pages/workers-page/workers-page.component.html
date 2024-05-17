@@ -1,25 +1,59 @@
-<div class="wrapper">
-	<div class="toolbox">
-		<div class="search">
-			<input
-				[(ngModel)]="search"
-				class="search__input"
-				id="search"
-				placeholder="Поиск..."
-				type="text"
-			>
-			<label class="search__label" for="search">
-				<svg-icon
-					src="assets/svg/search-min.svg"
-					style="display: block"
-					svgClass="svg-nav"
-					viewBox="0 0 30 30"
-				/>
-			</label>
+<div class="toolbox">
+	<app-search
+		(searchChangedEvent)="searchUpdate($event)"></app-search>
+	<div class="sort">
+		<span>Сортировать: </span>
+		<div class="sort__wrapper">
+			<app-select class="sort__property"
+									[items]="sortProperties"
+									(selectionChange)="sortChanged($event)"/>
+			<div class="sort__descending"
+					 *ngIf="sortDescending != null">
+				<svg-icon src="assets/svg/minimize-min.svg"
+									class="arrow-down"
+									[ngClass]="{'arrow-up': sortDescending}"
+									svgClass="svg-nav sort__descending-icon"
+									viewBox="0 0 30 30"
+									(click)="toggleDescending()"/>
+			</div>
 		</div>
-		<div class="filters"></div>
-	</div>
-	<div class="content">
-		<app-table [items]="workers" [properties]="tableProp"/>
 	</div>
 </div>
+<b-table [items]="workers | async"
+				 [isLoading]="isLoading"
+				 [notFound]="!isLoading && totalCount== 0"
+>
+	<ng-template bTemplate="head">
+		<tr>
+			<th>ФИО</th>
+			<th>Почта</th>
+			<th>Адрес</th>
+			<th>Номер</th>
+		</tr>
+	</ng-template>
+
+
+	<ng-template bTemplate="body" let-item>
+		<tr (click)="goToWorker(item.id)">
+			<td data-name="ФИО">
+				{{ item.fullName }}
+			</td>
+			<td data-name="Почта">
+				{{ item.email }}
+			</td>
+			<td class="break-all" data-name="Адрес">
+				{{ item.address }}
+			</td>
+			<td class="max-w-28 tablet:max-w-full"
+					data-name="Номер">
+				{{ item.phone }}
+			</td>
+		</tr>
+	</ng-template>
+</b-table>
+
+
+<app-pagination *ngIf="totalPages > 1"
+								[currentPage]="currentPage"
+								[totalPages]="totalPages"
+								(changePage)="currentPageChanged($event)"/>

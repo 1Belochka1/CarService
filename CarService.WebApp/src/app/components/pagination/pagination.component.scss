@@ -1,0 +1,41 @@
+.pagination {
+
+  @apply flex gap-1 w-full tablet:justify-between justify-center bg-menu p-1;
+
+
+
+  border-radius: 0.625rem;
+
+  &__button {
+    @apply pagination-item;
+    &:disabled {
+      opacity: 0.85;
+      cursor: not-allowed;
+    }
+  }
+
+  .pages {
+    @apply flex gap-1;
+
+    .page {
+      @apply pagination-item hidden;
+
+      &.active {
+        color: red;
+      }
+    }
+
+    .page:nth-child(-n+1),
+    .page:nth-last-child(-n+1),
+    .prev,
+    .active,
+    .visible,
+    .page.active + .page {
+      display: block;
+    }
+
+    .page:nth-last-child {
+      grid-column: 4;
+    }
+  }
+}

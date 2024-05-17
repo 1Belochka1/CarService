@@ -2,65 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 :root {
-	--color-background: 179, 179, 179;
-	--color-surface: 228, 228, 228;
-	--color-menu: 1, 22, 39;
-	--color-on-menu: 228, 228, 228;
+  --color-background: 179, 179, 179;
+  --color-surface: 228, 228, 228;
+  --color-menu: 1, 22, 39;
+  --color-on-menu: 228, 228, 228;
 
-	--color-primary: 255, 138, 99;
-	--color-secondary: 247, 23, 53;
+  --color-primary: 255, 138, 99;
+  --color-secondary: 247, 23, 53;
 
-	--width-menu: 16.875rem;
+  --width-menu: 16.875rem;
 
-	//@media (max-width: 1280px) {
-	//	font-size: 10px;
-	//}
+  @media (max-width: 1280px) {
+    font-size: 14px;
+  }
 }
+
 
 /* W3C standard
    сейчас только для Firefox */
 * {;
-	scrollbar-width: 5px;
-	scrollbar-color: rgb(var(--color-menu)) rgb(var(--color-surface));
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--color-menu)) rgb(var(--color-surface));
 }
 
 /* для Chrome/Edge/Safari */
 *::-webkit-scrollbar {
-	width: 6px;
+  width: 6px;
 }
 
 *::-webkit-scrollbar-track {
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
-	@apply bg-surface;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  @apply bg-surface;
 }
 
 *::-webkit-scrollbar-thumb {
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
-	@apply bg-menu border-surface border-2 border-solid;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  @apply bg-menu border-surface border-2 border-solid;
 }
 
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
+  @apply font-montserrat;
 }
 
 html {
-	@apply font-montserrat;
 }
 
 body {
 }
 
+@import "primeng/resources/themes/arya-orange/theme.css";
+@import "primeng/resources/primeng.min.css";
+
 input {
-	@apply outline-none border-none;
-	background: none;
+  @apply outline-none border-none;
+  background: none;
 }
 
 .svg-nav {
-	height: 1.875rem;
-	width: 1.875rem;
-	@apply fill-primary stroke-white;
+  height: 1.875rem;
+  width: 1.875rem;
+  @apply fill-primary stroke-white;
+}
+
+.svg-table {
+  height: 1.875rem;
+  width: 1.875rem;
+  @apply stroke-white;
 }
 

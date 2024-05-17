@@ -1,6 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {AuthService} from "./services/auth.service";
+import {UsersService} from "./services/users.service";
 
 @Component({
 	selector: 'app-root',
@@ -9,10 +9,11 @@ import {AuthService} from "./services/auth.service";
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss'
 })
-export class AppComponent {
-	constructor() {
-		const authService = inject(AuthService);
+export class AppComponent implements OnInit{
+	constructor(private userService: UsersService) {
 
-		authService.user.idRole = 10;
 	}
+
+	ngOnInit(): void {
+    }
 }

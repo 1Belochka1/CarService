@@ -1,0 +1,37 @@
+:host {
+  @apply flex flex-col h-full;
+}
+
+.tabs {
+  &__nav {
+  }
+}
+
+
+.nav {
+  &__list {
+
+    @apply bg-menu overflow-auto text-on-menu flex gap-1 border-b border-solid border-background px-3;
+
+
+    //backdrop-filter: blur(10px);
+
+    //box-shadow: 0 2px 6px -3px rgba(0, 0, 0, .4);
+
+    li {
+      @apply py-1 px-2 cursor-pointer;
+
+      transition: background-color .55s;
+
+      &:hover {
+        @apply bg-primary text-menu;
+      }
+    }
+
+    .active {
+      @apply bg-primary text-menu;
+    }
+
+
+  }
+}

@@ -1,9 +1,18 @@
 /** @type {import('tailwindcss').Config} */
-const plugin = require('tailwindcss/plugin');
+const plugin = require('tailwindcss/plugin')
 
 module.exports = {
 	content: ['./src/**/*.{html,ts}'],
 	theme: {
+		screens: {
+			'desktop': {max: '1280px'},
+
+			'laptop': {max: '1024px'},
+
+			'tablet': {max: '768px'},
+
+			'mobile': {max: '375px'},
+		},
 		fontFamily: {
 			montserrat: ['Montserrat', 'sans-serif'],
 		},
@@ -18,11 +27,26 @@ module.exports = {
 				'on-menu': 'rgba(var(--color-on-menu),<alpha-value>)',
 				'primary': 'rgba(var(--color-primary),<alpha-value>)',
 				'secondary': 'rgba(var(--color-secondary),<alpha-value>)',
-				// title: 'rgba(var(--color-text-title),<alpha-value>)',
-				// title: 'rgba(var(--color-text-title),<alpha-value>)',
-				// primary: 'rgba(var(--color-text-primary),<alpha-value>)',
-			}
+			},
 		},
 	},
-
-};
+	plugins:
+		[
+			plugin(function ({addComponents, theme}) {
+				addComponents({
+					'.my-input': {},
+					'.pagination-item': {
+						minWidth: '24px',
+						// background: 'rgba(var(--color-menu))',
+						color: 'rgba(var(--color-on-menu))',
+						textAlign: 'center',
+						padding: theme('spacing.1'),
+						// border: '1px solid
+						// rgba(var(--color-primary))',
+						cursor: 'pointer',
+						userSelect: 'none'
+					},
+				})
+			}),
+		]
+}

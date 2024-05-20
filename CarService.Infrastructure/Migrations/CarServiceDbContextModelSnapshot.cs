@@ -33,7 +33,7 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2024, 5, 13, 17, 15, 3, 782, DateTimeKind.Utc).AddTicks(1030));
+                        .HasDefaultValue(new DateTime(2024, 5, 18, 23, 5, 46, 123, DateTimeKind.Utc).AddTicks(1830));
 
                     b.Property<DateTime>("LastMessageDate")
                         .HasColumnType("timestamp with time zone");
@@ -64,7 +64,7 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<DateTime>("SendDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2024, 5, 13, 17, 15, 3, 783, DateTimeKind.Utc).AddTicks(3471));
+                        .HasDefaultValue(new DateTime(2024, 5, 18, 23, 5, 46, 124, DateTimeKind.Utc).AddTicks(4938));
 
                     b.Property<Guid>("SenderId")
                         .HasColumnType("uuid");
@@ -86,6 +86,12 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime?>("CompleteTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -98,9 +104,6 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 

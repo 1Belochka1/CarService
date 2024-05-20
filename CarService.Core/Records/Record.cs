@@ -6,12 +6,16 @@ namespace CarService.Core.Records;
 
 public class Record
 {
-	private Record(Guid id, Guid clientId, string description, DateTime time)
+	public Record()
+	{
+	}
+
+	private Record(Guid id, Guid clientId, string description, DateTime createTime)
 	{
 		Id = id;
 		ClientId = clientId;
 		Description = description;
-		Time = time;
+		CreateTime = createTime;
 	}
 
 	public Guid Id { get; private set; }
@@ -22,7 +26,9 @@ public class Record
 
 	public string Description { get; private set; }
 
-	public DateTime Time { get; private set; }
+	public DateTime CreateTime { get; private set; }
+
+	public DateTime? CompleteTime { get; private set; }
 
 	public RecordPriority Priority { get; private set; } = RecordPriority.normal;
 
@@ -57,7 +63,12 @@ public class Record
 		foreach (var master in masters) Masters.Add(master);
 	}
 
-	public static Result<Record> Create(Guid id, Guid userId, string description, DateTime time)
+	public void SetTimeComplete(DateTime completeTime)
+	{
+		CompleteTime = completeTime;
+	}
+
+	public static Result<Record> Create(Guid id, Guid userId, string description, DateTime createTime)
 	{
 		if (id == Guid.Empty)
 			return Result.Failure<Record>("Id can't be empty");
@@ -68,7 +79,7 @@ public class Record
 		if (string.IsNullOrEmpty(description))
 			return Result.Failure<Record>("Description can't be empty");
 
-		var record = new Record(id, userId, description, time);
+		var record = new Record(id, userId, description, createTime);
 
 		return Result.Success(record);
 	}

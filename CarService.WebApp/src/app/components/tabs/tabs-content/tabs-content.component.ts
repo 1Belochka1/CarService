@@ -1,5 +1,5 @@
 import {
-	Component,
+	Component, ElementRef,
 	Input,
 	TemplateRef, ViewChild,
 	ViewContainerRef
@@ -21,8 +21,14 @@ export class TabsContentComponent {
 	public header: string = ''
 
 	@Input()
+	public type: string = ''
+
+	@Input()
 	public selected: boolean = false
 
 	@ViewChild('tmp')
 	public template: TemplateRef<any>
+
+	constructor(public elementRef: ElementRef<HTMLElement>) {
+	}
 }

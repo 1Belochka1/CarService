@@ -1,11 +1,13 @@
 import {HttpParams} from '@angular/common/http'
 
 export enum SortClientProperty {
-	EMAIL = "email",
-	FULLNAME = "fullname",
-	ADDRESS = 'address',
-	PHONE = "phone",
-	LASTRECORD = "lastrecord",
+	EMAIL = "Email",
+	LASTNAME = "LastName",
+	FIRSTNAME = "FirstName",
+	PATRONYMIC = "Patronymic",
+	ADDRESS = 'Address',
+	PHONE = "Phone",
+	LASTRECORD = "LastRecordTime",
 }
 
 export class GetClientsParamsRequest {

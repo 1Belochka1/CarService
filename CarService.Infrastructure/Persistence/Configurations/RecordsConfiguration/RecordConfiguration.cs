@@ -15,7 +15,11 @@ public class RecordConfiguration : IEntityTypeConfiguration<Record>
 		builder.Property(x => x.Description)
 			.HasMaxLength(1000);
 
-		builder.Property(x => x.Time);
+		builder.Property(x => x.CreateTime)
+			.IsRequired();
+		
+		builder.Property(x => x.CompleteTime)
+			.IsRequired(false);
 
 		builder.Property(x => x.Priority)
 			.HasConversion(x => x.ToString(),

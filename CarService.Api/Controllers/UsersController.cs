@@ -1,9 +1,16 @@
 using System.Security.Claims;
+using System.Text.Json.Serialization;
+using CarService.Api.Contracts;
 using CarService.Api.Contracts.Users;
+using CarService.Api.Helper.Json;
+using CarService.App.Common.ListWithPage;
 using CarService.App.Common.Users;
 using CarService.App.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using JsonConverter = Newtonsoft.Json.JsonConverter;
 
 namespace CarService.Api.Controllers;
 
@@ -66,27 +73,39 @@ public class UsersController : ControllerBase
 
 		return Ok(user);
 	}
-	
+
 	[Authorize(Roles = "1")]
 	[HttpGet("workers")]
-	public async Task<IActionResult> GetWorkers([FromQuery] GetUsersRequest? request)
+	public async Task<IActionResult> GetWorkers([FromQuery] GetListWithPageRequest? request)
 	{
-		var masters =
+		var response =
 			await _usersService.GetWorkersAsync(
-				request.SearchValue,
-				request.Page,
-				request.PageSize,
-				request.SortDescending,
-				request.SortProperty);
+				new Params(
+					request.SortDescending,
+					request.SearchValue,
+					request.Page,
+					request.PageSize,
+					request.SortProperty
+				));
 
-		var response = new GetUsersResponse<WorkersDto>(
-			masters.TotalItems,
-			masters.TotalPages,
-			masters.CurrentPage,
-			masters.Users
-		);
+		return Ok(JsonSerializerHelp.Serialize(response));
+	}
 
-		return Ok(response);
+	[Authorize(Roles = "1")]
+	[HttpGet("clients")]
+	public async Task<IActionResult> GetClients([FromQuery] GetListWithPageRequest? request)
+	{
+		var response =
+			await _usersService.GetClientsAsync(
+				new Params(
+					request.SortDescending,
+					request.SearchValue,
+					request.Page,
+					request.PageSize,
+					request.SortProperty
+				));
+
+		return Ok(JsonSerializerHelp.Serialize(response));
 	}
 
 	[Authorize(Roles = "1")]
@@ -130,28 +149,6 @@ public class UsersController : ControllerBase
 			user.Email,
 			user.Records,
 			user.Services
-		);
-
-		return Ok(response);
-	}
-
-	[Authorize(Roles = "1")]
-	[HttpGet("clients")]
-	public async Task<IActionResult> GetClients([FromQuery] GetUsersRequest? request)
-	{
-		var masters =
-			await _usersService.GetClientsAsync(
-				request.Page,
-				request.PageSize,
-				request.SearchValue,
-				request.SortDescending,
-				request.SortProperty);
-
-		var response = new GetUsersResponse<ClientsDto>(
-			masters.TotalItems,
-			masters.TotalPages,
-			masters.CurrentPage,
-			masters.Users
 		);
 
 		return Ok(response);

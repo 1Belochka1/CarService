@@ -1,15 +1,18 @@
+using CarService.App.Common.ListWithPage;
 using CarService.App.Common.Users;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Users;
+using CarService.Infrastructure.Expansion;
+using Clave.Expressionify;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.Infrastructure.Persistence.Repositories;
 
-public class UserAuthRepository : BaseRepository<UserAuth>, IUserAuthRepository
+public class UserAuthRepository : IUserAuthRepository
 {
 	private readonly CarServiceDbContext _context;
 
-	public UserAuthRepository(CarServiceDbContext context) : base(context)
+	public UserAuthRepository(CarServiceDbContext context)
 	{
 		_context = context;
 	}
@@ -33,92 +36,53 @@ public class UserAuthRepository : BaseRepository<UserAuth>, IUserAuthRepository
 		return await _context.UserAuths.FirstOrDefaultAsync(x => x.Email == email);
 	}
 
-	public async Task<(int TotalItems, int? TotalPages, int? CurrentPage, IEnumerable<WorkersDto> Users)>
-		GetWorkersAsync(
-			bool sortDescending,
-			string? searchValue = null,
-			int page = 1,
-			int pageSize = 10,
-			string? sortProperty = null
-		)
+	public async Task<ListWithPage<WorkersDto>> GetWorkersAsync(Params parameters)
 	{
-		var query = _context.UserAuths
+		var query = await _context.UserAuths
 			.Include(u => u.UserInfo)
 			.Include(u => u.Role)
-			.AsQueryable();
+			.AsQueryable().ToListAsync();
 
-		query = query.Where(x => x.RoleId == 2);
+		query = query.Where(x => x.RoleId == 2).ToList();
 
-		if (!string.IsNullOrEmpty(searchValue))
-			query = query.Where(x =>
-				x.Email.Contains(searchValue)
-				|| x.UserInfo.LastName.Contains(searchValue)
-				|| x.UserInfo.FirstName.Contains(searchValue)
-				|| x.UserInfo.Phone.Contains(searchValue)
-				|| (x.UserInfo.Address != null && x.UserInfo.Address.Contains(searchValue))
-				|| (x.UserInfo.Patronymic != null &&
-				    x.UserInfo.Patronymic.Contains(searchValue))
-			);
+		var resultList = SelectWorkers(query);
 
-		var totalItems = await query.CountAsync();
+		if (!string.IsNullOrEmpty(parameters.SearchValue))
+			resultList = resultList.Where(x => x.Search(parameters.SearchValue)).ToList();
 
-		if (sortProperty != null)
-			query = SortWorkers(query, sortProperty, sortDescending);
+		if (parameters.SortProperty != null)
+			resultList = resultList.Sort(parameters.SortProperty, parameters.SortDescending);
 
-		var resultQuery = SelectWorkers(query);
-
-		var currentPage = page;
-		var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-		if (currentPage <= totalPages)
-			return (totalItems, totalPages, currentPage,
-				Page(resultQuery, page, pageSize));
-
-		currentPage = 1;
-
-		return (totalItems, totalPages, currentPage, resultQuery);
+		return resultList.Page(parameters.Page, parameters.PageSize);
 	}
 
-	public async Task<(int TotalItems, int? TotalPages, int? CurrentPage, IEnumerable<ClientsDto> Users)>
-		GetClientsAsync(bool sortDescending, string? searchValue = null, int page = 1,
-			int pageSize = 10, string? sortProperty = null)
+	public async Task<ListWithPage<ClientsDto>>
+		GetClientsAsync(
+			Params parameters
+		)
 	{
-		var query = _context.UserAuths
+		var query = await _context.UserAuths
 			.Include(u => u.UserInfo)
-			.Include(u => u.Role)
 			.Include(u => u.Records)
-			.AsQueryable();
+			.AsQueryable().ToListAsync();
 
-		query = query.Where(x => x.RoleId == 3);
+		query = query.Where(x => x.RoleId == 3).ToList();
 
-		if (!string.IsNullOrEmpty(searchValue))
-			query = query.Where(x =>
-				x.Email.Contains(searchValue)
-				|| x.UserInfo.LastName.Contains(searchValue)
-				|| x.UserInfo.FirstName.Contains(searchValue)
-				|| x.UserInfo.Phone.Contains(searchValue)
-				|| (x.UserInfo.Address != null && x.UserInfo.Address.Contains(searchValue))
-				|| (x.UserInfo.Patronymic != null &&
-				    x.UserInfo.Patronymic.Contains(searchValue))
-			);
+		var resultList = SelectClients(query);
 
-		var totalItems = await query.CountAsync();
+		if (!string.IsNullOrEmpty(parameters.SearchValue))
+			resultList = resultList.Where(x => x.Search(parameters.SearchValue)).ToList();
 
-		var resultQuery = SelectClients(query).AsEnumerable();
+		if (parameters.SortProperty == "LastRecordTime")
+			resultList = resultList.Where(x => x.LastRecordTime != null).ToList();
 
-		if (sortProperty != null)
-			resultQuery = SortClients(resultQuery, sortProperty, sortDescending);
+		else if (parameters.SortProperty != null)
+			resultList = resultList.Sort(parameters.SortProperty, parameters.SortDescending);
 
-		var currentPage = page;
 
-		var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+		return resultList.Page(parameters.Page, parameters.PageSize);
 
-		if (currentPage <= totalPages)
-			return (totalItems, totalPages, currentPage,
-				Page(resultQuery.AsQueryable(), page, pageSize));
-
-		currentPage = 1;
-
-		return (totalItems, totalPages, currentPage, resultQuery);
+		return resultList.Page(parameters.Page, parameters.PageSize);
 	}
 
 	public async Task<ICollection<UserAuth>> GetWorkersByIds(ICollection<string> ids)
@@ -144,80 +108,30 @@ public class UserAuthRepository : BaseRepository<UserAuth>, IUserAuthRepository
 			.FirstOrDefaultAsync(x => x.Id == userId);
 	}
 
-	private static IEnumerable<ClientsDto> SelectClients(IEnumerable<UserAuth> query)
+	private static List<ClientsDto> SelectClients(List<UserAuth> query)
 	{
 		return query.Select(x => new ClientsDto(
 			x.Id,
 			x.Email,
-			x.UserInfo.LastName + " " + x.UserInfo.FirstName + " " + x.UserInfo.Patronymic,
+			x.UserInfo.LastName, x.UserInfo.FirstName, x.UserInfo.Patronymic,
 			x.UserInfo.Address,
 			x.UserInfo.Phone,
-			x.Records.Count > 0 ? x.Records.MaxBy(u => u.Time).Time : null
-		));
+			x.Records.Count > 0 ? x.Records.MaxBy(u => u.CreateTime)?.CreateTime : null,
+			x.RoleId
+		)).ToList();
 	}
 
-	private static IQueryable<WorkersDto> SelectWorkers(IQueryable<UserAuth> query)
+	private static List<WorkersDto> SelectWorkers(List<UserAuth> query)
 	{
 		return query.Select(x => new WorkersDto(
 			x.Id,
 			x.Email,
-			x.UserInfo.LastName + " " + x.UserInfo.FirstName + " " + x.UserInfo.Patronymic,
+			x.UserInfo.LastName,
+			x.UserInfo.FirstName,
+			x.UserInfo.Patronymic,
 			x.UserInfo.Address,
 			x.UserInfo.Phone,
 			x.RoleId
-		));
-	}
-
-	private static IQueryable<UserAuth> SortWorkers(IQueryable<UserAuth> query, string sortProperty,
-		bool sortDescending)
-	{
-		return sortProperty.ToLower() switch
-		{
-			"fullname" => sortDescending
-				? query
-					.OrderByDescending(x => x.UserInfo.LastName)
-					.ThenByDescending(x => x.UserInfo.FirstName)
-					.ThenByDescending(x => x.UserInfo.Patronymic)
-				: query
-					.OrderBy(x => x.UserInfo.LastName)
-					.ThenBy(x => x.UserInfo.FirstName)
-					.ThenBy(x => x.UserInfo.Patronymic),
-			"phone" => sortDescending
-				? query.OrderByDescending(x => x.UserInfo.Phone)
-				: query.OrderBy(x => x.UserInfo.Phone),
-			"address" => sortDescending
-				? query.OrderByDescending(x => x.UserInfo.Address)
-				: query.OrderBy(x => x.UserInfo.Address),
-			"email" => sortDescending
-				? query.OrderByDescending(x => x.Email)
-				: query.OrderBy(x => x.Email),
-			_ => query
-		};
-	}
-
-	private static IEnumerable<ClientsDto> SortClients(IEnumerable<ClientsDto> query, string sortProperty,
-		bool sortDescending)
-	{
-		return sortProperty.ToLower() switch
-		{
-			"fullname" => sortDescending
-				? query
-					.OrderByDescending(x => x.FullName)
-				: query
-					.OrderBy(x => x.FullName),
-			"phone" => sortDescending
-				? query.OrderByDescending(x => x.Phone)
-				: query.OrderBy(x => x.Phone),
-			"address" => sortDescending
-				? query.OrderByDescending(x => x.Address)
-				: query.OrderBy(x => x.Address),
-			"email" => sortDescending
-				? query.OrderByDescending(x => x.Email)
-				: query.OrderBy(x => x.Email),
-			"lastrecord" => sortDescending
-				? query.OrderByDescending(x => x.LastRecord)
-				: query.OrderBy(x => x.LastRecord),
-			_ => query
-		};
+		)).ToList();
 	}
 }

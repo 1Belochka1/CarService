@@ -1,63 +1,46 @@
-<div class="toolbox">
-	<app-search
-		(searchChangedEvent)="searchUpdate($event)"></app-search>
-	<div class="sort">
-		<span>Сортировать: </span>
-		<div class="sort__wrapper">
-			<app-select class="sort__property"
-									[items]="sortProperties"
-									(selectionChange)="sortChanged($event)"/>
-			<div class="sort__descending"
-					 *ngIf="sortDescending != null">
-				<svg-icon src="assets/svg/minimize-min.svg"
-									class="arrow-down"
-									[ngClass]="{'arrow-up': sortDescending}"
-									svgClass="svg-nav sort__descending-icon"
-									viewBox="0 0 30 30"
-									(click)="toggleDescending()"/>
-			</div>
-		</div>
-	</div>
+<div class="contents">
+	<b-table
+		[service]="clientsService"
+		[items]="clientsService.items | async"
+		[isLoading]="clientsService.isLoading"
+		[notFound]="!clientsService.isLoading && clientsService.totalCount == 0"
+		[rowCount]="clientsService.pageSize"
+	>
+		<ng-template bTemplate="head">
+			<tr>
+				<th>ФИО</th>
+				<th>Почта</th>
+				<th>Адрес</th>
+				<th>Номер</th>
+				<th>Последняя заявка (Дата)</th>
+			</tr>
+		</ng-template>
+		<ng-template bTemplate="body" let-item>
+			<tr>
+				<td data-name="ФИО">
+					{{
+						item.lastName + ' ' + item.firstName + ' '
+						+ item.patronymic
+					}}
+				</td>
+				<td data-name="Почта">
+					{{ item.email }}
+				</td>
+				<td class="break-all" data-name="Адрес">
+					{{ item.address }}
+				</td>
+				<td class="max-w-32 tablet:max-w-full"
+						data-name="Номер">
+					{{ item.phone }}
+				</td>
+				<td data-name="Последняя заявка (Дата)">
+					{{
+						item.lastRecordTime
+							? (item.lastRecordTime | date)
+							: "Заявки отсутствуют"
+					}}
+				</td>
+			</tr>
+		</ng-template>
+	</b-table>
 </div>
-
-<b-table [items]="workers | async"
-				 [isLoading]="isLoading" [notFound]="totalCount
-				 == 0">
-	<ng-template bTemplate="head">
-		<tr>
-			<th>ФИО</th>
-			<th>Почта</th>
-			<th>Адрес</th>
-			<th>Номер</th>
-			<th>Последняя заявка (Дата)</th>
-		</tr>
-	</ng-template>
-	<ng-template bTemplate="body" let-item>
-		<tr>
-			<td data-name="ФИО">
-				{{ item.fullName }}
-			</td>
-			<td data-name="Почта">
-				{{ item.email }}
-			</td>
-			<td class="break-all" data-name="Адрес">
-				{{ item.address }}
-			</td>
-			<td class="max-w-32" data-name="Номер">
-				{{ item.phone }}
-			</td>
-			<td data-name="Последняя заявка (Дата)">
-				{{
-					item.lastRecord
-						? (item.lastRecord | date)
-						: "Заявки отсутствуют"
-				}}
-			</td>
-		</tr>
-	</ng-template>
-</b-table>
-
-<app-pagination *ngIf="totalPages > 1"
-								[currentPage]="currentPage"
-								[totalPages]="totalPages"
-								(changePage)="currentPageChanged($event)"/>

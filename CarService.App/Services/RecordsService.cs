@@ -1,5 +1,7 @@
+using CarService.App.Common.ListWithPage;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Records;
+using CarService.Core.Users;
 
 namespace CarService.App.Services;
 
@@ -17,15 +19,14 @@ public class RecordsService
 		return await _recordsRepository.GetRecordsAsync();
 	}
 
-	public async Task<ICollection<Record>> GetActiveRecordsByMasterIdAsync(Guid masterId, int page = 1, int pageSize = 10)
+	public async Task<ListWithPage<Record>> GetActiveRecordsByMasterIdAsync(Guid masterId, Params parameters)
 	{
-		return await _recordsRepository.GetActiveByMasterIdAsync(masterId, page, pageSize);
+		return await _recordsRepository.GetActiveByMasterIdAsync(masterId, parameters);
 	}
 
-	public async Task<ICollection<Record>> GetCompletedRecordsByMasterIdAsync(Guid masterId, int page = 1,
-		int pageSize = 10)
+	public async Task<ListWithPage<Record>> GetCompletedRecordsByMasterIdAsync(Guid masterId, Params parameters)
 	{
-		return await _recordsRepository.GetCompletedByMasterIdAsync(masterId, page, pageSize);
+		return await _recordsRepository.GetCompletedByMasterIdAsync(masterId, parameters);
 	}
 
 	public async Task<Guid> CreateRecordAsync(Guid clientId, string description)
@@ -44,5 +45,10 @@ public class RecordsService
 		RecordStatus? status = null)
 	{
 		await _recordsRepository.UpdateAsync(id, description, priority, status);
+	}
+
+	public async Task AddMastersAsync(Guid recordId, UserAuth master)
+	{
+		await _recordsRepository.AddMasters(recordId, new List<UserAuth> { master });
 	}
 }

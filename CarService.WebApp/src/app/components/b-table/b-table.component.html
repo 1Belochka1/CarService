@@ -1,31 +1,73 @@
-<table>
-	<thead>
+<div class="table__toolbox" *ngIf="service">
+	<app-search
+		(searchChangedEvent)="service.searchChange($event)"></app-search>
+	<div class="sort" *ngIf="service.sortProperties">
+		<span>Сортировать: </span>
+		<div class="sort__wrapper">
+			<app-select class="sort__property"
+									[items]="service.sortProperties"
+									(selectionChange)="service.sortChanged($event)"/>
+			<div class="sort__descending"
+					 *ngIf="service.sortDescending != null">
+				<svg-icon src="assets/svg/minimize-min.svg"
+									class="arrow-down"
+									[ngClass]="{'arrow-up':
+									service.sortDescending}"
+									svgClass="svg-nav sort__descending-icon"
+									viewBox="0 0 30 30"
+									(click)="service.toggleDescending()"/>
+			</div>
+		</div>
+	</div>
+</div>
 
-	<ng-container *ngIf="headTemplate"
-								[ngTemplateOutlet]="headTemplate"
-	/>
+<div class="table__wrapper">
+	<table>
 
-	</thead>
+		<thead>
 
-	<tbody>
-
-	<ng-container *ngIf="bodyTemplate">
-		<ng-container class="tr" *ngFor="let item of items"
-									[ngTemplateOutlet]="bodyTemplate"
-									[ngTemplateOutletContext]="{$implicit:
-                  item}"
+		<ng-container *ngIf="headTemplate"
+									[ngTemplateOutlet]="headTemplate"
 		/>
-	</ng-container>
 
-	<tr *ngIf="isLoading">
-		<td class="message" colspan="5">Загрузка...</td>
-	</tr>
+		</thead>
 
-	<tr *ngIf="notFound">
-		<td class="message" colspan="5">Данных нет</td>
-	</tr>
 
-	</tbody>
+		<tbody>
 
-</table>
+		<tr *ngIf="service.isLoading">
+			<td class="message" colspan="1000">Загрузка...</td>
+		</tr>
 
+		<tr *ngIf="service.notFound">
+			<td class="message" colspan="1000">Данных нет</td>
+		</tr>
+
+		<ng-container *ngIf="bodyTemplate">
+			<ng-container class="tr" *ngFor="let item of items"
+										[ngTemplateOutlet]="bodyTemplate"
+										[ngTemplateOutletContext]="{$implicit:
+                  item}"
+			/>
+		</ng-container>
+
+		<ng-container
+			*ngIf="items && rowCount < items.length +1; else empty"
+		>
+		</ng-container>
+
+		<ng-template #empty>
+			<tr *ngFor="let j of emptyRows">
+				<td colspan="1000">&nbsp;</td>
+			</tr>
+		</ng-template>
+
+		</tbody>
+
+	</table>
+</div>
+
+<app-pagination *ngIf="service && service.totalPages > 1"
+								[currentPage]="service.currentPage"
+								[totalPages]="service.totalPages"
+								(changePage)="service.currentPageChanged($event)"/>

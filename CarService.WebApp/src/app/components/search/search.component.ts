@@ -1,20 +1,24 @@
 import {
 	Component,
 	EventEmitter,
-	Input,
 	Output
 } from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {SvgIconComponent} from 'angular-svg-icon'
-import {BehaviorSubject, debounceTime} from 'rxjs'
-import {UsersService} from '../../services/users.service'
+import {BehaviorSubject, debounceTime, skip} from 'rxjs'
+import {InputTextModule} from 'primeng/inputtext'
+import {InputIconModule} from 'primeng/inputicon'
+import {IconFieldModule} from 'primeng/iconfield'
 
 @Component({
 	selector: 'app-search',
 	standalone: true,
 	imports: [
 		FormsModule,
-		SvgIconComponent
+		SvgIconComponent,
+		InputTextModule,
+		InputIconModule,
+		IconFieldModule,
 	],
 	templateUrl: './search.component.html',
 	styleUrl: './search.component.scss'
@@ -31,7 +35,10 @@ export class SearchComponent {
 
 	constructor() {
 		this.searchSubject
-				.pipe(debounceTime(500))
+				.pipe(
+					skip(1),
+					debounceTime(500)
+				)
 				.subscribe(
 					(value) => {
 						this.searchChangedEvent.emit(value)

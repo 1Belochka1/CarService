@@ -2,12 +2,15 @@ import {Injectable} from '@angular/core'
 import {HttpClient} from '@angular/common/http'
 import {BehaviorSubject, Observable, tap} from 'rxjs'
 import {ApiUrls} from './apiUrl'
-import {GetWorkersParamsRequest} from './Requests/GetWorkersParamsRequest'
+import {GetListWithPageRequest} from './Requests/GetWorkersParamsRequest'
+import {TableService} from './table.service'
 
 export interface IWorker {
 	id: string
 	email: string
-	fullName: string
+	lastName: string
+	firstName: string
+	patronymic: string
 	address: string
 	phone: string
 	role: number
@@ -43,14 +46,7 @@ export class UsersService {
 		)
 	}
 
-	getMasters(params: GetWorkersParamsRequest): Observable<IWorker[]> {
-		return this.http.get<any>(ApiUrls.users.getWorkers, {
-			params: params.value,
-			withCredentials: true
-		})
-	}
-
-	getClients(params: GetWorkersParamsRequest): Observable<IClient[]> {
+	getClients(params: GetListWithPageRequest): Observable<IClient[]> {
 		return this.http.get<any>(ApiUrls.users.getClients, {
 			params: params.value,
 			withCredentials: true
@@ -64,7 +60,6 @@ export class UsersService {
 	getClient(id: string): Observable<IWorker> {
 		return this.http.get<any>(ApiUrls.users.getClient + id, {withCredentials: true})
 	}
-
 
 
 }

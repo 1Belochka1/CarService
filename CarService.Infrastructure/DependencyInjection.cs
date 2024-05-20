@@ -4,6 +4,7 @@ using CarService.App.Interfaces.Persistence;
 using CarService.Infrastructure.Auth;
 using CarService.Infrastructure.Persistence;
 using CarService.Infrastructure.Persistence.Repositories;
+using Clave.Expressionify;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,8 +26,12 @@ public static class DependencyInjection
 
 		services.AddDbContext<CarServiceDbContext>(options =>
 		{
-			options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+			options
+				.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+				.UseExpressionify(x => x.WithEvaluationMode(ExpressionEvaluationMode.FullCompatibilityButSlow));
 		});
+
+		services.AddSwaggerGenNewtonsoftSupport();
 
 		return services;
 	}

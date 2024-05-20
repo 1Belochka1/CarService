@@ -1,4 +1,6 @@
+using CarService.Api.Contracts;
 using CarService.Api.Contracts.Records;
+using CarService.App.Common.ListWithPage;
 using CarService.App.Services;
 using CarService.Core.Records;
 using Microsoft.AspNetCore.Authorization;
@@ -32,18 +34,30 @@ public class RecordsController : ControllerBase
 
 	[Authorize(Roles = "1,2")]
 	[HttpGet("getCompletedByMasterId/{id}")]
-	public async Task<IActionResult> GetCompletedByMasterId(Guid id)
+	public async Task<IActionResult> GetCompletedByMasterId(Guid id, [FromQuery] GetListWithPageRequest request)
 	{
-		var records = await _recordsService.GetCompletedRecordsByMasterIdAsync(id);
+		var records = await _recordsService.GetCompletedRecordsByMasterIdAsync(id, new Params(
+			request.SortDescending,
+			request.SearchValue,
+			request.Page,
+			request.PageSize,
+			request.SortProperty
+		));
 
 		return Ok(records);
 	}
 
 	[Authorize(Roles = "1,2")]
 	[HttpGet("getActiveByMasterId/{id}")]
-	public async Task<IActionResult> GetActiveByMasterId(Guid id)
+	public async Task<IActionResult> GetActiveByMasterId(Guid id, [FromQuery] GetListWithPageRequest request)
 	{
-		var records = await _recordsService.GetActiveRecordsByMasterIdAsync(id);
+		var records = await _recordsService.GetActiveRecordsByMasterIdAsync(id, new Params(
+			request.SortDescending,
+			request.SearchValue,
+			request.Page,
+			request.PageSize,
+			request.SortProperty
+		));
 
 		return Ok(records);
 	}
@@ -59,41 +73,43 @@ public class RecordsController : ControllerBase
 		return Ok(records.ToList());
 	}
 
-	[HttpGet("заполнить")]
-	public async Task<IActionResult> Write()
-	{
-		var users = await _usersService.GetClientsAsync(pageSize: 100);
-
-		var countUser = users.Users.Count();
-
-		var rand = new Random();
-
-		for (var i = 0; i < countUser; i++)
-		{
-			var id = rand.Next(0, 100);
-			var user = users.Users.ElementAt(id);
-			await _recordsService.CreateRecordAsync(user.Id,
-				$"Запись {i} клиента {user.FullName}. Тут должно быть описание, очень много текста. " +
-				$"Тут должно быть описание, очень много текста. Тут должно быть описание, очень много текста.");
-		}
-
-		var records = await _recordsService.GetAllRecordsAsync();
-
-		var workers = await _usersService.GetWorkersAsync(pageSize: 2);
-
-		var ids = workers.Users.Select(u => u.Id.ToString()).ToList();
-
-
-		foreach (var record in records)
-		{
-			var masters =
-				await _usersService.GetWorkersByIds(ids);
-			var id = rand.Next(0, 2);
-			var master = masters.ElementAt(id);
-
-			await _recordsService.UpdateRecordAsync(record.Id, status: RecordStatus.Work);
-		}
-
-		return Ok();
-	}
+	// [HttpGet("заполнить")]
+	// public async Task<IActionResult> Write()
+	// {
+	// 	// var users = await _usersService.GetClientsAsync(pageSize: 100);
+	// 	//
+	// 	// var countUser = users.Users.Count();
+	// 	//
+	// 	var rand = new Random();
+	// 	//
+	// 	// for (var i = 0; i < countUser; i++)
+	// 	// {
+	// 	// 	var id = rand.Next(0, 100);
+	// 	// 	var user = users.Users.ElementAt(id);
+	// 	// 	await _recordsService.CreateRecordAsync(user.Id,
+	// 	// 		$"Запись {i} клиента {user.FullName}. Тут должно быть описание, очень много текста. " +
+	// 	// 		$"Тут должно быть описание, очень много текста. Тут должно быть описание, очень много текста.");
+	// 	// }
+	//
+	// 	var records = await _recordsService.GetAllRecordsAsync();
+	//
+	// 	var workers = await _usersService.GetWorkersAsync(pageSize: 10);
+	//
+	// 	var ids = workers.Items.Select(u => u.Id.ToString()).ToList();
+	//
+	//
+	// 	foreach (var record in records)
+	// 	{
+	// 		var masters =
+	// 			await _usersService.GetWorkersByIds(ids);
+	// 		var id = rand.Next(0, 10);
+	// 		var master = masters.ElementAt(id);
+	//
+	// 		await _recordsService.AddMastersAsync(record.Id, master);
+	//
+	// 		await _recordsService.UpdateRecordAsync(record.Id, status: RecordStatus.Work);
+	// 	}
+	//
+	// 	return Ok();
+	// }
 }

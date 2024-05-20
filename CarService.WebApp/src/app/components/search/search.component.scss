@@ -1,20 +1,27 @@
 :host {
-  @apply flex items-center bg-surface;
-  width: var(--search-width);
+  @apply flex w-full items-center bg-surface;
 
   border-radius: 0.625rem;
+
+  &:hover, &:focus, &:active {
+    @apply outline outline-menu outline-1;
+  }
+
 }
 
 .search {
   &__input {
-    padding: 0.9375rem;
-    width: calc(100% - 1.875rem + 0.9375rem);
+    padding: var(--padding-input, 0.5rem);
+    width: 100%;
+    &:focus-visible {
+      outline: none;
+    }
   }
 
   &__label {
     display: flex;
     align-items: center;
     height: 100%;
-    padding-right: 0.9375rem;
+    padding-right: var(--padding-input, 0.5rem);
   }
 }

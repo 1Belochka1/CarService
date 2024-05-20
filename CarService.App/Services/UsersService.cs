@@ -1,3 +1,4 @@
+using CarService.App.Common.ListWithPage;
 using CarService.App.Common.Users;
 using CarService.App.Interfaces.Auth;
 using CarService.App.Interfaces.Persistence;
@@ -63,42 +64,18 @@ public class UsersService
 		return Result.Success(token);
 	}
 
-	public async Task<(int TotalItems, int? TotalPages, int? CurrentPage, IEnumerable<WorkersDto> Users)> GetWorkersAsync(
-		string? searchValue = null,
-		int page = 1,
-		int pageSize = 10,
-		bool sortDescending = false,
-		string? sortProperty = null
+	public async Task<ListWithPage<WorkersDto>> GetWorkersAsync(
+		Params parameters
 	)
 	{
-		var users = await _userAuthRepository.GetWorkersAsync(sortDescending,
-			searchValue, page, pageSize, sortProperty);
-
-		return (
-			users.TotalItems,
-			users.TotalPages,
-			users.CurrentPage,
-			users.Users
-		);
+		return await _userAuthRepository.GetWorkersAsync(parameters);
 	}
 
-	public async Task<(int TotalItems, int? TotalPages, int? CurrentPage, IEnumerable<ClientsDto> Users)> GetClientsAsync(
-		int page = 1,
-		int pageSize = 10,
-		string? searchValue = null,
-		bool sortDescending = false,
-		string? sortProperty = null
+	public async Task<ListWithPage<ClientsDto>> GetClientsAsync(
+		Params parameters
 	)
 	{
-		var users = await _userAuthRepository.GetClientsAsync(sortDescending,
-			searchValue, page, pageSize, sortProperty);
-
-		return (
-			users.TotalItems,
-			users.TotalPages,
-			users.CurrentPage,
-			users.Users
-		);
+		return await _userAuthRepository.GetClientsAsync(parameters);
 	}
 
 	public async Task<UserAuth?> GetById(Guid userId)

@@ -1,5 +1,5 @@
 :host {
-  @apply flex flex-col h-full;
+  @apply flex flex-col h-full gap-5;
 }
 
 .tabs {
@@ -11,25 +11,31 @@
 .nav {
   &__list {
 
-    @apply bg-menu overflow-auto text-on-menu flex gap-1 border-b border-solid border-background px-3;
+    @apply bg-menu overflow-auto text-on-menu flex gap-1 border-b border-solid border-surface p-1;
 
+    border-radius: 0.625rem;
 
     //backdrop-filter: blur(10px);
 
     //box-shadow: 0 2px 6px -3px rgba(0, 0, 0, .4);
 
     li {
-      @apply py-1 px-2 cursor-pointer;
+      @apply py-1 px-2 cursor-pointer bg-surface/75 text-menu;
 
-      transition: background-color .55s;
+      border-radius: 0.625rem;
+
+      //border-top-left-radius: 0.625rem;
+      //border-top-right-radius: 0.625rem;
+
+      transition: background-color .55s, color .55s;
 
       &:hover {
-        @apply bg-primary text-menu;
+        @apply bg-primary;
       }
     }
 
     .active {
-      @apply bg-primary text-menu;
+      @apply bg-surface;
     }
 
 

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
+@layer input;
 
 :root {
   --color-background: 179, 179, 179;
@@ -11,7 +11,7 @@
   --color-on-menu: 228, 228, 228;
 
   --color-primary: 255, 138, 99;
-  --color-secondary: 247, 23, 53;
+  --color-secondary: 228 228 231;
 
   --width-menu: 16.875rem;
 
@@ -57,11 +57,8 @@ html {
 body {
 }
 
-@import "primeng/resources/themes/arya-orange/theme.css";
-@import "primeng/resources/primeng.min.css";
-
 input {
-  @apply outline-none border-none;
+  @apply border-none appearance-none;
   background: none;
 }
 

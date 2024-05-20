@@ -1,11 +1,12 @@
 :host {
   display: block;
   width: var(--select-width, 150px);
+  z-index: 49;
 }
 
 details {
   position: relative;
-  height: 100%;
+  //height: var(--select-height, 30px);
 }
 
 details[open] {
@@ -29,6 +30,7 @@ summary {
   cursor: pointer;
   border-radius: 0.625rem;
   height: 100%;
+  padding: .5rem;
 
   // --------------------------
   // Отключение стандартного отображения
@@ -46,7 +48,7 @@ summary {
     display: block;
     width: 100%;
     text-align: center;
-    padding: 0.9375rem;
+    //padding: 0.9375rem;
   }
 }
 

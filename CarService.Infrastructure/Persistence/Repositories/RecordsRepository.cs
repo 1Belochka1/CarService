@@ -1,15 +1,18 @@
+using CarService.App.Common.ListWithPage;
+using CarService.App.Common.Users;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Records;
 using CarService.Core.Users;
+using CarService.Infrastructure.Expansion;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.Infrastructure.Persistence.Repositories;
 
-public class RecordsRepository : BaseRepository<Record>, IRecordsRepository
+public class RecordsRepository : IRecordsRepository
 {
 	private readonly CarServiceDbContext _context;
 
-	public RecordsRepository(CarServiceDbContext context) : base(context)
+	public RecordsRepository(CarServiceDbContext context)
 	{
 		_context = context;
 	}
@@ -65,20 +68,36 @@ public class RecordsRepository : BaseRepository<Record>, IRecordsRepository
 		return await _context.Records.Where(x => x.ClientId == clientId).ToListAsync();
 	}
 
-	public async Task<ICollection<Record>> GetCompletedByMasterIdAsync(Guid masterId, int page, int pageSize)
+	public async Task<ListWithPage<Record>> GetCompletedByMasterIdAsync(Guid masterId, Params parameters)
 	{
-		var records = _context.Records
-			.Where(x => x.Masters.Any(m => m.Id == masterId) && x.Status == RecordStatus.Done);
-		var result = Page(records, page, pageSize);
-		return await result.ToListAsync();
+		var query = await _context.Records
+			.Where(x => x.Masters.Any(m => m.Id == masterId)
+			            && x.Status == RecordStatus.Done)
+			.ToListAsync();
+
+		if (!string.IsNullOrEmpty(parameters.SearchValue))
+			query = query.Where(x => x.Search(parameters.SearchValue)).ToList();
+
+		if (parameters.SortProperty != null)
+			query = query.Sort(parameters.SortProperty, parameters.SortDescending);
+
+		return query.Page(parameters.Page, parameters.PageSize);
 	}
 
-	public async Task<ICollection<Record>> GetActiveByMasterIdAsync(Guid masterId, int page, int pageSize)
+	public async Task<ListWithPage<Record>> GetActiveByMasterIdAsync(Guid masterId, Params parameters)
 	{
-		var records = _context.Records
-			.Where(x => x.Masters.Any(m => m.Id == masterId) && x.Status == RecordStatus.Work);
-		var result = Page(records, page, pageSize);
-		return await result.ToListAsync();
+		var query = await _context.Records
+			.Where(x => x.Masters.Any(m => m.Id == masterId)
+			            && x.Status == RecordStatus.Work)
+			.ToListAsync();
+
+		if (!string.IsNullOrEmpty(parameters.SearchValue))
+			query = query.Where(x => x.Search(parameters.SearchValue)).ToList();
+
+		if (parameters.SortProperty != null)
+			query = query.Sort(parameters.SortProperty, parameters.SortDescending);
+
+		return query.Page(parameters.Page, parameters.PageSize);
 	}
 
 	public async Task AddMasters(Guid recordId, ICollection<UserAuth> masters)

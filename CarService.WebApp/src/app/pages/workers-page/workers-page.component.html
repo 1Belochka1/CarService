@@ -1,27 +1,7 @@
-<div class="toolbox">
-	<app-search
-		(searchChangedEvent)="searchUpdate($event)"></app-search>
-	<div class="sort">
-		<span>Сортировать: </span>
-		<div class="sort__wrapper">
-			<app-select class="sort__property"
-									[items]="sortProperties"
-									(selectionChange)="sortChanged($event)"/>
-			<div class="sort__descending"
-					 *ngIf="sortDescending != null">
-				<svg-icon src="assets/svg/minimize-min.svg"
-									class="arrow-down"
-									[ngClass]="{'arrow-up': sortDescending}"
-									svgClass="svg-nav sort__descending-icon"
-									viewBox="0 0 30 30"
-									(click)="toggleDescending()"/>
-			</div>
-		</div>
-	</div>
-</div>
-<b-table [items]="workers | async"
-				 [isLoading]="isLoading"
-				 [notFound]="!isLoading && totalCount== 0"
+
+<b-table
+	[service]="workersService"
+	[items]="workersService.items | async"
 >
 	<ng-template bTemplate="head">
 		<tr>
@@ -36,7 +16,10 @@
 	<ng-template bTemplate="body" let-item>
 		<tr (click)="goToWorker(item.id)">
 			<td data-name="ФИО">
-				{{ item.fullName }}
+				{{
+					item.lastName + ' ' + item.firstName + ' '
+					+ item.patronymic
+				}}
 			</td>
 			<td data-name="Почта">
 				{{ item.email }}
@@ -44,7 +27,7 @@
 			<td class="break-all" data-name="Адрес">
 				{{ item.address }}
 			</td>
-			<td class="max-w-28 tablet:max-w-full"
+			<td class="max-w-36 tablet:max-w-full"
 					data-name="Номер">
 				{{ item.phone }}
 			</td>
@@ -52,8 +35,7 @@
 	</ng-template>
 </b-table>
 
-
-<app-pagination *ngIf="totalPages > 1"
-								[currentPage]="currentPage"
-								[totalPages]="totalPages"
-								(changePage)="currentPageChanged($event)"/>
+<!--<app-pagination *ngIf="workersService.totalPages > 1"-->
+<!--								[currentPage]="workersService.currentPage"-->
+<!--								[totalPages]="workersService.totalPages"-->
+<!--								(changePage)="workersService.currentPageChanged($event)"/>-->

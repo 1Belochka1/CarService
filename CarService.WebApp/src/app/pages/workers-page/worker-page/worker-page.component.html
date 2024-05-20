@@ -2,52 +2,81 @@
 	<h2 class="title">
 		О сотруднике
 	</h2>
-	...
+	<div class="info">
+		<span data-name="Почта">{{ user.email }}</span>
+		<span data-name="Фамилия">{{ user.lastName }}</span>
+		<span data-name="Имя">{{ user.firstName }}</span>
+		<span data-name="Отчество">{{ user.patronymic }}</span>
+		<span data-name="Номер телефона">{{ user.phone }}</span>
+		<span data-name="Адрес">{{ user.address }}</span>
+	</div>
 </div>
 <div class="tabs">
-	<app-tabs>
+	<app-tabs (tabsChange)="tabsChange($event)">
 
-		<app-tabs-content
+		<app-tabs-table-content
 			header="Активные работы"
+			type="active"
 			[selected]="true"
 			class="tabs__content"
+			[service]="recordsService"
 		>
+			<ng-template bTemplate="head">
+				<tr>
+					<th>Описание</th>
+					<th>Дата создания</th>
+					<th>Приоритет</th>
+				</tr>
+			</ng-template>
+			<ng-template bTemplate="body" let-item>
+				<tr>
+					<td data-name="Описание">
+						{{ item.description }}
+					</td>
+					<td data-name="Дата создания">
+						{{
+							item.createTime | date: "medium" : undefined :
+								"ru"
+						}}
+					</td>
+					<td data-name="Приоритет">
+						<div>
+							<span class="priority"
+										[attr.data-priority]="item.priority">
+								{{ Priority[item.priority] }}
+							</span>
+						</div>
+					</td>
+				</tr>
+			</ng-template>
 
-			<b-table [items]="activeWorks | async">
-				<ng-template bTemplate="body" let-item>
-					<tr>
-						<td>
-							{{ item|json }}
-						</td>
-					</tr>
-				</ng-template>
-			</b-table>
+		</app-tabs-table-content>
 
-		</app-tabs-content>
-
-		<app-tabs-content
+		<app-tabs-table-content
+			type="completed"
 			header="Завершенные работы"
 			class="tabs__content"
+			[service]="recordsService"
 		>
 
-			<b-table [items]="completedWorks | async">
-				<ng-template bTemplate="body" let-item>
-					<tr>
-						<td>
-							{{ item|json }}
-						</td>
-					</tr>
-				</ng-template>
-			</b-table>
 
-		</app-tabs-content>
+			<ng-template bTemplate="body" let-item>
+				<tr>
+					<td>
+						{{ item|json }}
+					</td>
+				</tr>
+			</ng-template>
 
-		<app-tabs-content
+		</app-tabs-table-content>
+
+		<app-tabs-table-content
 			header="Услуги работника"
 			class="tabs__content"
+			[service]="recordsService"
 		>
 
-		</app-tabs-content>
+		</app-tabs-table-content>
 	</app-tabs>
 </div>
 

@@ -1,13 +1,15 @@
 import {HttpParams} from '@angular/common/http'
 
 export enum SortMastersProperty {
-	EMAIL = "email",
-	FULLNAME = "fullname",
-	ADDRESS = 'address',
-	PHONE = "phone"
+	EMAIL = "Email",
+	LASTNAME = "LastName",
+	FIRSTNAME = "FirstName",
+	PATRONYMIC = "Patronymic",
+	ADDRESS = 'Address',
+	PHONE = "Phone"
 }
 
-export class GetWorkersParamsRequest {
+export class GetListWithPageRequest {
 
 	value: HttpParams
 
@@ -15,7 +17,7 @@ export class GetWorkersParamsRequest {
 		searchValue: string | null,
 		page: number | null,
 		pageSize: number | null,
-		sortProperty: SortMastersProperty | null,
+		sortProperty: string | null,
 		sortDescending: boolean | null
 	) {
 

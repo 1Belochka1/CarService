@@ -1,3 +1,4 @@
+using CarService.App.Common.ListWithPage;
 using CarService.App.Common.Users;
 using CarService.Core.Users;
 
@@ -17,19 +18,7 @@ public interface IUserAuthRepository
 
 	Task<UserAuth?> GetByEmailAsync(string email);
 
-	Task<(int TotalItems, int? TotalPages, int? CurrentPage, IEnumerable<WorkersDto> Users)> GetWorkersAsync(
-		bool sortDescending,
-		string? searchValue = null,
-		int page = 1,
-		int pageSize = 10,
-		string? sortProperty = null
-	);
+	Task<ListWithPage<WorkersDto>> GetWorkersAsync(Params parameters);
 
-	Task<(int TotalItems, int? TotalPages, int? CurrentPage, IEnumerable<ClientsDto> Users)> GetClientsAsync(
-		bool sortDescending,
-		string? searchValue = null,
-		int page = 1,
-		int pageSize = 10,
-		string? sortProperty = null
-	);
+	Task<ListWithPage<ClientsDto>> GetClientsAsync(Params parameters);
 }

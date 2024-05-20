@@ -1,9 +1,5 @@
 :host {
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  @apply flex flex-col gap-5 h-full;
 }
 
 .toolbox {
@@ -25,7 +21,7 @@
     span {
       @apply bg-surface;
       border-radius: 0.625rem;
-      padding: 0.9375rem;
+      padding: 0.5rem;
 
       @media (max-width: 768px) {
         @apply text-center flex-1;

@@ -4,5 +4,5 @@ public record GetUsersResponse<T>(
 	int TotalCount,
 	int? TotalPages,
 	int? CurrentPage,
-	IEnumerable<T> Users
+	List<T> Users
 );

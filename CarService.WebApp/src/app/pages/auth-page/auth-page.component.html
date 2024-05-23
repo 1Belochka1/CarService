@@ -1,5 +1,29 @@
 <div class="wrapper">
-	<form action="">
-		<input type="text" pInputText >
+
+	<form action="" [formGroup]="form">
+
+		@switch (activePage) {
+			@case (1) {
+				<h1>Авторизация</h1>
+				<app-form-input type="text"
+												[formControl]="form.controls.email"
+												title="Почта"/>
+				<app-form-input type="password"
+												[formControl]="form.controls.password"
+												title="Пароль"/>
+
+				<button (click)="login()">Вход</button>
+			}
+			@case (2) {
+				<span>регистрация</span>
+			}
+		}
 	</form>
+
+	<div class="switch-page">
+		<button *ngIf="activePage == 1">Регистрация</button>
+		<button *ngIf="activePage == 2">Вход</button>
+	</div>
+
+
 </div>

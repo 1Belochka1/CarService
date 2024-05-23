@@ -1,6 +1,48 @@
 :host {
-  @apply flex items-center justify-center bg-background h-screen w-full;
+	@apply relative flex items-center justify-center h-screen w-full;
+
+	background-image: url("/assets/background.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+
+	//background: linear-gradient(to right bottom, rgb(var(--color-menu)), rgb(var(--color-primary)));
 }
+
 .wrapper {
-  @apply bg-surface w-96 h-96;
+
+	@apply flex flex-col text-on-menu bg-menu/30 w-80 h-96 border-menu border border-solid p-3;
+
+	font-size: 1.2rem;
+
+	border-radius: 0.625rem;
+
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+
+	backdrop-filter: blur(5px);
+
+	z-index: 1;
+
+	input[type=radio] {
+		display: none;
+	}
+
+	form {
+		@apply flex flex-col gap-3 flex-1;
+
+		button {
+			transition: background .3s ease-in-out;
+
+			border-radius: 0.625rem;
+
+			&:hover {
+				@apply bg-menu;
+			}
+		}
+	}
+
+	.switch-page {
+		font-size: 0.9rem;
+	}
 }

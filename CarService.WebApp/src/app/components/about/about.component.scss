@@ -1,0 +1,41 @@
+:host {
+  @apply bg-surface;
+
+  padding: 0.9375rem;
+
+  border-radius: 0.625rem;
+
+  ::ng-deep {
+    hr {
+      height: 1px;
+      width: 100%;
+      @apply border-menu;
+      margin: 0.5rem 0 1rem 0;
+    }
+
+    .title {
+      font-size: 1.3rem;
+    }
+
+    .info {
+      @apply flex flex-col;
+
+      * {
+        @apply grid text-wrap break-all;
+
+        //grid-template-columns: 100px 1fr;
+
+        grid-template-columns: 1fr 5fr;
+
+        @media (max-width: 768px) {
+          grid-template-columns: auto;
+        }
+
+        &:before {
+          @apply font-bold;
+          content: attr(data-name) ": ";
+        }
+      }
+    }
+  }
+}

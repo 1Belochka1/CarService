@@ -1,0 +1,31 @@
+<b-table
+	[service]="workersService"
+	[items]="workersService.items$ | async"
+	[headItems]="workersService.headItems"
+>
+	<ng-template bTemplate="body" let-item>
+		<tr (click)="goToWorker(item.id)">
+			<td data-name="Фамилия">
+				{{
+					item.lastName + ' ' + item.firstName + ' '
+					+ item.patronymic
+				}}
+			</td>
+			<td data-name="Почта">
+				{{ item.email }}
+			</td>
+			<td class="break-all" data-name="Адрес">
+				{{ item.address }}
+			</td>
+			<td class="max-w-36 tablet:max-w-full"
+					data-name="Номер">
+				{{ item.phone }}
+			</td>
+		</tr>
+	</ng-template>
+</b-table>
+
+<!--<app-pagination *ngIf="workersService.totalPages > 1"-->
+<!--								[currentPage]="workersService.currentPage"-->
+<!--								[totalPages]="workersService.totalPages"-->
+<!--								(changePage)="workersService.currentPageChanged($event)"/>-->

@@ -1,8 +1,6 @@
 :host {
   @apply flex h-screen;
 
-  @apply bg-secondary;
-
 
   @media (max-width: 768px) {
     @apply h-auto;

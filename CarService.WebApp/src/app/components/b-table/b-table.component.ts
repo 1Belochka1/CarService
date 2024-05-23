@@ -1,15 +1,15 @@
 import {
 	AfterContentInit,
+	ChangeDetectorRef,
 	Component,
-	ContentChildren, Input, OnChanges,
+	ContentChildren,
+	Input,
+	OnChanges, OnInit,
 	QueryList,
 	SimpleChanges,
-	TemplateRef,
-	ViewEncapsulation
+	TemplateRef
 } from '@angular/core'
-import {
-	BTemplateDirective
-} from '../../direcrives/b-template.directive'
+import {BTemplateDirective} from '../../direcrives/b-template.directive'
 import {
 	NgClass,
 	NgForOf,
@@ -19,8 +19,13 @@ import {
 import {PaginationComponent} from '../pagination/pagination.component'
 import {TableService} from '../../services/table.service'
 import {SearchComponent} from '../search/search.component'
-import {SelectComponent} from '../select/select.component'
+import {
+	IItem,
+	SelectComponent
+} from '../select/select.component'
 import {SvgIconComponent} from 'angular-svg-icon'
+import {SortComponent} from '../sort/sort.component'
+import {DistinctPipe} from '../../pipe/distinct.pipe'
 
 @Component({
 	selector: 'b-table',
@@ -33,14 +38,18 @@ import {SvgIconComponent} from 'angular-svg-icon'
 		SearchComponent,
 		SelectComponent,
 		SvgIconComponent,
-		NgClass
+		DistinctPipe,
+		NgClass,
+		SortComponent,
+		DistinctPipe
 	],
 	templateUrl: './b-table.component.html',
 	styleUrl: './b-table.component.scss',
 })
-export class BTableComponent implements AfterContentInit, OnChanges {
+export class BTableComponent implements OnInit, AfterContentInit, OnChanges {
 
-	emptyRows: any[] = []
+	@Input()
+	headItems: IItem<any>[]
 
 	@Input()
 	service: TableService
@@ -55,19 +64,32 @@ export class BTableComponent implements AfterContentInit, OnChanges {
 	notFound: boolean = false
 
 	@Input()
-	rowCount: number = 0
-
-	@Input()
-	bodyTemplate?: TemplateRef<any>
+	toolboxTemplate: TemplateRef<any>
 
 	@Input()
 	headTemplate?: TemplateRef<any>
 
+	@Input()
+	bodyTemplate?: TemplateRef<any>
+
 	@ContentChildren(BTemplateDirective)
 	templates?: QueryList<BTemplateDirective>
 
+	rowCount: number = 5
+
+	emptyRows: any[] = []
+
+	headers: string[] = []
+
+	constructor(private cd: ChangeDetectorRef) {
+	}
+
+	ngOnInit(): void {
+		this.service.sortProperties = this.headItems
+	}
+
 	ngAfterContentInit(): void {
-		if (this.templates)
+		if (this.templates) {
 			this.templates.forEach(
 				(template) => {
 					if (template.bTemplate === 'body')
@@ -76,15 +98,29 @@ export class BTableComponent implements AfterContentInit, OnChanges {
 					if (template.bTemplate === 'head')
 						this.headTemplate = template.template
 
-					console.log(template)
+					if (template.bTemplate === 'toolbox')
+						this.toolboxTemplate = template.template
 				}
 			)
+		}
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
+		if (this.rowCount == 0) {
+			this.rowCount = this.service.pageSize
+		}
 		if (this.items && this.items.length < this.rowCount && !this.service.notFound)
 			this.emptyRows = new Array(this.rowCount - this.items.length)
 		else
 			this.emptyRows = []
+	}
+
+	sortChange(sortProp: IItem<any>) {
+
+		if (this.service.sortProperty == sortProp)
+			this.service.toggleDescending()
+		else
+			this.service.sortProperty = sortProp
+
 	}
 }

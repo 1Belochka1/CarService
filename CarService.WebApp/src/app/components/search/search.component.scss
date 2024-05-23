@@ -1,5 +1,9 @@
 :host {
-  @apply flex w-full items-center bg-surface;
+  @apply flex w-full items-center bg-surface max-w-[250px];
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 
   border-radius: 0.625rem;
 

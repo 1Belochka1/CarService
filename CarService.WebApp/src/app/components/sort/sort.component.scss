@@ -1,0 +1,51 @@
+:host {
+  @apply flex gap-2.5;
+
+  @media (max-width: 540px) {
+    @apply flex-wrap;
+  }
+}
+
+span {
+  @apply bg-surface;
+  border-radius: 0.625rem;
+  padding: 0.5rem;
+
+  @media (max-width: 768px) {
+    @apply text-center flex-1;
+  }
+}
+
+.sort {
+
+  &__wrapper {
+    @apply flex gap-2.5;
+
+    @media (max-width: 768px) {
+      flex: 2;
+    }
+  }
+
+  &__descending {
+    @apply flex items-center bg-surface/70;
+    border-radius: 0.625rem;
+    padding: 0 0.9375rem;
+
+
+    &-icon {
+      stroke: black;
+    }
+
+    .arrow-down {
+      transform: rotate(-90deg);
+    }
+
+    .arrow-up {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__property {
+    @apply min-w-40 flex-1;
+  }
+}

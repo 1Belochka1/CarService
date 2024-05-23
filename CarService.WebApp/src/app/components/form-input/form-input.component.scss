@@ -1,0 +1,8 @@
+input {
+	@apply border-primary border border-solid w-full p-2;
+
+	border-radius: 0.625rem;
+}
+.dirty {
+	@apply border-red-600 border border-solid;
+}

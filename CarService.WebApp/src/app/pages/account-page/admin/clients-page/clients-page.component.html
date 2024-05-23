@@ -1,0 +1,46 @@
+<div class="contents">
+	<b-table
+		[service]="clientsService"
+		[items]="clientsService.items$ | async"
+		[isLoading]="clientsService.isLoading"
+		[notFound]="!clientsService.isLoading && clientsService.totalCount == 0"
+
+	>
+		<ng-template bTemplate="head">
+			<tr>
+				<th>ФИО</th>
+				<th>Почта</th>
+				<th>Адрес</th>
+				<th>Номер</th>
+				<th>Последняя заявка (Дата)</th>
+			</tr>
+		</ng-template>
+		<ng-template bTemplate="body" let-item>
+			<tr>
+				<td data-name="ФИО">
+					{{
+						item.lastName + ' ' + item.firstName + ' '
+						+ item.patronymic
+					}}
+				</td>
+				<td data-name="Почта">
+					{{ item.email }}
+				</td>
+				<td class="break-all" data-name="Адрес">
+					{{ item.address }}
+				</td>
+				<td class="max-w-32 tablet:max-w-full"
+						data-name="Номер">
+					{{ item.phone }}
+				</td>
+				<td data-name="Последняя заявка (Дата)">
+					{{
+						item.lastRecordTime
+							? (item.lastRecordTime | date)
+							: "Заявки отсутствуют"
+					}}
+				</td>
+			</tr>
+		</ng-template>
+	</b-table>
+</div>

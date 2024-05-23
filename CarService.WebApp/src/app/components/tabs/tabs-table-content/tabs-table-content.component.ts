@@ -9,6 +9,7 @@ import {AsyncPipe, NgClass, NgIf} from '@angular/common'
 import {BTableComponent} from '../../b-table/b-table.component'
 import {TableService} from '../../../services/table.service'
 import {BTemplateDirective} from '../../../direcrives/b-template.directive'
+import { IItem } from '../../select/select.component'
 
 @Component({
 	selector: 'app-tabs-table-content',
@@ -23,6 +24,9 @@ import {BTemplateDirective} from '../../../direcrives/b-template.directive'
 	styleUrl: './tabs-table-content.component.scss'
 })
 export class TabsTableContentComponent implements AfterContentInit {
+
+	@Input()
+	public headItems: IItem<any>[]
 
 	@Input()
 	public header: string = ''

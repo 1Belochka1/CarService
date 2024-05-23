@@ -1,8 +1,9 @@
 <div class="tabs__content" *ngIf="selected">
 	<b-table [service]="service"
-					 [items]="service.items | async"
+					 [items]="service.items$ | async"
 					 [bodyTemplate]="bodyTemplate"
 					 [headTemplate]="headTemplate"
+					 [headItems]="headItems"
 	>
 		<ng-content></ng-content>
 	</b-table>

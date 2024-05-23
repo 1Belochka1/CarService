@@ -1,7 +1,8 @@
 <details #details>
     <summary>
 
-        <ng-container *ngFor="let item of items;first as isFirst">
+        <ng-container *ngFor="let item of items;first as
+        isFirst;index as index">
             <input
                     type="radio"
                     name="item"

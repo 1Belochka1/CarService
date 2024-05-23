@@ -34,7 +34,7 @@ export class SelectComponent implements OnInit {
 	@Input()
 	width: number = 150
 
-
+	@Input()
 	selectedIndex = 0
 
 	constructor(private _renderer: Renderer2) {

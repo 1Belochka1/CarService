@@ -1,0 +1,19 @@
+<b-table [service]="servicesService"
+				 [items]="servicesService.items$ | async"
+>
+	<ng-template bTemplate="body" let-item>
+		<tr>
+			<td data-name="Название">
+				{{ item.name }}
+			</td>
+			<td data-name="Описание">
+				{{ item.description }}
+			</td>
+			<td data-name="Категории">
+				{{
+					item.serviceTypes[0]?.name
+				}}
+			</td>
+		</tr>
+	</ng-template>
+</b-table>

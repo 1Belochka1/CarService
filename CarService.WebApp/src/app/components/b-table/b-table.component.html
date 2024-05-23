@@ -1,24 +1,19 @@
 <div class="table__toolbox" *ngIf="service">
-	<app-search
-		(searchChangedEvent)="service.searchChange($event)"></app-search>
-	<div class="sort" *ngIf="service.sortProperties">
-		<span>Сортировать: </span>
-		<div class="sort__wrapper">
-			<app-select class="sort__property"
-									[items]="service.sortProperties"
-									(selectionChange)="service.sortChanged($event)"/>
-			<div class="sort__descending"
-					 *ngIf="service.sortDescending != null">
-				<svg-icon src="assets/svg/minimize-min.svg"
-									class="arrow-down"
-									[ngClass]="{'arrow-up':
-									service.sortDescending}"
-									svgClass="svg-nav sort__descending-icon"
-									viewBox="0 0 30 30"
-									(click)="service.toggleDescending()"/>
-			</div>
-		</div>
-	</div>
+
+	<ng-container *ngIf="toolboxTemplate"
+								[ngTemplateOutlet]="toolboxTemplate"
+	/>
+
+	<ng-container>
+
+		<app-search
+			(searchChangedEvent)="service.searchChange($event)"/>
+
+		<app-sort *ngIf="service.sortProperties"
+							[service]="service"/>
+
+	</ng-container>
+
 </div>
 
 <div class="table__wrapper">
@@ -30,6 +25,32 @@
 									[ngTemplateOutlet]="headTemplate"
 		/>
 
+		<tr
+			*ngIf="headItems"
+		>
+			<ng-container
+				*ngFor="let head of headItems; index as index">
+				<th *ngIf="head.value != -1">
+					<div
+						class="flex items-center justify-center"
+						(click)="sortChange(head)"
+					>
+						{{ head.name }}
+						<!--						<svg-icon-->
+						<!--							*ngIf="service.sortDescending != null &&-->
+						<!--						service.sortProperties.indexOf(service.sortProperty!) == index"-->
+						<!--							src="assets/svg/minimize-min.svg"-->
+						<!--							svgClass="svg-nav" viewBox="0 0 30 30"-->
+						<!--							[ngClass]="{'rotate-90':-->
+						<!--							service.sortDescending, '-rotate-90':-->
+						<!--							!service.sortDescending}"-->
+						<!--						/>-->
+					</div>
+				</th>
+			</ng-container>
+
+		</tr>
+
 		</thead>
 
 
@@ -39,12 +60,12 @@
 			<td class="message" colspan="1000">Загрузка...</td>
 		</tr>
 
-		<tr *ngIf="service.notFound">
+		<tr *ngIf="!service.isLoading && service.notFound">
 			<td class="message" colspan="1000">Данных нет</td>
 		</tr>
 
 		<ng-container *ngIf="bodyTemplate">
-			<ng-container class="tr" *ngFor="let item of items"
+			<ng-container *ngFor="let item of items"
 										[ngTemplateOutlet]="bodyTemplate"
 										[ngTemplateOutletContext]="{$implicit:
                   item}"

@@ -12,9 +12,8 @@
 >
 
 
-
 	<ng-template bTemplate="body" let-item>
-		<tr>
+		<tr (click)="navigateRecord(item.id)">
 			<td data-name="Описание">
 				{{
 					item.description
@@ -30,13 +29,14 @@
 				<span class="priority"
 							[attr.data-priority]="item.priority">
 								{{ priority[item.priority] }}
-							</span>
+				</span>
 			</td>
 			<td data-name="Статус">
 				<span class="status"
-							[attr.data-status]="item.status">
+							[attr.data-status]="item.status"
+				>
 								{{ status[item.status] }}
-							</span>
+				</span>
 			</td>
 		</tr>
 	</ng-template>

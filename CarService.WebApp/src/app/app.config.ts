@@ -8,7 +8,7 @@ import {UsersService} from './services/users/users.service'
 import {registerLocaleData} from '@angular/common'
 import localeRu from '@angular/common/locales/ru'
 
-registerLocaleData(localeRu);
+registerLocaleData(localeRu)
 
 export const appConfig: ApplicationConfig = {
 	providers: [UsersService, provideRouter(routes), provideAnimationsAsync(), provideAngularSvgIcon(), provideHttpClient(), {

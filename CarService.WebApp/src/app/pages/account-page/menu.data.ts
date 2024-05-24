@@ -14,7 +14,12 @@ export const menuItems = [
 	{
 		icon: folder + 'requests-min.svg',
 		title: "Заявки",
-		routerLink: 'requests'
+		routerLink: 'records'
+	},
+	{
+		icon: folder + 'requests-min.svg',
+		title: "Услуги",
+		routerLink: 'services'
 	},
 	{
 		icon: folder + 'chats-min.svg',

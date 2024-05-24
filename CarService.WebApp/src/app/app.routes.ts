@@ -6,7 +6,8 @@ import {WorkersPageComponent} from './pages/account-page/admin/workers-page/work
 import {ServicesPageComponent} from './pages/account-page/admin/services-page/services-page.component'
 import {WorkerPageComponent} from './pages/account-page/admin/workers-page/worker-page/worker-page.component'
 import {ClientsPageComponent} from './pages/account-page/admin/clients-page/clients-page.component'
-import {RequestsPageComponent} from './pages/account-page/admin/requests-page/requests-page.component'
+import {RecordsPageComponent} from './pages/account-page/records-page/records-page.component'
+import {RecordPageComponent} from './pages/account-page/records-page/record-page/record-page.component'
 
 
 export const routes: Routes = [
@@ -43,9 +44,14 @@ export const routes: Routes = [
 				title: 'Личный кабинет - Клиенты'
 			},
 			{
-				path: 'requests',
-				component: RequestsPageComponent,
+				path: 'records',
+				component: RecordsPageComponent,
 				title: 'Личный кабинет - Заявки'
+			},
+			{
+				path: 'record/:id',
+				component: RecordPageComponent,
+				title: 'Личный кабинет - Заявка'
 			}
 		]
 	},

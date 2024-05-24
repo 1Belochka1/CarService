@@ -13,7 +13,7 @@ export class RecordsService extends RequestService {
 		super()
 	}
 
-	getById(id: string): Observable<any> {
+	getById(id: string): Observable<RecordType> {
 		return this.httpClient.get<RecordType>(apiUrls.records.getById + id, {withCredentials: true})
 	}
 

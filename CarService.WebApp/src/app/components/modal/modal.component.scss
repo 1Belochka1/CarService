@@ -1,0 +1,35 @@
+:host {
+	@apply fixed top-0 right-0 bottom-0 left-0 z-50;
+
+	@apply flex flex-col items-center justify-center;
+}
+
+.modal {
+	@apply relative bg-surface;
+	position: relative;
+	width: 300px;
+	padding: 0.9375rem;
+
+	border-radius: 0.625rem;
+}
+
+.modal-title {
+}
+
+.modal-content {
+}
+
+.modal-action {
+}
+
+.confirm {
+}
+
+.close {
+}
+
+.modal-backdrop {
+	@apply absolute top-0 right-0 bottom-0 left-0 bg-menu/50 -z-10;
+
+	backdrop-filter: blur(10px);
+}

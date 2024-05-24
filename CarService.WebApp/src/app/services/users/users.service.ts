@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core'
-import {HttpClient} from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 import {BehaviorSubject, Observable, tap} from 'rxjs'
 import {apiUrls} from '../apiUrl'
 import {GetListWithPageRequest} from '../Requests/GetWorkersParamsRequest'

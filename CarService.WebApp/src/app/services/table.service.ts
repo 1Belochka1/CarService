@@ -1,5 +1,5 @@
 import {catchError, map, Observable, throwError} from 'rxjs'
-import {HttpClient} from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 import {inject} from '@angular/core'
 import {IItem} from '../components/select/select.component'
 import {

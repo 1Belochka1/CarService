@@ -1,0 +1,49 @@
+<div class="wrapper" *ngIf="record">
+	<h1>Заявка от
+		{{ record.createTime | date: 'dd MMMM hh:mm ' }}
+	</h1>
+	<div class="client">
+		<h2>Контактные данные клиента</h2>
+		<p data-name="Полное имя">
+			{{ record.client.userInfo | fullName }}
+		</p>
+		<p data-name="Почта">
+			{{ record.client.email }}
+		</p>
+		<p data-name="Номер телефона">
+			{{ record.client.userInfo.phone }}
+		</p>
+	</div>
+
+	<div class="record">
+		<h2>Описание</h2>
+		<div class="record__description">
+			{{ record.description }}
+		</div>
+	</div>
+
+	<div class="action">
+		<button (click)="updateOpen(updatePriority,
+		{selectItems: selectItems, priority: record.priority})">
+			Изменить
+			приоритет
+		</button>
+		<button>Заверишть выполнение</button>
+	</div>
+
+	<div class="masters">
+		<h2 class="masters__title">
+			Исполнители
+		</h2>
+		<div class="masters__list"></div>
+	</div>
+</div>
+
+<ng-template #updatePriority let-context>
+
+	<app-select
+		[items]="context.selectItems"
+		[selectedIndex]="context.priority"
+	></app-select>
+
+</ng-template>

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarService.Infrastructure.Migrations
 {
     [DbContext(typeof(CarServiceDbContext))]
-    [Migration("20240518230547_update_record")]
-    partial class update_record
+    [Migration("20240524133033_updateEnum")]
+    partial class updateEnum
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,8 @@ namespace CarService.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "record_priority", new[] { "low", "normal", "high", "very_high" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "record_status", new[] { "new", "processing", "awaiting", "work", "done" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CarService.Core.Chats.Chat", b =>
@@ -36,7 +38,7 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2024, 5, 18, 23, 5, 46, 123, DateTimeKind.Utc).AddTicks(1830));
+                        .HasDefaultValue(new DateTime(2024, 5, 24, 13, 30, 32, 690, DateTimeKind.Utc).AddTicks(8054));
 
                     b.Property<DateTime>("LastMessageDate")
                         .HasColumnType("timestamp with time zone");
@@ -67,7 +69,7 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<DateTime>("SendDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2024, 5, 18, 23, 5, 46, 124, DateTimeKind.Utc).AddTicks(4938));
+                        .HasDefaultValue(new DateTime(2024, 5, 24, 13, 30, 32, 692, DateTimeKind.Utc).AddTicks(341));
 
                     b.Property<Guid>("SenderId")
                         .HasColumnType("uuid");
@@ -86,6 +88,11 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CarInfo")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uuid");
 
@@ -100,13 +107,19 @@ namespace CarService.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<bool>("IsTransferred")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Priority")
+                        .HasColumnType("record_priority");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("record_status");
+
+                    b.Property<DateTime?>("VisitTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -302,15 +315,15 @@ namespace CarService.Infrastructure.Migrations
 
             modelBuilder.Entity("MastersServices", b =>
                 {
+                    b.Property<Guid>("MastersId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("ServicesId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uuid");
+                    b.HasKey("MastersId", "ServicesId");
 
-                    b.HasKey("ServicesId", "UsersId");
-
-                    b.HasIndex("UsersId");
+                    b.HasIndex("ServicesId");
 
                     b.ToTable("MastersServices");
                 });
@@ -440,15 +453,15 @@ namespace CarService.Infrastructure.Migrations
 
             modelBuilder.Entity("MastersServices", b =>
                 {
-                    b.HasOne("CarService.Core.Services.Service", null)
+                    b.HasOne("CarService.Core.Users.UserAuth", null)
                         .WithMany()
-                        .HasForeignKey("ServicesId")
+                        .HasForeignKey("MastersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CarService.Core.Users.UserAuth", null)
+                    b.HasOne("CarService.Core.Services.Service", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("ServicesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

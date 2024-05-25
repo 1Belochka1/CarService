@@ -1,16 +1,11 @@
 using System.Security.Claims;
-using System.Text.Json.Serialization;
 using CarService.Api.Contracts;
 using CarService.Api.Contracts.Users;
 using CarService.Api.Helper.Json;
 using CarService.App.Common.ListWithPage;
-using CarService.App.Common.Users;
 using CarService.App.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using JsonConverter = Newtonsoft.Json.JsonConverter;
 
 namespace CarService.Api.Controllers;
 
@@ -30,8 +25,10 @@ public class UsersController : ControllerBase
 		RegisterUserRequest request
 	)
 	{
-		var result = await _usersService.Register(request.Email, request.LastName, request.FirstName,
-			request.Patronymic, request.Address, request.Phone, request.Password);
+		var result = await _usersService.Register(request.Email,
+			request.LastName, request.FirstName,
+			request.Patronymic, request.Address, request.Phone,
+			request.Password);
 
 		if (result.IsFailure)
 			return BadRequest(result.Error);
@@ -44,21 +41,24 @@ public class UsersController : ControllerBase
 		LoginUserRequest request
 	)
 	{
-		var token = await _usersService.Login(request.Email, request.Password);
+		var token =
+			await _usersService.Login(request.Email,
+				request.Password);
 
 		if (token.IsFailure)
 			return BadRequest(token.Error);
 
-		HttpContext.Response.Cookies.Append("cookies--service", token.Value, new CookieOptions
-		{
-			Expires = DateTime.Now.AddDays(7)
-		});
+		HttpContext.Response.Cookies.Append("cookies--service",
+			token.Value, new CookieOptions
+			{
+				Expires = DateTime.Now.AddDays(7)
+			});
 
 		return Ok();
 	}
 
 	[HttpGet("getByCookie")]
-	[Authorize(Roles = "1")]
+	[Authorize]
 	public async Task<IActionResult> GetByCookie()
 	{
 		var userId =
@@ -69,18 +69,22 @@ public class UsersController : ControllerBase
 		if (string.IsNullOrEmpty(userId))
 			return Unauthorized();
 
-		var user = await _usersService.GetById(Guid.Parse(userId));
+		var user =
+			await _usersService.GetById(Guid.Parse(userId));
 
 		return Ok(user);
 	}
 
 	[Authorize(Roles = "1")]
 	[HttpGet("workers")]
-	public async Task<IActionResult> GetWorkers([FromQuery] GetListWithPageRequest? request)
+	public async Task<IActionResult> GetWorkers(
+		[FromQuery] GetListWithPageRequest? request)
 	{
 		var response =
 			await _usersService.GetWorkersAsync(
 				new Params(
+					null,
+					null,
 					request.SortDescending,
 					request.SearchValue,
 					request.Page,
@@ -93,11 +97,14 @@ public class UsersController : ControllerBase
 
 	[Authorize(Roles = "1")]
 	[HttpGet("clients")]
-	public async Task<IActionResult> GetClients([FromQuery] GetListWithPageRequest? request)
+	public async Task<IActionResult> GetClients(
+		[FromQuery] GetListWithPageRequest? request)
 	{
 		var response =
 			await _usersService.GetClientsAsync(
 				new Params(
+					null,
+					null,
 					request.SortDescending,
 					request.SearchValue,
 					request.Page,
@@ -112,7 +119,8 @@ public class UsersController : ControllerBase
 	[HttpGet("worker/{id}")]
 	public async Task<IActionResult> GetWorker(Guid id)
 	{
-		var user = await _usersService.GetWorkerByIdWithWorksAsync(id);
+		var user =
+			await _usersService.GetWorkerByIdWithWorksAsync(id);
 
 		if (user == null)
 			return NotFound();
@@ -123,9 +131,7 @@ public class UsersController : ControllerBase
 			user.UserInfo.Patronymic,
 			user.UserInfo.Address,
 			user.UserInfo.Phone,
-			user.Email,
-			user.Works,
-			user.Services
+			user.Email
 		);
 
 		return Ok(response);
@@ -135,7 +141,8 @@ public class UsersController : ControllerBase
 	[HttpGet("client/{id}")]
 	public async Task<IActionResult> GetClient(Guid id)
 	{
-		var user = await _usersService.GetClientByIdWithRecordsAsync(id);
+		var user =
+			await _usersService.GetClientByIdWithRecordsAsync(id);
 
 		if (user == null)
 			return NotFound();
@@ -146,9 +153,7 @@ public class UsersController : ControllerBase
 			user.UserInfo.Patronymic,
 			user.UserInfo.Address,
 			user.UserInfo.Phone,
-			user.Email,
-			user.Records,
-			user.Services
+			user.Email
 		);
 
 		return Ok(response);
@@ -159,7 +164,8 @@ public class UsersController : ControllerBase
 	{
 		string[] firstNames =
 		{
-			"Ярослав", "Евгений", "Дмитрий", "Александр", "Максим",
+			"Ярослав", "Евгений", "Дмитрий", "Александр",
+			"Максим",
 			"Андрей", "Артём", "Илья", "Михаил", "Никита",
 			"Алексей", "Роман", "Данил", "Егор", "Арсений",
 			"Владимир", "Матвей", "Тимофей", "Кирилл", "Глеб"
@@ -175,10 +181,14 @@ public class UsersController : ControllerBase
 
 		string[] middleNames =
 		{
-			"Александрович", "Андреевич", "Алексеевич", "Михайлович", "Сергеевич",
-			"Иванович", "Владимирович", "Евгеньевич", "Игоревич", "Романович",
-			"Дмитриевич", "Максимович", "Артемович", "Данилович", "Егорович",
-			"Арсеньевич", "Матвеевич", "Тимофеевич", "Кириллович", "Глебович"
+			"Александрович", "Андреевич", "Алексеевич",
+			"Михайлович", "Сергеевич",
+			"Иванович", "Владимирович", "Евгеньевич", "Игоревич",
+			"Романович",
+			"Дмитриевич", "Максимович", "Артемович", "Данилович",
+			"Егорович",
+			"Арсеньевич", "Матвеевич", "Тимофеевич", "Кириллович",
+			"Глебович"
 		};
 
 		var roleId = new Random();

@@ -1,4 +1,8 @@
-import {Component, TemplateRef} from '@angular/core'
+import {
+	Component,
+	Injector,
+	TemplateRef
+} from '@angular/core'
 import {ActivatedRoute} from '@angular/router'
 import {firstValueFrom} from 'rxjs'
 import {RecordsService} from '../../../../services/records/records.service'
@@ -11,6 +15,7 @@ import {
 	SelectComponent
 } from '../../../../components/select/select.component'
 import {Priority} from '../../../../enums/priority.enum'
+import {Dialog} from '@angular/cdk/dialog'
 
 @Component({
 	selector: 'app-record-page',
@@ -28,18 +33,25 @@ import {Priority} from '../../../../enums/priority.enum'
 })
 export class RecordPageComponent {
 
-	selectItems: IItem<Priority>[] =
+	priorityItems: IItem<Priority>[] =
 		[
 			{value: Priority['Низкий'], name: 'Низкий'},
 			{value: Priority['Средний'], name: 'Средний'},
 			{value: Priority['Высокий'], name: 'Высокий'},
-			{value: Priority['Очень высокий'], name: 'Очень высокий'}
+			{
+				value: Priority['Очень высокий'],
+				name: 'Очень высокий'
+			}
 		]
 
 	record: RecordType
-	protected readonly Priority = Priority
+
+	priority: number
+	status: number
 
 	constructor(
+		private dialog: Dialog,
+		private injector: Injector,
 		private _router: ActivatedRoute,
 		public recordsService: RecordsService,
 		public m: ModalService
@@ -53,11 +65,32 @@ export class RecordPageComponent {
 
 		firstValueFrom(this.recordsService.getById(id)).then((data) => {
 			this.record = data
+			this.priority = data.priority
+			this.status = data.status
 		})
 
 	}
 
-	updateOpen(updatePriority: TemplateRef<any>, context: any) {
-		this.m.open(updatePriority, context)
+	dialogOpen(template: TemplateRef<any>, context: any) {
+		this.m.open(template, {
+			title: 'Приоритет',
+			context: context
+		})?.subscribe((result) => {
+			if (result.isConfirm)
+				firstValueFrom(
+					this.recordsService.update(this.record.id, this.priority, this.status)
+				).then(() => {
+					if (this.priority)
+						this.record.priority = this.priority
+
+					if (this.status)
+						this.record.status = this.status
+				})
+		})
 	}
+
+	priorityUpdate(priority: number) {
+		this.priority = priority
+	}
+
 }

@@ -10,6 +10,7 @@ import {NgClass, NgIf} from '@angular/common'
 import {FormInputComponent} from '../../components/form-input/form-input.component'
 import {UsersService} from '../../services/users/users.service'
 import {firstValueFrom} from 'rxjs'
+import {AuthService} from '../../services/auth.service'
 
 @Component({
 	selector: 'app-auth-page',
@@ -38,7 +39,7 @@ export class AuthPageComponent {
 
 	activePage: 1 | 2 = 1
 
-	constructor(private _formBuilder: FormBuilder, private _userService: UsersService) {
+	constructor(private _formBuilder: FormBuilder, private _authService: AuthService) {
 		this.form.statusChanges.subscribe((d) => {
 			console.log(d)
 		})
@@ -50,7 +51,7 @@ export class AuthPageComponent {
 
 	login() {
 		firstValueFrom(
-			this._userService
+			this._authService
 					.login(this.form.value.email!, this.form.value.password!))
 		.then(r => console.log(r)
 		)

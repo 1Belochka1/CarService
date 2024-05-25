@@ -6,8 +6,11 @@ namespace CarService.Api.Helper.Json;
 public static class JsonSerializerHelp
 {
 	public static string Serialize(object value)
-		=> JsonConvert.SerializeObject(value, new JsonSerializerSettings
-		{
-			ContractResolver = new CamelCasePropertyNamesContractResolver()
-		});
+		=> JsonConvert.SerializeObject(value,
+			new JsonSerializerSettings
+			{
+				ContractResolver =
+					new CamelCasePropertyNamesContractResolver(),
+				ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+			});
 }

@@ -2,7 +2,9 @@ namespace CarService.Core.Records;
 
 public enum RecordStatus
 {
-    New,
-    Work,
-    Done,
+	New,
+	Processing,
+	Awaiting,
+	Work,
+	Done,
 }

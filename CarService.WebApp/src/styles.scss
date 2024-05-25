@@ -63,6 +63,11 @@ input {
 	outline: none;
 }
 
+img {
+	width: 100%;
+	height: 100%;
+}
+
 .svg-nav {
   height: 1.875rem;
   width: 1.875rem;
@@ -76,7 +81,7 @@ input {
 }
 
 .priority {
-  @apply p-1;
+  @apply p-1 text-nowrap;
 
   border-radius: 0.625rem;
 
@@ -122,3 +127,4 @@ input {
   }
 
 }
+

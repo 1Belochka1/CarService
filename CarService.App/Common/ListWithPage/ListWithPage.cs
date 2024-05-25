@@ -2,7 +2,8 @@ namespace CarService.App.Common.ListWithPage;
 
 public class ListWithPage<T>
 {
-	public ListWithPage(int totalItems, int? totalPages, int? currentPage, List<T> items)
+	public ListWithPage(int totalItems, int? totalPages,
+		int? currentPage, List<T> items)
 	{
 		TotalItems = totalItems;
 		TotalPages = totalPages;
@@ -21,10 +22,17 @@ public class ListWithPage<T>
 
 public class Params
 {
-	public Params(bool sortDescending, string? searchValue = null, int page = 1, int pageSize = 10,
+	public Params(
+		Guid? userId,
+		string? roleId,
+		bool sortDescending,
+		string? searchValue = null, int page = 1,
+		int pageSize = 10,
 		string? sortProperty = null)
 	{
 		SortDescending = sortDescending;
+		RoleId = roleId;
+		UserId = userId;
 		SearchValue = searchValue;
 		Page = page;
 		PageSize = pageSize;
@@ -36,4 +44,29 @@ public class Params
 	public int Page { get; set; }
 	public int PageSize { get; set; }
 	public string? SortProperty { get; set; } = null;
+
+	public string? RoleId { get; set; }
+
+	public Guid? UserId { get; set; }
+}
+
+public class ParamsWhitFilter : Params
+{
+	public ParamsWhitFilter(Guid? userId, string? roleId, bool
+			sortDescending,
+		string?
+			filterName, string? filterValue,
+		string? searchValue = null,
+		int page = 1, int pageSize = 10,
+		string? sortProperty = null)
+		: base(userId, roleId, sortDescending,
+			searchValue, page, pageSize,
+			sortProperty)
+	{
+		FilterName = filterName;
+		FilterValue = filterValue;
+	}
+
+	public string? FilterName { get; set; }
+	public string? FilterValue { get; set; }
 }

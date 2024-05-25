@@ -1,8 +1,13 @@
 import {
 	Component,
-	ElementRef, EventEmitter,
-	Input, OnInit, Output, Renderer2,
-	ViewChild
+	ElementRef,
+	EventEmitter,
+	Input,
+	OnInit,
+	Output,
+	Renderer2,
+	ViewChild,
+	ViewEncapsulation
 } from '@angular/core'
 import {NgForOf, NgIf} from '@angular/common'
 
@@ -19,7 +24,7 @@ export interface IItem<T> {
 		NgIf
 	],
 	templateUrl: './select.component.html',
-	styleUrl: './select.component.scss'
+	styleUrl: './select.component.scss',
 })
 export class SelectComponent implements OnInit {
 	@ViewChild('details', {static: true})
@@ -36,6 +41,9 @@ export class SelectComponent implements OnInit {
 
 	@Input()
 	selectedIndex = 0
+
+	@Input()
+	classContainer: string
 
 	constructor(private _renderer: Renderer2) {
 	}

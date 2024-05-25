@@ -23,12 +23,14 @@
 	</div>
 
 	<div class="action">
-		<button (click)="updateOpen(updatePriority,
-		{selectItems: selectItems, priority: record.priority})">
+		<!-- TODO: доделать страницу -->
+		<button (click)="dialogOpen(modalPriority,
+		{selectItems: priorityItems, priority: record.priority})">
 			Изменить
 			приоритет
 		</button>
-		<button>Заверишть выполнение</button>
+		<button>Изменить статус</button>
+		<button>Изменить статус</button>
 	</div>
 
 	<div class="masters">
@@ -39,11 +41,11 @@
 	</div>
 </div>
 
-<ng-template #updatePriority let-context>
-
+<ng-template #modalPriority let-item>
 	<app-select
-		[items]="context.selectItems"
-		[selectedIndex]="context.priority"
+		[items]="item.selectItems"
+		[selectedIndex]="item.priority"
+		(selectionChange)="priorityUpdate($event)"
+		class="white-bg full-w"
 	></app-select>
-
 </ng-template>

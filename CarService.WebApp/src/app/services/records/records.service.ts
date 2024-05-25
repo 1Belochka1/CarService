@@ -17,7 +17,11 @@ export class RecordsService extends RequestService {
 		return this.httpClient.get<RecordType>(apiUrls.records.getById + id, {withCredentials: true})
 	}
 
-	update(id: string) {
-
+	update(id: string, priority: number, status: number) {
+		return this.httpClient.post(apiUrls.records.update, {
+			id,
+			priority,
+			status
+		}, {withCredentials: true})
 	}
 }

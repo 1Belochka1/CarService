@@ -2,9 +2,12 @@ using CarService.Core.Records;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CarService.Infrastructure.Persistence.Configurations.RecordsConfiguration;
+namespace
+	CarService.Infrastructure.Persistence.Configurations.
+	RecordsConfiguration;
 
-public class RecordConfiguration : IEntityTypeConfiguration<Record>
+public class
+	RecordConfiguration : IEntityTypeConfiguration<Record>
 {
 	public void Configure(EntityTypeBuilder<Record> builder)
 	{
@@ -12,22 +15,29 @@ public class RecordConfiguration : IEntityTypeConfiguration<Record>
 		builder.Property(x => x.Id)
 			.ValueGeneratedNever();
 
+		builder.Property(x => x.CarInfo)
+			.HasMaxLength(200);
+
 		builder.Property(x => x.Description)
 			.HasMaxLength(1000);
 
 		builder.Property(x => x.CreateTime)
 			.IsRequired();
-		
+
 		builder.Property(x => x.CompleteTime)
 			.IsRequired(false);
 
+		builder.Property(x => x.VisitTime)
+			.IsRequired(false);
+
+		builder.Property(x => x.IsTransferred)
+			.HasDefaultValue(false);
+
 		builder.Property(x => x.Priority)
-			.HasConversion(x => x.ToString(),
-				x => Enum.Parse<RecordPriority>(x));
+			.HasColumnType("record_priority");
 
 		builder.Property(x => x.Status)
-			.HasConversion(x => x.ToString(),
-				x => Enum.Parse<RecordStatus>(x));
+			.HasColumnType("record_status");
 
 		builder.HasOne(x => x.Client)
 			.WithMany(x => x.Records)

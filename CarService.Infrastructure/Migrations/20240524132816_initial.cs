@@ -13,6 +13,10 @@ namespace CarService.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:Enum:record_priority", "low,normal,high,very_high")
+                .Annotation("Npgsql:Enum:record_status", "new,work,done");
+
             migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
@@ -153,7 +157,7 @@ namespace CarService.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     CreateBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 5, 13, 17, 15, 3, 782, DateTimeKind.Utc).AddTicks(1030)),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 5, 24, 13, 28, 16, 326, DateTimeKind.Utc).AddTicks(492)),
                     LastMessageDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -171,12 +175,12 @@ namespace CarService.Infrastructure.Migrations
                 name: "MastersServices",
                 columns: table => new
                 {
-                    ServicesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UsersId = table.Column<Guid>(type: "uuid", nullable: false)
+                    MastersId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ServicesId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MastersServices", x => new { x.ServicesId, x.UsersId });
+                    table.PrimaryKey("PK_MastersServices", x => new { x.MastersId, x.ServicesId });
                     table.ForeignKey(
                         name: "FK_MastersServices_Services_ServicesId",
                         column: x => x.ServicesId,
@@ -184,8 +188,8 @@ namespace CarService.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MastersServices_UserAuths_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_MastersServices_UserAuths_MastersId",
+                        column: x => x.MastersId,
                         principalTable: "UserAuths",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -197,10 +201,14 @@ namespace CarService.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ClientId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CarInfo = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    Time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Priority = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false)
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    VisitTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsTransferred = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    CompleteTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Priority = table.Column<int>(type: "record_priority", nullable: false),
+                    Status = table.Column<int>(type: "record_status", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -243,7 +251,7 @@ namespace CarService.Infrastructure.Migrations
                     ChatId = table.Column<Guid>(type: "uuid", nullable: false),
                     SenderId = table.Column<Guid>(type: "uuid", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    SendDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 5, 13, 17, 15, 3, 783, DateTimeKind.Utc).AddTicks(3471))
+                    SendDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 5, 24, 13, 28, 16, 327, DateTimeKind.Utc).AddTicks(2321))
                 },
                 constraints: table =>
                 {
@@ -326,9 +334,9 @@ namespace CarService.Infrastructure.Migrations
                 column: "CreateBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MastersServices_UsersId",
+                name: "IX_MastersServices_ServicesId",
                 table: "MastersServices",
-                column: "UsersId");
+                column: "ServicesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_ChatId",

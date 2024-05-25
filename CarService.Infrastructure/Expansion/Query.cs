@@ -1,25 +1,36 @@
 using System.Reflection;
 using CarService.App.Common.ListWithPage;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CarService.Infrastructure.Expansion;
 
 public static partial class Query
 {
-	public static List<TModel> Sort<TModel>(this List<TModel> query, string sortProperty,
+	public static List<TModel> Sort<TModel>(
+		this List<TModel> query, string sortProperty,
 		bool sortDescending) where TModel : class, new()
 	{
-		System.Reflection.PropertyInfo? prop = typeof(TModel).GetProperty(sortProperty);
+		PropertyInfo? prop =
+			typeof(TModel).GetProperties().FirstOrDefault(x =>
+				x.Name.Equals(sortProperty,
+					StringComparison.CurrentCultureIgnoreCase));
 
 		if (prop != null)
 			return sortDescending
-				? query.OrderByDescending(x => prop.GetValue(x, null)).ToList()
-				: query.OrderBy(x => prop.GetValue(x, null)).ToList();
+				? query
+					.OrderByDescending(x => prop.GetValue(x, null))
+					.ToList()
+				: query.OrderBy(x => prop.GetValue(x, null))
+					.ToList();
 
-		System.Reflection.FieldInfo? field = typeof(TModel).GetField(sortProperty);
+		FieldInfo? field =
+			typeof(TModel).GetField(sortProperty,
+				BindingFlags.IgnoreCase);
 
 		if (field != null)
 			return sortDescending
-				? query.OrderByDescending(x => field.GetValue(x)).ToList()
+				? query.OrderByDescending(x => field.GetValue(x))
+					.ToList()
 				: query.OrderBy(x => field.GetValue(x)).ToList();
 
 		return query;
@@ -33,20 +44,28 @@ public static partial class Query
 
 		var currentPage = page;
 
-		var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+		var totalPages =
+			(int)Math.Ceiling((double)totalItems / pageSize);
 
 		var result = query.Skip((page - 1) * pageSize)
 			.Take(pageSize).ToList();
 
 		if (currentPage <= totalPages)
-			return new ListWithPage<TModel>(totalItems, totalPages, currentPage, result);
+			return new ListWithPage<TModel>(totalItems,
+				totalPages, currentPage, result);
 
 		currentPage = 1;
 
-		return new ListWithPage<TModel>(totalItems, totalPages, currentPage, result);
+		return new ListWithPage<TModel>(totalItems, totalPages,
+			currentPage, result);
 	}
 
-	public static bool Search<TModel>(this TModel model, string search)
+	public static bool Search<TModel>(this TModel model,
+		string search)
 		=> typeof(TModel).GetProperties().ToList()
-			.Any(property => property.GetValue(model)?.ToString()?.Contains(search) ?? false);
+			.Any(property =>
+				property.GetValue(model)?.ToString()?.Contains(
+					search,
+					StringComparison.InvariantCultureIgnoreCase) ??
+				false);
 }

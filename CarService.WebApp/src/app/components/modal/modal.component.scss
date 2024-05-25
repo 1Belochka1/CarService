@@ -1,32 +1,46 @@
 :host {
 	@apply fixed top-0 right-0 bottom-0 left-0 z-50;
 
-	@apply flex flex-col items-center justify-center;
+	@apply flex items-center justify-center p-2;
 }
 
 .modal {
-	@apply relative bg-surface;
-	position: relative;
+	@apply flex flex-col gap-5 bg-surface;
+
 	width: 300px;
+
 	padding: 0.9375rem;
 
 	border-radius: 0.625rem;
 }
 
 .modal-title {
+	@apply font-bold;
+	font-size: 1.25rem;
 }
 
 .modal-content {
 }
 
 .modal-action {
+	@apply flex justify-evenly;
+
+	.buttons {
+		@apply p-1;
+
+		border-radius: 0.625rem;
+	}
+
+	.confirm {
+		@apply bg-green-500/50 border-green-500 border border-solid;
+
+	}
+
+	.close {
+		@apply bg-red-500/50 border-red-500 border border-solid;
+	}
 }
 
-.confirm {
-}
-
-.close {
-}
 
 .modal-backdrop {
 	@apply absolute top-0 right-0 bottom-0 left-0 bg-menu/50 -z-10;

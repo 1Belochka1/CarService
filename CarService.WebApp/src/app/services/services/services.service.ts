@@ -22,6 +22,9 @@ export class ServicesService extends TableService {
 		super()
 	}
 
+	public GetServicesLending() {
+		return this.httpClient.get(apiUrls.services.getLending)
+	}
 
 	public GetService() {
 		this.serviceQuery = this.httpClient.get<any>(apiUrls.services.get, {

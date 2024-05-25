@@ -1,5 +1,8 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using CarService.Api.Contracts;
 using CarService.Api.Contracts.Records;
+using CarService.Api.Helper.Json;
 using CarService.App.Common.ListWithPage;
 using CarService.App.Services;
 using CarService.Core.Records;
@@ -15,62 +18,114 @@ public class RecordsController : ControllerBase
 	private readonly RecordsService _recordsService;
 	private readonly UsersService _usersService;
 
-	public RecordsController(RecordsService recordsService, UsersService usersService)
+	public RecordsController(RecordsService recordsService,
+		UsersService usersService)
 	{
 		_recordsService = recordsService;
 		_usersService = usersService;
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> Create(CreateRecordRequest request)
+	public async Task<IActionResult> Create(
+		CreateRecordRequest request)
 	{
 		var result = await _recordsService.CreateRecordAsync(
 			request.ClientId,
+			request.CarInfo,
 			request.Description
 		);
 
 		return Ok(result);
 	}
 
+	[HttpPost("Update")]
+	public async Task<IActionResult> Update(
+		UpdateRecordRequest request)
+	{
+		await _recordsService.UpdateRecordAsync(request.Id,
+			request.Description, request.Priority,
+			request.Status);
+
+		return Ok();
+	}
+
+	[HttpGet("{id}")]
+	public async Task<IActionResult> GetById(string id)
+	{
+		var result = await _recordsService.GetRecordByIdAsync
+		(Guid.Parse
+			(id));
+		if (result.IsFailure)
+			return BadRequest(result.Error);
+
+		return Ok(result.Value);
+	}
+
 	[Authorize(Roles = "1,2")]
 	[HttpGet("getCompletedByMasterId/{id}")]
-	public async Task<IActionResult> GetCompletedByMasterId(Guid id, [FromQuery] GetListWithPageRequest request)
+	public async Task<IActionResult> GetCompletedByMasterId(
+		Guid id, [FromQuery] GetListWithPageRequest request)
 	{
-		var records = await _recordsService.GetCompletedRecordsByMasterIdAsync(id, new Params(
-			request.SortDescending,
-			request.SearchValue,
-			request.Page,
-			request.PageSize,
-			request.SortProperty
-		));
+		var records =
+			await _recordsService
+				.GetCompletedRecordsByMasterIdAsync(id, new Params(
+					null,
+					null,
+					request.SortDescending,
+					request.SearchValue,
+					request.Page,
+					request.PageSize,
+					request.SortProperty
+				));
 
 		return Ok(records);
 	}
 
 	[Authorize(Roles = "1,2")]
 	[HttpGet("getActiveByMasterId/{id}")]
-	public async Task<IActionResult> GetActiveByMasterId(Guid id, [FromQuery] GetListWithPageRequest request)
+	public async Task<IActionResult> GetActiveByMasterId(
+		Guid id, [FromQuery] GetListWithPageRequest request)
 	{
-		var records = await _recordsService.GetActiveRecordsByMasterIdAsync(id, new Params(
-			request.SortDescending,
-			request.SearchValue,
-			request.Page,
-			request.PageSize,
-			request.SortProperty
-		));
+		var records =
+			await _recordsService.GetActiveRecordsByMasterIdAsync(
+				id, new Params(
+					null,
+					null,
+					request.SortDescending,
+					request.SearchValue,
+					request.Page,
+					request.PageSize,
+					request.SortProperty
+				));
 
 		return Ok(records);
 	}
 
-	[Authorize(Roles = "1")]
+	[Authorize]
 	[HttpGet("getAll")]
-	public async Task<IActionResult> GetAll()
+	public async Task<IActionResult> GetAll(
+		[FromQuery] GetListWithPageAndFilterRequest request)
 	{
-		var records = await _recordsService.GetAllRecordsAsync();
+		var roleId =
+			HttpContext.User.FindFirstValue(ClaimTypes.Role);
 
-		Console.WriteLine(records.Count);
+		var userId = HttpContext.User.FindFirstValue
+			(ClaimTypes.NameIdentifier);
 
-		return Ok(records.ToList());
+		var records = await _recordsService.GetAllRecordsAsync(
+			new ParamsWhitFilter(
+				Guid.Parse(userId!), roleId!,
+				request.SortDescending,
+				request.FilterProperty,
+				request.FilterValue,
+				request.SearchValue,
+				request.Page,
+				request.PageSize,
+				request.SortProperty
+			)
+		);
+
+		return Ok(records);
 	}
 
 	// [HttpGet("заполнить")]

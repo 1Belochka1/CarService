@@ -2,8 +2,8 @@ namespace CarService.Core.Records;
 
 public enum RecordPriority
 {
-	low,
-	normal,
-	high,
-	veryHigh
+	Low,
+	Normal,
+	High,
+	VeryHigh
 }

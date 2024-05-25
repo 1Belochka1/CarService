@@ -1,12 +1,7 @@
 <div class="modal">
 
-	<div class="modal-header">
-		<ng-container *ngIf="header;else defaultHeader"
-									[ngTemplateOutlet]="header"/>
-
-		<ng-template #defaultHeader>
+	<div class="modal-header" *ngIf="title">
 			<h2 class="modal-title">{{ title }}</h2>
-		</ng-template>
 	</div>
 
 
@@ -15,8 +10,9 @@
 	</div>
 
 	<div class="modal-action">
-		<button class="confirm">Подтвердить</button>
-		<button class="close">Закрыть</button>
+		<button class="confirm buttons" (click)="submit()">Подтвердить
+		</button>
+		<button class="close buttons" (click)="close()">Закрыть</button>
 	</div>
 </div>
 

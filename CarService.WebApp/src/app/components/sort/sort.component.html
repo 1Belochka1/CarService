@@ -1,6 +1,6 @@
 <span>Сортировать: </span>
 <div class="sort__wrapper">
-	<app-select class="sort__property"
+	<app-select classContainer="sort__property"
 							[items]="service.sortProperties"
 							(selectionChange)="service.sortChanged($event)"
 	/>

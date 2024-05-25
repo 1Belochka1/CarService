@@ -1,6 +1,11 @@
-namespace CarService.Api.Contracts.Services;
+namespace CarService.Api.Contracts;
 
-public class GetListWithPageAndFilterRequest
-{
-	
-}
+public record GetListWithPageAndFilterRequest(
+	string? SearchValue,
+	int Page = 1,
+	int PageSize = 10,
+	string? SortProperty = null,
+	bool SortDescending = false,
+	string? FilterProperty = null,
+	string? FilterValue = null
+);

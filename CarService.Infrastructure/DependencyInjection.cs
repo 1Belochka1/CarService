@@ -16,19 +16,27 @@ namespace CarService.Infrastructure;
 
 public static class DependencyInjection
 {
-	public static IServiceCollection AddPersistence(this IServiceCollection services,
+	public static IServiceCollection AddPersistence(
+		this IServiceCollection services,
 		ConfigurationManager configuration)
 	{
 		services
 			.AddScoped<IUserAuthRepository, UserAuthRepository>()
 			.AddScoped<IUserInfoRepository, UserInfoRepository>()
-			.AddScoped<IRecordsRepository, RecordsRepository>();
+			.AddScoped<IRecordsRepository, RecordsRepository>()
+			.AddScoped<IServicesRepository, ServicesRepository>()
+			.AddScoped<IServiceTypesRepository,
+				ServiceTypesRepository>();
 
 		services.AddDbContext<CarServiceDbContext>(options =>
 		{
 			options
-				.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
-				.UseExpressionify(x => x.WithEvaluationMode(ExpressionEvaluationMode.FullCompatibilityButSlow));
+				.UseNpgsql(
+					configuration.GetConnectionString(
+						"DefaultConnection"))
+				.UseExpressionify(x =>
+					x.WithEvaluationMode(ExpressionEvaluationMode
+						.FullCompatibilityButSlow));
 		});
 
 		services.AddSwaggerGenNewtonsoftSupport();
@@ -80,7 +88,9 @@ public static class DependencyInjection
 					{
 						OnMessageReceived = context =>
 						{
-							context.Token = context.HttpContext.Request.Cookies["cookies--service"];
+							context.Token =
+								context.HttpContext.Request.Cookies[
+									"cookies--service"];
 							return Task.CompletedTask;
 						}
 					};

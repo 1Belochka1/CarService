@@ -1,6 +1,6 @@
 using CarService.Core.Services;
 
-namespace CarService.Infrastructure.Persistence.Repositories;
+namespace CarService.App.Interfaces.Persistence;
 
 public interface IServiceTypesRepository
 {

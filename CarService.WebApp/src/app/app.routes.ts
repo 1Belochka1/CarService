@@ -8,9 +8,25 @@ import {WorkerPageComponent} from './pages/account-page/admin/workers-page/worke
 import {ClientsPageComponent} from './pages/account-page/admin/clients-page/clients-page.component'
 import {RecordsPageComponent} from './pages/account-page/records-page/records-page.component'
 import {RecordPageComponent} from './pages/account-page/records-page/record-page/record-page.component'
+import {LendingPageComponent} from './pages/lending-page/lending-page.component'
+import {ShopPageComponent} from './pages/shop-page/shop-page.component'
+import {CartPageComponent} from './pages/cart-page/cart-page.component'
+import {authGuard} from './guard/auth.guard'
 
 
 export const routes: Routes = [
+	{
+		path: 'lending',
+		component: LendingPageComponent,
+	},
+	{
+		path: 'shop',
+		component: ShopPageComponent,
+	},
+	{
+		path: 'cart',
+		component: CartPageComponent,
+	},
 	{
 		path: 'auth',
 		component: AuthPageComponent,
@@ -18,6 +34,7 @@ export const routes: Routes = [
 	{
 		path: 'account',
 		component: AccountPageComponent,
+		// canActivate: [authGuard],
 		children: [
 			{
 				path: 'statistics',
@@ -58,6 +75,6 @@ export const routes: Routes = [
 	{
 		path: '',
 		pathMatch: 'full',
-		redirectTo: 'account/statistics'
+		redirectTo: 'lending'
 	}
 ]

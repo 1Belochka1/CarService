@@ -78,21 +78,25 @@ public class UsersService
 		return await _userAuthRepository.GetClientsAsync(parameters);
 	}
 
+	// TODO: переделать возвращаемое значение на Result 
 	public async Task<UserAuth?> GetById(Guid userId)
 	{
 		return await _userAuthRepository.GetByIdAsync(userId);
 	}
 
+	// TODO: переделать возвращаемое значение на Result 
 	public async Task<UserAuth?> GetWorkerByIdWithWorksAsync(Guid userId)
 	{
 		return await _userAuthRepository.GetWorkerByIdWithWorksAsync(userId);
 	}
 
+	// TODO: переделать возвращаемое значение на Result 
 	public async Task<UserAuth?> GetClientByIdWithRecordsAsync(Guid userId)
 	{
 		return await _userAuthRepository.GetClientByIdWithRecordsAsync(userId);
 	}
 
+	// TODO: переделать возвращаемое значение на Result 
 	public async Task<ICollection<UserAuth>> GetWorkersByIds(ICollection<string> ids)
 	{
 		return await _userAuthRepository.GetWorkersByIds(ids);

@@ -8,14 +8,25 @@ public interface IRecordsRepository
 {
 	Task<Guid> CreateAsync(Record record);
 
-	Task UpdateAsync(Guid id, string? description, RecordPriority? priority,
+	Task UpdateAsync(Guid id, string? description,
+		RecordPriority? priority,
 		RecordStatus? status);
 
-	Task<ICollection<Record>> GetRecordsAsync();
-	Task AddMasters(Guid recordId, ICollection<UserAuth> masters);
-	Task<ListWithPage<Record>> GetActiveByMasterIdAsync(Guid masterId, Params parameters);
-	Task<ListWithPage<Record>> GetCompletedByMasterIdAsync(Guid masterId, Params parameters);
+	Task<ListWithPage<Record>> GetAllAsync(
+		ParamsWhitFilter parameters);
+
+	Task AddMasters(Guid recordId,
+		ICollection<UserAuth> masters);
+
+	Task<ListWithPage<Record>> GetActiveByMasterIdAsync(
+		Guid masterId, Params parameters);
+
+	Task<ListWithPage<Record>> GetCompletedByMasterIdAsync(
+		Guid masterId, Params parameters);
+
 	Task DeleteAsync(Guid id);
 	Task<Record?> GetByIdAsync(Guid id);
-	Task<IEnumerable<Record>> GetByClientIdAsync(Guid clientId);
+
+	Task<IEnumerable<Record>> GetByClientIdAsync(
+		Guid clientId);
 }

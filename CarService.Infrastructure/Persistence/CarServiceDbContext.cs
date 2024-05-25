@@ -8,7 +8,9 @@ namespace CarService.Infrastructure.Persistence;
 
 public class CarServiceDbContext : DbContext
 {
-	public CarServiceDbContext(DbContextOptions<CarServiceDbContext> options) : base(options)
+	public CarServiceDbContext(
+		DbContextOptions<CarServiceDbContext> options) : base(
+		options)
 	{
 	}
 
@@ -20,7 +22,8 @@ public class CarServiceDbContext : DbContext
 
 	public DbSet<Service> Services { get; set; } = null!;
 
-	public DbSet<ServiceType> ServiceTypes { get; set; } = null!;
+	public DbSet<ServiceType> ServiceTypes { get; set; } =
+		null!;
 
 	public DbSet<Record> Records { get; set; } = null!;
 
@@ -28,8 +31,13 @@ public class CarServiceDbContext : DbContext
 
 	public DbSet<Message> Messages { get; set; } = null!;
 
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
+	protected override void OnModelCreating(
+		ModelBuilder modelBuilder)
 	{
-		modelBuilder.ApplyConfigurationsFromAssembly(typeof(CarServiceDbContext).Assembly);
+		modelBuilder.HasPostgresEnum<RecordPriority>();
+		modelBuilder.HasPostgresEnum<RecordStatus>();
+
+		modelBuilder.ApplyConfigurationsFromAssembly(
+			typeof(CarServiceDbContext).Assembly);
 	}
 }

@@ -10,12 +10,21 @@ public class Record
 	{
 	}
 
-	private Record(Guid id, Guid clientId, string description, DateTime createTime)
+	private Record(
+		Guid id,
+		Guid clientId,
+		string carInfo,
+		string description,
+		DateTime createTime,
+		DateTime? visitTime
+	)
 	{
 		Id = id;
 		ClientId = clientId;
+		CarInfo = carInfo;
 		Description = description;
 		CreateTime = createTime;
+		VisitTime = visitTime;
 	}
 
 	public Guid Id { get; private set; }
@@ -24,19 +33,34 @@ public class Record
 
 	public UserAuth Client { get; private set; } = null!;
 
+	public string CarInfo { get; private set; }
 	public string Description { get; private set; }
 
 	public DateTime CreateTime { get; private set; }
 
+	public DateTime? VisitTime { get; private set; }
+
+	public bool IsTransferred { get; private set; } = false;
+
 	public DateTime? CompleteTime { get; private set; }
 
-	public RecordPriority Priority { get; private set; } = RecordPriority.normal;
+	public RecordPriority Priority { get; private set; } =
+		RecordPriority.Normal;
 
-	public RecordStatus Status { get; private set; } = RecordStatus.New;
+	public RecordStatus Status { get; private set; } =
+		RecordStatus.New;
 
-	public virtual ICollection<Service> Services { get; private set; } = [];
+	public virtual ICollection<Service> Services
+	{
+		get;
+		private set;
+	} = [];
 
-	public virtual ICollection<UserAuth> Masters { get; private set; } = [];
+	public virtual ICollection<UserAuth> Masters
+	{
+		get;
+		private set;
+	} = [];
 
 	public void SetDescription(string description)
 	{
@@ -68,18 +92,53 @@ public class Record
 		CompleteTime = completeTime;
 	}
 
-	public static Result<Record> Create(Guid id, Guid userId, string description, DateTime createTime)
+	public void SetTimeVisit(DateTime visitTime)
+	{
+		VisitTime = visitTime;
+	}
+
+	public void SetTransferred(bool transferred)
+	{
+		IsTransferred = transferred;
+	}
+
+	public static Result<Record> Create(
+		Guid id,
+		Guid userId,
+		string carInfo,
+		string description,
+		DateTime createTime,
+		DateTime? visitTime)
 	{
 		if (id == Guid.Empty)
 			return Result.Failure<Record>("Id can't be empty");
 
 		if (userId == Guid.Empty)
-			return Result.Failure<Record>("UserId can't be empty");
+			return
+				Result.Failure<Record>("UserId can't be empty");
+
+		if (string.IsNullOrEmpty(carInfo))
+		{
+			return Result.Failure<Record>(
+				"Описание автомобиля не может быть пустым");
+		}
 
 		if (string.IsNullOrEmpty(description))
-			return Result.Failure<Record>("Description can't be empty");
+			return Result.Failure<Record>(
+				"Описание заявки не может быть пустым");
 
-		var record = new Record(id, userId, description, createTime);
+		if (createTime == DateTime.MinValue)
+			return Result.Failure<Record>(
+				"Дата создания заявки не может быть пустой");
+
+		var record = new Record(
+			id,
+			userId,
+			carInfo,
+			description,
+			createTime,
+			visitTime
+		);
 
 		return Result.Success(record);
 	}

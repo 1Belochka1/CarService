@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using CarService.Core.Chats;
 using CarService.Core.Records;
 using CarService.Core.Services;
@@ -24,6 +25,7 @@ public class UserAuth
 
 	public string Email { get; private set; }
 
+	[JsonIgnore]
 	public string PasswordHash { get; private set; }
 
 	public DateTime CreateDate { get; private set; }

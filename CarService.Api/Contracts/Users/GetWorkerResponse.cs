@@ -9,6 +9,4 @@ public record GetWorkerResponse(
 	string? Patronymic,
 	string? Address,
 	string Phone,
-	string Email,
-	ICollection<Record> Works,
-	ICollection<Service> Services);
+	string Email);

@@ -18,7 +18,8 @@ public class RecordsController : ControllerBase
 	private readonly RecordsService _recordsService;
 	private readonly UsersService _usersService;
 
-	public RecordsController(RecordsService recordsService,
+	public RecordsController(
+		RecordsService recordsService,
 		UsersService usersService)
 	{
 		_recordsService = recordsService;
@@ -31,6 +32,7 @@ public class RecordsController : ControllerBase
 	{
 		var result = await _recordsService.CreateRecordAsync(
 			request.ClientId,
+			request.Phone,
 			request.CarInfo,
 			request.Description
 		);
@@ -42,9 +44,13 @@ public class RecordsController : ControllerBase
 	public async Task<IActionResult> Update(
 		UpdateRecordRequest request)
 	{
-		await _recordsService.UpdateRecordAsync(request.Id,
-			request.Description, request.Priority,
-			request.Status);
+		await _recordsService.UpdateRecordAsync(
+			request.Id,
+			request.Phone,
+			request.Description,
+			request.Priority,
+			request.Status
+		);
 
 		return Ok();
 	}
@@ -64,7 +70,8 @@ public class RecordsController : ControllerBase
 	[Authorize(Roles = "1,2")]
 	[HttpGet("getCompletedByMasterId/{id}")]
 	public async Task<IActionResult> GetCompletedByMasterId(
-		Guid id, [FromQuery] GetListWithPageRequest request)
+		Guid id,
+		[FromQuery] GetListWithPageRequest request)
 	{
 		var records =
 			await _recordsService
@@ -84,7 +91,8 @@ public class RecordsController : ControllerBase
 	[Authorize(Roles = "1,2")]
 	[HttpGet("getActiveByMasterId/{id}")]
 	public async Task<IActionResult> GetActiveByMasterId(
-		Guid id, [FromQuery] GetListWithPageRequest request)
+		Guid id,
+		[FromQuery] GetListWithPageRequest request)
 	{
 		var records =
 			await _recordsService.GetActiveRecordsByMasterIdAsync(
@@ -115,13 +123,12 @@ public class RecordsController : ControllerBase
 		var records = await _recordsService.GetAllRecordsAsync(
 			new ParamsWhitFilter(
 				Guid.Parse(userId!), roleId!,
-				request.SortDescending,
-				request.FilterProperty,
-				request.FilterValue,
 				request.SearchValue,
+				request.Filters,
 				request.Page,
 				request.PageSize,
-				request.SortProperty
+				request.SortProperty,
+				request.SortDescending
 			)
 		);
 

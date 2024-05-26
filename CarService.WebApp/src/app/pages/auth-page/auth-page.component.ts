@@ -1,22 +1,14 @@
-import {Component} from '@angular/core'
-import {InputTextModule} from 'primeng/inputtext'
-import {
-	FormBuilder,
-	FormControl,
-	ReactiveFormsModule,
-	Validators
-} from '@angular/forms'
 import {NgClass, NgIf} from '@angular/common'
-import {FormInputComponent} from '../../components/form-input/form-input.component'
-import {UsersService} from '../../services/users/users.service'
+import {Component} from '@angular/core'
+import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms'
 import {firstValueFrom} from 'rxjs'
+import {FormInputComponent} from '../../components/form-input/form-input.component'
 import {AuthService} from '../../services/auth.service'
 
 @Component({
 	selector: 'app-auth-page',
 	standalone: true,
 	imports: [
-		InputTextModule,
 		ReactiveFormsModule,
 		NgClass,
 		NgIf,
@@ -52,8 +44,9 @@ export class AuthPageComponent {
 	login() {
 		firstValueFrom(
 			this._authService
-					.login(this.form.value.email!, this.form.value.password!))
-		.then(r => console.log(r)
-		)
+				.login(this.form.value.email!, this.form.value.password!))
+			.then(r => console.log(r)
+			)
+
 	}
 }

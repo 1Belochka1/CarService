@@ -12,7 +12,8 @@ public class Record
 
 	private Record(
 		Guid id,
-		Guid clientId,
+		Guid? clientId,
+		string phone,
 		string carInfo,
 		string description,
 		DateTime createTime,
@@ -21,6 +22,7 @@ public class Record
 	{
 		Id = id;
 		ClientId = clientId;
+		Phone = phone;
 		CarInfo = carInfo;
 		Description = description;
 		CreateTime = createTime;
@@ -29,9 +31,11 @@ public class Record
 
 	public Guid Id { get; private set; }
 
-	public Guid ClientId { get; private set; }
+	public Guid? ClientId { get; private set; }
 
-	public UserAuth Client { get; private set; } = null!;
+	public UserAuth? Client { get; private set; } = null!;
+
+	public string Phone { get; private set; }
 
 	public string CarInfo { get; private set; }
 	public string Description { get; private set; }
@@ -50,17 +54,19 @@ public class Record
 	public RecordStatus Status { get; private set; } =
 		RecordStatus.New;
 
-	public virtual ICollection<Service> Services
-	{
-		get;
-		private set;
-	} = [];
+	public Guid? DayRecordsId { get; private set; }
 
-	public virtual ICollection<UserAuth> Masters
+	public DayRecords? DayRecords { get; private set; }
+
+	public virtual ICollection<Service> Services { get; private set; } = [];
+
+	public virtual ICollection<UserAuth> Masters { get; private set; } = [];
+
+	public void SetClient(UserAuth client)
 	{
-		get;
-		private set;
-	} = [];
+		Client = client;
+		ClientId = client.Id;
+	}
 
 	public void SetDescription(string description)
 	{
@@ -97,14 +103,16 @@ public class Record
 		VisitTime = visitTime;
 	}
 
-	public void SetTransferred(bool transferred)
+	public void UpdateTimeVisit(DateTime visitTime)
 	{
-		IsTransferred = transferred;
+		IsTransferred = true;
+		VisitTime = visitTime;
 	}
 
 	public static Result<Record> Create(
 		Guid id,
 		Guid userId,
+		string phone,
 		string carInfo,
 		string description,
 		DateTime createTime,
@@ -114,14 +122,11 @@ public class Record
 			return Result.Failure<Record>("Id can't be empty");
 
 		if (userId == Guid.Empty)
-			return
-				Result.Failure<Record>("UserId can't be empty");
+			return Result.Failure<Record>("UserId can't be empty");
 
 		if (string.IsNullOrEmpty(carInfo))
-		{
 			return Result.Failure<Record>(
 				"Описание автомобиля не может быть пустым");
-		}
 
 		if (string.IsNullOrEmpty(description))
 			return Result.Failure<Record>(
@@ -131,9 +136,14 @@ public class Record
 			return Result.Failure<Record>(
 				"Дата создания заявки не может быть пустой");
 
+		if (visitTime == DateTime.MinValue)
+			return Result.Failure<Record>(
+				"Дата приема не может быть пустой");
+
 		var record = new Record(
 			id,
 			userId,
+			phone,
 			carInfo,
 			description,
 			createTime,

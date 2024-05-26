@@ -29,6 +29,7 @@ public class RecordsRepository : IRecordsRepository
 
 	public async Task UpdateAsync(
 		Guid id,
+		string? phone = null,
 		string? description = null,
 		RecordPriority? priority = null,
 		RecordStatus? status = null
@@ -72,9 +73,9 @@ public class RecordsRepository : IRecordsRepository
 					.UserId)
 				.ToList();
 
-		if (parameters.FilterName != null)
-			query = query.FilterRecords(parameters.FilterName,
-				parameters.FilterValue!);
+		// if (parameters.FilterName != null)
+		// 	query = query.FilterRecords(parameters.FilterName,
+		// 		parameters.FilterValue!);
 
 		if (!string.IsNullOrEmpty(parameters.SearchValue))
 			query = query

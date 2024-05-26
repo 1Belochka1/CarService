@@ -8,7 +8,9 @@ public interface IRecordsRepository
 {
 	Task<Guid> CreateAsync(Record record);
 
-	Task UpdateAsync(Guid id, string? description,
+	Task UpdateAsync(Guid id,
+		string? phone,
+		string? description,
 		RecordPriority? priority,
 		RecordStatus? status);
 

@@ -13,16 +13,25 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .ValueGeneratedNever();
         
         builder.Property(x => x.Name)
+            .IsRequired()
             .HasMaxLength(150);
 
+        builder.Property(x=> x.Price)
+            .HasColumnType("numeric(10, 2)")
+            .IsRequired();
+        
         builder.Property(x => x.Description)
+            .IsRequired()
             .HasMaxLength(1000);
-
-        builder.HasIndex(x => x.Name)
-            .IsUnique();
 
         builder.Property(x => x.InStock)
             .HasColumnType("serial");
+        
+        builder.HasIndex(x => x.Name)
+            .IsUnique();
+        
+        builder.HasMany(  x => x.Images)
+            .WithOne(x => x.Product);
         
         builder.HasMany(x => x.Category)
             .WithMany(x => x.Products)

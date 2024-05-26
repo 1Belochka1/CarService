@@ -16,13 +16,15 @@ public class RecordsService
 		_recordsRepository = recordsRepository;
 	}
 
-	public async Task<Guid> CreateRecordAsync(Guid
-			clientId, string carInfo,
+	public async Task<Guid> CreateRecordAsync(
+		Guid clientId,
+		string phone,
+		string carInfo,
 		string description)
 	{
 		var id = Guid.NewGuid();
 
-		var record = Record.Create(id, clientId, carInfo,
+		var record = Record.Create(id, clientId, phone, carInfo,
 			description, DateTime.UtcNow, null);
 
 		return await _recordsRepository.CreateAsync(
@@ -47,7 +49,8 @@ public class RecordsService
 	}
 
 	public async Task<ListWithPage<Record>>
-		GetActiveRecordsByMasterIdAsync(Guid masterId,
+		GetActiveRecordsByMasterIdAsync(
+			Guid masterId,
 			Params parameters)
 	{
 		return await
@@ -56,25 +59,27 @@ public class RecordsService
 	}
 
 	public async Task<ListWithPage<Record>>
-		GetCompletedRecordsByMasterIdAsync(Guid masterId,
+		GetCompletedRecordsByMasterIdAsync(
+			Guid masterId,
 			Params parameters)
 	{
 		return await _recordsRepository
 			.GetCompletedByMasterIdAsync(masterId, parameters);
 	}
 
-
 	public async Task UpdateRecordAsync(
 		Guid id,
+		string? phone = null,
 		string? description = null,
 		RecordPriority? priority = null,
 		RecordStatus? status = null)
 	{
-		await _recordsRepository.UpdateAsync(id, description,
+		await _recordsRepository.UpdateAsync(id, phone, description,
 			priority, status);
 	}
 
-	public async Task AddMastersAsync(Guid recordId,
+	public async Task AddMastersAsync(
+		Guid recordId,
 		UserAuth master)
 	{
 		await _recordsRepository.AddMasters(recordId,

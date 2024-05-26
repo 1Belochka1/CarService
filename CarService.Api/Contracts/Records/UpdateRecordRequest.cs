@@ -4,6 +4,7 @@ namespace CarService.Api.Contracts.Records;
 
 public record UpdateRecordRequest(
 	Guid Id,
+	string? Phone = null,
 	string? Description = null,
 	RecordPriority? Priority = null,
 	RecordStatus? Status = null);

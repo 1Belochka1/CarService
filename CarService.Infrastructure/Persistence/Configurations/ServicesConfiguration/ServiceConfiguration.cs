@@ -6,6 +6,9 @@ namespace CarService.Infrastructure.Persistence.Configurations.ServicesConfigura
 
 public class ServiceConfiguration : IEntityTypeConfiguration<Service>
 {
+	
+	// TODO: Возможно убрать связи с мастором и заявками
+
 	public void Configure(EntityTypeBuilder<Service> builder)
 	{
 		builder.HasKey(x => x.Id);

@@ -2,8 +2,11 @@ namespace CarService.App.Common.ListWithPage;
 
 public class ListWithPage<T>
 {
-	public ListWithPage(int totalItems, int? totalPages,
-		int? currentPage, List<T> items)
+	public ListWithPage(
+		int totalItems,
+		int? totalPages,
+		int? currentPage,
+		List<T> items)
 	{
 		TotalItems = totalItems;
 		TotalPages = totalPages;
@@ -26,7 +29,8 @@ public class Params
 		Guid? userId,
 		string? roleId,
 		bool sortDescending,
-		string? searchValue = null, int page = 1,
+		string? searchValue = null,
+		int page = 1,
 		int pageSize = 10,
 		string? sortProperty = null)
 	{
@@ -52,21 +56,27 @@ public class Params
 
 public class ParamsWhitFilter : Params
 {
-	public ParamsWhitFilter(Guid? userId, string? roleId, bool
-			sortDescending,
-		string?
-			filterName, string? filterValue,
+	public ParamsWhitFilter(
+		Guid? userId,
+		string? roleId,
 		string? searchValue = null,
-		int page = 1, int pageSize = 10,
-		string? sortProperty = null)
+		List<Filter>? filters = null,
+		int page = 1,
+		int pageSize = 10,
+		string? sortProperty = null,
+		bool sortDescending = false)
 		: base(userId, roleId, sortDescending,
 			searchValue, page, pageSize,
 			sortProperty)
 	{
-		FilterName = filterName;
-		FilterValue = filterValue;
+		Filters = filters;
 	}
 
-	public string? FilterName { get; set; }
-	public string? FilterValue { get; set; }
+	public List<Filter>? Filters { get; set; }
+}
+
+public class Filter
+{
+	public string? Name { get; set; }
+	public string? Value { get; set; }
 }

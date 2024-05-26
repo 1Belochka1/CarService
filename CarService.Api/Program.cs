@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using CarService.Api.Hubs;
 using CarService.App;
 using CarService.Infrastructure;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -28,6 +29,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapHub<NotifyHub>("/api/hubs/notify");
 
 app.UseCors(
     x => x

@@ -46,13 +46,12 @@ public class ServicesController : ControllerBase
 			new ParamsWhitFilter(
 				null,
 				null,
-				request.SortDescending,
-				request.FilterProperty,
-				request.FilterValue,
 				request.SearchValue,
+				request.Filters,
 				request.Page,
 				request.PageSize,
-				request.SortProperty
+				request.SortProperty,
+				request.SortDescending
 			));
 
 		return Ok(services);

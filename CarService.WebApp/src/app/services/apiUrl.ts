@@ -1,5 +1,5 @@
-// const API_URL = 'http://localhost:5053/api/'
-const API_URL = 'https://belka.local.com/api/'
+const API_URL = 'http://localhost:5053/api/'
+// const API_URL = 'https://belka.local.com/api/'
 
 const USER_URL = API_URL + 'users'
 const RECORD_URL = API_URL + 'records'

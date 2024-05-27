@@ -1,0 +1,39 @@
+<h4 class="title" *ngIf="title">{{ title }}</h4>
+<input
+	[type]="type"
+	[placeholder]="placeholder"
+	(input)="convertEvent($event)"
+	(blur)="onTouched()"
+	[name]="name ?? isPasswordType ? 'password' : type"
+	[class.invalid]="formControl.touched && formControl.invalid"
+	[style.height]="heightInput"
+/>
+
+<ng-container
+	*ngIf="formControl.touched && formControl.invalid && formControl.errors"
+>
+	<div class="error" *ngIf="formControl.hasError('required')">
+		Поле обязательно для заполнения
+	</div>
+	<div class="error" *ngIf="formControl.hasError('minlength')">
+		Минимальная длина
+		{{ formControl.getError("minlength").requiredLength }}
+		символов
+	</div>
+	<div class="error" *ngIf="formControl.hasError('maxlength')">
+		Максимальная длина
+		{{ formControl.getError("maxlength").requiredLength }}
+		символов
+	</div>
+	<div class="error" *ngIf="formControl.getError('noConfirmPassword')">
+		Пароли не совпадают
+	</div>
+	<div class="error" *ngIf="formControl.getError('email')">
+		Проверьте правильность написания почты
+	</div>
+</ng-container>
+
+<div class="showPassword" *ngIf="isPasswordType">
+	<input type="checkbox" [id]="name" (change)="togglePasswordShow($event)" />
+	<label [for]="name">Показать пароль</label>
+</div>

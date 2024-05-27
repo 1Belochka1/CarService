@@ -2,11 +2,6 @@ const folder = 'assets/svg/'
 
 export const menuItems = [
 	{
-		icon: folder + 'statistics-min.svg',
-		title: "Общая статистика",
-		routerLink: 'statistics'
-	},
-	{
 		icon: folder + 'workers-min.svg',
 		title: "Сотрудники",
 		routerLink: 'workers'

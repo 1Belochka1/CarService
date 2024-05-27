@@ -5,50 +5,54 @@
 @layer input;
 
 :root {
-  --color-background: 179, 179, 179;
-  --color-surface: 228, 228, 228;
-  --color-menu: 1, 22, 39;
-  --color-on-menu: 228, 228, 228;
+	--color-background: 179, 179, 179;
+	--color-surface: 228, 228, 228;
+	--color-menu: 1, 22, 39;
+	--color-on-menu: 228, 228, 228;
 
-  --color-primary: 255, 138, 99;
-  --color-secondary: 228, 228, 231;
+	--color-primary: 255, 138, 99;
+	--color-secondary: 228, 228, 231;
 
-  --width-menu: 16.875rem;
+	--width-menu: 16.875rem;
 
-  @media (max-width: 1280px) {
-    font-size: 14px;
-  }
+	--color-input-border: rgb(var(--color-primary));
+	--color-input-text: inherit;
+	--color-input-background: inherit;
+
+	@media (max-width: 1280px) {
+		font-size: 14px;
+	}
 }
 
 
 /* W3C standard
    сейчас только для Firefox */
 * {;
-  scrollbar-width: thin;
-  scrollbar-color: rgb(var(--color-menu)) rgb(var(--color-surface));
+	scrollbar-width: thin;
+	scrollbar-color: rgb(var(--color-menu)) rgb(var(--color-surface));
 }
 
 /* для Chrome/Edge/Safari */
 *::-webkit-scrollbar {
-  width: 6px;
+	width: 6px;
 }
 
 *::-webkit-scrollbar-track {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  @apply bg-surface;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	@apply bg-surface;
 }
 
 *::-webkit-scrollbar-thumb {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
 
-  @apply bg-menu border-surface border-2 border-solid;
+	@apply bg-menu border-surface border-2 border-solid;
 }
 
 * {
-  box-sizing: border-box;
-  @apply font-montserrat;
+	box-sizing: border-box;
+	@apply font-montserrat;
 }
 
 html {
@@ -58,8 +62,8 @@ body {
 }
 
 input {
-  @apply border-none appearance-none;
-  background: none;
+	@apply border-none appearance-none;
+	background: none;
 	outline: none;
 }
 
@@ -69,62 +73,62 @@ img {
 }
 
 .svg-nav {
-  height: 1.875rem;
-  width: 1.875rem;
-  @apply fill-primary stroke-white;
+	height: 1.875rem;
+	width: 1.875rem;
+	@apply fill-primary stroke-white;
 }
 
 .svg-table {
-  height: 1.875rem;
-  width: 1.875rem;
-  @apply stroke-white;
+	height: 1.875rem;
+	width: 1.875rem;
+	@apply stroke-white;
 }
 
 .priority {
-  @apply p-1 text-nowrap;
+	@apply p-1 text-nowrap;
 
-  border-radius: 0.625rem;
+	border-radius: 0.625rem;
 
-  &[data-priority="0"] {
-    @apply bg-gray-400/50 border-gray-400 border-solid border;
-    backdrop-filter: blur(10px);
-  }
+	&[data-priority="0"] {
+		@apply bg-gray-400/50 border-gray-400 border-solid border;
+		backdrop-filter: blur(10px);
+	}
 
-  &[data-priority="1"] {
-    @apply bg-green-400/20 border-green-400 border-solid border;
+	&[data-priority="1"] {
+		@apply bg-green-400/20 border-green-400 border-solid border;
 
-  }
+	}
 
-  &[data-priority="2"] {
-    @apply bg-red-400/20 border-red-400 border-solid border;
+	&[data-priority="2"] {
+		@apply bg-red-400/20 border-red-400 border-solid border;
 
-  }
+	}
 
-  &[data-priority="3"] {
-    @apply bg-red-800/20 border-red-800 border-solid border;
+	&[data-priority="3"] {
+		@apply bg-red-800/20 border-red-800 border-solid border;
 
-  }
+	}
 }
 
 .status {
-  @apply p-1 text-nowrap;
+	@apply p-1 text-nowrap;
 
-  border-radius: 0.625rem;
+	border-radius: 0.625rem;
 
-  &[data-status="0"] {
-    @apply bg-sky-500/20 border-sky-500 border-solid border;
+	&[data-status="0"] {
+		@apply bg-sky-500/20 border-sky-500 border-solid border;
 
-  }
+	}
 
-  &[data-status="1"] {
-    @apply bg-orange-400/20 border-orange-400 border-solid border;
+	&[data-status="1"] {
+		@apply bg-orange-400/20 border-orange-400 border-solid border;
 
-  }
+	}
 
-  &[data-status="2"] {
-    @apply bg-green-400/20 border-green-400 border-solid border;
+	&[data-status="2"] {
+		@apply bg-green-400/20 border-green-400 border-solid border;
 
-  }
+	}
 
 }
 

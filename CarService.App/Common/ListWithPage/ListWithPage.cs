@@ -75,8 +75,8 @@ public class ParamsWhitFilter : Params
 	public List<Filter>? Filters { get; set; }
 }
 
-public class Filter
+public class Filter(string name, string value)
 {
-	public string? Name { get; set; }
-	public string? Value { get; set; }
+	public string Name { get; set; } = name;
+	public string Value { get; set; } = value;
 }

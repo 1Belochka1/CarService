@@ -2,9 +2,13 @@
 
 public class DayRecords
 {
-	private List<Record> _records = [];
-
-	private DayRecords(Guid id, Guid calendarId, TimeOnly startTime, TimeOnly endTime, short offset, short duration)
+	private DayRecords(
+		Guid id,
+		Guid calendarId,
+		TimeOnly startTime,
+		TimeOnly endTime,
+		short offset,
+		short duration)
 	{
 		Id = id;
 		CalendarId = calendarId;
@@ -15,7 +19,7 @@ public class DayRecords
 	}
 
 	public Guid Id { get; private set; }
-	
+
 	public Guid CalendarId { get; private set; }
 
 	public TimeOnly StartTime { get; private set; }
@@ -26,14 +30,8 @@ public class DayRecords
 
 	public short Duration { get; private set; }
 
-	public IReadOnlyList<Record> Records => _records;
+	public CalendarRecords? Calendar { get; private set; }
 
-	public CalendarRecords Calendar { get; private set; }
-
-	public void AddRecord(Record record)
-	{
-		_records.Add(record);
-	}
 
 	public static DayRecords Create(
 		Guid id,
@@ -43,6 +41,7 @@ public class DayRecords
 		short offset,
 		short duration)
 	{
-		return new DayRecords(id, calendarId, startTime, endTime, offset, duration);
+		return new DayRecords(id, calendarId, startTime,
+			endTime, offset, duration);
 	}
 }

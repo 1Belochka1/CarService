@@ -73,9 +73,11 @@ public class RecordsRepository : IRecordsRepository
 					.UserId)
 				.ToList();
 
-		// if (parameters.FilterName != null)
-		// 	query = query.FilterRecords(parameters.FilterName,
-		// 		parameters.FilterValue!);
+		if (parameters.Filters != null)
+			parameters.Filters.ForEach(x =>
+			{
+				query = query.FilterWithName(x.Name, x.Value);
+			});
 
 		if (!string.IsNullOrEmpty(parameters.SearchValue))
 			query = query

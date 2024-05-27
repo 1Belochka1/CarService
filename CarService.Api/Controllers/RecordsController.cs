@@ -1,29 +1,25 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using CarService.Api.Contracts;
 using CarService.Api.Contracts.Records;
-using CarService.Api.Helper.Json;
 using CarService.App.Common.ListWithPage;
 using CarService.App.Services;
-using CarService.Core.Records;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarService.Api.Controllers;
+
+// TODO: https://localhost:7298/api/Services?Filters[0].Value=True&Filters[0].Name=IsShowLending
 
 [ApiController]
 [Route("api/[controller]")]
 public class RecordsController : ControllerBase
 {
 	private readonly RecordsService _recordsService;
-	private readonly UsersService _usersService;
 
 	public RecordsController(
-		RecordsService recordsService,
-		UsersService usersService)
+		RecordsService recordsService)
 	{
 		_recordsService = recordsService;
-		_usersService = usersService;
 	}
 
 	[HttpPost]
@@ -34,7 +30,8 @@ public class RecordsController : ControllerBase
 			request.ClientId,
 			request.Phone,
 			request.CarInfo,
-			request.Description
+			request.Description,
+			request.dayRecordsId
 		);
 
 		return Ok(result);
@@ -59,8 +56,7 @@ public class RecordsController : ControllerBase
 	public async Task<IActionResult> GetById(string id)
 	{
 		var result = await _recordsService.GetRecordByIdAsync
-		(Guid.Parse
-			(id));
+			(Guid.Parse(id));
 		if (result.IsFailure)
 			return BadRequest(result.Error);
 

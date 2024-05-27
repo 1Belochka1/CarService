@@ -8,39 +8,54 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CarService.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class AddCalendarProduct : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
                 .Annotation("Npgsql:Enum:record_priority", "low,normal,high,very_high")
-                .Annotation("Npgsql:Enum:record_status", "new,work,done");
+                .Annotation("Npgsql:Enum:record_status", "new,processing,awaiting,work,done");
 
             migrationBuilder.CreateTable(
-                name: "Product",
+                name: "CalendarRecords",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    ServiceId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CalendarRecords", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
-                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    Price = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
                     InStock = table.Column<int>(type: "serial", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Product", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductCategory",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductCategory", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,20 +71,6 @@ namespace CarService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Services",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
-                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    IsShowLending = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Services", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ServiceTypes",
                 columns: table => new
                 {
@@ -79,6 +80,49 @@ namespace CarService.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ServiceTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DaysRecords",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CalendarId = table.Column<Guid>(type: "uuid", nullable: false),
+                    StartTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    EndTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    Offset = table.Column<short>(type: "smallint", nullable: false),
+                    Duration = table.Column<short>(type: "smallint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DaysRecords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DaysRecords_CalendarRecords_CalendarId",
+                        column: x => x.CalendarId,
+                        principalTable: "CalendarRecords",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Services",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    IsShowLending = table.Column<bool>(type: "boolean", nullable: false),
+                    CalendarId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Services_CalendarRecords_CalendarId",
+                        column: x => x.CalendarId,
+                        principalTable: "CalendarRecords",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,15 +136,15 @@ namespace CarService.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_ProductsCategories", x => new { x.CategoryId, x.ProductsId });
                     table.ForeignKey(
-                        name: "FK_ProductsCategories_ProductCategory_CategoryId",
+                        name: "FK_ProductsCategories_ProductCategories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "ProductCategory",
+                        principalTable: "ProductCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductsCategories_Product_ProductsId",
+                        name: "FK_ProductsCategories_Products_ProductsId",
                         column: x => x.ProductsId,
-                        principalTable: "Product",
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -157,7 +201,7 @@ namespace CarService.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     CreateBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 5, 24, 13, 28, 16, 326, DateTimeKind.Utc).AddTicks(492)),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 5, 26, 13, 13, 40, 310, DateTimeKind.Utc).AddTicks(6065)),
                     LastMessageDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -200,7 +244,8 @@ namespace CarService.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ClientId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ClientId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Phone = table.Column<string>(type: "text", nullable: false),
                     CarInfo = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -208,11 +253,18 @@ namespace CarService.Infrastructure.Migrations
                     IsTransferred = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     CompleteTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Priority = table.Column<int>(type: "record_priority", nullable: false),
-                    Status = table.Column<int>(type: "record_status", nullable: false)
+                    Status = table.Column<int>(type: "record_status", nullable: false),
+                    DayRecordsId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Records", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Records_DaysRecords_DayRecordsId",
+                        column: x => x.DayRecordsId,
+                        principalTable: "DaysRecords",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Records_UserAuths_ClientId",
                         column: x => x.ClientId,
@@ -226,6 +278,7 @@ namespace CarService.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ImageId = table.Column<Guid>(type: "uuid", nullable: false),
                     LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Patronymic = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -251,7 +304,7 @@ namespace CarService.Infrastructure.Migrations
                     ChatId = table.Column<Guid>(type: "uuid", nullable: false),
                     SenderId = table.Column<Guid>(type: "uuid", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    SendDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 5, 24, 13, 28, 16, 327, DateTimeKind.Utc).AddTicks(2321))
+                    SendDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 5, 26, 13, 13, 40, 311, DateTimeKind.Utc).AddTicks(8764))
                 },
                 constraints: table =>
                 {
@@ -318,6 +371,31 @@ namespace CarService.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FileName = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    Data = table.Column<byte[]>(type: "bytea", nullable: true),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: true),
+                    UserInfoId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Images_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Images_UserInfos_UserInfoId",
+                        column: x => x.UserInfoId,
+                        principalTable: "UserInfos",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
@@ -332,6 +410,22 @@ namespace CarService.Infrastructure.Migrations
                 name: "IX_Chats_CreateBy",
                 table: "Chats",
                 column: "CreateBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DaysRecords_CalendarId",
+                table: "DaysRecords",
+                column: "CalendarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Images_ProductId",
+                table: "Images",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Images_UserInfoId",
+                table: "Images",
+                column: "UserInfoId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_MastersServices_ServicesId",
@@ -349,8 +443,8 @@ namespace CarService.Infrastructure.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_Name",
-                table: "Product",
+                name: "IX_Products_Name",
+                table: "Products",
                 column: "Name",
                 unique: true);
 
@@ -363,6 +457,11 @@ namespace CarService.Infrastructure.Migrations
                 name: "IX_Records_ClientId",
                 table: "Records",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Records_DayRecordsId",
+                table: "Records",
+                column: "DayRecordsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecordsMasters_WorksId",
@@ -378,6 +477,12 @@ namespace CarService.Infrastructure.Migrations
                 name: "IX_Roles_Name",
                 table: "Roles",
                 column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Services_CalendarId",
+                table: "Services",
+                column: "CalendarId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -413,6 +518,9 @@ namespace CarService.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Images");
+
+            migrationBuilder.DropTable(
                 name: "MastersServices");
 
             migrationBuilder.DropTable(
@@ -437,10 +545,10 @@ namespace CarService.Infrastructure.Migrations
                 name: "Chats");
 
             migrationBuilder.DropTable(
-                name: "ProductCategory");
+                name: "ProductCategories");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Records");
@@ -452,7 +560,13 @@ namespace CarService.Infrastructure.Migrations
                 name: "Services");
 
             migrationBuilder.DropTable(
+                name: "DaysRecords");
+
+            migrationBuilder.DropTable(
                 name: "UserAuths");
+
+            migrationBuilder.DropTable(
+                name: "CalendarRecords");
 
             migrationBuilder.DropTable(
                 name: "Roles");

@@ -12,6 +12,7 @@ export class AuthService {
 	user?: UserType
 
 	constructor(private http: HttpClient) {
+		this.getByCookie()
 	}
 
 	public login(email: string, password: string) {
@@ -20,7 +21,32 @@ export class AuthService {
 			password
 		}, {withCredentials: true})
 							 .pipe(tap(() => {
-								 firstValueFrom(this.http.get<UserType>(apiUrls.users.getByCookie)).then((data) => this.user = data)
+								 this.getByCookie()
 							 }))
+	}
+
+	public register(email: string,
+									lastName: string,
+									firstName: string,
+									patronymic: string,
+									address: string,
+									phone: string,
+									password: string
+	) {
+		return this.http.post(apiUrls.users.register, {
+			email,
+			lastName,
+			firstName,
+			patronymic,
+			address,
+			phone,
+			password
+		}, {withCredentials: true})
+	}
+
+	public getByCookie() {
+		firstValueFrom(
+			this.http.get<UserType>(apiUrls.users.getByCookie, {withCredentials: true}))
+		.then((data) => this.user = data)
 	}
 }

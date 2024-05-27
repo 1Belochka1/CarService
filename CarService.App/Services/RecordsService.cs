@@ -17,15 +17,16 @@ public class RecordsService
 	}
 
 	public async Task<Guid> CreateRecordAsync(
-		Guid clientId,
+		Guid? clientId,
 		string phone,
-		string carInfo,
-		string description)
+		string? carInfo,
+		string description,
+		Guid? dayRecordsId)
 	{
 		var id = Guid.NewGuid();
 
 		var record = Record.Create(id, clientId, phone, carInfo,
-			description, DateTime.UtcNow, null);
+			description, DateTime.UtcNow, null, dayRecordsId);
 
 		return await _recordsRepository.CreateAsync(
 			record.Value);
@@ -74,7 +75,8 @@ public class RecordsService
 		RecordPriority? priority = null,
 		RecordStatus? status = null)
 	{
-		await _recordsRepository.UpdateAsync(id, phone, description,
+		await _recordsRepository.UpdateAsync(id, phone,
+			description,
 			priority, status);
 	}
 

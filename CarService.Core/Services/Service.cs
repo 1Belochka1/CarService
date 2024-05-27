@@ -10,7 +10,8 @@ public class Service
 	{
 	}
 
-	private Service(Guid id, string name, string description, bool isShowLending)
+	private Service(Guid id, string name, string description,
+		bool isShowLending)
 	{
 		Id = id;
 		Name = name;
@@ -26,11 +27,28 @@ public class Service
 
 	public bool IsShowLending { get; private set; } = false;
 
-	public virtual List<ServiceType> ServiceTypes { get; private set; } = [];
+	public Guid? CalendarId { get; private set; }
 
-	public virtual List<Record> Records { get; private set; } = [];
+	public virtual CalendarRecords? Calendar
+	{
+		get;
+		private set;
+	}
 
-	public virtual List<UserAuth> Masters { get; private set; } = [];
+	public virtual List<ServiceType> ServiceTypes
+	{
+		get;
+		private set;
+	} = [];
+
+	public virtual List<Record>
+		Records { get; private set; } = [];
+
+	public virtual List<UserAuth> Masters
+	{
+		get;
+		private set;
+	} = [];
 
 	public void SetName(string name)
 	{
@@ -47,14 +65,17 @@ public class Service
 		IsShowLending = isShowLending;
 	}
 
-	public void SetServiceTypes(List<ServiceType> serviceTypes)
+	public void SetServiceTypes(
+		List<ServiceType> serviceTypes)
 	{
 		ServiceTypes = serviceTypes;
 	}
 
-	public void AddServiceTypes(List<ServiceType> serviceTypes)
+	public void AddServiceTypes(
+		List<ServiceType> serviceTypes)
 	{
-		foreach (var serviceType in serviceTypes) ServiceTypes.Add(serviceType);
+		foreach (var serviceType in serviceTypes)
+			ServiceTypes.Add(serviceType);
 	}
 
 	public void SetRecords(List<Record> records)
@@ -77,7 +98,8 @@ public class Service
 		foreach (var master in masters) Masters.Add(master);
 	}
 
-	public static Result<Service> Create(Guid id, string name, string description, bool isShowLending)
+	public static Result<Service> Create(Guid id, string name,
+		string description, bool isShowLending)
 	{
 		if (id == Guid.Empty)
 			return Result.Failure<Service>("Id can't be empty");
@@ -86,9 +108,11 @@ public class Service
 			return Result.Failure<Service>("Name can't be empty");
 
 		if (string.IsNullOrWhiteSpace(description))
-			return Result.Failure<Service>("Description can't be empty");
+			return Result.Failure<Service>(
+				"Description can't be empty");
 
-		var service = new Service(id, name, description, isShowLending);
+		var service =
+			new Service(id, name, description, isShowLending);
 
 		return Result.Success(service);
 	}

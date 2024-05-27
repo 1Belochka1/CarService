@@ -47,10 +47,5 @@ public class
 		builder.HasMany(x => x.Masters)
 			.WithMany(x => x.Works)
 			.UsingEntity("RecordsMasters");
-		
-		builder.HasOne(x => x.DayRecords)
-			.WithMany(x => x.Records)
-			.HasForeignKey(x => x.DayRecordsId)
-			.OnDelete(DeleteBehavior.SetNull);
 	}
 }

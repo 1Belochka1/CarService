@@ -3,9 +3,11 @@ using CarService.Core.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CarService.Infrastructure.Persistence.Configurations;
+namespace CarService.Infrastructure.Persistence.
+	Configurations;
 
-public class ImageConfiguration : IEntityTypeConfiguration<Image>
+public class
+	ImageConfiguration : IEntityTypeConfiguration<Image>
 {
 	public void Configure(EntityTypeBuilder<Image> builder)
 	{
@@ -23,7 +25,6 @@ public class ImageConfiguration : IEntityTypeConfiguration<Image>
 
 		builder.HasOne(x => x.UserInfo)
 			.WithOne(x => x.Image)
-			.HasForeignKey<UserInfo>(x => x.ImageId)
-			.HasForeignKey<Image>(x => x.UserInfoId);
+			.HasForeignKey<UserInfo>(x => x.ImageId);
 	}
 }

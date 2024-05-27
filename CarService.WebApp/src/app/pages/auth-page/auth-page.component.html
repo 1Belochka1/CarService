@@ -1,28 +1,100 @@
 <div class="wrapper">
 
-	<form action="" [formGroup]="form">
+	<form action="" [formGroup]="formLogin">
 
 		@switch (activePage) {
 			@case (1) {
 				<h1>Авторизация</h1>
-				<app-form-input type="text"
-												[formControl]="form.controls.email"
-												title="Почта"/>
-				<app-form-input type="password"
-												[formControl]="form.controls.password"
-												title="Пароль"/>
 
+				<custom-input
+					[formControl]="formLogin.controls.email"
+					type="email"
+					placeholder="Почта"
+					title="Введите почту"
+				/>
+
+				<custom-input
+					[formControl]="formLogin.controls.password"
+					type="password"
+					placeholder="Пароль"
+					title="Введите пароль"
+				/>
 				<button (click)="login()">Вход</button>
 			}
 			@case (2) {
-				<span>регистрация</span>
+				<h1>Авторизация</h1>
+
+				<h2>Почта</h2>
+				<input type="text"
+							 [formControl]="formRegister.controls.email"
+							 [ngClass]="{'dirty':
+					formRegister.controls.email.touched &&
+					formRegister.controls.email.invalid &&
+					formRegister.controls.email.errors}"
+				/>
+
+				<h2>Фамилия</h2>
+				<input type="text"
+							 [formControl]="formRegister.controls.lastName"
+							 [ngClass]="{'dirty':
+					formRegister.controls.password.touched &&
+					formRegister.controls.password.invalid &&
+					formRegister.controls.password.errors}"/>
+
+				<h2>Пароль</h2>
+				<input type="text"
+							 [formControl]="formRegister.controls.password"
+							 [ngClass]="{'dirty':
+					formRegister.controls.password.touched &&
+					formRegister.controls.password.invalid &&
+					formRegister.controls.password.errors}"/>
+
+				<h2>Пароль</h2>
+				<input type="text"
+							 [formControl]="formRegister.controls.password"
+							 [ngClass]="{'dirty':
+					formRegister.controls.password.touched &&
+					formRegister.controls.password.invalid &&
+					formRegister.controls.password.errors}"/>
+
+				<h2>Пароль</h2>
+				<input type="text"
+							 [formControl]="formRegister.controls.password"
+							 [ngClass]="{'dirty':
+					formRegister.controls.password.touched &&
+					formRegister.controls.password.invalid &&
+					formRegister.controls.password.errors}"/>
+
+				<h2>Пароль</h2>
+				<input type="text"
+							 [formControl]="formRegister.controls.password"
+							 [ngClass]="{'dirty':
+					formRegister.controls.password.touched &&
+					formRegister.controls.password.invalid &&
+					formRegister.controls.password.errors}"/>
+
+				<h2>Пароль</h2>
+				<input type="text"
+							 [formControl]="formRegister.controls.password"
+							 [ngClass]="{'dirty':
+					formRegister.controls.password.touched &&
+					formRegister.controls.password.invalid &&
+					formRegister.controls.password.errors}"/>
+
+				<button (click)="login()">Вход</button>
 			}
 		}
 	</form>
 
 	<div class="switch-page">
-		<button *ngIf="activePage == 1">Регистрация</button>
-		<button *ngIf="activePage == 2">Вход</button>
+		<button *ngIf="activePage == 1"
+						(click)="activePage = 2">Регистрация
+		</button>
+		<button *ngIf="activePage == 2"
+						(click)="activePage = 1"
+		>
+			Авторизация
+		</button>
 	</div>
 
 

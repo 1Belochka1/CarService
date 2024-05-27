@@ -56,9 +56,11 @@ public class ServicesRepository : IServicesRepository
 			.Include(x => x.ServiceTypes)
 			.ToListAsync();
 
-		// if (parameters.FilterName != null)
-		// 	query = query.FilterServices(parameters.FilterName,
-		// 		parameters.FilterValue!);
+		if (parameters.Filters != null)
+			parameters.Filters.ForEach(x =>
+			{
+				query = query.FilterWithName(x.Name, x.Value);
+			});
 
 		if (!string.IsNullOrEmpty(parameters.SearchValue))
 			query = query

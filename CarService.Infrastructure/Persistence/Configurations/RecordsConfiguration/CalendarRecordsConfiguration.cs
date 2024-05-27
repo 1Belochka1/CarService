@@ -1,12 +1,18 @@
 ﻿using CarService.Core.Records;
+using CarService.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CarService.Infrastructure.Persistence.Configurations.RecordsConfiguration;
+namespace
+	CarService.Infrastructure.Persistence.Configurations.
+	RecordsConfiguration;
 
-public class CalendarRecordsConfiguration : IEntityTypeConfiguration<CalendarRecords>
+public class
+	CalendarRecordsConfiguration : IEntityTypeConfiguration<
+	CalendarRecords>
 {
-	public void Configure(EntityTypeBuilder<CalendarRecords> builder)
+	public void Configure(
+		EntityTypeBuilder<CalendarRecords> builder)
 	{
 		builder.HasKey(x => x.Id);
 
@@ -18,5 +24,9 @@ public class CalendarRecordsConfiguration : IEntityTypeConfiguration<CalendarRec
 
 		builder.Property(x => x.Description)
 			.HasMaxLength(500);
+
+		builder.HasOne(x => x.Service)
+			.WithOne(x => x.Calendar)
+			.HasForeignKey<Service>(x => x.CalendarId);
 	}
 }

@@ -19,6 +19,8 @@ public class CarServiceDbContext : DbContext
 	public DbSet<UserInfo> UserInfos { get; set; } = null!;
 
 	public DbSet<UserAuth> UserAuths { get; set; } = null!;
+	
+	public DbSet<Client> Clients { get; set; } = null!;
 
 	public DbSet<Role> Roles { get; set; } = null!;
 
@@ -29,22 +31,27 @@ public class CarServiceDbContext : DbContext
 
 	public DbSet<Record> Records { get; set; } = null!;
 
-	public DbSet<Chat> Chats { get; set; } = null!;
+	public DbSet<CalendarRecords> CalendarRecords
+	{
+		get;
+		set;
+	} = null!;
 
-	public DbSet<Message> Messages { get; set; } = null!;
+	public DbSet<DayRecords> DaysRecords { get; set; } =
+		null!;
 
-	public DbSet<CalendarRecords> CalendarRecords { get; set; } = null!;
-	
-	public DbSet<DayRecords> DaysRecords { get; set; } = null!;
-	
 	public DbSet<Image> Images { get; set; } = null!;
-	
+
 	public DbSet<Product> Products { get; set; } = null!;
-	
-	public DbSet<ProductCategory> ProductCategories { get; set; } = null!;
-	
-	
-	
+
+	public DbSet<ProductCategory> ProductCategories
+	{
+		get;
+		set;
+	} = null!;
+
+	public DbSet<Cart> Carts { get; set; } = null!;
+
 	protected override void OnModelCreating(
 		ModelBuilder modelBuilder)
 	{

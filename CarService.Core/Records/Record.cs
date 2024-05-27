@@ -14,10 +14,11 @@ public class Record
 		Guid id,
 		Guid? clientId,
 		string phone,
-		string carInfo,
+		string? carInfo,
 		string description,
 		DateTime createTime,
-		DateTime? visitTime
+		DateTime? visitTime,
+		Guid? dayRecordsId
 	)
 	{
 		Id = id;
@@ -27,6 +28,7 @@ public class Record
 		Description = description;
 		CreateTime = createTime;
 		VisitTime = visitTime;
+		DayRecordsId = dayRecordsId;
 	}
 
 	public Guid Id { get; private set; }
@@ -37,7 +39,7 @@ public class Record
 
 	public string Phone { get; private set; }
 
-	public string CarInfo { get; private set; }
+	public string? CarInfo { get; private set; }
 	public string Description { get; private set; }
 
 	public DateTime CreateTime { get; private set; }
@@ -58,9 +60,17 @@ public class Record
 
 	public DayRecords? DayRecords { get; private set; }
 
-	public virtual ICollection<Service> Services { get; private set; } = [];
+	public virtual ICollection<Service> Services
+	{
+		get;
+		private set;
+	} = [];
 
-	public virtual ICollection<UserAuth> Masters { get; private set; } = [];
+	public virtual ICollection<UserAuth> Masters
+	{
+		get;
+		private set;
+	} = [];
 
 	public void SetClient(UserAuth client)
 	{
@@ -111,22 +121,16 @@ public class Record
 
 	public static Result<Record> Create(
 		Guid id,
-		Guid userId,
+		Guid? userId,
 		string phone,
-		string carInfo,
+		string? carInfo,
 		string description,
 		DateTime createTime,
-		DateTime? visitTime)
+		DateTime? visitTime,
+		Guid? dayRecordsId)
 	{
 		if (id == Guid.Empty)
 			return Result.Failure<Record>("Id can't be empty");
-
-		if (userId == Guid.Empty)
-			return Result.Failure<Record>("UserId can't be empty");
-
-		if (string.IsNullOrEmpty(carInfo))
-			return Result.Failure<Record>(
-				"Описание автомобиля не может быть пустым");
 
 		if (string.IsNullOrEmpty(description))
 			return Result.Failure<Record>(
@@ -147,7 +151,8 @@ public class Record
 			carInfo,
 			description,
 			createTime,
-			visitTime
+			visitTime,
+			dayRecordsId
 		);
 
 		return Result.Success(record);

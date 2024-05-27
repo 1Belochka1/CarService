@@ -6,7 +6,8 @@ using CarService.Infrastructure.Expansion;
 using Clave.Expressionify;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarService.Infrastructure.Persistence.Repositories;
+namespace CarService.Infrastructure.Persistence.
+	Repositories;
 
 public class UserAuthRepository : IUserAuthRepository
 {
@@ -28,15 +29,20 @@ public class UserAuthRepository : IUserAuthRepository
 
 	public async Task<UserAuth?> GetByIdAsync(Guid id)
 	{
-		return await _context.UserAuths.FirstOrDefaultAsync(x => x.Id == id);
+		return await _context.UserAuths
+			.Include(x => x.UserInfo)
+			.FirstOrDefaultAsync(x =>
+				x.Id == id);
 	}
 
 	public async Task<UserAuth?> GetByEmailAsync(string email)
 	{
-		return await _context.UserAuths.FirstOrDefaultAsync(x => x.Email == email);
+		return await _context.UserAuths.FirstOrDefaultAsync(x =>
+			x.Email == email);
 	}
 
-	public async Task<ListWithPage<WorkersDto>> GetWorkersAsync(Params parameters)
+	public async Task<ListWithPage<WorkersDto>>
+		GetWorkersAsync(Params parameters)
 	{
 		var query = await _context.UserAuths
 			.Include(u => u.UserInfo)
@@ -48,12 +54,16 @@ public class UserAuthRepository : IUserAuthRepository
 		var resultList = SelectWorkers(query);
 
 		if (!string.IsNullOrEmpty(parameters.SearchValue))
-			resultList = resultList.Where(x => x.Search(parameters.SearchValue)).ToList();
+			resultList = resultList
+				.Where(x => x.Search(parameters.SearchValue))
+				.ToList();
 
 		if (parameters.SortProperty != null)
-			resultList = resultList.Sort(parameters.SortProperty, parameters.SortDescending);
+			resultList = resultList.Sort(parameters.SortProperty,
+				parameters.SortDescending);
 
-		return resultList.Page(parameters.Page, parameters.PageSize);
+		return resultList.Page(parameters.Page,
+			parameters.PageSize);
 	}
 
 	public async Task<ListWithPage<ClientsDto>>
@@ -71,28 +81,34 @@ public class UserAuthRepository : IUserAuthRepository
 		var resultList = SelectClients(query);
 
 		if (!string.IsNullOrEmpty(parameters.SearchValue))
-			resultList = resultList.Where(x => x.Search(parameters.SearchValue)).ToList();
+			resultList = resultList
+				.Where(x => x.Search(parameters.SearchValue))
+				.ToList();
 
 		if (parameters.SortProperty == "LastRecordTime")
-			resultList = resultList.Where(x => x.LastRecordTime != null).ToList();
+			resultList = resultList
+				.Where(x => x.LastRecordTime != null).ToList();
 
 		else if (parameters.SortProperty != null)
-			resultList = resultList.Sort(parameters.SortProperty, parameters.SortDescending);
+			resultList = resultList.Sort(parameters.SortProperty,
+				parameters.SortDescending);
 
 
-		return resultList.Page(parameters.Page, parameters.PageSize);
-
-		return resultList.Page(parameters.Page, parameters.PageSize);
+		return resultList.Page(parameters.Page,
+			parameters.PageSize);
 	}
 
-	public async Task<ICollection<UserAuth>> GetWorkersByIds(ICollection<string> ids)
+	public async Task<ICollection<UserAuth>> GetWorkersByIds(
+		ICollection<string> ids)
 	{
 		return await _context.UserAuths
 			.Include(u => u.Works)
-			.Where(x => ids.Contains(x.Id.ToString())).ToListAsync();
+			.Where(x => ids.Contains(x.Id.ToString()))
+			.ToListAsync();
 	}
 
-	public async Task<UserAuth?> GetClientByIdWithRecordsAsync(Guid userId)
+	public async Task<UserAuth?>
+		GetClientByIdWithRecordsAsync(Guid userId)
 	{
 		return await _context.UserAuths
 			.Include(u => u.UserInfo)
@@ -100,7 +116,8 @@ public class UserAuthRepository : IUserAuthRepository
 			.FirstOrDefaultAsync(x => x.Id == userId);
 	}
 
-	public async Task<UserAuth?> GetWorkerByIdWithWorksAsync(Guid userId)
+	public async Task<UserAuth?> GetWorkerByIdWithWorksAsync(
+		Guid userId)
 	{
 		return await _context.UserAuths
 			.Include(u => u.UserInfo)
@@ -108,20 +125,25 @@ public class UserAuthRepository : IUserAuthRepository
 			.FirstOrDefaultAsync(x => x.Id == userId);
 	}
 
-	private static List<ClientsDto> SelectClients(List<UserAuth> query)
+	private static List<ClientsDto> SelectClients(
+		List<UserAuth> query)
 	{
 		return query.Select(x => new ClientsDto(
 			x.Id,
 			x.Email,
-			x.UserInfo.LastName, x.UserInfo.FirstName, x.UserInfo.Patronymic,
+			x.UserInfo.LastName, x.UserInfo.FirstName,
+			x.UserInfo.Patronymic,
 			x.UserInfo.Address,
 			x.UserInfo.Phone,
-			x.Records.Count > 0 ? x.Records.MaxBy(u => u.CreateTime)?.CreateTime : null,
+			x.Records.Count > 0
+				? x.Records.MaxBy(u => u.CreateTime)?.CreateTime
+				: null,
 			x.RoleId
 		)).ToList();
 	}
 
-	private static List<WorkersDto> SelectWorkers(List<UserAuth> query)
+	private static List<WorkersDto> SelectWorkers(
+		List<UserAuth> query)
 	{
 		return query.Select(x => new WorkersDto(
 			x.Id,

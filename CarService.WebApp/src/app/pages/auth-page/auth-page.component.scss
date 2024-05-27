@@ -1,10 +1,10 @@
 :host {
-	@apply relative flex items-center justify-center h-screen w-full;
+	@apply bg-black relative flex items-center justify-center h-screen w-full p-3;
 
-	background-image: url("/assets/background.jpg");
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
+	//background-image: url("/assets/lending-1.jpg");
+	//background-position: center;
+	//background-repeat: no-repeat;
+	//background-size: cover;
 
 
 	//background: linear-gradient(to right bottom, rgb(var(--color-menu)), rgb(var(--color-primary)));
@@ -12,7 +12,7 @@
 
 .wrapper {
 
-	@apply flex flex-col text-on-menu bg-menu/30 w-80 h-96 border-menu border border-solid p-3;
+	@apply flex flex-col text-on-menu bg-menu w-80 border-menu border border-solid p-3;
 
 	font-size: 1.2rem;
 
@@ -31,6 +31,11 @@
 	form {
 		@apply flex flex-col gap-3 flex-1;
 
+		h1 {
+			font-size: 1.5rem;
+			text-align: center;
+		}
+
 		button {
 			transition: background .3s ease-in-out;
 
@@ -44,5 +49,27 @@
 
 	.switch-page {
 		font-size: 0.9rem;
+
+		button {
+			width: 100%;
+			text-align: center;
+			transition: background .3s ease-in-out;
+
+			border-radius: 0.625rem;
+
+			&:hover {
+				@apply bg-menu;
+			}
+		}
 	}
+}
+
+input {
+	@apply border-primary border border-solid w-full p-2;
+
+	border-radius: 0.625rem;
+}
+
+.dirty {
+	@apply border-red-600 border border-solid;
 }

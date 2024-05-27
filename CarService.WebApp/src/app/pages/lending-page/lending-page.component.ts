@@ -1,8 +1,12 @@
 import {Component} from '@angular/core'
-import {NgForOf, NgOptimizedImage} from '@angular/common'
+import {
+	NgClass,
+	NgForOf,
+	NgOptimizedImage
+} from '@angular/common'
 import {ServicesService} from '../../services/services/services.service'
 import {firstValueFrom} from 'rxjs'
-import {RouterOutlet} from '@angular/router'
+import {RouterLink, RouterOutlet} from '@angular/router'
 
 @Component({
 	selector: 'app-lending-page',
@@ -10,7 +14,9 @@ import {RouterOutlet} from '@angular/router'
 	imports: [
 		NgOptimizedImage,
 		NgForOf,
-		RouterOutlet
+		RouterOutlet,
+		RouterLink,
+		NgClass
 	],
 	templateUrl: './lending-page.component.html',
 	styleUrl: './lending-page.component.scss'

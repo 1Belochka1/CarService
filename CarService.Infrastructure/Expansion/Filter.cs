@@ -37,12 +37,19 @@ public static class FilterQuery
 		};
 	}
 
-	public static List<T> FilterWithName<T>(this List<T> list, string filterName, string filterValue)
+	public static List<T> FilterWithName<T>(this List<T> list,
+		string filterName, string filterValue)
 	{
-		var prop = typeof(T).GetProperty(filterName);
+		var result = list
+			.Where(x =>
+				string.Equals(
+					x.GetType()
+						.GetProperty(filterName)
+						.GetValue(x)
+						.ToString(), filterValue,
+					StringComparison.CurrentCultureIgnoreCase)
+			);
 
-		var result = list.Where(x => x.GetType().GetProperty(filterName).GetValue(x).ToString() == filterValue);
-		
 		return result.ToList();
 	}
 }

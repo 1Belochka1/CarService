@@ -2,11 +2,13 @@ using CarService.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CarService.Infrastructure.Persistence.Configurations.ServicesConfiguration;
+namespace
+	CarService.Infrastructure.Persistence.Configurations.
+	ServicesConfiguration;
 
-public class ServiceConfiguration : IEntityTypeConfiguration<Service>
+public class
+	ServiceConfiguration : IEntityTypeConfiguration<Service>
 {
-	
 	// TODO: Возможно убрать связи с мастором и заявками
 
 	public void Configure(EntityTypeBuilder<Service> builder)

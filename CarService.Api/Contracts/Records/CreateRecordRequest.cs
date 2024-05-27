@@ -1,7 +1,8 @@
 namespace CarService.Api.Contracts.Records;
 
 public record CreateRecordRequest(
-	Guid ClientId,
+	Guid? ClientId,
 	string Phone,
-	string CarInfo,
-	string Description);
+	string? CarInfo,
+	string Description,
+	Guid? dayRecordsId);

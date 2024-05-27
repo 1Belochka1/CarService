@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarService.Infrastructure.Migrations
 {
     [DbContext(typeof(CarServiceDbContext))]
-    [Migration("20240524133033_updateEnum")]
-    partial class updateEnum
+    [Migration("20240526131340_AddCalendarProduct")]
+    partial class AddCalendarProduct
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,7 +38,7 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 13, 30, 32, 690, DateTimeKind.Utc).AddTicks(8054));
+                        .HasDefaultValue(new DateTime(2024, 5, 26, 13, 13, 40, 310, DateTimeKind.Utc).AddTicks(6065));
 
                     b.Property<DateTime>("LastMessageDate")
                         .HasColumnType("timestamp with time zone");
@@ -69,7 +69,7 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<DateTime>("SendDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 13, 30, 32, 692, DateTimeKind.Utc).AddTicks(341));
+                        .HasDefaultValue(new DateTime(2024, 5, 26, 13, 13, 40, 311, DateTimeKind.Utc).AddTicks(8764));
 
                     b.Property<Guid>("SenderId")
                         .HasColumnType("uuid");
@@ -83,6 +83,83 @@ namespace CarService.Infrastructure.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("CarService.Core.Images.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<byte[]>("Data")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UserInfoId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserInfoId")
+                        .IsUnique();
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("CarService.Core.Records.CalendarRecords", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid?>("ServiceId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CalendarRecords");
+                });
+
+            modelBuilder.Entity("CarService.Core.Records.DayRecords", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CalendarId")
+                        .HasColumnType("uuid");
+
+                    b.Property<short>("Duration")
+                        .HasColumnType("smallint");
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<short>("Offset")
+                        .HasColumnType("smallint");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CalendarId");
+
+                    b.ToTable("DaysRecords");
+                });
+
             modelBuilder.Entity("CarService.Core.Records.Record", b =>
                 {
                     b.Property<Guid>("Id")
@@ -93,7 +170,7 @@ namespace CarService.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<Guid>("ClientId")
+                    b.Property<Guid?>("ClientId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CompleteTime")
@@ -101,6 +178,9 @@ namespace CarService.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DayRecordsId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -111,6 +191,10 @@ namespace CarService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Priority")
                         .HasColumnType("record_priority");
@@ -125,12 +209,17 @@ namespace CarService.Infrastructure.Migrations
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("DayRecordsId");
+
                     b.ToTable("Records");
                 });
 
             modelBuilder.Entity("CarService.Core.Services.Service", b =>
                 {
                     b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CalendarId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -147,6 +236,9 @@ namespace CarService.Infrastructure.Migrations
                         .HasColumnType("character varying(150)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CalendarId")
+                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -178,6 +270,7 @@ namespace CarService.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
@@ -189,27 +282,30 @@ namespace CarService.Infrastructure.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric(10, 2)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("CarService.Core.Stocks.ProductCategory", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategory");
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("CarService.Core.Users.Role", b =>
@@ -293,6 +389,9 @@ namespace CarService.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("ImageId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -418,15 +517,58 @@ namespace CarService.Infrastructure.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("CarService.Core.Images.Image", b =>
+                {
+                    b.HasOne("CarService.Core.Stocks.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("CarService.Core.Users.UserInfo", "UserInfo")
+                        .WithOne("Image")
+                        .HasForeignKey("CarService.Core.Images.Image", "UserInfoId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("UserInfo");
+                });
+
+            modelBuilder.Entity("CarService.Core.Records.DayRecords", b =>
+                {
+                    b.HasOne("CarService.Core.Records.CalendarRecords", "Calendar")
+                        .WithMany("Days")
+                        .HasForeignKey("CalendarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Calendar");
+                });
+
             modelBuilder.Entity("CarService.Core.Records.Record", b =>
                 {
                     b.HasOne("CarService.Core.Users.UserAuth", "Client")
                         .WithMany("Records")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CarService.Core.Records.DayRecords", "DayRecords")
+                        .WithMany("Records")
+                        .HasForeignKey("DayRecordsId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Client");
+
+                    b.Navigation("DayRecords");
+                });
+
+            modelBuilder.Entity("CarService.Core.Services.Service", b =>
+                {
+                    b.HasOne("CarService.Core.Records.CalendarRecords", "Calendar")
+                        .WithOne("Service")
+                        .HasForeignKey("CarService.Core.Services.Service", "CalendarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Calendar");
                 });
 
             modelBuilder.Entity("CarService.Core.Users.UserAuth", b =>
@@ -531,6 +673,23 @@ namespace CarService.Infrastructure.Migrations
                     b.Navigation("Messages");
                 });
 
+            modelBuilder.Entity("CarService.Core.Records.CalendarRecords", b =>
+                {
+                    b.Navigation("Days");
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("CarService.Core.Records.DayRecords", b =>
+                {
+                    b.Navigation("Records");
+                });
+
+            modelBuilder.Entity("CarService.Core.Stocks.Product", b =>
+                {
+                    b.Navigation("Images");
+                });
+
             modelBuilder.Entity("CarService.Core.Users.Role", b =>
                 {
                     b.Navigation("Users");
@@ -546,6 +705,11 @@ namespace CarService.Infrastructure.Migrations
 
                     b.Navigation("UserInfo")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CarService.Core.Users.UserInfo", b =>
+                {
+                    b.Navigation("Image");
                 });
 #pragma warning restore 612, 618
         }

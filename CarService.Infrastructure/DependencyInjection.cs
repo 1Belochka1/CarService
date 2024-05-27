@@ -25,6 +25,9 @@ public static class DependencyInjection
 			.AddScoped<IUserInfoRepository, UserInfoRepository>()
 			.AddScoped<IRecordsRepository, RecordsRepository>()
 			.AddScoped<IServicesRepository, ServicesRepository>()
+			.AddScoped<IImageRepository, ImageRepository>()
+			.AddScoped<ICalendarRecordsRepository,
+				CalendarRecordsRepository>()
 			.AddScoped<IServiceTypesRepository,
 				ServiceTypesRepository>();
 

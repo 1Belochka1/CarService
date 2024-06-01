@@ -1,0 +1,17 @@
+<div *ngFor="let day of dayRecords | async">
+	<a [routerLink]="day.id">
+		Перейти
+	</a>
+	<div>
+		{{ day.date | date: "short" }}
+	</div>
+	<div>
+		{{ day.startTime }}
+	</div>
+	<div>
+		{{ day.endTime }}
+	</div>
+	<div>
+		{{ day.isWeekend ? "Выходной" : "Рабочий день" }}
+	</div>
+</div>

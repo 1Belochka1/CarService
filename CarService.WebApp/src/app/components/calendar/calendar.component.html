@@ -1,0 +1,33 @@
+<table>
+	<thead>
+		<tr>
+			<th colspan='1000'>
+				<div>
+					<button (click)='previousMonth()'
+									data-direction='left'
+					></button>
+					{{ currentDate.toString() | date: 'MMMM yyyy' }}
+					<button (click)='nextMonth()'
+									data-direction='right'
+					></button>
+				</div>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor='let week of daysView'>
+			<td *ngFor='let day of week'
+					[ngClass]='
+					{"out-current-month": day.month !=
+          currentDate.getMonth() + 1,
+          "day-record-have": day.dayRecord != undefined,
+          	"day-record-weekend": day.dayRecord?.isWeekend
+          }'
+			>
+				{{ day.date | date: 'dd' }}
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+

@@ -17,8 +17,7 @@ public class
 			.ValueGeneratedNever();
 
 		builder.Property(x => x.LastName)
-			.HasMaxLength(100)
-			.IsRequired();
+			.HasMaxLength(100);
 
 		builder.Property(x => x.FirstName)
 			.HasMaxLength(100)
@@ -34,9 +33,12 @@ public class
 			.HasMaxLength(12)
 			.IsRequired();
 
+		builder.HasIndex(x => x.Phone)
+			.IsUnique();
+
 		builder.HasOne(x => x.UserAuth)
 			.WithOne(x => x.UserInfo)
-			.HasForeignKey<UserInfo>(x => x.Id)
+			.HasForeignKey<UserAuth>(x => x.Id)
 			.OnDelete(DeleteBehavior.Cascade);
 
 		builder.HasOne(x => x.Image)

@@ -1,0 +1,31 @@
+<div class='slider'>
+	<div class='slider__wrapper'>
+		<svg-icon src='/assets/slider-arrow.svg'
+							class='slider__prev'
+							(click)='sliderPrev()'
+							[svgStyle]='{"stroke": "white"}'
+		/>
+
+		<div class='slider__list'>
+			<ng-container
+				*ngFor='let item of sliderItems; index as i'
+			>
+				<div class='slide-item'
+						 [ngClass]='{"slide-current": i == selectedIndex}'
+				>
+					<ng-container *ngIf='item.template'
+												[ngTemplateOutlet]='item.template'
+												[ngTemplateOutletContext]='{$implicit: item.context}'
+					/>
+				</div>
+			</ng-container>
+		</div>
+
+		<svg-icon src='/assets/slider-arrow.svg'
+							class='slider__next'
+							(click)='sliderNext()'
+							[svgStyle]='{"stroke": "white",
+								"transform": "rotate(180deg)"}'
+		/>
+	</div>
+</div>

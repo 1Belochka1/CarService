@@ -20,12 +20,12 @@ public class UsersController : ControllerBase
 		_usersService = usersService;
 	}
 
-	[HttpPost("register")]
+	[HttpPost("Register")]
 	public async Task<IActionResult> Register(
 		RegisterUserRequest request
 	)
 	{
-		var result = await _usersService.Register(request.Email,
+		var result = await _usersService.Register(
 			request.LastName, request.FirstName,
 			request.Patronymic, request.Address, request.Phone,
 			request.Password);
@@ -33,10 +33,10 @@ public class UsersController : ControllerBase
 		if (result.IsFailure)
 			return BadRequest(result.Error);
 
-		return Ok();
+		return Ok(result.Value);
 	}
 
-	[HttpPost("login")]
+	[HttpPost("Login")]
 	public async Task<IActionResult> Login(
 		LoginUserRequest request
 	)
@@ -57,7 +57,67 @@ public class UsersController : ControllerBase
 		return Ok();
 	}
 
-	[HttpGet("getByCookie")]
+	//
+	//
+	// METHOD: Create
+	//
+	//
+
+	[HttpPost("Create/UserInfo")]
+	public async Task<IActionResult> CreateUserInfo
+		(CreateUserInfoRequest request)
+	{
+		var userInfo = await _usersService
+			.CreateUserInfoAsync(
+				request.Phone,
+				request.LastName,
+				request.FirstName,
+				request.Patronymic,
+				request.Address
+			);
+
+		if (userInfo.IsFailure)
+			return BadRequest(userInfo.Error);
+
+		return Ok();
+	}
+
+
+	//
+	//
+	// METHOD: Update
+	//
+	//
+
+	// Todo: Ограничить только для админа
+	[HttpPost("Update")]
+	[Authorize(Policy = "")]
+	public async Task<IActionResult> Update(
+		UpdateUserRequest request)
+	{
+		var result = await _usersService.Update(
+			request.Id,
+			request.Phone,
+			request.LastName,
+			request.FirstName,
+			request.Patronymic,
+			request.Address,
+			request.RoleId
+		);
+
+		if (result.IsFailure)
+			return BadRequest(result.Error);
+
+		return Ok();
+	}
+
+	//
+	//
+	// METHOD: Get
+	//
+	//
+
+	[HttpGet("Get/ByCookie")]
 	[Authorize]
 	public async Task<IActionResult> GetByCookie()
 	{
@@ -72,11 +132,11 @@ public class UsersController : ControllerBase
 		var user =
 			await _usersService.GetById(Guid.Parse(userId));
 
-		return Ok(user);
+		return Ok(user.Value);
 	}
 
 	[Authorize(Roles = "1")]
-	[HttpGet("workers")]
+	[HttpGet("Get/Workers")]
 	public async Task<IActionResult> GetWorkers(
 		[FromQuery] GetListWithPageRequest? request)
 	{
@@ -96,7 +156,27 @@ public class UsersController : ControllerBase
 	}
 
 	[Authorize(Roles = "1")]
-	[HttpGet("clients")]
+	[HttpGet("Get/Workers/ByRecordId")]
+	public async Task<IActionResult> GetWorkersByRecordId(
+		Guid recordId)
+	{
+		var response =
+			await _usersService.GetWorkersByRecordIdAsync(
+				new Params(
+					null,
+					null,
+					false,
+					null,
+					1,
+					0,
+					null
+				), recordId);
+
+		return Ok(JsonSerializerHelp.Serialize(response));
+	}
+
+	[Authorize(Roles = "1")]
+	[HttpGet("Get/Clients")]
 	public async Task<IActionResult> GetClients(
 		[FromQuery] GetListWithPageRequest? request)
 	{
@@ -116,44 +196,42 @@ public class UsersController : ControllerBase
 	}
 
 	[Authorize(Roles = "1")]
-	[HttpGet("worker/{id}")]
+	[HttpGet("Get/Worker/{id}")]
 	public async Task<IActionResult> GetWorker(Guid id)
 	{
 		var user =
-			await _usersService.GetWorkerByIdWithWorksAsync(id);
+			await _usersService.GetById(id);
 
-		if (user == null)
-			return NotFound();
+		if (user.IsFailure)
+			return NotFound(user.Error);
 
 		var response = new GetWorkerResponse(
-			user.UserInfo.FirstName,
-			user.UserInfo.LastName,
-			user.UserInfo.Patronymic,
-			user.UserInfo.Address,
-			user.UserInfo.Phone,
-			user.Email
+			user.Value.FirstName,
+			user.Value.LastName,
+			user.Value.Patronymic,
+			user.Value.Address,
+			user.Value.Phone
 		);
 
 		return Ok(response);
 	}
 
 	[Authorize(Roles = "1")]
-	[HttpGet("client/{id}")]
+	[HttpGet("Get/Client/{id}")]
 	public async Task<IActionResult> GetClient(Guid id)
 	{
 		var user =
-			await _usersService.GetClientByIdWithRecordsAsync(id);
+			await _usersService.GetById(id);
 
-		if (user == null)
-			return NotFound();
+		if (user.IsFailure)
+			return NotFound(user.Error);
 
 		var response = new GetWorkerResponse(
-			user.UserInfo.FirstName,
-			user.UserInfo.LastName,
-			user.UserInfo.Patronymic,
-			user.UserInfo.Address,
-			user.UserInfo.Phone,
-			user.Email
+			user.Value.FirstName,
+			user.Value.LastName,
+			user.Value.Patronymic,
+			user.Value.Address,
+			user.Value.Phone
 		);
 
 		return Ok(response);
@@ -193,9 +271,8 @@ public class UsersController : ControllerBase
 
 		var roleId = new Random();
 		var random = new Random();
-		for (var i = 0; i <= 500; i++)
+		for (var i = 0; i <= 100; i++)
 			await _usersService.Register(
-				$"email{random.Next(0, 100000)}belov@mail.com",
 				$"{lastNames[random.Next(0, 20)]}",
 				$"{firstNames[random.Next(0, 20)]}",
 				$"{middleNames[random.Next(0, 20)]}",

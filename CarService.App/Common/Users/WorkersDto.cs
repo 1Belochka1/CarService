@@ -6,11 +6,12 @@ public class WorkersDto
 	{
 	}
 
-	public WorkersDto(Guid id, string email, string lastName, string firstName,
-		string? patronymic, string? address, string phone, int roleId)
+	public WorkersDto(Guid id, string lastName,
+		string firstName,
+		string? patronymic, string? address, string phone,
+		int roleId)
 	{
 		Id = id;
-		Email = email;
 		LastName = lastName;
 		Address = address;
 		Phone = phone;
@@ -20,7 +21,6 @@ public class WorkersDto
 	}
 
 	public Guid Id { get; set; }
-	public string Email { get; set; }
 	public string LastName { get; set; }
 	public string FirstName { get; set; }
 	public string? Patronymic { get; set; }

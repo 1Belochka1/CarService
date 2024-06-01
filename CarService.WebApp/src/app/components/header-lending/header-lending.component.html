@@ -1,0 +1,35 @@
+<header class="header">
+	<div class="header__logo">
+		<img src="assets/атлант.jpg"
+				 alt="Атлант"
+		>
+	</div>
+	<div class="header__title">
+		Автодоктор
+	</div>
+	<div class="header__burger">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+	<div class="header__navigation"
+			 [ngClass]="{}"
+	>
+		<nav class="header__lending">
+			<ul>
+				<li><a [routerLink]='["/lending"]'>Главная</a></li>
+				<li><a>Услуги</a></li>
+				<li><a>О нас</a></li>
+				<li><a>Записаться</a></li>
+			</ul>
+		</nav>
+		<nav class="header__link">
+			<ul>
+				<li><a routerLink="/shop">Магазин</a></li>
+				<li><a routerLink="/account">Личный
+					кабинет</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</header>

@@ -1,0 +1,67 @@
+.header {
+  @apply flex items-center gap-4 p-2 h-12 text-on-surface;
+
+  @media (max-width: 786px) {
+    justify-content: space-between;
+  }
+
+  &__logo {
+    @apply h-full;
+    aspect-ratio: 1;
+  }
+
+  &__title {
+    @apply text-red-600;
+  }
+
+  &__navigation {
+    flex: 1;
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  &__burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    width: 30px;
+
+    > span {
+      display: block;
+      background: white;
+      height: 2px;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
+
+  &__lending {
+    flex: 1;
+
+    ul {
+      @apply flex gap-2;
+
+      li {
+        //@apply ;
+      }
+    }
+  }
+
+  &__link {
+    ul {
+      @apply flex gap-2;
+
+      li {
+        //@apply ;
+      }
+    }
+  }
+}

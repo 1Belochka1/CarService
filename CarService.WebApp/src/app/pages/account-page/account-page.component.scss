@@ -20,9 +20,9 @@
 
   .menu {
     @apply flex flex-col gap-5;
-    @apply w-[var(--width-menu)] h-full px-10 py-5 fixed z-50;
-    @apply bg-menu;
-    @apply text-on-menu;
+    @apply w-[var(--width-surface)] h-full px-10 py-5 fixed z-50;
+    @apply bg-surface;
+    @apply text-on-surface;
 
     transition: all 0.3s ease;
 
@@ -65,9 +65,9 @@
         padding: 5px 5px 5px 0;
 
         &:hover {
-          @apply bg-primary text-menu;
+          @apply bg-primary text-surface;
           .svg-nav {
-            @apply stroke-menu;
+            @apply stroke-surface;
           }
         }
       }

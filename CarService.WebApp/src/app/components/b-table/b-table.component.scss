@@ -1,13 +1,16 @@
 :host {
-	@apply flex flex-col gap-5 w-full h-full;
+	@apply flex flex-col gap-5 w-full max-h-full;
 }
 
 .table {
 
 	&__toolbox {
+		@apply text-on-surface;
+
 		display: flex;
 		gap: 20px;
 		flex-wrap: wrap;
+
 
 		@media (max-width: 768px) {
 			flex-direction: column;
@@ -16,7 +19,7 @@
 
 	&__wrapper {
 
-		@apply flex-1 w-full overflow-auto relative border border-solid border-menu;
+		@apply flex-1 w-full overflow-auto relative border border-solid border-surface;
 
 		//border-top-left-radius: 0.625rem;
 		//border-top-right-radius: 0.625rem;
@@ -31,14 +34,14 @@
 				@apply bg-surface w-full h-full relative;
 
 				thead tr {
-					@apply bg-menu min-h-9 h-9 max-h-20 top-0 z-10 sticky;
+					@apply bg-surface min-h-9 h-9 max-h-20 top-0 z-10 sticky;
 
 					@media (max-width: 768px) {
 						display: none;
 					}
 
 					th {
-						@apply text-on-menu p-1;
+						@apply text-on-surface p-1;
 
 						font-size: 1.25rem;
 
@@ -88,7 +91,7 @@
 						}
 
 						&:not(:last-child) {
-							@apply border-r border-menu border-solid tablet:border-r-0 tablet:border-b tablet:border-b-background;
+							@apply border-r border-surface border-solid tablet:border-r-0 tablet:border-b tablet:border-b-background;
 						}
 					}
 

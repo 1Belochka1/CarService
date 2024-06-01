@@ -14,6 +14,7 @@ export type listWithPage<T> = {
 	items: T[]
 }
 
+
 export abstract class TableService {
 	httpClient: HttpClient = inject(HttpClient)
 

@@ -9,10 +9,10 @@ namespace
 
 public class
 	CalendarRecordsConfiguration : IEntityTypeConfiguration<
-	CalendarRecords>
+	CalendarRecord>
 {
 	public void Configure(
-		EntityTypeBuilder<CalendarRecords> builder)
+		EntityTypeBuilder<CalendarRecord> builder)
 	{
 		builder.HasKey(x => x.Id);
 
@@ -25,7 +25,8 @@ public class
 		builder.Property(x => x.Description)
 			.HasMaxLength(500);
 
-		builder.HasOne(x => x.Service)
+		builder.HasOne(x =>
+				x.Service)
 			.WithOne(x => x.Calendar)
 			.HasForeignKey<Service>(x => x.CalendarId);
 	}

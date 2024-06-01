@@ -1,13 +1,18 @@
 section {
-	@apply h-screen p-5 border border-solid border-menu;
+	@apply h-screen p-5 border border-solid border-surface;
 
 	&:not(:last-child) {
 		//border-bottom: 1px solid white;
 	}
 
 	h2 {
-		@apply text-menu;
+		@apply text-surface;
 		font-size: 1.75rem;
+	}
+
+	h3 {
+		@apply text-surface;
+		font-size: 1.35rem;
 	}
 }
 
@@ -59,10 +64,10 @@ section {
 	}
 
 	&__item {
-		@apply bg-menu text-center p-2;
+		@apply bg-surface text-center p-2;
 
 		h3 {
-			@apply font-bold;
+			@apply font-bold text-on-surface;
 
 			font-size: 1.25rem;
 		}

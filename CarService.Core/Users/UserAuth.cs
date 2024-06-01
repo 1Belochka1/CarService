@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using CarService.Core.Chats;
 using CarService.Core.Records;
 using CarService.Core.Services;
 using CarService.Core.Stocks;
@@ -13,11 +12,11 @@ public class UserAuth
 	{
 	}
 
-	private UserAuth(Guid id, string email,
+	private UserAuth(Guid id, string phone,
 		string passwordHash, DateTime createDate, int roleId)
 	{
 		Id = id;
-		Email = email;
+		Phone = phone;
 		PasswordHash = passwordHash;
 		CreateDate = createDate;
 		RoleId = roleId;
@@ -25,7 +24,7 @@ public class UserAuth
 
 	public Guid Id { get; private set; }
 
-	public string Email { get; private set; }
+	public string Phone { get; private set; }
 
 	[JsonIgnore]
 	public string PasswordHash { get; private set; }
@@ -36,52 +35,45 @@ public class UserAuth
 
 	public Role Role { get; private set; } = null!;
 
-	public virtual UserInfo UserInfo { get; private set; } =
+	public UserInfo UserInfo { get; private set; } =
 		null!;
 
-	public virtual List<Record>
-		Records { get; private set; } = [];
+	public List<Service> Services { get; private set; } = [];
 
-	public virtual List<Service> Services
+	public List<Record> Works { get; private set; } =
+		[];
+
+	public List<Product> Products { get; private set; } =
+		[];
+
+	public List<Cart> Carts { get; private set; } =
+		[];
+
+	public void SetRoleId(int roleId)
 	{
-		get;
-		private set;
-	} = [];
-
-	public virtual List<Record> Works { get; private set; } =
-		[];
-
-	public virtual List<Product> Products
-	{
-		get;
-		private set;
-	} =
-		[];
-
-	public virtual List<Cart> Carts { get; private set; } =
-		[];
-
+		RoleId = roleId;
+	}
 
 	public static Result<UserAuth> Create(Guid id,
-		string email, string passwordHash, DateTime createDate,
+		string phone, string passwordHash, DateTime createDate,
 		int roleId)
 	{
 		if (id == Guid.Empty)
 			return Result.Failure<UserAuth>("Id can't be empty");
 
-		if (string.IsNullOrWhiteSpace(email))
+		if (string.IsNullOrWhiteSpace(phone))
 			return Result.Failure<UserAuth>(
-				"Email can't be empty");
+				"Номер не может быть пустым");
 
 		if (string.IsNullOrWhiteSpace(passwordHash))
 			return Result.Failure<UserAuth>(
-				"Password can't be empty");
+				"Пароль не может быть пустым");
 
 		if (roleId == 0)
 			return Result.Failure<UserAuth>(
-				"RoleId can't be empty");
+				"Роль не может быть пустой");
 
-		var user = new UserAuth(id, email, passwordHash,
+		var user = new UserAuth(id, phone, passwordHash,
 			createDate, roleId);
 
 		return Result.Success(user);

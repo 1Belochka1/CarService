@@ -8,5 +8,4 @@ public record GetWorkerResponse(
 	string LastName,
 	string? Patronymic,
 	string? Address,
-	string Phone,
-	string Email);
+	string Phone);

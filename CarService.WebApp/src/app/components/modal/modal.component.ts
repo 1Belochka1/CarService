@@ -3,7 +3,8 @@ import {
 	Component,
 	ElementRef,
 	EventEmitter,
-	Input,
+	HostListener,
+	Input, OnDestroy,
 	Output
 } from '@angular/core'
 import {NgIf, NgTemplateOutlet} from '@angular/common'
@@ -18,7 +19,7 @@ import {NgIf, NgTemplateOutlet} from '@angular/common'
 	templateUrl: './modal.component.html',
 	styleUrl: './modal.component.scss'
 })
-export class ModalComponent implements AfterContentInit {
+export class ModalComponent implements AfterContentInit, OnDestroy {
 
 	@Input() title?: string = ''
 
@@ -27,9 +28,19 @@ export class ModalComponent implements AfterContentInit {
 		isCancel: boolean
 	}>()
 
-	constructor(private elementRef: ElementRef) {
 
+	constructor(private elementRef: ElementRef) {
 	}
+
+	ngOnDestroy(): void {
+		console.log("destrou")
+    }
+
+	@HostListener('window:keydown.escape', ['$event'])
+	updateValue(event: KeyboardEvent) {
+		this.close()
+	}
+
 
 	ngAfterContentInit(): void {
 		console.log(this)
@@ -45,4 +56,9 @@ export class ModalComponent implements AfterContentInit {
 		this.closeEvent.emit({isCancel: false, isConfirm: true})
 	}
 
+	protected readonly onkeydown = onkeydown
+
+	keydown(event: any) {
+		console.log(event)
+	}
 }

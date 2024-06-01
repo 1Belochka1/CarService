@@ -1,4 +1,5 @@
 import {
+	ComponentRef,
 	Inject,
 	Injectable,
 	Injector,
@@ -28,10 +29,15 @@ type ModalOptions = {
 export class ModalService {
 
 	public title: string
+
 	private modalNotifier?: Subject<{
 		isConfirm: boolean,
 		isCancel: boolean
 	}>
+
+	private isOpen: boolean = false
+
+	private _modalComponent: ComponentRef<ModalComponent>
 
 	constructor(
 		private viewContainerRef: ViewContainerRef,
@@ -42,30 +48,38 @@ export class ModalService {
 
 	open(content: TemplateRef<any>, options?: ModalOptions) {
 
+		if (this.isOpen)
+			return
+
 		const contentViewRef = this.viewContainerRef.createEmbeddedView(content, {
 			$implicit: options?.context,
 		})
 
-		const modalComponent =
+		this._modalComponent =
 			this.viewContainerRef.createComponent(ModalComponent, {
 				injector: this.injector,
 				projectableNodes: [contentViewRef.rootNodes]
 			})
 
-		modalComponent.instance.title = options?.title
+		this._modalComponent.instance.title = options?.title
 
-		modalComponent.instance.closeEvent.subscribe((data) => this.closeModal(data))
+		this._modalComponent.instance.closeEvent.subscribe((data) => this.closeModal(data))
 
-		modalComponent.hostView.detectChanges()
+		this._modalComponent.hostView.detectChanges()
 
-		this.document.body.appendChild(modalComponent.location.nativeElement)
+		this.document.body.appendChild(this._modalComponent.location.nativeElement)
+
+		this.isOpen = true
 
 		this.modalNotifier = new Subject()
+
 		return this.modalNotifier?.asObservable()
 	}
 
 	closeModal(data: any) {
 		this.modalNotifier?.next(data)
 		this.modalNotifier?.complete()
+		this._modalComponent.destroy()
+		this.isOpen = false
 	}
 }

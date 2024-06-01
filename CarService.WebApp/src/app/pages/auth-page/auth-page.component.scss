@@ -7,12 +7,12 @@
 	//background-size: cover;
 
 
-	//background: linear-gradient(to right bottom, rgb(var(--color-menu)), rgb(var(--color-primary)));
+	//background: linear-gradient(to right bottom, rgb(var(--color-surface)), rgb(var(--color-primary)));
 }
 
 .wrapper {
 
-	@apply flex flex-col text-on-menu bg-menu w-80 border-menu border border-solid p-3;
+	@apply flex flex-col text-on-surface bg-surface w-80 border-surface border border-solid p-3;
 
 	font-size: 1.2rem;
 
@@ -42,7 +42,7 @@
 			border-radius: 0.625rem;
 
 			&:hover {
-				@apply bg-menu;
+				@apply bg-surface;
 			}
 		}
 	}
@@ -58,7 +58,7 @@
 			border-radius: 0.625rem;
 
 			&:hover {
-				@apply bg-menu;
+				@apply bg-surface;
 			}
 		}
 	}

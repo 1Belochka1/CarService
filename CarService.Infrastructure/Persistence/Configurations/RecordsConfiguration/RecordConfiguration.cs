@@ -1,6 +1,7 @@
 using CarService.Core.Records;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace
 	CarService.Infrastructure.Persistence.Configurations.
@@ -34,10 +35,21 @@ public class
 			.HasDefaultValue(false);
 
 		builder.Property(x => x.Priority)
-			.HasColumnType("record_priority");
+			.HasMaxLength(15)
+			.HasConversion(
+				v => Enum.GetName(v),
+				v => (RecordPriority)Enum.Parse(
+					typeof(RecordPriority),
+					v!)
+			);
 
 		builder.Property(x => x.Status)
-			.HasColumnType("record_status");
+			.HasMaxLength(15)
+			.HasConversion(
+				v => Enum.GetName(v),
+				v => (RecordStatus)Enum.Parse(typeof(RecordStatus),
+					v!)
+			);
 
 		builder.HasOne(x => x.Client)
 			.WithMany(x => x.Records)

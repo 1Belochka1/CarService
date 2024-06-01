@@ -18,6 +18,8 @@ import {BTableSortDirective} from '../../../../direcrives/b-table-sort.directive
 import {UsersService} from '../../../../services/users/users.service'
 import {WorkersService} from '../../../../services/users/workers.service'
 import {SortMastersProperty} from '../../../../services/Requests/GetWorkersParamsRequest'
+import {FullNamePipe} from '../../../../pipe/full-name.pipe'
+import {TitleService} from '../../../../services/title.service'
 
 
 
@@ -39,6 +41,7 @@ import {SortMastersProperty} from '../../../../services/Requests/GetWorkersParam
 		BTemplateDirective,
 		AboutComponent,
 		BTableSortDirective,
+		FullNamePipe,
 	],
 	templateUrl: './workers-page.component.html',
 	styleUrl: './workers-page.component.scss',
@@ -47,6 +50,7 @@ export class WorkersPageComponent {
 	workersService: WorkersService = inject(WorkersService)
 
 	constructor(private _userService: UsersService, private _router: Router) {
+		// inject(TitleService).setTitle("Сотрудники")
 		this.workersService.update()
 	}
 

@@ -11,7 +11,7 @@
 .nav {
   &__list {
 
-    @apply bg-menu overflow-auto text-on-menu flex gap-1 border-b border-solid border-surface p-1;
+    @apply bg-surface overflow-auto text-on-surface flex gap-1 border-b border-solid border-surface p-1;
 
     border-radius: 0.625rem;
 
@@ -20,7 +20,7 @@
     //box-shadow: 0 2px 6px -3px rgba(0, 0, 0, .4);
 
     li {
-      @apply py-1 px-2 cursor-pointer bg-surface/75 text-menu;
+      @apply py-1 px-2 cursor-pointer bg-surface/75 text-surface;
 
       border-radius: 0.625rem;
 

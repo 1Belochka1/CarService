@@ -1,11 +1,22 @@
+using CarService.App.Common.DayRecordsWithWeeks;
 using CarService.Core.Records;
 
 namespace CarService.App.Interfaces.Persistence;
 
 public interface IDayRecordsRepository
 {
-	Task<Guid> Create(DayRecords dayRecords);
-	Task Update(DayRecords dayRecords);
-	Task<DayRecords?> GetById(Guid id);
-	Task<List<DayRecords>> GetAll();
+	Task<Guid> Create(DayRecord dayRecord);
+
+	Task CreateRangeAsync(
+		List<DayRecord> daysRecords);
+
+	Task Update(DayRecord dayRecord);
+	Task<DayRecord?> GetById(Guid id);
+	Task<List<DayRecord>> GetAll();
+
+	Task<List<DayRecord>> GetByCalendarIdByMonthByYearId(
+		Guid calendarId,
+		int? month, int? year);
+
+	Task<List<DayRecord>> GetByCalendarId(Guid calendarId);
 }

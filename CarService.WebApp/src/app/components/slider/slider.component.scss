@@ -1,0 +1,42 @@
+.slider {
+  height: 100%;
+
+  &__wrapper {
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px
+  }
+
+  &__list {
+
+    display: flex;
+
+    .slide-item {
+      display: none;
+      width: 300px;
+    }
+
+    .slide-prev {
+      display: block;
+    }
+
+    .slide-current {
+      display: block;
+    }
+
+    .slide-next {
+    }
+
+  }
+
+  &__prev {
+
+  }
+
+  &__next {
+
+  }
+}

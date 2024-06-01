@@ -1,10 +1,35 @@
-
 :host {
 	::ng-deep {
 		.select {
 			ul {
-				@apply bg-menu;
+				@apply bg-surface;
 			}
+		}
+	}
+}
+
+.wrapper {
+	@apply flex flex-col gap-5;
+
+
+	.about {
+		@apply bg-surface;
+
+		padding: 0.9375rem;
+
+		border-radius: 0.625rem;
+
+		h1{
+			@apply border-b-surface border border-solid;
+			font-size: 1rem;
+		}
+	}
+
+	.action {
+		@apply flex gap-5;
+		button {
+			@apply bg-primary/40 border-primary border border-solid p-1 hover:bg-primary;
+			border-radius: 0.625rem;
 		}
 	}
 }

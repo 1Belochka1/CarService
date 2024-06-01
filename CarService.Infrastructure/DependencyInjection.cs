@@ -1,7 +1,9 @@
 using System.Text;
 using CarService.App.Interfaces.Auth;
+using CarService.App.Interfaces.CalendarsHelper;
 using CarService.App.Interfaces.Persistence;
 using CarService.Infrastructure.Auth;
+using CarService.Infrastructure.CalendarsHelper;
 using CarService.Infrastructure.Persistence;
 using CarService.Infrastructure.Persistence.Repositories;
 using Clave.Expressionify;
@@ -21,15 +23,25 @@ public static class DependencyInjection
 		ConfigurationManager configuration)
 	{
 		services
-			.AddScoped<IUserAuthRepository, UserAuthRepository>()
-			.AddScoped<IUserInfoRepository, UserInfoRepository>()
+			.AddScoped<IUserAuthRepository,
+				UserAuthRepository>()
+			.AddScoped<IUserInfoRepository,
+				UserInfoRepository>()
 			.AddScoped<IRecordsRepository, RecordsRepository>()
-			.AddScoped<IServicesRepository, ServicesRepository>()
+			.AddScoped<IServicesRepository,
+				ServicesRepository>()
 			.AddScoped<IImageRepository, ImageRepository>()
 			.AddScoped<ICalendarRecordsRepository,
 				CalendarRecordsRepository>()
+			.AddScoped<IDayRecordsRepository,
+				DayRecordsRepository>()
+			.AddScoped<
+				ITimeRecordsRepository, TimeRecordsRepository>()
 			.AddScoped<IServiceTypesRepository,
 				ServiceTypesRepository>();
+
+		services
+			.AddSingleton<ICalendarHelper, CalendarHelper>();
 
 		services.AddDbContext<CarServiceDbContext>(options =>
 		{

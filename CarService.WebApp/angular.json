@@ -34,6 +34,7 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -64,9 +65,6 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-					"options": {
-						"ssl": true
-					},
           "configurations": {
             "production": {
               "buildTarget": "CarService:build:production"
@@ -97,6 +95,7 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss"
             ],
             "scripts": []

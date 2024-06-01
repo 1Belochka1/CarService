@@ -1,0 +1,33 @@
+<app-header-lending></app-header-lending>
+<div class='wrapper'>
+
+	<app-stepper>
+		<cdk-step>
+			<div class='days'>
+				<div class='day'
+						 *ngFor='let day of days | async'
+				>
+					<div class='day__date'>
+						{{ day.date | date: "dd.MM" }}
+					</div>
+
+					<div class='times'>
+						<div class='time'
+								 *ngFor='let time of day.timeRecords'
+								 (click)='selectTime(time.id)'
+								 [ngClass]='{"busy": time.isBusy}'
+						>
+							<div>{{ time.startTime }}</div>
+							<div>{{ time.endTime }}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</cdk-step>
+
+		<cdk-step>
+			<app-form-record></app-form-record>
+		</cdk-step>
+	</app-stepper>
+
+</div>

@@ -1,0 +1,93 @@
+table {
+  border-collapse: collapse;
+
+  color: rgba(var(--color-menu), 1);
+
+  td {
+    border: 1px solid rgba(235, 135, 135, 0.7);
+    text-align: center;
+    @apply bg-white;
+  }
+
+  th {
+    text-align: center;
+    text-align: -webkit-center;
+    vertical-align: middle;
+    height: 50px;
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 230px;
+
+      button[data-direction] {
+        position: relative;
+        height: 30px;
+        width: 30px;
+      }
+
+      button[data-direction="left"] {
+        &:before {
+          position: absolute;
+          content: "";
+          height: 50%;
+          top: 0;
+          width: 1px;
+          background: #000;
+          transform: rotate(45deg) translateY(3px);
+        }
+
+        &:after {
+          position: absolute;
+          content: "";
+          height: 50%;
+          bottom: 0;
+          width: 1px;
+          background: #000;
+          transform: rotate(-45deg) translateY(-3px);
+        }
+      }
+
+      button[data-direction="right"] {
+        &:before {
+          position: absolute;
+          content: "";
+          height: 50%;
+          top: 0;
+          width: 1px;
+          background: #000;
+          transform: rotate(-45deg) translateY(3px);
+        }
+
+        &:after {
+          position: absolute;
+          content: "";
+          height: 50%;
+          bottom: 0;
+          width: 1px;
+          background: #000;
+          transform: rotate(45deg) translateY(-3px);
+        }
+      }
+    }
+  }
+
+  .out-current-month {
+    opacity: .5;
+  }
+
+  .day-record-have {
+    @apply bg-green-300/30;
+  }
+
+  .day-record-weekend {
+    @apply bg-surface;
+  }
+}
+
+
+
+
+
+

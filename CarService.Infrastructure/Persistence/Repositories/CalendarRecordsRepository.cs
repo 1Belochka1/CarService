@@ -16,17 +16,17 @@ public class
 		_context = context;
 	}
 
-	public async Task<Guid> Create(CalendarRecords records)
+	public async Task<Guid> Create(CalendarRecord record)
 	{
-		await _context.CalendarRecords.AddAsync(records);
+		await _context.CalendarRecords.AddAsync(record);
 		await _context.SaveChangesAsync();
 
-		return records.Id;
+		return record.Id;
 	}
 
-	public async Task Update(CalendarRecords records)
+	public async Task Update(CalendarRecord record)
 	{
-		_context.CalendarRecords.Update(records);
+		_context.CalendarRecords.Update(record);
 		await _context.SaveChangesAsync();
 	}
 
@@ -39,10 +39,24 @@ public class
 		await _context.SaveChangesAsync();
 	}
 
-	public async Task<CalendarRecords?> GetByServiceId(
+	public async Task<CalendarRecord?> GetByServiceId(
 		Guid serviceId)
 	{
 		return await _context.CalendarRecords
 			.FirstOrDefaultAsync(x => x.ServiceId == serviceId);
+	}
+
+	public async Task<CalendarRecord?> GetById(Guid id)
+	{
+		return await _context.CalendarRecords
+			.Include(x => x.DaysRecords)
+			.ThenInclude(x => x.TimeRecords)
+			.FirstOrDefaultAsync(x => x.Id == id);
+	}
+
+	public async Task<List<CalendarRecord>> GetAll()
+	{
+		return await _context.CalendarRecords
+			.ToListAsync();
 	}
 }

@@ -1,11 +1,10 @@
-<div class="modal">
+<div class="modal" >
 
 	<div class="modal-header" *ngIf="title">
 			<h2 class="modal-title">{{ title }}</h2>
 	</div>
 
-
-	<div class="modal-content">
+	<div class="modal-content" tabindex="0">
 		<ng-content></ng-content>
 	</div>
 
@@ -16,4 +15,4 @@
 	</div>
 </div>
 
-<div class="modal-backdrop" (click)="close()"></div>
+<div class="modal-backdrop" (click)="close()" (keydown)="keydown($event)"></div>

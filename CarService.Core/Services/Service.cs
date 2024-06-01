@@ -29,7 +29,7 @@ public class Service
 
 	public Guid? CalendarId { get; private set; }
 
-	public virtual CalendarRecords? Calendar
+	public virtual CalendarRecord? Calendar
 	{
 		get;
 		private set;

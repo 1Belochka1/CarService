@@ -7,6 +7,7 @@ import {routes} from './app.routes'
 import {registerLocaleData} from '@angular/common'
 import localeRu from '@angular/common/locales/ru'
 import {AuthService} from './services/auth.service'
+import {provideNativeDateAdapter} from '@angular/material/core'
 
 registerLocaleData(localeRu)
 
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
 		provideRouter(routes),
 		provideAnimationsAsync(),
 		provideAngularSvgIcon(),
+		provideNativeDateAdapter(),
 		provideHttpClient(), {
 			provide: LOCALE_ID,
 			useValue: 'ru'

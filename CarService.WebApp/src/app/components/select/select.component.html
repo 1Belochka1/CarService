@@ -10,7 +10,7 @@
                     [title]="item.name"
                     [value]="item.value"
                     (change)="change($event)"
-                    [checked]="isFirst"
+                    [checked]="index == selectedIndex"
             >
         </ng-container>
 

@@ -1,0 +1,10 @@
+<div class="wrapper bg-surface">
+	<ul class="calendars_list">
+		<li *ngFor="let calendar of calendars | async">
+			<a [routerLink]="['/account', 'calendar',
+			calendar.id]">
+				{{ calendar.name }}
+			</a>
+		</li>
+	</ul>
+</div>

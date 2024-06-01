@@ -35,75 +35,18 @@ public class UserAuthRepository : IUserAuthRepository
 				x.Id == id);
 	}
 
-	public async Task<UserAuth?> GetByEmailAsync(string email)
+	public async Task<UserAuth?> GetByPhoneAsync(string phone)
 	{
 		return await _context.UserAuths.FirstOrDefaultAsync(x =>
-			x.Email == email);
-	}
-
-	public async Task<ListWithPage<WorkersDto>>
-		GetWorkersAsync(Params parameters)
-	{
-		var query = await _context.UserAuths
-			.Include(u => u.UserInfo)
-			.Include(u => u.Role)
-			.AsQueryable().ToListAsync();
-
-		query = query.Where(x => x.RoleId == 2).ToList();
-
-		var resultList = SelectWorkers(query);
-
-		if (!string.IsNullOrEmpty(parameters.SearchValue))
-			resultList = resultList
-				.Where(x => x.Search(parameters.SearchValue))
-				.ToList();
-
-		if (parameters.SortProperty != null)
-			resultList = resultList.Sort(parameters.SortProperty,
-				parameters.SortDescending);
-
-		return resultList.Page(parameters.Page,
-			parameters.PageSize);
-	}
-
-	public async Task<ListWithPage<ClientsDto>>
-		GetClientsAsync(
-			Params parameters
-		)
-	{
-		var query = await _context.UserAuths
-			.Include(u => u.UserInfo)
-			.Include(u => u.Records)
-			.AsQueryable().ToListAsync();
-
-		query = query.Where(x => x.RoleId == 3).ToList();
-
-		var resultList = SelectClients(query);
-
-		if (!string.IsNullOrEmpty(parameters.SearchValue))
-			resultList = resultList
-				.Where(x => x.Search(parameters.SearchValue))
-				.ToList();
-
-		if (parameters.SortProperty == "LastRecordTime")
-			resultList = resultList
-				.Where(x => x.LastRecordTime != null).ToList();
-
-		else if (parameters.SortProperty != null)
-			resultList = resultList.Sort(parameters.SortProperty,
-				parameters.SortDescending);
-
-
-		return resultList.Page(parameters.Page,
-			parameters.PageSize);
+			x.Phone == phone);
 	}
 
 	public async Task<ICollection<UserAuth>> GetWorkersByIds(
-		ICollection<string> ids)
+		ICollection<Guid> ids)
 	{
 		return await _context.UserAuths
 			.Include(u => u.Works)
-			.Where(x => ids.Contains(x.Id.ToString()))
+			.Where(x => ids.Contains(x.Id))
 			.ToListAsync();
 	}
 
@@ -112,7 +55,7 @@ public class UserAuthRepository : IUserAuthRepository
 	{
 		return await _context.UserAuths
 			.Include(u => u.UserInfo)
-			.Include(u => u.Records)
+			.ThenInclude(u => u.Records)
 			.FirstOrDefaultAsync(x => x.Id == userId);
 	}
 
@@ -123,37 +66,5 @@ public class UserAuthRepository : IUserAuthRepository
 			.Include(u => u.UserInfo)
 			.Include(u => u.Works)
 			.FirstOrDefaultAsync(x => x.Id == userId);
-	}
-
-	private static List<ClientsDto> SelectClients(
-		List<UserAuth> query)
-	{
-		return query.Select(x => new ClientsDto(
-			x.Id,
-			x.Email,
-			x.UserInfo.LastName, x.UserInfo.FirstName,
-			x.UserInfo.Patronymic,
-			x.UserInfo.Address,
-			x.UserInfo.Phone,
-			x.Records.Count > 0
-				? x.Records.MaxBy(u => u.CreateTime)?.CreateTime
-				: null,
-			x.RoleId
-		)).ToList();
-	}
-
-	private static List<WorkersDto> SelectWorkers(
-		List<UserAuth> query)
-	{
-		return query.Select(x => new WorkersDto(
-			x.Id,
-			x.Email,
-			x.UserInfo.LastName,
-			x.UserInfo.FirstName,
-			x.UserInfo.Patronymic,
-			x.UserInfo.Address,
-			x.UserInfo.Phone,
-			x.RoleId
-		)).ToList();
 	}
 }

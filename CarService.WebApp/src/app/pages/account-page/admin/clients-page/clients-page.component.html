@@ -9,25 +9,19 @@
 		<ng-template bTemplate="head">
 			<tr>
 				<th>ФИО</th>
-				<th>Почта</th>
 				<th>Адрес</th>
 				<th>Номер</th>
 				<th>Последняя заявка (Дата)</th>
+				<th>Зарегистрирован</th>
 			</tr>
 		</ng-template>
 		<ng-template bTemplate="body" let-item>
 			<tr>
 				<td data-name="ФИО">
-					{{
-						item.lastName + ' ' + item.firstName + ' '
-						+ item.patronymic
-					}}
-				</td>
-				<td data-name="Почта">
-					{{ item.email }}
+					{{ item | fullName }}
 				</td>
 				<td class="break-all" data-name="Адрес">
-					{{ item.address }}
+					{{ item.address | notSpecified }}
 				</td>
 				<td class="tablet:max-w-full max-w-32"
 						data-name="Номер">
@@ -38,6 +32,11 @@
 						item.lastRecordTime
 							? (item.lastRecordTime | date)
 							: "Заявки отсутствуют"
+					}}
+				</td>
+				<td data-name="Зарегистрирован">
+					{{
+						item.roleId != null ? "Да" : "Нет"
 					}}
 				</td>
 			</tr>

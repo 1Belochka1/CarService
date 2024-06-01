@@ -1,24 +1,38 @@
 <div class="wrapper" *ngIf="record">
-	<h1>Заявка от
-		{{ record.createTime | date: 'dd MMMM hh:mm ' }}
-	</h1>
-	<div class="client">
-		<h2>Контактные данные клиента</h2>
-		<p data-name="Полное имя">
-			{{ record.client.userInfo | fullName }}
-		</p>
-		<p data-name="Почта">
-			{{ record.client.email }}
-		</p>
-		<p data-name="Номер телефона">
-			{{ record.client.userInfo.phone }}
-		</p>
-	</div>
-
-	<div class="record">
-		<h2>Описание</h2>
-		<div class="record__description">
-			{{ record.description }}
+	<div class="about">
+		<h1>Заявка от
+			{{ record.createTime | date: 'dd MMMM hh:mm ' }}
+		</h1>
+		<div class="table-about">
+			<h2>Контактные данные клиента</h2>
+			<h3>Фио</h3>
+			<p data-name="Полное имя">
+				{{ record.client | fullName }}
+			</p>
+			<h3>Номер телефона</h3>
+			<p>
+				{{ record.client.phone }}
+			</p>
+			<h3>Описание</h3>
+			<p>{{ record.description }}</p>
+			<ng-container *ngIf="record.carInfo">
+				<h3>Автомобиль</h3>
+				<p>{{ record.carInfo }}</p>
+			</ng-container>
+			<h3>Приоритет</h3>
+			<p>
+				<span class="priority"
+							[attr.data-priority]="record.priority">
+								{{ priority[record.priority] }}
+				</span>
+			</p>
+			<h3>Статус</h3>
+			<p>
+				<span class="status"
+							[attr.data-status]="	record.status">
+								{{ status[record.status] }}
+				</span>
+			</p>
 		</div>
 	</div>
 
@@ -26,11 +40,14 @@
 		<!-- TODO: доделать страницу -->
 		<button (click)="dialogOpen(modalPriority,
 		{selectItems: priorityItems, priority: record.priority})">
-			Изменить
-			приоритет
+			Изменить приоритет
 		</button>
-		<button>Изменить статус</button>
-		<button>Изменить статус</button>
+		<button (click)="dialogOpen(modalStatus,
+		{selectItems: statusItems, status: record.status})">
+			Изменить
+			статус
+		</button>
+		<button>Добавить мастера</button>
 	</div>
 
 	<div class="masters">
@@ -46,6 +63,15 @@
 		[items]="item.selectItems"
 		[selectedIndex]="item.priority"
 		(selectionChange)="priorityUpdate($event)"
+		class="white-bg full-w"
+	></app-select>
+</ng-template>
+
+<ng-template #modalStatus let-item>
+	<app-select
+		[items]="item.selectItems"
+		[selectedIndex]="item.status"
+		(selectionChange)="statusUpdate($event)"
 		class="white-bg full-w"
 	></app-select>
 </ng-template>

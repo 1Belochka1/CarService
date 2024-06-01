@@ -95,7 +95,6 @@ public class RecordsRepository : IRecordsRepository
 	{
 		return await _context.Records
 			.Include(x => x.Client)
-			.ThenInclude(x => x.UserInfo)
 			.FirstOrDefaultAsync(x =>
 				x.Id == id);
 	}

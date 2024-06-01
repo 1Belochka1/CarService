@@ -26,6 +26,7 @@ import {Status} from '../../../enums/status.enum'
 })
 export class RecordsPageComponent {
 	recordsService: RecordsTableService = inject(RecordsTableService)
+
 	protected readonly priority = Priority
 	protected readonly status = Status
 

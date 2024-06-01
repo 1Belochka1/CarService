@@ -12,6 +12,11 @@ import {ShopPageComponent} from './pages/lending-page/shop-page/shop-page.compon
 import {CartPageComponent} from './pages/lending-page/cart-page/cart-page.component'
 import {authGuard} from './guard/auth.guard'
 import {MainPageComponent} from './pages/lending-page/main-page/main-page.component'
+import {CalendarsPageComponent} from './pages/account-page/admin/calendars/calendars-page/calendars-page.component'
+import {CalendarPageComponent} from './pages/account-page/admin/calendars/calendar-page/calendar-page.component'
+import {FillDaysPageComponent} from './pages/account-page/admin/calendars/fill-days-page/fill-days-page.component'
+import {DayPageComponent} from './pages/account-page/admin/calendars/day-page/day-page.component'
+import {DayRecordLendingComponent} from './pages/lending-page/day-record-lending/day-record-lending.component'
 
 
 export const routes: Routes = [
@@ -32,16 +37,15 @@ export const routes: Routes = [
 				component: CartPageComponent,
 			},
 			{
-				path: 'record',
-				component: MainPageComponent
-			},
-			{
 				path: 'client',
 				component: MainPageComponent
 			}
 		]
 	},
-
+	{
+		path: 'day-record-lending/:calendarId',
+		component: DayRecordLendingComponent
+	},
 	{
 		path: 'auth',
 		component: AuthPageComponent,
@@ -63,6 +67,26 @@ export const routes: Routes = [
 				title: 'Личный кабинет - Услуги'
 			},
 			{
+				path: 'calendars',
+				component: CalendarsPageComponent,
+				// TODO: ЗАМЕНИТЬ!!!
+				title: "Я еще не придумал"
+			},
+			{
+				path: 'calendar/:calendarId',
+				component: CalendarPageComponent,
+				// TODO: ЗАМЕНИТЬ!!!
+				title: "Я еще не придумал"
+			},
+			{
+				path: 'calendar/:calendarId/filldays',
+				component: FillDaysPageComponent
+			},
+			{
+				path: 'calendar/:calendarId/:dayId',
+				component: DayPageComponent
+			},
+			{
 				path: 'worker/:id',
 				component: WorkerPageComponent,
 			},
@@ -77,7 +101,7 @@ export const routes: Routes = [
 				title: 'Личный кабинет - Заявки'
 			},
 			{
-				path: 'record/:id',
+				path: 'day-record-lending/:id',
 				component: RecordPageComponent,
 				title: 'Личный кабинет - Заявка'
 			}

@@ -7,7 +7,17 @@ import {Pipe, PipeTransform} from '@angular/core'
 export class FullNamePipe implements PipeTransform {
 
 	transform(value: any): unknown {
-		return value.lastName + ' ' + value.firstName + ' ' + value.patronymic
+		let result: string = ''
+
+		if (value.lastName)
+			result += value.lastName + ' '
+
+		result += value.firstName
+
+		if (value.patronymic)
+			result += ' ' + value.patronymic
+
+		return result
 	}
 
 }

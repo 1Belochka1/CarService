@@ -23,8 +23,7 @@ module.exports = {
 			colors: {
 				'background': 'rgba(var(--color-background),<alpha-value>)',
 				'surface': 'rgba(var(--color-surface),<alpha-value>)',
-				'menu': 'rgba(var(--color-menu),<alpha-value>)',
-				'on-menu': 'rgba(var(--color-on-menu),<alpha-value>)',
+				'on-surface': 'rgba(var(--color-on-surface),<alpha-value>)',
 				'primary': 'rgba(var(--color-primary),<alpha-value>)',
 				'secondary': 'rgba(var(--color-secondary),<alpha-value>)',
 			},
@@ -37,8 +36,8 @@ module.exports = {
 					'.my-input': {},
 					'.pagination-item': {
 						minWidth: '24px',
-						// background: 'rgba(var(--color-menu))',
-						color: 'rgba(var(--color-on-menu))',
+						// background: 'rgba(var(--color-surface))',
+						color: 'rgba(var(--color-on-surface))',
 						textAlign: 'center',
 						padding: theme('spacing.1'),
 						// border: '1px solid

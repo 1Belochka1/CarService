@@ -4,10 +4,14 @@ namespace CarService.App.Interfaces.Persistence;
 
 public interface ICalendarRecordsRepository
 {
-	Task<Guid> Create(CalendarRecords records);
-	Task Update(CalendarRecords records);
+	Task<Guid> Create(CalendarRecord record);
+	Task Update(CalendarRecord record);
 	Task Delete(Guid id);
 
-	Task<CalendarRecords?> GetByServiceId(
+	Task<CalendarRecord?> GetByServiceId(
 		Guid serviceId);
+
+	Task<CalendarRecord?> GetById(Guid id);
+
+	Task<List<CalendarRecord>> GetAll();
 }

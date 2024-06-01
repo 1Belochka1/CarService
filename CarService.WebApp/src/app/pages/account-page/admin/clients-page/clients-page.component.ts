@@ -14,12 +14,14 @@ import {SvgIconComponent} from 'angular-svg-icon'
 import {BTableComponent} from '../../../../components/b-table/b-table.component'
 import {BTemplateDirective} from '../../../../direcrives/b-template.directive'
 import {ClientsService} from '../../../../services/users/clients.service'
+import {FullNamePipe} from '../../../../pipe/full-name.pipe'
+import {NotSpecifiedPipe} from '../../../../pipe/not-specified.pipe'
 
 
 @Component({
 	selector: 'app-clients-page',
 	standalone: true,
-	imports: [AsyncPipe, NgForOf, NgIf, PaginationComponent, SearchComponent, SelectComponent, DatePipe, SvgIconComponent, NgClass, BTableComponent, BTemplateDirective],
+	imports: [AsyncPipe, NgForOf, NgIf, PaginationComponent, SearchComponent, SelectComponent, DatePipe, SvgIconComponent, NgClass, BTableComponent, BTemplateDirective, FullNamePipe, NotSpecifiedPipe],
 	templateUrl: './clients-page.component.html',
 	styleUrl: './clients-page.component.scss'
 })

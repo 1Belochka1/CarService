@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using CarService.Api;
 using CarService.Api.Hubs;
 using CarService.App;
+using CarService.Core.Records;
 using CarService.Infrastructure;
 using Microsoft.AspNetCore.CookiePolicy;
 
@@ -10,7 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddApplication();
-builder.Services.AddHubsSignalR();
+builder.Services.AddSignalR(o =>
+{
+	o.ClientTimeoutInterval = TimeSpan.MaxValue;
+	o.KeepAliveInterval = TimeSpan.MaxValue;
+});
 
 builder.Services.AddControllers()
 	.AddJsonOptions(
@@ -20,7 +25,10 @@ builder.Services.AddControllers()
 				ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(o =>
+{
+	o.AddSignalRSwaggerGen();
+});
 
 builder.Services.AddCors();
 
@@ -33,6 +41,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapHub<NotifyHub>("/api/hubs/notify");
+app.MapHub<DayRecordHub>("/api/hubs/dayrecords");
+app.MapHub<TimeRecordsHub>("/api/hubs/timerecords");
 
 app.UseCors(
 	x => x
@@ -43,11 +53,6 @@ app.UseCors(
 
 app.MapControllers();
 
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseCookiePolicy(
 	new CookiePolicyOptions
 	{
@@ -55,5 +60,10 @@ app.UseCookiePolicy(
 		Secure = CookieSecurePolicy.Always,
 		HttpOnly = HttpOnlyPolicy.Always
 	});
+
+app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();

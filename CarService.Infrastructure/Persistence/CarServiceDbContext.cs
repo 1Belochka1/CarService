@@ -1,4 +1,3 @@
-using CarService.Core.Chats;
 using CarService.Core.Images;
 using CarService.Core.Records;
 using CarService.Core.Services;
@@ -19,8 +18,6 @@ public class CarServiceDbContext : DbContext
 	public DbSet<UserInfo> UserInfos { get; set; } = null!;
 
 	public DbSet<UserAuth> UserAuths { get; set; } = null!;
-	
-	public DbSet<Client> Clients { get; set; } = null!;
 
 	public DbSet<Role> Roles { get; set; } = null!;
 
@@ -31,13 +28,16 @@ public class CarServiceDbContext : DbContext
 
 	public DbSet<Record> Records { get; set; } = null!;
 
-	public DbSet<CalendarRecords> CalendarRecords
+	public DbSet<CalendarRecord> CalendarRecords
 	{
 		get;
 		set;
 	} = null!;
 
-	public DbSet<DayRecords> DaysRecords { get; set; } =
+	public DbSet<DayRecord> DaysRecords { get; set; } =
+		null!;
+
+	public DbSet<TimeRecord> TimesRecords { get; set; } =
 		null!;
 
 	public DbSet<Image> Images { get; set; } = null!;

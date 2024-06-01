@@ -1,39 +1,90 @@
 <div class="wrapper">
+	<section class="section-header">
+		<div class="section-header__wrapper">
 
-	<header class="header">
-		<div class="header__logo">
-			<img ngSrc="assets/атлант.jpg"
-					 height="1046"
-					 width="1087"
-					 alt="Атлант">
+			<app-header-lending></app-header-lending>
+
+			<div class="content">
+				<h1>Автомастерская Автодоктор</h1>
+
+				<p class="description"> Lorem ipsum dolor sit amet,
+					consectetur adipisicing elit. Aut corporis culpa,
+					hic
+					iste nobis officiis optio ratione totam voluptate
+					voluptates. Amet aspernatur dolores eum omnis
+					praesentium quae quisquam similique sit.
+				</p>
+			</div>
 		</div>
-		<div class="header__title">
-			Автодоктор
-		</div>
-		<div class="header__burger">
-			<span></span>
-			<span></span>
-			<span></span>
-		</div>
-		<div class="header__navigation" [ngClass]="{}">
-			<nav class="header__lending">
-				<ul>
-					<li><a>Главная</a></li>
-					<li><a>Услуги</a></li>
-					<li><a>О нас</a></li>
-					<li><a href="">Записаться</a></li>
-				</ul>
-			</nav>
-			<nav class="header__link">
-				<ul>
-					<li><a routerLink="/shop">Магазин</a></li>
-					<li><a routerLink="/account">Личный кабинет</a>
-					</li>
-				</ul>
-			</nav>
+	</section>
+
+	<section class="section-record">
+
+		<h2>Записаться</h2>
+
+		<div class='record-slider'>
+
+			<details>
+				<summary>
+					<h3>
+						Оставьте заявку и мы вам
+						перезвоним
+					</h3>
+				</summary>
+				<form>
+					<input type='text'>
+
+				</form>
+			</details>
+			<ng-container *ngFor='let item of calendars'
+			>
+				<details>
+					<summary>
+						<h3>
+							{{ item.name }} онлайн
+						</h3>
+					</summary>
+					<div class='details-wrapper'>
+						<div class='description'>
+							{{ item.description }}
+						</div>
+						<a [routerLink]='["/day-record-lending",
+						item.id]'
+						>
+							Записаться</a>
+					</div>
+				</details>
+			</ng-container>
+
+			<ng-template #defaultRecord>
+			</ng-template>
+
+			<ng-template #calendar
+									 let-item
+			>
+				<div>{{ item.name }}</div>
+				<div>{{ item.description }}</div>
+			</ng-template>
+
 		</div>
 
-	</header>
+	</section>
 
-	<router-outlet></router-outlet>
+	<section class="section-services">
+		<h2>Предоставляемые услуги</h2>
+		<div class="section-services__list">
+			<div
+				class="section-services__item"
+				*ngFor="let item of services"
+			>
+				<h3>
+					{{ item.name }}
+				</h3>
+				<p>
+					{{ item.description }}
+				</p>
+			</div>
+		</div>
+	</section>
+
 </div>

@@ -3,12 +3,10 @@ import {Component} from '@angular/core'
 import {
 	FormBuilder,
 	FormControl,
-	FormGroup,
 	ReactiveFormsModule,
 	Validators
 } from '@angular/forms'
 import {firstValueFrom} from 'rxjs'
-import {FormInputComponent} from '../../components/form-input/form-input.component'
 import {AuthService} from '../../services/auth.service'
 import {Router} from '@angular/router'
 import {CustomInputComponent} from '../../components/custom-input/custom-input.component'
@@ -20,7 +18,6 @@ import {CustomInputComponent} from '../../components/custom-input/custom-input.c
 		ReactiveFormsModule,
 		NgClass,
 		NgIf,
-		FormInputComponent,
 		CustomInputComponent
 	],
 	templateUrl: './auth-page.component.html',
@@ -30,7 +27,7 @@ export class AuthPageComponent {
 
 	formLogin = this._formBuilder.group(
 		{
-			email: new FormControl('', [Validators.required, Validators.email]),
+			email: new FormControl('', [Validators.required]),
 			password: new FormControl('', [Validators.required]),
 		},
 		{
@@ -40,7 +37,7 @@ export class AuthPageComponent {
 
 	formRegister = this._formBuilder.group(
 		{
-			email: new FormControl('', [Validators.required, Validators.email]),
+			email: new FormControl('', [Validators.required]),
 			lastName: new FormControl('', [Validators.required]),
 			firstName: new FormControl('', [Validators.required]),
 			patronymic: new FormControl('', [Validators.required]),

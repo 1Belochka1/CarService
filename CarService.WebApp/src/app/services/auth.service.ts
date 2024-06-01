@@ -12,7 +12,7 @@ export class AuthService {
 	user?: UserType
 
 	constructor(private http: HttpClient) {
-		this.getByCookie()
+		// this.getByCookie()
 	}
 
 	public login(email: string, password: string) {
@@ -25,13 +25,14 @@ export class AuthService {
 							 }))
 	}
 
-	public register(email: string,
-									lastName: string,
-									firstName: string,
-									patronymic: string,
-									address: string,
-									phone: string,
-									password: string
+	public register(
+		email: string,
+		lastName: string,
+		firstName: string,
+		patronymic: string,
+		address: string,
+		phone: string,
+		password: string
 	) {
 		return this.http.post(apiUrls.users.register, {
 			email,

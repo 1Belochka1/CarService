@@ -28,10 +28,11 @@ public class JwtProvider : IJwtProvider
 
 		var claims = new[]
 		{
-			new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-			new Claim(JwtRegisteredClaimNames.Name, user.Email),
-			new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-			new Claim(ClaimTypes.Role, user.RoleId.ToString())
+			new Claim(JwtRegisteredClaimNames.Sub,
+				user.Id.ToString()),
+			new Claim(JwtRegisteredClaimNames.Jti,
+				Guid.NewGuid().ToString()),
+			new Claim(ClaimTypes.Role, user.RoleId.ToString()),
 		};
 
 		var securityToken = new JwtSecurityToken(
@@ -42,6 +43,7 @@ public class JwtProvider : IJwtProvider
 			claims: claims,
 			signingCredentials: signingCredentials);
 
-		return new JwtSecurityTokenHandler().WriteToken(securityToken);
+		return new JwtSecurityTokenHandler().WriteToken(
+			securityToken);
 	}
 }

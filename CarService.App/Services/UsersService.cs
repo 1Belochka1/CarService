@@ -14,8 +14,11 @@ public class UsersService
 	private readonly IUserAuthRepository _userAuthRepository;
 	private readonly IUserInfoRepository _userInfoRepository;
 
-	public UsersService(IUserAuthRepository userAuthRepository, IUserInfoRepository userInfoRepository,
-		IPasswordHasher passwordHasher, IJwtProvider jwtProvider)
+	public UsersService(
+		IUserAuthRepository userAuthRepository,
+		IUserInfoRepository userInfoRepository,
+		IPasswordHasher passwordHasher,
+		IJwtProvider jwtProvider)
 	{
 		_userAuthRepository = userAuthRepository;
 		_userInfoRepository = userInfoRepository;
@@ -23,8 +26,28 @@ public class UsersService
 		_jwtProvider = jwtProvider;
 	}
 
-	public async Task<Result> Register(
-		string email,
+	public async Task<Result<UserInfo>> CreateUserInfoAsync(
+		string phone,
+		string lastName,
+		string firstName,
+		string? patronymic,
+		string? address
+	)
+	{
+		if (await _userInfoRepository.GetByPhone(
+			    phone) != null)
+			return Result.Failure<UserInfo>(
+				"Пользователь с таким номером уже существует");
+
+		var userInfo = UserInfo.Create(Guid.NewGuid(),
+			lastName, firstName, patronymic, address, phone);
+
+		await _userInfoRepository.CreateAsync(userInfo.Value);
+
+		return userInfo;
+	}
+
+	public async Task<Result<string>> Register(
 		string lastName,
 		string firstName,
 		string? patronymic,
@@ -35,70 +58,153 @@ public class UsersService
 	{
 		var passwordHash = _passwordHasher.Generate(password);
 
-		if (await _userAuthRepository.GetByEmailAsync(email) != null)
-			return Result.Failure("Пользователь с таким email уже существует");
+		if (await _userAuthRepository.GetByPhoneAsync(phone) !=
+		    null)
+			return Result.Failure<string>(
+				"Пользователь с таким email уже существует");
 
-		var id = Guid.NewGuid();
+		var user =
+			await _userInfoRepository.GetByPhone(
+				phone);
 
-		var userAuth = UserAuth.Create(id, email, passwordHash, DateTime.UtcNow, roleId).Value;
+		var id = user?.Id ?? Guid.NewGuid();
+
+		if (user == null)
+		{
+			var userInfo = UserInfo.Create(id, lastName,
+				firstName,
+				patronymic, address, phone).Value;
+
+			await _userInfoRepository.CreateAsync(userInfo);
+		}
+		else
+		{
+			user.Update(null, lastName, firstName, patronymic,
+				address);
+
+			await _userInfoRepository.UpdateAsync(user);
+		}
+
+		var userAuth = UserAuth.Create(id, phone, passwordHash,
+			DateTime.UtcNow, roleId).Value;
 
 		await _userAuthRepository.CreateAsync(userAuth);
 
-		var userInfo = UserInfo.Create(id, lastName, firstName, patronymic, address, phone).Value;
-
-		await _userInfoRepository.CreateAsync(userInfo);
-
-		return Result.Success();
+		return Result.Success("Аккаунт создан");
 	}
 
 
-	public async Task<Result<string>> Login(string email, string password)
+	public async Task<Result<string>> Login(string email,
+		string password)
 	{
-		var userAuth = await _userAuthRepository.GetByEmailAsync(email);
+		var userAuth =
+			await _userAuthRepository.GetByPhoneAsync(email);
 
-		if (userAuth == null || !_passwordHasher.Validate(password, userAuth.PasswordHash))
-			return Result.Failure<string>("Неверный логин или пароль");
+		if (userAuth == null ||
+		    !_passwordHasher.Validate(password,
+			    userAuth.PasswordHash))
+			return Result.Failure<string>(
+				"Неверный логин или пароль");
 
 		var token = _jwtProvider.GenerateToken(userAuth);
 
 		return Result.Success(token);
 	}
 
-	public async Task<ListWithPage<WorkersDto>> GetWorkersAsync(
-		Params parameters
-	)
+	public async Task<ListWithPage<WorkersDto>>
+		GetWorkersAsync(
+			Params parameters
+		)
 	{
-		return await _userAuthRepository.GetWorkersAsync(parameters);
+		return await _userInfoRepository.GetWorkersAsync(
+			parameters, null);
 	}
 
-	public async Task<ListWithPage<ClientsDto>> GetClientsAsync(
-		Params parameters
-	)
+	public async Task<ListWithPage<ClientsDto>>
+		GetClientsAsync(
+			Params parameters
+		)
 	{
-		return await _userAuthRepository.GetClientsAsync(parameters);
+		return await _userInfoRepository.GetClientsAsync(
+			parameters);
+	}
+
+	public async Task<ListWithPage<WorkersDto>>
+		GetWorkersByRecordIdAsync(Params parameters,
+			Guid recordId)
+	{
+		return await _userInfoRepository.GetWorkersAsync(
+			parameters, x => x.Works.Any(x => x.Id == recordId));
+	}
+
+	public async Task<Result<UserInfo>> GetById(Guid userId)
+	{
+		var user =
+			await _userInfoRepository.GetByIdAsync(userId);
+
+		if (user == null)
+			return Result.Failure<UserInfo>(
+				"Пользователь не найден");
+
+		return Result.Success(user);
+	}
+
+	public async Task<Result<UserInfo>> GetByPhone(
+		string phone)
+	{
+		var user =
+			await _userInfoRepository.GetByPhone(phone);
+
+		if (user == null)
+			return Result.Failure<UserInfo>(
+				"Пользователь не найден");
+
+		return Result.Success(user);
 	}
 
 	// TODO: переделать возвращаемое значение на Result 
-	public async Task<UserAuth?> GetById(Guid userId)
+	public async Task<UserAuth?> GetWorkerByIdWithWorksAsync(
+		Guid userId)
 	{
-		return await _userAuthRepository.GetByIdAsync(userId);
+		return await _userAuthRepository
+			.GetWorkerByIdWithWorksAsync(userId);
 	}
 
 	// TODO: переделать возвращаемое значение на Result 
-	public async Task<UserAuth?> GetWorkerByIdWithWorksAsync(Guid userId)
+	public async Task<UserAuth?>
+		GetClientByIdWithRecordsAsync(Guid userId)
 	{
-		return await _userAuthRepository.GetWorkerByIdWithWorksAsync(userId);
+		return await _userAuthRepository
+			.GetClientByIdWithRecordsAsync(userId);
 	}
 
 	// TODO: переделать возвращаемое значение на Result 
-	public async Task<UserAuth?> GetClientByIdWithRecordsAsync(Guid userId)
-	{
-		return await _userAuthRepository.GetClientByIdWithRecordsAsync(userId);
-	}
+	// public async Task<ICollection<UserAuth>> GetWorkersByIds(
+	// 	ICollection<string> ids)
+	// {
+	// 	return await _userAuthRepository.GetWorkersByIds(ids);
+	// }
 
-	// TODO: переделать возвращаемое значение на Result 
-	public async Task<ICollection<UserAuth>> GetWorkersByIds(ICollection<string> ids)
+	public async Task<Result> Update(Guid id, string? phone,
+		string? lastName, string? firstName, string? patronymic,
+		string? address, int? roleId)
 	{
-		return await _userAuthRepository.GetWorkersByIds(ids);
+		var userInfo = await _userInfoRepository.GetByIdAsync
+			(id);
+
+		if (userInfo == null)
+			return Result.Failure(
+				"Пользователь не найден");
+
+		if (roleId != null)
+			userInfo.UserAuth?.SetRoleId(roleId.Value);
+
+		userInfo.Update(phone, lastName,
+			firstName, patronymic,
+			address);
+
+		await _userInfoRepository.UpdateAsync(userInfo);
+
+		return Result.Success();
 	}
 }

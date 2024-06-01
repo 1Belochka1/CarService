@@ -1,3 +1,4 @@
+using CarService.App.Common.DayRecordsWithWeeks;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Records;
 using Microsoft.EntityFrameworkCore;
@@ -14,26 +15,66 @@ public class DayRecordsRepository : IDayRecordsRepository
 		_context = context;
 	}
 
-	public async Task<Guid> Create(DayRecords dayRecords)
+	public async Task<Guid> Create(DayRecord dayRecord)
 	{
-		await _context.DaysRecords.AddAsync(dayRecords);
-		return dayRecords.Id;
+		await _context.DaysRecords.AddAsync(dayRecord);
+		return dayRecord.Id;
 	}
 
-	public async Task Update(DayRecords dayRecords)
+	public async Task CreateRangeAsync(
+		List<DayRecord> daysRecords)
 	{
-		_context.DaysRecords.Update(dayRecords);
+		await _context.DaysRecords.AddRangeAsync(daysRecords);
 		await _context.SaveChangesAsync();
 	}
 
-	public async Task<DayRecords?> GetById(Guid id)
+	public async Task Update(DayRecord dayRecord)
+	{
+		_context.DaysRecords.Update(dayRecord);
+		await _context.SaveChangesAsync();
+	}
+
+	public async Task<DayRecord?> GetById(Guid id)
 	{
 		return await _context.DaysRecords.FirstOrDefaultAsync(
 			x => x.Id == id);
 	}
 
-	public async Task<List<DayRecords>> GetAll()
+	public async Task<List<DayRecord>> GetAll()
 	{
 		return await _context.DaysRecords.ToListAsync();
+	}
+
+	public async Task<List<DayRecord>>
+		GetByCalendarIdByMonthByYearId(
+			Guid id, int? month, int? year)
+	{
+		var days = await _context.DaysRecords
+			.Include(x =>
+				x.TimeRecords.OrderBy(x => x.StartTime))
+			.Where(x => x.CalendarId == id)
+			.Where(x =>
+				month == null || year == null ||
+				x.Date.Year == year && x.Date.Month == month)
+			.OrderBy(x => x.Date)
+			.ToListAsync();
+
+		return days;
+	}
+
+	public async Task<List<DayRecord>> GetByCalendarId(Guid
+		calendarId)
+	{
+		var now = DateTime.UtcNow;
+		var days = await _context.DaysRecords
+			.Include(x =>
+				x.TimeRecords.OrderBy(x => x.StartTime))
+			.Where(x => x.CalendarId == calendarId)
+			.Where(x => x.IsWeekend == false)
+			.Where(x => x.Date > now)
+			.OrderBy(x => x.Date)
+			.ToListAsync();
+
+		return days;
 	}
 }

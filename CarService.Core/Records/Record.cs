@@ -13,31 +13,27 @@ public class Record
 	private Record(
 		Guid id,
 		Guid? clientId,
-		string phone,
 		string? carInfo,
 		string description,
 		DateTime createTime,
 		DateTime? visitTime,
-		Guid? dayRecordsId
+		Guid? timeRecordId
 	)
 	{
 		Id = id;
 		ClientId = clientId;
-		Phone = phone;
 		CarInfo = carInfo;
 		Description = description;
 		CreateTime = createTime;
 		VisitTime = visitTime;
-		DayRecordsId = dayRecordsId;
+		TimeRecordId = timeRecordId;
 	}
 
 	public Guid Id { get; private set; }
 
 	public Guid? ClientId { get; private set; }
 
-	public UserAuth? Client { get; private set; } = null!;
-
-	public string Phone { get; private set; }
+	public UserInfo? Client { get; private set; } = null!;
 
 	public string? CarInfo { get; private set; }
 	public string Description { get; private set; }
@@ -56,9 +52,9 @@ public class Record
 	public RecordStatus Status { get; private set; } =
 		RecordStatus.New;
 
-	public Guid? DayRecordsId { get; private set; }
+	public Guid? TimeRecordId { get; private set; }
 
-	public DayRecords? DayRecords { get; private set; }
+	public TimeRecord? TimeRecord { get; private set; }
 
 	public virtual ICollection<Service> Services
 	{
@@ -72,7 +68,7 @@ public class Record
 		private set;
 	} = [];
 
-	public void SetClient(UserAuth client)
+	public void SetClient(UserInfo client)
 	{
 		Client = client;
 		ClientId = client.Id;
@@ -122,7 +118,6 @@ public class Record
 	public static Result<Record> Create(
 		Guid id,
 		Guid? userId,
-		string phone,
 		string? carInfo,
 		string description,
 		DateTime createTime,
@@ -147,7 +142,6 @@ public class Record
 		var record = new Record(
 			id,
 			userId,
-			phone,
 			carInfo,
 			description,
 			createTime,

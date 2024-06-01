@@ -42,6 +42,12 @@ public static partial class Query
 	{
 		var totalItems = query.Count;
 
+		if (pageSize <= 0)
+		{
+			return new ListWithPage<TModel>(totalItems, 1,
+				1, query);
+		}
+
 		var currentPage = page;
 
 		var totalPages =

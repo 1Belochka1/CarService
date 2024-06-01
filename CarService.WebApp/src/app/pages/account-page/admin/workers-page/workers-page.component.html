@@ -5,21 +5,17 @@
 >
 	<ng-template bTemplate="body" let-item>
 		<tr (click)="goToWorker(item.id)">
-			<td data-name="Фамилия">
+			<td data-name="Фио">
 				{{
-					item.lastName + ' ' + item.firstName + ' '
-					+ item.patronymic
+					item | fullName
 				}}
-			</td>
-			<td data-name="Почта">
-				{{ item.email }}
-			</td>
-			<td class="break-all" data-name="Адрес">
-				{{ item.address }}
 			</td>
 			<td class="tablet:max-w-full max-w-36"
 					data-name="Номер">
 				{{ item.phone }}
+			</td>
+			<td class="break-all" data-name="Адрес">
+				{{ item.address }}
 			</td>
 		</tr>
 	</ng-template>

@@ -23,16 +23,12 @@ export class WorkersService extends TableService {
 			name: 'Фио'
 		},
 		{
-			value: SortMastersProperty.EMAIL,
-			name: 'Почта'
+			value: SortMastersProperty.PHONE,
+			name: 'Номер'
 		},
 		{
 			value: SortMastersProperty.ADDRESS,
 			name: 'Адрес'
-		},
-		{
-			value: SortMastersProperty.PHONE,
-			name: 'Номер'
 		},
 	]
 

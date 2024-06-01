@@ -18,8 +18,8 @@ export const menuItems = [
 	},
 	{
 		icon: folder + 'chats-min.svg',
-		title: "Чаты",
-		routerLink: 'statistics'
+		title: "Расписание",
+		routerLink: 'calendars'
 	},
 	{
 		icon: folder + 'clients-min.svg',

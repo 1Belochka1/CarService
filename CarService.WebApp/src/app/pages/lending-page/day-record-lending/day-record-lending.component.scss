@@ -1,32 +1,33 @@
 :host {
-  @apply flex flex-col gap-5 max-w-[1440px] p-5;
-  margin: 0 auto;
+	@apply flex flex-col gap-5 max-w-[1440px] p-5;
+	margin: 0 auto;
 }
 
 .wrapper {
-  .days {
-    @apply flex flex-col gap-5;
-    .day {
-      @apply flex gap-3 items-center text-on-surface border border-solid border-surface;
+	.days {
+		@apply flex flex-col gap-5;
+		.day {
+			@apply flex gap-3 p-2 items-center text-on-surface border border-solid border-surface;
 
-      &__date {
-        text-align: justify;
-      }
+			border-radius: 0.625rem;
 
-      .times {
-        @apply flex flex-wrap gap-3;
+			&__date {
+				text-align: justify;
+			}
 
-        .time {
-          @apply p-2 bg-surface;
-          flex: 0 0 50px;
-          border-radius: 0.625rem;
-        }
+			.times {
+				@apply flex flex-wrap gap-3;
 
-        .busy {
-          @apply bg-red-500;
-        }
-      }
-    }
-  }
+				.time {
+					@apply p-2 bg-surface;
+					flex: 0 0 50px;
+					border-radius: 0.625rem;
+				}
 
+				.busy {
+					@apply bg-red-800;
+				}
+			}
+		}
+	}
 }

@@ -1,18 +1,26 @@
-<section class="example-container">
-	<header>
-		<h2>Step {{ selectedIndex + 1 }}/{{ steps.length }}</h2>
+<section class="container">
+	<header class='label'>
+		@for (step of steps; track step; let i = $index) {
+			<div class='label__item'
+					 [class.label__active]='selectedIndex === i'
+			>
+				{{ step.label }}
+			</div>
+		}
 	</header>
 
 	<div [ngTemplateOutlet]="selected ? selected.content : null"></div>
 
-	<footer class="example-step-navigation-bar">
-		<button class="example-nav-button" cdkStepperPrevious>&larr;</button>
-		@for (step of steps; track step; let i = $index) {
-			<button
-				class="example-step"
-				[class.example-active]="selectedIndex === i"
-				(click)="selectStepByIndex(i)">Step {{ i + 1 }}</button>
-		}
-		<button class="example-nav-button" cdkStepperNext>&rarr;</button>
-	</footer>
+	<!--	<div class='buttons'>-->
+	<!--		@for (step of steps; track step; let i = $index) {-->
+	<!--			<button-->
+	<!--				class="button__step"-->
+	<!--				[class.button__active]="selectedIndex === i"-->
+	<!--				(click)="selectStepByIndex(i)"-->
+	<!--			>-->
+	<!--				Step {{ i + 1 }}-->
+	<!--			</button>-->
+	<!--		}-->
+	<!--	</div>-->
+
 </section>

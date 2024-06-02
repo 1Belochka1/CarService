@@ -11,7 +11,7 @@
   }
 
   &__title {
-    @apply text-red-600;
+    color: var(--color-header);
   }
 
   &__navigation {

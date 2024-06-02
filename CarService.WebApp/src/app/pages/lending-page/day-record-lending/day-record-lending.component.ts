@@ -1,5 +1,4 @@
-import {Component, forwardRef, OnDestroy} from '@angular/core'
-import {CalendarService} from '../../../services/calendars/calendar.service'
+import {Component, forwardRef} from '@angular/core'
 import {AsyncPipe, DatePipe, NgClass, NgForOf, NgIf} from '@angular/common'
 import {
 	CalendarComponent
@@ -8,7 +7,7 @@ import {
 	HeaderLendingComponent
 } from '../../../components/header-lending/header-lending.component'
 import {ActivatedRoute} from '@angular/router'
-import {Observable} from 'rxjs'
+import {firstValueFrom, Observable} from 'rxjs'
 import {DayRecord} from '../../../models/DayRecord.type'
 import {
 	DayRecordLendingService
@@ -18,6 +17,7 @@ import {StepperComponent} from '../../../components/stepper/stepper.component'
 import {
 	FormRecordComponent
 } from '../../../components/form-record/form-record.component'
+import {AuthService} from '../../../services/auth.service'
 
 @Component({
 	selector: 'app-day-record-lending',
@@ -38,12 +38,17 @@ import {
 	styleUrl: './day-record-lending.component.scss',
 	providers: [DayRecordLendingService]
 })
-export class DayRecordLendingComponent  {
+export class DayRecordLendingComponent {
 
 	days: Observable<DayRecord[]>
 
+	stepperSelected: number = 0
+
+	isAuth: boolean
+
 	constructor(
 		private _dayRecordLendingService: DayRecordLendingService,
+		private _authService: AuthService,
 		private _router: ActivatedRoute
 	) {
 		const id = this._router.snapshot.paramMap.get('calendarId')
@@ -52,6 +57,10 @@ export class DayRecordLendingComponent  {
 			return
 		}
 
+		firstValueFrom(this._authService.getByCookie())
+		.then(response => this.isAuth = response !== undefined)
+		.catch(() => this.isAuth = false)
+
 		this._dayRecordLendingService.startConnection()
 
 		this._dayRecordLendingService.getDayRecordLending(id)
@@ -59,10 +68,15 @@ export class DayRecordLendingComponent  {
 		this.days = _dayRecordLendingService.getDayRecords()
 
 		this._dayRecordLendingService.listenUpdateRecord()
+
+		this.isAuth = this._authService.user != undefined
+
 	}
 
 	public selectTime(id: string) {
+		this.stepperSelected = 1
 		this._dayRecordLendingService.bookTimeRecord(id)
+		this._authService.logout()
 	}
 
 }

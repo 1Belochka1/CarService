@@ -1,20 +1,21 @@
-import { Component } from '@angular/core';
-import {NgTemplateOutlet} from '@angular/common'
+import {Component} from '@angular/core'
+import {NgClass, NgTemplateOutlet} from '@angular/common'
 import {CdkStepper, CdkStepperModule} from '@angular/cdk/stepper'
 
 @Component({
-  selector: 'app-stepper',
-  standalone: true,
+	selector: 'app-stepper',
+	standalone: true,
 	imports: [
 		NgTemplateOutlet,
-		CdkStepperModule
+		CdkStepperModule,
+		NgClass
 	],
-  templateUrl: './stepper.component.html',
-  styleUrl: './stepper.component.scss',
+	templateUrl: './stepper.component.html',
+	styleUrl: './stepper.component.scss',
 	providers: [{provide: CdkStepper, useExisting: StepperComponent}],
 })
-export class StepperComponent extends CdkStepper{
+export class StepperComponent extends CdkStepper {
 	selectStepByIndex(index: number): void {
-		this.selectedIndex = index;
+		this.selectedIndex = index
 	}
 }

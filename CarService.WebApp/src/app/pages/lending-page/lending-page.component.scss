@@ -106,6 +106,8 @@
 
         .details-wrapper {
           @apply flex flex-col items-center gap-5 mt-5;
+          text-align: center;
+
           > * {
             @apply max-w-[500px] tablet:max-w-[300px] mobile:max-w-[250px];
             font-size: 1.25rem;

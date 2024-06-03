@@ -1,143 +1,136 @@
 :host {
-  @apply relative min-h-screen block text-on-surface;
+	@apply relative min-h-screen block text-on-surface;
 }
 
 .wrapper {
-  @apply flex flex-col max-w-[1440px];
 
-  margin: 0 auto;
+	section {
+		@apply p-5;
 
-  section {
-    @apply p-5;
+		&:not(:last-child) {
+			//border-bottom: 1px solid white;
+		}
 
-    &:not(:last-child) {
-      //border-bottom: 1px solid white;
-    }
+		h2 {
+			@apply mb-5;
+			//@apply text-surface;
+			font-size: 2rem;
+		}
 
-    h2 {
-      @apply mb-5;
-      //@apply text-surface;
-      font-size: 2rem;
-    }
+		h3 {
+			//@apply text-surface;
+			font-size: 1.55rem;
+		}
+	}
 
-    h3 {
-      //@apply text-surface;
-      font-size: 1.55rem;
-    }
-  }
+	.section-header {
+		@apply h-screen relative text-white;
 
-  .section-header {
-    @apply h-screen relative text-white;
+		//height: calc(100vh - 4.25rem);
 
-    //height: calc(100vh - 4.25rem);
+		background-image: url("/assets/lending-back.jpg");
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
 
-    background-image: url("/assets/lending-back.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+		//background: linear-gradient(90deg, #ffcccc, white, #ccccff);
 
-    //background: linear-gradient(90deg, #ffcccc, white, #ccccff);
+		//background: linear-gradient(90deg, black, #151533, black);
 
-    //background: linear-gradient(90deg, black, #151533, black);
+		@media (max-width: 768px) {
+			height: 100svh;
+		}
 
-    @media (max-width: 768px) {
-      height: 100svh;
-    }
+		&:before {
+			@apply absolute top-0 bottom-0 left-0 right-0 z-0;
+			content: '';
+			backdrop-filter: brightness(20%) blur(2px);
+		}
 
-    &:before {
-      @apply absolute top-0 bottom-0 left-0 right-0 z-0;
-      content: '';
-      backdrop-filter: brightness(20%) blur(2px);
-    }
-
-    &__wrapper {
-      @apply relative flex flex-col flex-1 h-full z-10;
+		&__wrapper {
+			@apply relative flex flex-col flex-1 h-full z-10;
 
 
-      .content {
-        @apply h-full flex flex-col items-center justify-center gap-5 p-5;
+			.content {
+				@apply h-full flex flex-col items-center justify-center gap-5 p-5;
 
 
-        @media (max-width: 768px) {
-          //backdrop-filter: brightness(70%) blur(1px);
-        }
+				@media (max-width: 768px) {
+					//backdrop-filter: brightness(70%) blur(1px);
+				}
 
-        h1 {
-          @apply text-center;
+				h1 {
+					@apply text-center;
 
-          color: var(--color-header);
+					color: var(--color-header);
 
-          font-size: 3.5rem;
+					font-size: 3.5rem;
 
-          @media (max-width: 768px) {
-            font-size: 2rem;
-          }
-        }
+					@media (max-width: 768px) {
+						font-size: 2rem;
+					}
+				}
 
-        p {
-          max-width: 30rem;
-        }
-      }
-    }
-  }
+				p {
+					max-width: 30rem;
+				}
+			}
+		}
+	}
 
-  .section-record {
+	.section-record {
 
-    .record-slider {
-      @apply flex flex-col gap-5;
 
-      details {
-        @apply bg-surface p-3;
+		swiper-slide {
+			--swiper-navigation-size: 20px;
+			--swiper-navigation-sides-offset: 5px;
 
-        border-radius: 0.625rem;
+			@apply px-14 pb-7;
+		}
 
-        summary {
-          list-style: none;
+		.record-slider {
+			@apply flex flex-col gap-5;
 
-          h3 {
-            width: 100%;
-            text-align: center;
-          }
+			details {
+				@apply bg-surface p-3;
 
-          &::-webkit-details-marker {
-            display: none;
-          }
-        }
+				border-radius: 0.625rem;
 
-        .details-wrapper {
-          @apply flex flex-col items-center gap-5 mt-5;
-          text-align: center;
 
-          > * {
-            @apply max-w-[500px] tablet:max-w-[300px] mobile:max-w-[250px];
-            font-size: 1.25rem;
-          }
-        }
-      }
-    }
+				h3 {
+					width: 100%;
+					text-align: center;
+				}
 
-  }
+				&::-webkit-details-marker {
+					display: none;
+				}
 
-  .section-services {
+			}
+		}
+	}
 
-    @apply h-screen;
+	.section-services {
 
-    &__list {
-      @apply grid gap-5;
+		@apply h-screen;
 
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    }
+		&__list {
+			@apply grid gap-5;
 
-    &__item {
-      @apply bg-surface text-center p-2;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		}
 
-      border-radius: 0.625rem;
+		&__item {
+			@apply bg-surface text-center p-2;
 
-      h3 {
-        @apply font-bold text-on-surface;
+			border-radius: 0.625rem;
 
-        font-size: 1.25rem;
-      }
-    }
-  }
+			h3 {
+				@apply font-bold text-on-surface;
+
+				font-size: 1.25rem;
+			}
+		}
+	}
+
 }

@@ -1,0 +1,29 @@
+<app-header-lending></app-header-lending>
+<div class='wrapper'>
+	<div class='days'>
+		<div class='day'
+				 *ngFor='let day of days | async'
+		>
+			<div class='day__date'>
+				{{ day.date | date: "dd.MM" }}
+			</div>
+
+			<div class='times'>
+				<div class='time text-center'
+						 *ngFor='let time of day.timeRecords'
+						 (click)='openModal(record,time.id)'
+						 [ngClass]='{"busy": time.isBusy}'
+				>
+					<div>{{ time.startTime }}</div>
+					<div>{{ time.endTime }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<ng-template #record>
+	<app-form-time-record
+		(submit)='submit($event)'
+	></app-form-time-record>
+</ng-template>

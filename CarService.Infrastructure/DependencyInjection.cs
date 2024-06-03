@@ -101,12 +101,16 @@ public static class DependencyInjection
 
 					options.Events = new JwtBearerEvents
 					{
-						OnMessageReceived = context =>
+						OnMessageReceived = async context =>
 						{
 							context.Token =
 								context.HttpContext.Request.Cookies[
 									"cookies--service"];
-							return Task.CompletedTask;
+						},
+						OnAuthenticationFailed = async context =>
+						{
+							context.Response.Cookies.Delete(
+								"cookies--service");
 						}
 					};
 				}

@@ -20,7 +20,8 @@ type ModalOptions = {
 		on?: boolean
 		text?: string
 	}
-	context?: any
+	context?: any,
+	actionVisible?: boolean
 }
 
 @Injectable({
@@ -47,7 +48,6 @@ export class ModalService {
 	}
 
 	open(content: TemplateRef<any>, options?: ModalOptions) {
-
 		if (this.isOpen)
 			return
 
@@ -63,6 +63,8 @@ export class ModalService {
 
 		this._modalComponent.instance.title = options?.title
 
+		this._modalComponent.instance.actionVisible = options?.actionVisible ?? true
+
 		this._modalComponent.instance.closeEvent.subscribe((data) => this.closeModal(data))
 
 		this._modalComponent.hostView.detectChanges()
@@ -76,7 +78,10 @@ export class ModalService {
 		return this.modalNotifier?.asObservable()
 	}
 
-	closeModal(data: any) {
+	closeModal(data: {
+		isConfirm: boolean,
+		isCancel: boolean
+	}) {
 		this.modalNotifier?.next(data)
 		this.modalNotifier?.complete()
 		this._modalComponent.destroy()

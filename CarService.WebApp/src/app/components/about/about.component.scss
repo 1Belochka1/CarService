@@ -1,5 +1,5 @@
 :host {
-  @apply bg-surface;
+  @apply bg-surface text-on-surface;
 
   padding: 0.9375rem;
 
@@ -9,7 +9,7 @@
     hr {
       height: 1px;
       width: 100%;
-      @apply border-surface;
+      @apply border-on-surface;
       margin: 0.5rem 0 1rem 0;
     }
 

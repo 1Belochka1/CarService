@@ -1,0 +1,38 @@
+<div class='menu' [class.minimize]='isMinimize'>
+	<hr class="line">
+	<nav class="nav__wrapper">
+		<ul class="nav__list">
+			<li *ngFor="let item of menuItems"
+					(click)="closeMenu()"
+			>
+				<a [routerLink]="item.routerLink"
+					 class="nav__item"
+				>
+					<svg-icon
+						*ngIf='item.icon'
+						[src]="item.icon"
+										class="nav__icon"
+										svgClass="svg-nav"
+										viewBox="0 0 30 30"
+					/>
+					<div class="nav__title">
+						{{ item.title }}
+					</div>
+				</a>
+			</li>
+			<li (click)="toggleMenu()"
+					class="nav__item"
+			>
+				<svg-icon
+					[ngClass]="{'minimize__icon': isMinimize, 'nav__icon': true}"
+					src="assets/svg/minimize-min.svg"
+					svgClass="svg-nav"
+					viewBox="0 0 30 30"
+				/>
+				<div class="nav__title">
+					Свернуть
+				</div>
+			</li>
+		</ul>
+	</nav>
+</div>

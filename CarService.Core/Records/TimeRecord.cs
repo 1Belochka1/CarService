@@ -56,8 +56,11 @@ public class TimeRecord
 			recordId, clientId, startTime, endTime, isBusy));
 	}
 
-	public void Update(bool isBusy)
+	public void Update(bool isBusy, Guid? clientId,
+		Guid? recordId)
 	{
 		IsBusy = isBusy;
+		ClientId = clientId;
+		RecordId = recordId;
 	}
 }

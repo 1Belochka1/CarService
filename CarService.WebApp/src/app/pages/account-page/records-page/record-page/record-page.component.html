@@ -1,10 +1,11 @@
-<div class="wrapper" *ngIf="record">
+<div class="wrapper"
+		 *ngIf="record"
+>
 	<div class="about">
 		<h1>Заявка от
 			{{ record.createTime | date: 'dd MMMM hh:mm ' }}
 		</h1>
 		<div class="table-about">
-			<h2>Контактные данные клиента</h2>
 			<h3>Фио</h3>
 			<p data-name="Полное имя">
 				{{ record.client | fullName }}
@@ -22,14 +23,16 @@
 			<h3>Приоритет</h3>
 			<p>
 				<span class="priority"
-							[attr.data-priority]="record.priority">
+							[attr.data-priority]="record.priority"
+				>
 								{{ priority[record.priority] }}
 				</span>
 			</p>
 			<h3>Статус</h3>
 			<p>
 				<span class="status"
-							[attr.data-status]="	record.status">
+							[attr.data-status]="	record.status"
+				>
 								{{ status[record.status] }}
 				</span>
 			</p>
@@ -39,11 +42,13 @@
 	<div class="action">
 		<!-- TODO: доделать страницу -->
 		<button (click)="dialogOpen(modalPriority,
-		{selectItems: priorityItems, priority: record.priority})">
+		{selectItems: priorityItems, priority: record.priority})"
+		>
 			Изменить приоритет
 		</button>
 		<button (click)="dialogOpen(modalStatus,
-		{selectItems: statusItems, status: record.status})">
+		{selectItems: statusItems, status: record.status})"
+		>
 			Изменить
 			статус
 		</button>
@@ -58,20 +63,24 @@
 	</div>
 </div>
 
-<ng-template #modalPriority let-item>
+<ng-template #modalPriority
+						 let-item
+>
 	<app-select
 		[items]="item.selectItems"
 		[selectedIndex]="item.priority"
 		(selectionChange)="priorityUpdate($event)"
-		class="white-bg full-w"
+		class="full-w primary"
 	></app-select>
 </ng-template>
 
-<ng-template #modalStatus let-item>
+<ng-template #modalStatus
+						 let-item
+>
 	<app-select
 		[items]="item.selectItems"
 		[selectedIndex]="item.status"
 		(selectionChange)="statusUpdate($event)"
-		class="white-bg full-w"
+		class="full-w primary"
 	></app-select>
 </ng-template>

@@ -20,7 +20,7 @@
     //box-shadow: 0 2px 6px -3px rgba(0, 0, 0, .4);
 
     li {
-      @apply py-1 px-2 cursor-pointer bg-surface/75 text-surface;
+      @apply py-1 px-2 cursor-pointer bg-surface/75;
 
       border-radius: 0.625rem;
 
@@ -35,7 +35,7 @@
     }
 
     .active {
-      @apply bg-surface;
+      @apply bg-primary;
     }
 
 

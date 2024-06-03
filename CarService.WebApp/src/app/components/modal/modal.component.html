@@ -1,18 +1,31 @@
-<div class="modal" >
-
-	<div class="modal-header" *ngIf="title">
-			<h2 class="modal-title">{{ title }}</h2>
+<div class="modal">
+	<div class="modal-header"
+			 *ngIf="title"
+	>
+		<h2 class="modal-title">{{ title }}</h2>
 	</div>
 
-	<div class="modal-content" tabindex="0">
+	<div class="modal-content"
+			 tabindex="0"
+	>
 		<ng-content></ng-content>
 	</div>
 
-	<div class="modal-action">
-		<button class="confirm buttons" (click)="submit()">Подтвердить
+	<div class="modal-action"
+			 *ngIf='actionVisible'
+	>
+		<button class="confirm buttons"
+						(click)="submit()"
+		>Подтвердить
 		</button>
-		<button class="close buttons" (click)="close()">Закрыть</button>
+		<button class="close buttons"
+						(click)="close()"
+		>Закрыть
+		</button>
 	</div>
 </div>
 
-<div class="modal-backdrop" (click)="close()" (keydown)="keydown($event)"></div>
+<div class="modal-backdrop"
+		 (click)="close()"
+		 (keydown)="keydown($event)"
+></div>

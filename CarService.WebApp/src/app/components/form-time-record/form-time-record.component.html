@@ -1,0 +1,54 @@
+<form class="form"
+			[formGroup]="requestForm"
+			(ngSubmit)="onSubmit()"
+>
+	<div class="form__group">
+		<label class="form__label"
+					 for="name"
+		>Имя</label>
+		<input class="form__input"
+					 id="name"
+					 type="text"
+					 formControlName="name"
+					 placeholder="Введите ваше имя"
+		/>
+		<div class="form__error"
+				 *ngIf="requestForm.get('name')?.touched &&
+				 requestForm.get('name')?.hasError('required')"
+		>Имя обязательно
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('name')?.touched &&
+				 requestForm.get('name')?.hasError('minlength')"
+		>Имя должно содержать минимум 3 символа
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="phone"
+		>Номер телефона</label>
+		<input class="form__input"
+					 id="phone"
+					 type="text"
+					 formControlName="phone"
+					 placeholder="Введите номер телефона"
+		/>
+		<div class="form__error"
+				 *ngIf="requestForm.get('phone')?.touched &&
+				 requestForm.get('phone')?.hasError('required')"
+		>Номер телефона обязателен
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('phone')?.touched &&
+				 requestForm.get('phone')?.hasError('pattern')"
+		>Неверный формат номера
+		</div>
+	</div>
+
+	<button class="form__button"
+					type="submit"
+					[disabled]="requestForm.invalid"
+	>Отправить
+	</button>
+</form>

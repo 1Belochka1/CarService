@@ -19,6 +19,16 @@
   }
 }
 
+:host-context(.primary) {
+  summary {
+    @apply border border-solid border-primary;
+  }
+
+  ul {
+    @apply border border-solid border-primary;
+  }
+}
+
 details {
   position: relative;
   //height: var(--select-height, 30px);
@@ -43,9 +53,9 @@ details[open] summary:before {
 summary {
   @apply flex items-center bg-surface text-on-surface;
   cursor: pointer;
-  border-radius: 0.625rem;
   height: 100%;
   padding: .5rem;
+  border-radius: 0.625rem;
 
   // --------------------------
   // Отключение стандартного отображения
@@ -76,7 +86,7 @@ ul {
   @apply flex flex-col gap-1 ;
 
   @apply bg-surface list-none text-on-surface text-center overflow-y-auto;
-  //@apply border border-solid border-surface;
+
   @apply max-h-40;
 
   padding: 0 0.5rem;
@@ -96,7 +106,7 @@ ul {
     }
 
     &:not(:last-child) {
-      @apply border-b border-solid border-b-surface;
+      @apply border-b border-solid border-b-primary;
     }
   }
 }

@@ -302,10 +302,10 @@ public class RecordsController : ControllerBase
 	[Authorize]
 	[HttpGet("TimeRecords/Update")]
 	public async Task<IActionResult> UpdateTimeRecords(
-		Guid id, bool isBusy)
+		Guid id, bool isBusy, string? phone, string? name)
 	{
 		var result = await _recordsService
-			.UpdateTimeRecordAsync(id, isBusy);
+			.UpdateTimeRecordAsync(id, isBusy, phone, name);
 
 		if (result.IsFailure)
 			return BadRequest(result.Error);

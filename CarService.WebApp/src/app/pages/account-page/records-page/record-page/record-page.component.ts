@@ -60,7 +60,7 @@ export class RecordPageComponent {
 	constructor(
 		private _router: ActivatedRoute,
 		public recordsService: RecordsService,
-		public m: ModalService
+		public modalService: ModalService
 	) {
 
 		const id = this._router.snapshot.paramMap.get('id')
@@ -79,7 +79,7 @@ export class RecordPageComponent {
 	}
 
 	dialogOpen(template: TemplateRef<any>, context: any) {
-		this.m.open(template, {
+		this.modalService.open(template, {
 			title: 'Приоритет',
 			context: context
 		})?.subscribe((result) => {
@@ -114,7 +114,6 @@ export class RecordPageComponent {
 	}
 
 	priorityUpdate(priority: number) {
-		console.log(priority)
 		this.prioritySelect = priority
 	}
 

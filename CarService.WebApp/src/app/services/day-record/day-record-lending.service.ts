@@ -3,12 +3,7 @@ import {HttpClient} from '@angular/common/http'
 import {BehaviorSubject, firstValueFrom} from 'rxjs'
 import {DayRecord} from '../../models/DayRecord.type'
 import {apiHubUrls, apiUrls} from '../apiUrl'
-import {
-	HttpTransportType,
-	HubConnection,
-	HubConnectionBuilder,
-	LogLevel
-} from '@microsoft/signalr'
+import {HubConnection, HubConnectionBuilder, LogLevel} from '@microsoft/signalr'
 import {TimeRecord} from '../../models/TimeRecord.type'
 
 @Injectable({
@@ -25,7 +20,6 @@ export class DayRecordLendingService implements OnDestroy {
 	private _selectTimeId: string
 
 	constructor() {
-
 		this._hubConnection =
 			new HubConnectionBuilder()
 			.withUrl(apiHubUrls.timeRecords, {
@@ -40,6 +34,15 @@ export class DayRecordLendingService implements OnDestroy {
 
 	startConnection() {
 		this._hubConnection.start().catch(e => console.error(e))
+	}
+
+	updateRecord(id: string, phone: string, name: string) {
+		this._hubConnection.send('RecordTimeRecord',
+			id,
+			true,
+			phone,
+			name
+		).catch(err => console.error(err))
 	}
 
 	listenUpdateRecord() {
@@ -85,6 +88,5 @@ export class DayRecordLendingService implements OnDestroy {
 	ngOnDestroy(): void {
 		this._hubConnection.stop().catch(e => console.error(e))
 	}
-
 
 }

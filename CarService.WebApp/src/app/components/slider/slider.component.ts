@@ -1,16 +1,18 @@
 import {
-	AfterContentInit,
 	Component,
-	ContentChildren,
+	CUSTOM_ELEMENTS_SCHEMA,
+	ElementRef,
 	Input,
 	OnInit,
-	QueryList,
-	TemplateRef
+	TemplateRef,
+	ViewChild,
+	ViewEncapsulation
 } from '@angular/core'
-import {SliderItem, SliderSettings} from './slider.types'
 import {NgClass, NgForOf, NgIf, NgTemplateOutlet} from '@angular/common'
+import {SwiperContainer} from 'swiper/element'
+import {Navigation, Pagination} from 'swiper/modules'
+import {SwiperOptions} from 'swiper/types'
 import {SvgIconComponent} from 'angular-svg-icon'
-import {BTemplateDirective} from '../../direcrives/b-template.directive'
 
 @Component({
 	selector: 'app-slider',
@@ -19,53 +21,52 @@ import {BTemplateDirective} from '../../direcrives/b-template.directive'
 		NgTemplateOutlet,
 		NgForOf,
 		NgIf,
-		SvgIconComponent,
-		NgClass
+		NgClass,
+		SvgIconComponent
 	],
 	templateUrl: './slider.component.html',
-	styleUrl: './slider.component.scss'
+	styleUrl: './slider.component.scss',
+	providers: [],
+	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class SliderComponent implements OnInit, AfterContentInit {
-	@Input()
-	templateItem?: TemplateRef<any>
+export class SliderComponent implements OnInit {
 
 	@Input()
-	sliderItems: SliderItem[]
+	slides: { template: TemplateRef<any>, context: string }[] = []
 
-	@Input()
-	sliderSettings: SliderSettings
-
-	selectedIndex: number = 0
-
-	@ContentChildren(BTemplateDirective)
-	templates: QueryList<BTemplateDirective>
-
-	constructor() {
-	}
-
-	ngAfterContentInit(): void {
-	}
+	currentIndex = 0
+	@ViewChild('swiper', {static: true})
+	carousel: ElementRef<SwiperContainer>
 
 	ngOnInit(): void {
-	}
+		this.carousel.nativeElement.injectStylesUrls = [
+			'swiper/modules/navigation-element.min.css'
+		]
 
-	getSelectItem() {
-		return this.sliderItems[this.selectedIndex]
-	}
-
-	sliderNext() {
-		if (this.sliderItems.length == this.selectedIndex + 1) {
-			return
+		const params: SwiperOptions = {
+			modules: [Navigation, Pagination],
+			breakpoints: {
+				768: {
+					slidesPerView: 1,
+				},
+				1280: {
+					slidesPerView: 3,
+					centeredSlides: false
+				},
+			},
+			injectStylesUrls: [
+				'assets/modules/navigation-element.min.css',
+				'assets/modules/pagination-element.min.css',
+			],
+			// navigation: {
+			// 	prevEl: '.swiper-btn-prev',
+			// 	nextEl: '.swiper-btn-next',
+			// }
 		}
 
-		this.selectedIndex++
+		Object.assign(this.carousel.nativeElement, params)
+
+		this.carousel.nativeElement.initialize()
 	}
 
-	sliderPrev() {
-		if (this.selectedIndex == 0) {
-			return
-		}
-
-		this.selectedIndex--
-	}
 }

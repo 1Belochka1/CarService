@@ -1,7 +1,10 @@
 <app-about
 	title="О сотруднике"
-	[item]="user">
-	<ng-template bTemplate="about-content" let-item>
+	[item]="user"
+>
+	<ng-template bTemplate="about-content"
+							 let-item
+	>
 		<span data-name="Почта">{{ item.email }}</span>
 		<span data-name="Фамилия">{{ item.lastName }}</span>
 		<span data-name="Имя">{{ item.firstName }}</span>
@@ -28,7 +31,9 @@
 					{value: 'priority', name: 'Приоритет'}
 				]"
 		>
-			<ng-template bTemplate="body" let-item>
+			<ng-template bTemplate="body"
+									 let-item
+			>
 				<tr>
 					<td data-name="Описание">
 						{{ item.description }}
@@ -42,7 +47,8 @@
 					<td data-name="Приоритет">
 						<div>
 							<span class="priority"
-										[attr.data-priority]="item.priority">
+										[attr.data-priority]="item.priority"
+							>
 								{{ Priority[item.priority] }}
 							</span>
 						</div>
@@ -57,23 +63,41 @@
 			header="Завершенные работы"
 			class="tabs__content"
 			[service]="recordsService"
+			[headItems]="
+				[
+					{value: -1, name: 'Не выбрано'},
+					{value: 'description', name: 'Описание'},
+					{value: 'createtime', name: 'Дата создания'},
+					{value: 'priority', name: 'Приоритет'}
+				]"
 		>
 			<!--TODO: Доделать шаблоны -->
-			<ng-template bTemplate="body" let-item>
+			<ng-template bTemplate="body"
+									 let-item
+			>
 				<tr>
-					<td>
-						{{ item|json }}
+					<td data-name="Описание">
+						{{ item.description }}
+					</td>
+					<td data-name="Дата создания">
+						{{
+							item.createTime | date: 'dd MMMM YYYY hh:mm:ss' : undefined :
+								"ru"
+						}}
+					</td>
+					<td data-name="Приоритет">
+						<div>
+							<span class="priority"
+										[attr.data-priority]="item.priority"
+							>
+								{{ Priority[item.priority] }}
+							</span>
+						</div>
 					</td>
 				</tr>
 			</ng-template>
 
 		</app-tabs-table-content>
 
-		<app-tabs-table-content
-			header="Услуги работника"
-			class="tabs__content"
-			[service]="recordsService"
-		>
-		</app-tabs-table-content>
 	</app-tabs>
 </div>

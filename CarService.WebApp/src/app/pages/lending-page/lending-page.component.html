@@ -22,28 +22,17 @@
 
 		<h2>Записаться</h2>
 
-		<div class='record-slider'>
+		<app-stepper-lending-record>
 
-			<details>
-				<summary>
+			<cdk-step>
+				<app-form-record></app-form-record>
+			</cdk-step>
+
+			<ng-container *ngFor='let item of calendars'>
+				<cdk-step>
 					<h3>
-						Оставьте заявку и мы вам
-						перезвоним
+						{{ item.name }} онлайн
 					</h3>
-				</summary>
-				<form>
-					<input type='text'>
-
-				</form>
-			</details>
-			<ng-container *ngFor='let item of calendars'
-			>
-				<details>
-					<summary>
-						<h3>
-							{{ item.name }} онлайн
-						</h3>
-					</summary>
 					<div class='details-wrapper'>
 						<div class='description'>
 							{{ item.description }}
@@ -53,10 +42,10 @@
 						>
 							Записаться</a>
 					</div>
-				</details>
+				</cdk-step>
 			</ng-container>
 
-		</div>
+		</app-stepper-lending-record>
 
 	</section>
 

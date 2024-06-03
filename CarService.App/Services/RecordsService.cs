@@ -48,8 +48,8 @@ public class RecordsService
 		string phone,
 		string firstName,
 		string? carInfo,
-		string description,
-		Guid? dayRecordsId
+		string? description,
+		Guid? timeRecordsId
 	)
 	{
 		var user = await _userInfoRepository.GetByPhone(phone);
@@ -75,7 +75,7 @@ public class RecordsService
 
 		var record = Record.Create(Guid.NewGuid(), user.Id,
 			carInfo,
-			description, DateTime.UtcNow, null, dayRecordsId);
+			description, DateTime.UtcNow, null, timeRecordsId);
 
 		var recordId =
 			await _recordsRepository.CreateAsync(
@@ -322,7 +322,7 @@ public class RecordsService
 
 	public async Task<Result<TimeRecord>>
 		UpdateTimeRecordAsync
-		(Guid id, bool isBusy)
+		(Guid id, bool isBusy, string? phone, string? name)
 	{
 		var timeRecord = await _timeRecordsRepository
 			.GetById(id);
@@ -331,7 +331,35 @@ public class RecordsService
 			return
 				Result.Failure<TimeRecord>("Запись не найдена");
 
-		timeRecord.Update(isBusy);
+		UserInfo? user = null;
+
+		if (phone != null && name != null)
+		{
+			user =
+				await _userInfoRepository.GetByPhone(phone);
+
+			if (user == null)
+			{
+				var newUser = UserInfo.Create(
+					Guid.NewGuid(),
+					null,
+					name,
+					null,
+					null,
+					phone
+				);
+
+				if (newUser.IsFailure)
+					return Result.Failure<TimeRecord>(newUser.Error);
+
+				await _userInfoRepository
+					.CreateAsync(newUser.Value);
+
+				user = newUser.Value;
+			}
+		}
+
+		timeRecord.Update(isBusy, user?.Id, null);
 
 		await _timeRecordsRepository.Update(timeRecord);
 

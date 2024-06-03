@@ -1,0 +1,29 @@
+.container {
+}
+
+.buttons {
+}
+
+.button {
+
+	&__nav {
+	}
+
+	&__step {
+	}
+}
+
+.label {
+
+	@apply flex gap-2 text-on-surface mb-5;
+
+
+	&__item {
+		@apply bg-surface p-2;
+		border-radius: 0.625rem;
+	}
+
+	&__active {
+		background: var(--color-header)
+	}
+}

@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
-using CarService.Api;
 using CarService.Api.Hubs;
 using CarService.App;
-using CarService.Core.Records;
 using CarService.Infrastructure;
 using Microsoft.AspNetCore.CookiePolicy;
 
@@ -15,7 +13,12 @@ builder.Services.AddSignalR(o =>
 {
 	o.ClientTimeoutInterval = TimeSpan.MaxValue;
 	o.KeepAliveInterval = TimeSpan.MaxValue;
+}).AddJsonProtocol(options =>
+{
+	options.PayloadSerializerOptions.ReferenceHandler =
+		ReferenceHandler.Preserve;
 });
+;
 
 builder.Services.AddControllers()
 	.AddJsonOptions(

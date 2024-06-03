@@ -16,7 +16,7 @@
 }
 
 .wrapper {
-  @apply w-full;
+  @apply flex w-full;
 
   .menu {
     @apply flex flex-col gap-5;
@@ -85,49 +85,7 @@
   }
 
   .content {
-    @apply py-5 pr-5 pl-[6.25rem] h-full;
+    @apply p-5 h-full w-full;
     transition: padding-left .3s ease;
-
-  }
-}
-
-
-.minimize {
-  --width-menu: 5rem;
-
-  .menu {
-    @apply px-3;
-
-    &:after {
-      display: none;
-    }
-
-    .profile {
-      &__title {
-        display: none;
-      }
-    }
-
-    .nav {
-      &__list {
-        @apply items-center;
-      }
-
-      &__item {
-        padding: 5px;
-      }
-
-      &__icon {
-        @apply w-auto;
-      }
-
-      &__title {
-        display: none;
-      }
-    }
-  }
-
-  &__icon {
-    @apply rotate-180;
   }
 }

@@ -4,7 +4,8 @@ import {
 	ElementRef,
 	EventEmitter,
 	HostListener,
-	Input, OnDestroy,
+	Input,
+	OnDestroy,
 	Output
 } from '@angular/core'
 import {NgIf, NgTemplateOutlet} from '@angular/common'
@@ -23,24 +24,25 @@ export class ModalComponent implements AfterContentInit, OnDestroy {
 
 	@Input() title?: string = ''
 
+	actionVisible: boolean
+
 	@Output() closeEvent = new EventEmitter<{
 		isConfirm: boolean,
 		isCancel: boolean
 	}>()
-
+	protected readonly onkeydown = onkeydown
 
 	constructor(private elementRef: ElementRef) {
 	}
 
 	ngOnDestroy(): void {
-		console.log("destrou")
-    }
+		console.log('destrou')
+	}
 
 	@HostListener('window:keydown.escape', ['$event'])
 	updateValue(event: KeyboardEvent) {
 		this.close()
 	}
-
 
 	ngAfterContentInit(): void {
 		console.log(this)
@@ -55,8 +57,6 @@ export class ModalComponent implements AfterContentInit, OnDestroy {
 		this.elementRef.nativeElement.remove()
 		this.closeEvent.emit({isCancel: false, isConfirm: true})
 	}
-
-	protected readonly onkeydown = onkeydown
 
 	keydown(event: any) {
 		console.log(event)

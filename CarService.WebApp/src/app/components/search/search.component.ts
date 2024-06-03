@@ -22,7 +22,6 @@ export class SearchComponent {
 	@Output()
 	searchChangedEvent: EventEmitter<string> = new EventEmitter<string>()
 
-
 	constructor() {
 		this.searchSubject
 			.pipe(

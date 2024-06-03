@@ -1,4 +1,10 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core'
+import {
+	Component,
+	CUSTOM_ELEMENTS_SCHEMA,
+	OnInit,
+	TemplateRef,
+	ViewChild
+} from '@angular/core'
 import {
 	NgClass,
 	NgForOf,
@@ -17,6 +23,13 @@ import {
 	CalendarRecordService
 } from '../../services/calendars/calendar-record.service'
 import {BTemplateDirective} from '../../direcrives/b-template.directive'
+import {
+	StepperLendingRecordComponent
+} from '../../components/stepper-lending-record/stepper-lending-record.component'
+import {CdkStep} from '@angular/cdk/stepper'
+import {
+	FormRecordComponent
+} from '../../components/form-record/form-record.component'
 
 @Component({
 	selector: 'app-lending-page',
@@ -30,10 +43,14 @@ import {BTemplateDirective} from '../../direcrives/b-template.directive'
 		HeaderLendingComponent,
 		SliderComponent,
 		BTemplateDirective,
-		NgTemplateOutlet
+		NgTemplateOutlet,
+		StepperLendingRecordComponent,
+		CdkStep,
+		FormRecordComponent
 	],
 	templateUrl: './lending-page.component.html',
 	styleUrl: './lending-page.component.scss',
+	schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class LendingPageComponent implements OnInit {
 

@@ -20,6 +20,13 @@ public class UsersController : ControllerBase
 		_usersService = usersService;
 	}
 
+	[HttpGet("get/isAuth")]
+	[Authorize]
+	public async Task<IActionResult> GetIsAuthAsync()
+	{
+		return Ok(true);
+	}
+
 	[HttpPost("Register")]
 	public async Task<IActionResult> Register(
 		RegisterUserRequest request
@@ -53,6 +60,14 @@ public class UsersController : ControllerBase
 			{
 				Expires = DateTime.Now.AddDays(7)
 			});
+
+		return Ok();
+	}
+
+	[HttpGet("logout")]
+	public async Task<IActionResult> Logout()
+	{
+		HttpContext.Response.Cookies.Delete("cookies--service");
 
 		return Ok();
 	}

@@ -14,7 +14,7 @@ public class Record
 		Guid id,
 		Guid? clientId,
 		string? carInfo,
-		string description,
+		string? description,
 		DateTime createTime,
 		DateTime? visitTime,
 		Guid? timeRecordId
@@ -36,7 +36,7 @@ public class Record
 	public UserInfo? Client { get; private set; } = null!;
 
 	public string? CarInfo { get; private set; }
-	public string Description { get; private set; }
+	public string? Description { get; private set; }
 
 	public DateTime CreateTime { get; private set; }
 
@@ -119,7 +119,7 @@ public class Record
 		Guid id,
 		Guid? userId,
 		string? carInfo,
-		string description,
+		string? description,
 		DateTime createTime,
 		DateTime? visitTime,
 		Guid? dayRecordsId)

@@ -1,0 +1,41 @@
+.form {
+	@apply flex flex-col w-full max-w-md mx-auto p-5 bg-surface;
+
+	border-radius: 0.625rem;
+
+	&__group {
+		@apply mb-4 text-on-surface;
+	}
+
+	&__label {
+		@apply font-bold mb-2;
+	}
+
+	&__input {
+		@apply w-full p-2 border border-primary border-solid rounded;
+		background-color: var(--color-input-background);
+		color: var(--color-input-text);
+	}
+
+	&__error {
+		@apply text-red-500 text-xs mt-1;
+	}
+
+	&__button {
+		@apply px-4 py-2 bg-primary text-white border-none rounded cursor-pointer text-lg;
+
+		&:disabled {
+			@apply bg-secondary;
+		}
+	}
+}
+
+@media (max-width: 1280px) {
+	.form {
+		@apply p-2;
+
+		&__button {
+			@apply w-full py-3 text-sm;
+		}
+	}
+}

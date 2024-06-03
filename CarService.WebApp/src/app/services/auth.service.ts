@@ -2,18 +2,15 @@ import {Injectable} from '@angular/core'
 import {apiUrls} from './apiUrl'
 import {HttpClient} from '@angular/common/http'
 import {UserType} from '../models/user.type'
-import {BehaviorSubject, tap} from 'rxjs'
+import {catchError, Observable, of} from 'rxjs'
 
 @Injectable({
 	providedIn: 'root'
 })
 export class AuthService {
 
-	user?: UserType
-
-	isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
-
 	constructor(private http: HttpClient) {
+		console.log(document.cookie)
 	}
 
 	public login(email: string, password: string) {
@@ -21,9 +18,6 @@ export class AuthService {
 			email,
 			password
 		}, {withCredentials: true})
-							 .pipe(tap(() => {
-								 this.setLoggedIn(true)
-							 }))
 	}
 
 	public register(
@@ -49,21 +43,16 @@ export class AuthService {
 	public getByCookie() {
 		return this.http.get<UserType>(apiUrls.users.getByCookie,
 			{withCredentials: true})
-							 .pipe(tap((user) => {
-									 this.setLoggedIn(true)
-								 })
-							 )
+	}
+
+	public isAuth(): Observable<boolean> {
+		return this.http.get<boolean>(apiUrls.users.getIsAuth,
+			{withCredentials: true}).pipe(
+			catchError(() => of(false))
+		)
 	}
 
 	public logout(): void {
-		this.setLoggedIn(false)
 	}
 
-	public getLoggedIn() {
-		return this.isLoggedIn.asObservable()
-	}
-
-	public setLoggedIn(value: boolean) {
-		this.isLoggedIn.next(value)
-	}
 }

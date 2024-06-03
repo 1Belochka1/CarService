@@ -9,6 +9,10 @@ import localeRu from '@angular/common/locales/ru'
 import {AuthService} from './services/auth.service'
 import {provideNativeDateAdapter} from '@angular/material/core'
 
+import {register} from 'swiper/element'
+
+register()
+
 registerLocaleData(localeRu)
 
 export const appConfig: ApplicationConfig = {

@@ -13,7 +13,10 @@ public interface IServicesRepository
 	Task<List<Service>> GetLendingAsync();
 
 	Task<Service?> GetByNameAsync(string name);
+	Task<Service?> GetByIdAsync(Guid id);
 
 	Task<ListWithPage<Service>> GetAllAsync(
 		ParamsWhitFilter parameters);
+
+	Task UpdateAsync(Service service);
 }

@@ -2,9 +2,9 @@ import {
 	AfterContentInit,
 	ChangeDetectorRef,
 	Component,
-	ContentChildren,
+	ContentChildren, EventEmitter,
 	Input,
-	OnChanges, OnInit,
+	OnChanges, OnInit, Output,
 	QueryList,
 	SimpleChanges,
 	TemplateRef
@@ -58,6 +58,9 @@ export class BTableComponent implements OnInit, AfterContentInit, OnChanges {
 	items: any
 
 	@Input()
+	addButton: boolean = false
+
+	@Input()
 	isLoading: boolean = false
 
 	@Input()
@@ -72,14 +75,15 @@ export class BTableComponent implements OnInit, AfterContentInit, OnChanges {
 	@Input()
 	bodyTemplate?: TemplateRef<any>
 
+	@Output()
+	addButtonClick: EventEmitter<void> = new EventEmitter<void>()
+
 	@ContentChildren(BTemplateDirective)
 	templates?: QueryList<BTemplateDirective>
 
 	rowCount: number = 5
 
 	emptyRows: any[] = []
-
-	headers: string[] = []
 
 	constructor(private cd: ChangeDetectorRef) {
 	}
@@ -122,5 +126,9 @@ export class BTableComponent implements OnInit, AfterContentInit, OnChanges {
 		else
 			this.service.sortProperty = sortProp
 
+	}
+
+	addClick() {
+		this.addButtonClick.emit()
 	}
 }

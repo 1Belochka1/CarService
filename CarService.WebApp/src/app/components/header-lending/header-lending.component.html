@@ -7,27 +7,32 @@
 	<div class="header__title">
 		Автодоктор
 	</div>
-	<div class="header__burger">
+	<div class="header__burger"
+			 (click)='toggleShowMenu()'
+	>
 		<span></span>
 		<span></span>
 		<span></span>
 	</div>
 	<div class="header__navigation"
-			 [ngClass]="{}"
+			 [ngClass]="{'showMenu': isShowMenu}"
 	>
 		<nav class="header__lending">
 			<ul>
-				<li><a [routerLink]='["/lending"]'>Главная</a></li>
-				<li><a>Услуги</a></li>
+				<li><a [routerLink]='["/lending"]'
+							 href='#header'
+				>Главная
+				</a></li>
+				<li><a href='#services'>Услуги</a></li>
 				<li><a>О нас</a></li>
-				<li><a>Записаться</a></li>
+				<li><a href='#record'>Записаться</a></li>
 			</ul>
 		</nav>
 		<nav class="header__link">
 			<ul>
-				<li><a routerLink="/shop">Магазин</a></li>
-				<li><a routerLink="/account">Личный
-					кабинет</a>
+				<li>
+					<a routerLink="/account">Личный
+						кабинет</a>
 				</li>
 			</ul>
 		</nav>

@@ -1,17 +1,19 @@
 <span>Сортировать: </span>
-<div class="sort__wrapper">
+<div class='sort__wrapper'>
 	<app-select classContainer="sort__property"
 							[items]="service.sortProperties"
 							(selectionChange)="service.sortChanged($event)"
 	/>
 	<div class="sort__descending"
-			 *ngIf="service.sortDescending != null">
+			 *ngIf="service.sortDescending != null"
+	>
 		<svg-icon src="assets/svg/minimize-min.svg"
 							class="arrow-down"
 							[ngClass]="{'arrow-up':
 									service.sortDescending}"
 							svgClass="svg-nav sort__descending-icon"
 							viewBox="0 0 30 30"
-							(click)="service.toggleDescending()"/>
+							(click)="service.toggleDescending()"
+		/>
 	</div>
 </div>

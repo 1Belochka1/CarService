@@ -1,26 +1,14 @@
 <section class="container">
-	<header class='label'>
-		@for (step of steps; track step; let i = $index) {
-			<div class='label__item'
-					 [class.label__active]='selectedIndex === i'
-			>
-				{{ step.label }}
-			</div>
-		}
+	<header class='label'
+					*ngIf='selected?.label'
+	>
+		<div class='label__active'>
+			{{ selected?.label }}
+		</div>
 	</header>
 
-	<div [ngTemplateOutlet]="selected ? selected.content : null"></div>
-
-	<!--	<div class='buttons'>-->
-	<!--		@for (step of steps; track step; let i = $index) {-->
-	<!--			<button-->
-	<!--				class="button__step"-->
-	<!--				[class.button__active]="selectedIndex === i"-->
-	<!--				(click)="selectStepByIndex(i)"-->
-	<!--			>-->
-	<!--				Step {{ i + 1 }}-->
-	<!--			</button>-->
-	<!--		}-->
-	<!--	</div>-->
+	<ng-container [ngTemplateOutlet]="selected ? selected.content :
+	null"
+	></ng-container>
 
 </section>

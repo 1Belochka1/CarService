@@ -1,5 +1,7 @@
 :host {
 	@apply flex flex-col gap-5 max-w-[1440px] p-5;
+
+	margin: 0 auto;
 }
 
 .wrapper {
@@ -28,5 +30,11 @@
 				}
 			}
 		}
+	}
+
+	.not-found {
+		@apply text-on-surface bg-surface p-5;
+
+		border-radius: 0.625rem;
 	}
 }

@@ -21,16 +21,15 @@ export class AuthService {
 	}
 
 	public register(
-		email: string,
 		lastName: string,
 		firstName: string,
 		patronymic: string,
 		address: string,
 		phone: string,
-		password: string
+		password: string,
+		isMaster: boolean = false
 	) {
-		return this.http.post(apiUrls.users.register, {
-			email,
+		return this.http.post(isMaster ? apiUrls.users.registerMaster : apiUrls.users.register, {
 			lastName,
 			firstName,
 			patronymic,

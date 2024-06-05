@@ -39,6 +39,9 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<Guid?>("ProductId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ServiceId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("UserInfoId")
                         .HasColumnType("uuid");
 
@@ -52,7 +55,7 @@ namespace CarService.Infrastructure.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.CalendarRecords", b =>
+            modelBuilder.Entity("CarService.Core.Records.CalendarRecord", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -71,10 +74,13 @@ namespace CarService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ServiceId")
+                        .IsUnique();
+
                     b.ToTable("CalendarRecords");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.DayRecords", b =>
+            modelBuilder.Entity("CarService.Core.Records.DayRecord", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -88,7 +94,7 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<TimeOnly>("EndTime")
                         .HasColumnType("time without time zone");
 
-                    b.Property<bool?>("IsWeekend")
+                    b.Property<bool>("IsWeekend")
                         .HasColumnType("boolean");
 
                     b.Property<short>("Offset")
@@ -123,7 +129,6 @@ namespace CarService.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
@@ -155,7 +160,7 @@ namespace CarService.Infrastructure.Migrations
                     b.ToTable("Records");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.TimeRecords", b =>
+            modelBuilder.Entity("CarService.Core.Records.TimeRecord", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -203,6 +208,9 @@ namespace CarService.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
+                    b.Property<Guid?>("ImageId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsShowLending")
                         .HasColumnType("boolean");
 
@@ -213,7 +221,7 @@ namespace CarService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CalendarId")
+                    b.HasIndex("ImageId")
                         .IsUnique();
 
                     b.HasIndex("Name")
@@ -500,9 +508,18 @@ namespace CarService.Infrastructure.Migrations
                     b.Navigation("UserInfo");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.DayRecords", b =>
+            modelBuilder.Entity("CarService.Core.Records.CalendarRecord", b =>
                 {
-                    b.HasOne("CarService.Core.Records.CalendarRecords", "Calendar")
+                    b.HasOne("CarService.Core.Services.Service", "Service")
+                        .WithOne("Calendar")
+                        .HasForeignKey("CarService.Core.Records.CalendarRecord", "ServiceId");
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("CarService.Core.Records.DayRecord", b =>
+                {
+                    b.HasOne("CarService.Core.Records.CalendarRecord", "Calendar")
                         .WithMany("DaysRecords")
                         .HasForeignKey("CalendarId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -521,14 +538,14 @@ namespace CarService.Infrastructure.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.TimeRecords", b =>
+            modelBuilder.Entity("CarService.Core.Records.TimeRecord", b =>
                 {
                     b.HasOne("CarService.Core.Users.UserInfo", "Client")
                         .WithMany("TimeRecords")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("CarService.Core.Records.DayRecords", "DayRecord")
+                    b.HasOne("CarService.Core.Records.DayRecord", "DayRecord")
                         .WithMany("TimeRecords")
                         .HasForeignKey("DayRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -536,7 +553,7 @@ namespace CarService.Infrastructure.Migrations
 
                     b.HasOne("CarService.Core.Records.Record", "Record")
                         .WithOne("TimeRecord")
-                        .HasForeignKey("CarService.Core.Records.TimeRecords", "RecordId")
+                        .HasForeignKey("CarService.Core.Records.TimeRecord", "RecordId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Client");
@@ -548,11 +565,12 @@ namespace CarService.Infrastructure.Migrations
 
             modelBuilder.Entity("CarService.Core.Services.Service", b =>
                 {
-                    b.HasOne("CarService.Core.Records.CalendarRecords", "Calendar")
+                    b.HasOne("CarService.Core.Images.Image", "Image")
                         .WithOne("Service")
-                        .HasForeignKey("CarService.Core.Services.Service", "CalendarId");
+                        .HasForeignKey("CarService.Core.Services.Service", "ImageId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Navigation("Calendar");
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("CarService.Core.Stocks.Cart", b =>
@@ -668,14 +686,17 @@ namespace CarService.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.CalendarRecords", b =>
+            modelBuilder.Entity("CarService.Core.Images.Image", b =>
                 {
-                    b.Navigation("DaysRecords");
-
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.DayRecords", b =>
+            modelBuilder.Entity("CarService.Core.Records.CalendarRecord", b =>
+                {
+                    b.Navigation("DaysRecords");
+                });
+
+            modelBuilder.Entity("CarService.Core.Records.DayRecord", b =>
                 {
                     b.Navigation("TimeRecords");
                 });
@@ -683,6 +704,11 @@ namespace CarService.Infrastructure.Migrations
             modelBuilder.Entity("CarService.Core.Records.Record", b =>
                 {
                     b.Navigation("TimeRecord");
+                });
+
+            modelBuilder.Entity("CarService.Core.Services.Service", b =>
+                {
+                    b.Navigation("Calendar");
                 });
 
             modelBuilder.Entity("CarService.Core.Stocks.Product", b =>

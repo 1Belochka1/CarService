@@ -1,3 +1,5 @@
+using System.Net.Mime;
+using CarService.Core.Images;
 using CarService.Core.Records;
 using CarService.Core.Users;
 using CSharpFunctionalExtensions;
@@ -28,6 +30,10 @@ public class Service
 	public bool IsShowLending { get; private set; } = false;
 
 	public Guid? CalendarId { get; private set; }
+
+	public Guid? ImageId { get; private set; }
+
+	public Image? Image { get; private set; }
 
 	public virtual CalendarRecord? Calendar
 	{
@@ -96,6 +102,11 @@ public class Service
 	public void AddMasters(List<UserAuth> masters)
 	{
 		foreach (var master in masters) Masters.Add(master);
+	}
+
+	public void SetImageId(Guid? imageId)
+	{
+		ImageId = imageId;
 	}
 
 	public static Result<Service> Create(Guid id, string name,

@@ -17,11 +17,15 @@ import {NgIf} from '@angular/common'
 		ReactiveFormsModule
 	],
 	templateUrl: './form-record.component.html',
-	styleUrl: './form-record.component.scss'
 })
 export class FormRecordComponent {
 	@Output()
-	submit: EventEmitter<{name: string, phone: string}> = new EventEmitter<{name: string, phone: string}>()
+	submit = new EventEmitter<{
+		name: string,
+		phone: string,
+		problemDescription: string,
+		carDescription: string
+	}>()
 
 	requestForm: FormGroup
 
@@ -36,7 +40,12 @@ export class FormRecordComponent {
 
 	onSubmit() {
 		if (this.requestForm.valid) {
-			this.submit.emit({name: this.requestForm.get('name')?.value!, phone: this.requestForm.get('phone')?.value!})
+			this.submit.emit({
+				name: this.requestForm.get('name')?.value!,
+				phone: this.requestForm.get('phone')?.value!,
+				problemDescription: this.requestForm.get('problemDescription')?.value!,
+				carDescription: this.requestForm.get('carDescription')?.value!
+			})
 		}
 	}
 }

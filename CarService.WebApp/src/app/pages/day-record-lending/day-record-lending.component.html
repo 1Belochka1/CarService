@@ -1,8 +1,9 @@
 <app-header-lending></app-header-lending>
 <div class='wrapper'>
-	<div class='days'>
+	<div class='days'
+	*ngIf='(days|async) as daysRecord; else notFound'>
 		<div class='day'
-				 *ngFor='let day of days | async'
+				 *ngFor='let day of daysRecord'
 		>
 			<div class='day__date'>
 				{{ day.date | date: "dd.MM" }}
@@ -20,6 +21,13 @@
 			</div>
 		</div>
 	</div>
+	<ng-template #notFound>
+		<div class='not-found'>
+			К сожалению в данный момент на данную услугу онлайн
+			записи
+			нет. Приносим клубочайшие извинения.
+		</div>
+	</ng-template>
 </div>
 
 <ng-template #record>

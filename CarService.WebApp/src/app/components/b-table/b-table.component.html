@@ -1,5 +1,6 @@
-<div class="table__toolbox" *ngIf="service">
-
+<div class="table__toolbox"
+		 *ngIf="service"
+>
 	<ng-container *ngIf="toolboxTemplate"
 								[ngTemplateOutlet]="toolboxTemplate"
 	/>
@@ -7,11 +8,18 @@
 	<ng-container>
 
 		<app-search
-			(searchChangedEvent)="service.searchChange($event)"/>
+			(searchChangedEvent)="service.searchChange($event)"
+		/>
 
 		<app-sort *ngIf="service.sortProperties"
-							[service]="service"/>
+							[service]="service"
+		/>
 
+		<button *ngIf='addButton'
+						(click)='addClick()'
+						class='button'
+		>Добавить
+		</button>
 	</ng-container>
 
 </div>
@@ -21,67 +29,74 @@
 
 		<thead>
 
-		<ng-container *ngIf="headTemplate"
-									[ngTemplateOutlet]="headTemplate"
-		/>
+			<ng-container *ngIf="headTemplate"
+										[ngTemplateOutlet]="headTemplate"
+			/>
 
-		<tr
-			*ngIf="headItems"
-		>
-			<ng-container
-				*ngFor="let head of headItems; index as index">
-				<th *ngIf="head.value != -1">
-					<div
-						class="flex items-center justify-center"
-						(click)="sortChange(head)"
-					>
-						{{ head.name }}
-						<!--						<svg-icon-->
-						<!--							*ngIf="service.sortDescending != null &&-->
-						<!--						service.sortProperties.indexOf(service.sortProperty!) == index"-->
-						<!--							src="assets/svg/minimize-min.svg"-->
-						<!--							svgClass="svg-nav" viewBox="0 0 30 30"-->
-						<!--							[ngClass]="{'rotate-90':-->
-						<!--							service.sortDescending, '-rotate-90':-->
-						<!--							!service.sortDescending}"-->
-						<!--						/>-->
-					</div>
-				</th>
-			</ng-container>
+			<tr
+				*ngIf="headItems"
+			>
+				<ng-container
+					*ngFor="let head of headItems; index as index"
+				>
+					<th *ngIf="head.value != -1">
+						<div
+							class="flex items-center justify-center"
+							(click)="sortChange(head)"
+						>
+							{{ head.name }}
+							<!--						<svg-icon-->
+							<!--							*ngIf="service.sortDescending != null &&-->
+							<!--						service.sortProperties.indexOf(service.sortProperty!) == index"-->
+							<!--							src="assets/svg/minimize-min.svg"-->
+							<!--							svgClass="svg-nav" viewBox="0 0 30 30"-->
+							<!--							[ngClass]="{'rotate-90':-->
+							<!--							service.sortDescending, '-rotate-90':-->
+							<!--							!service.sortDescending}"-->
+							<!--						/>-->
+						</div>
+					</th>
+				</ng-container>
 
-		</tr>
+			</tr>
 
 		</thead>
 
 
 		<tbody>
 
-		<tr *ngIf="service.isLoading">
-			<td class="message" colspan="1000">Загрузка...</td>
-		</tr>
+			<tr *ngIf="service.isLoading">
+				<td class="message"
+						colspan="1000"
+				>Загрузка...
+				</td>
+			</tr>
 
-		<tr *ngIf="!service.isLoading && service.notFound">
-			<td class="message" colspan="1000">Данных нет</td>
-		</tr>
+			<tr *ngIf="!service.isLoading && service.notFound">
+				<td class="message"
+						colspan="1000"
+				>Данных нет
+				</td>
+			</tr>
 
-		<ng-container *ngIf="bodyTemplate">
-			<ng-container *ngFor="let item of items"
-										[ngTemplateOutlet]="bodyTemplate"
-										[ngTemplateOutletContext]="{$implicit:
+			<ng-container *ngIf="bodyTemplate">
+				<ng-container *ngFor="let item of items"
+											[ngTemplateOutlet]="bodyTemplate"
+											[ngTemplateOutletContext]="{$implicit:
                   item}"
-			/>
-		</ng-container>
+				/>
+			</ng-container>
 
-<!--		<ng-container-->
-<!--			*ngIf="items && rowCount < items.length +1; else empty"-->
-<!--		>-->
-<!--		</ng-container>-->
+			<!--		<ng-container-->
+			<!--			*ngIf="items && rowCount < items.length +1; else empty"-->
+			<!--		>-->
+			<!--		</ng-container>-->
 
-<!--		<ng-template #empty>-->
-<!--			<tr *ngFor="let j of emptyRows">-->
-<!--				<td colspan="1000">&nbsp;</td>-->
-<!--			</tr>-->
-<!--		</ng-template>-->
+			<!--		<ng-template #empty>-->
+			<!--			<tr *ngFor="let j of emptyRows">-->
+			<!--				<td colspan="1000">&nbsp;</td>-->
+			<!--			</tr>-->
+			<!--		</ng-template>-->
 
 		</tbody>
 
@@ -91,4 +106,5 @@
 <app-pagination *ngIf="service && service.totalPages > 1"
 								[currentPage]="service.currentPage"
 								[totalPages]="service.totalPages"
-								(changePage)="service.currentPageChanged($event)"/>
+								(changePage)="service.currentPageChanged($event)"
+/>

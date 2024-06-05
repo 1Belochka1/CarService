@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarService.Core.Services;
 using CarService.Core.Stocks;
 using CarService.Core.Users;
 
@@ -9,14 +10,11 @@ namespace CarService.Core.Images;
 
 public class Image
 {
-	private Image(Guid id, string? fileName, byte[]? data, Guid? productId, 
-		Guid? userInfoId)
+	private Image(Guid id, string? fileName, byte[]? data)
 	{
 		Id = id;
 		FileName = fileName;
 		Data = data;
-		ProductId = productId;
-		UserInfoId = userInfoId;
 	}
 
 	public Guid Id { get; private set; }
@@ -29,12 +27,30 @@ public class Image
 
 	public Guid? UserInfoId { get; private set; }
 
+	public Guid? ServiceId { get; private set; }
+
 	public Product? Product { get; private set; }
 
 	public UserInfo? UserInfo { get; private set; }
 
-	public static Image Create(Guid id, string fileName, byte[]? data, Guid? product, Guid? userInfo)
+	public Service? Service { get; private set; }
+
+	public void UpdateFilename(string newFilename)
 	{
-		return new Image(id, fileName, data, product, userInfo);
+		FileName = newFilename;
+	}
+
+	public void UpdateDetails(Guid? userInfoId,
+		Guid? productId, Guid? serviceId)
+	{
+		UserInfoId = userInfoId;
+		ProductId = productId;
+		ServiceId = serviceId;
+	}
+
+	public static Image Create(Guid id, string fileName,
+		byte[]? data)
+	{
+		return new Image(id, fileName, data);
 	}
 }

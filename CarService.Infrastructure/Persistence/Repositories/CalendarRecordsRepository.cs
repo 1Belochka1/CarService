@@ -43,6 +43,8 @@ public class
 		Guid serviceId)
 	{
 		return await _context.CalendarRecords
+			.Include(x => x.Service)
+			.ThenInclude(x => x.Image)
 			.FirstOrDefaultAsync(x => x.ServiceId == serviceId);
 	}
 
@@ -51,12 +53,15 @@ public class
 		return await _context.CalendarRecords
 			.Include(x => x.DaysRecords)
 			.ThenInclude(x => x.TimeRecords)
+			.Include(x => x.Service)
+			.ThenInclude(x => x.Image)
 			.FirstOrDefaultAsync(x => x.Id == id);
 	}
 
 	public async Task<List<CalendarRecord>> GetAll()
 	{
 		return await _context.CalendarRecords
+			.Include(x => x.Service)
 			.ToListAsync();
 	}
 }

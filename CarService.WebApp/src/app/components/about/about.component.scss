@@ -18,23 +18,15 @@
     }
 
     .info {
-      @apply flex flex-col;
+      @apply grid gap-x-5 gap-y-2.5;
 
-      * {
-        @apply grid text-wrap break-all;
+      grid-template-columns: auto 1fr;
 
-        //grid-template-columns: 100px 1fr;
-
-        grid-template-columns: 1fr 5fr;
-
-        @media (max-width: 768px) {
-          grid-template-columns: auto;
-        }
-
-        &:before {
-          @apply font-bold;
-          content: attr(data-name) ": ";
-        }
+      @media (max-width: 425px) {
+        grid-template-columns: 1fr;
+      }
+      h3 {
+        font-weight: 600;
       }
     }
   }

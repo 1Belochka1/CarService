@@ -1,0 +1,113 @@
+<form class="form"
+			[formGroup]="requestForm"
+			(ngSubmit)="onSubmit()"
+>
+	<div class="form__group">
+		<label class="form__label"
+					 for="name"
+		>Имя</label>
+		<input class="form__input"
+					 id="name"
+					 type="text"
+					 formControlName="name"
+					 placeholder="Введите ваше имя"
+		/>
+		<div class="form__error"
+				 *ngIf="requestForm.get('name')?.hasError('required')"
+		>
+			Имя обязательно
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('name')?.hasError('minlength')"
+		>Имя должно содержать минимум 3 символа
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="phone"
+		>Номер телефона</label>
+		<input class="form__input"
+					 id="phone"
+					 type="text"
+					 formControlName="phone"
+					 placeholder="Введите номер телефона"
+		/>
+		<div class="form__error"
+				 *ngIf="requestForm.get('phone')?.hasError('required')"
+		>Номер телефона обязателен
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('phone')?.hasError('pattern')"
+		>Неверный формат номера
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="problemDescription"
+		>Описание проблемы</label>
+		<textarea class="form__textarea"
+							id="problemDescription"
+							formControlName="problemDescription"
+							placeholder="Опишите вашу проблему"
+		></textarea>
+		<div class="form__error"
+				 *ngIf="requestForm.get('problemDescription')?.hasError('required')"
+		>Описание проблемы обязательно
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('problemDescription')?.hasError('minlength')"
+		>Описание проблемы должно содержать минимум 10 символов
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="carDescription"
+		>Описание автомобиля</label>
+		<textarea class="form__textarea"
+							id="carDescription"
+							formControlName="carDescription"
+							placeholder="Опишите ваш автомобиль"
+		></textarea>
+		<div class="form__error"
+				 *ngIf="requestForm.get('carDescription')?.hasError('required')"
+		>Описание автомобиля обязательно
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('carDescription')?.hasError('minlength')"
+		>Описание автомобиля должно содержать минимум 5 символов
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="priority"
+		>Приоритет</label>
+		<select class="form__select"
+						id="priority"
+						formControlName="priority"
+		>
+			<option value=""
+							disabled
+							selected
+			>Выберите приоритет
+			</option>
+			<option *ngFor="let priority of priorities"
+							[value]="priority"
+			>{{ priority }}
+			</option>
+		</select>
+		<div class="form__error"
+				 *ngIf="requestForm.get('priority')?.hasError('required')"
+		>Приоритет обязателен
+		</div>
+	</div>
+
+	<button class="form__button"
+					type="submit"
+					[disabled]="requestForm.invalid"
+	>Отправить
+	</button>
+</form>

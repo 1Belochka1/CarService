@@ -1,5 +1,5 @@
 import {Component} from '@angular/core'
-import {NgClass, NgTemplateOutlet} from '@angular/common'
+import {NgClass, NgIf, NgTemplateOutlet} from '@angular/common'
 import {CdkStepper, CdkStepperModule} from '@angular/cdk/stepper'
 
 @Component({
@@ -8,7 +8,8 @@ import {CdkStepper, CdkStepperModule} from '@angular/cdk/stepper'
 	imports: [
 		NgTemplateOutlet,
 		CdkStepperModule,
-		NgClass
+		NgClass,
+		NgIf
 	],
 	templateUrl: './stepper.component.html',
 	styleUrl: './stepper.component.scss',

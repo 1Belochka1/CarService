@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core'
+import {Component, inject, TemplateRef} from '@angular/core'
 import {Router} from '@angular/router'
 import {AsyncPipe, DatePipe} from '@angular/common'
 import {BTableComponent} from '../../../components/b-table/b-table.component'
@@ -8,6 +8,10 @@ import {TabsTableContentComponent} from '../../../components/tabs/tabs-table-con
 import {RecordsTableService} from '../../../services/records/records-table.service'
 import {Priority} from '../../../enums/priority.enum'
 import {Status} from '../../../enums/status.enum'
+import {ModalService} from '../../../services/modal.service'
+import {
+	FormAddRecordComponent
+} from '../../../components/form-add-record/form-add-record.component'
 
 @Component({
 	selector: 'app-records-page',
@@ -18,11 +22,12 @@ import {Status} from '../../../enums/status.enum'
 		BTemplateDirective,
 		BTableSortDirective,
 		DatePipe,
-		TabsTableContentComponent
+		TabsTableContentComponent,
+		FormAddRecordComponent
 	],
-	providers: [RecordsTableService],
+	providers: [RecordsTableService, ModalService],
 	templateUrl: './records-page.component.html',
-	styleUrl: './records-page.component.scss'
+	styleUrl: './records-page.component.scss',
 })
 export class RecordsPageComponent {
 	recordsService: RecordsTableService = inject(RecordsTableService)
@@ -30,7 +35,7 @@ export class RecordsPageComponent {
 	protected readonly priority = Priority
 	protected readonly status = Status
 
-	constructor(private _router: Router) {
+	constructor(private _router: Router, private _modalService: ModalService) {
 		this.recordsService.pageSize = 10
 		this.recordsService.method = 'all'
 		this.recordsService.update()
@@ -40,5 +45,13 @@ export class RecordsPageComponent {
 		this._router.navigate(['account','record', id]).then(
 			() => console.log('navigateRecord success')
 		)
+	}
+
+	addRecord() {
+
+	}
+
+	openModalAddRecord(templateRef: TemplateRef<any>) {
+		this._modalService.open(templateRef, {})?.subscribe()
 	}
 }

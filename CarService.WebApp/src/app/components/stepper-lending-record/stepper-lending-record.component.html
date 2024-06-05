@@ -11,19 +11,24 @@
 
 	<div [ngTemplateOutlet]="selected ? selected.content : null"></div>
 
-		<div class='buttons'>
-			<button class="text-4xl" cdkStepperPrevious>&larr;
-			</button>
-			<!--			@for (step of steps; track step; let i = $index) {-->
-			<!--				<button-->
-			<!--					class="button__step"-->
-			<!--					[class.button__active]="selectedIndex === i"-->
-			<!--					(click)="selectStepByIndex(i)"-->
-			<!--				>-->
-			<!--					Step {{ i + 1 }}-->
-			<!--				</button>-->
-			<!--			}-->
-			<button class="text-4xl" cdkStepperNext>&rarr;</button>
-		</div>
+	<div class='buttons'>
+		<button class="text-4xl"
+						cdkStepperPrevious
+		>&larr;
+		</button>
+		<!--			@for (step of steps; track step; let i = $index) {-->
+		<!--				<button-->
+		<!--					class="button__step"-->
+		<!--					[class.button__active]="selectedIndex === i"-->
+		<!--					(click)="selectStepByIndex(i)"-->
+		<!--				>-->
+		<!--					Step {{ i + 1 }}-->
+		<!--				</button>-->
+		<!--			}-->
+		<button class="text-4xl"
+						cdkStepperNext
+		>&rarr;
+		</button>
+	</div>
 
 </section>

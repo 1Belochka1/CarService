@@ -1,6 +1,8 @@
+using System.Net.Mime;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Images;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarService.Infrastructure.Persistence.
 	Repositories;
@@ -21,31 +23,18 @@ public class ImageRepository : IImageRepository
 		await _dbContext.SaveChangesAsync();
 	}
 
-	public async Task<FileInfo?> GetByName(
-		string filename)
+	public async Task<Image?> GetById(
+		Guid imageId)
 	{
-		if (!_dbContext.Images.Select(x => x.FileName)
-			    .Contains(filename))
-			return null;
+		return
+			await _dbContext.Images.FirstOrDefaultAsync(x =>
+				x.Id == imageId);
+	}
 
-		// Получаем текущий путь, где выполняется приложение
-		string currentDirectory =
-			Directory.GetCurrentDirectory();
+	public async Task Update(Image image)
+	{
+		_dbContext.Images.Update(image);
 
-		// Поднимаемся на несколько уровней вверх до папки решения
-		string solutionDirectory =
-			Path.GetFullPath(Path.Combine(currentDirectory,
-				"../"));
-
-		// Указываем относительный путь к файлу относительно папки решения
-		string relativeFilePath = Path.Combine
-			(solutionDirectory, "Images", filename);
-
-		var fileInfo = new FileInfo(relativeFilePath);
-
-		if (!fileInfo.Exists)
-			return null;
-
-		return fileInfo;
+		await _dbContext.SaveChangesAsync();
 	}
 }

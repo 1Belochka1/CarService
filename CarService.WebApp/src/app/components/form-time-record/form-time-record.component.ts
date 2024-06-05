@@ -17,11 +17,13 @@ import {NgIf} from '@angular/common'
 		ReactiveFormsModule
 	],
 	templateUrl: './form-time-record.component.html',
-	styleUrl: './form-time-record.component.scss'
 })
 export class FormTimeRecordComponent {
 	@Output()
-	submit: EventEmitter<{name: string, phone: string}> = new EventEmitter<{name: string, phone: string}>()
+	submit: EventEmitter<{ name: string, phone: string }> = new EventEmitter<{
+		name: string,
+		phone: string
+	}>()
 
 	requestForm: FormGroup
 
@@ -34,7 +36,10 @@ export class FormTimeRecordComponent {
 
 	onSubmit() {
 		if (this.requestForm.valid) {
-			this.submit.emit({name: this.requestForm.get('name')?.value!, phone: this.requestForm.get('phone')?.value!})
+			this.submit.emit({
+				name: this.requestForm.get('name')?.value!,
+				phone: this.requestForm.get('phone')?.value!
+			})
 		}
 	}
 }

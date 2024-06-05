@@ -1,4 +1,5 @@
 .container {
+	@apply flex flex-col gap-5;
 }
 
 .buttons {
@@ -15,15 +16,11 @@
 
 .label {
 
-	@apply flex gap-2 text-on-surface mb-5;
+	@apply flex justify-center text-on-surface;
 
-
-	&__item {
-		@apply bg-surface p-2;
-		border-radius: 0.625rem;
-	}
 
 	&__active {
-		background: var(--color-header)
+		font-weight: 600;
+		font-size: 1.25rem;
 	}
 }

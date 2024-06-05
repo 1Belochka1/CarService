@@ -1,3 +1,5 @@
+using System.Globalization;
+using CarService.Core.Records;
 using CarService.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -39,5 +41,15 @@ public class
 		builder.HasMany(x => x.Records)
 			.WithMany(x => x.Services)
 			.UsingEntity("RecordsServices");
+
+		builder.HasOne(x =>
+				x.Calendar)
+			.WithOne(x => x.Service)
+			.HasForeignKey<CalendarRecord>(x => x.ServiceId);
+
+		builder.HasOne(x => x.Image)
+			.WithOne(x => x.Service)
+			.HasForeignKey<Service>(x => x.ImageId)
+			.OnDelete(DeleteBehavior.Cascade);
 	}
 }

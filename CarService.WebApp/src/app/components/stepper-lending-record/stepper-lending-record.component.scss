@@ -2,10 +2,10 @@
 }
 
 .buttons {
+	@apply flex justify-center;
 }
 
 .button {
-
 	&__nav {
 	}
 
@@ -15,7 +15,7 @@
 
 .label {
 
-	@apply flex gap-2 text-on-surface mb-5;
+	@apply flex gap-2 justify-center text-on-surface mb-5;
 
 
 	&__item {
@@ -24,6 +24,6 @@
 	}
 
 	&__active {
-		background: var(--color-header)
+		background: rgba(var(--color-header))
 	}
 }

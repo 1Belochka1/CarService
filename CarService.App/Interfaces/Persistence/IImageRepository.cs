@@ -6,6 +6,8 @@ public interface IImageRepository
 {
 	Task Create(Image image);
 
-	Task<FileInfo?> GetByName(
-		string filename);
+	Task<Image?> GetById(
+		Guid imageId);
+
+	Task Update(Image image);
 }

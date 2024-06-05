@@ -43,6 +43,23 @@ public class UsersController : ControllerBase
 		return Ok(result.Value);
 	}
 
+	[Authorize(Roles = "1")]
+	[HttpPost("Register/Master")]
+	public async Task<IActionResult> RegisterMaster(
+		RegisterUserRequest request
+	)
+	{
+		var result = await _usersService.Register(
+			request.LastName, request.FirstName,
+			request.Patronymic, request.Address, request.Phone,
+			request.Password, 2);
+
+		if (result.IsFailure)
+			return BadRequest(result.Error);
+
+		return Ok(result.Value);
+	}
+
 	[HttpPost("Login")]
 	public async Task<IActionResult> Login(
 		LoginUserRequest request
@@ -106,7 +123,7 @@ public class UsersController : ControllerBase
 
 	// Todo: Ограничить только для админа
 	[HttpPost("Update")]
-	[Authorize(Policy = "")]
+	[Authorize(Roles = "1")]
 	public async Task<IActionResult> Update(
 		UpdateUserRequest request)
 	{

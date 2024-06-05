@@ -284,6 +284,8 @@ public class RecordsController : ControllerBase
 		var result = await _recordsService
 			.GetDayRecordsByCalendarIdAsync(id);
 
+		if (result.Count < 1)
+			return Ok(null);
 		return Ok(result);
 	}
 

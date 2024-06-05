@@ -2,8 +2,12 @@
 	[service]="workersService"
 	[items]="workersService.items$ | async"
 	[headItems]="workersService.headItems"
+	[addButton]='true'
+	(addButtonClick)='openModalAddWorker(addWorkerTemplate)'
 >
-	<ng-template bTemplate="body" let-item>
+	<ng-template bTemplate="body"
+							 let-item
+	>
 		<tr (click)="goToWorker(item.id)">
 			<td data-name="Фио">
 				{{
@@ -11,17 +15,72 @@
 				}}
 			</td>
 			<td class="tablet:max-w-full max-w-36"
-					data-name="Номер">
+					data-name="Номер"
+			>
 				{{ item.phone }}
 			</td>
-			<td class="break-all" data-name="Адрес">
+			<td class="break-all"
+					data-name="Адрес"
+			>
 				{{ item.address }}
 			</td>
 		</tr>
 	</ng-template>
 </b-table>
 
-<!--<app-pagination *ngIf="workersService.totalPages > 1"-->
-<!--								[currentPage]="workersService.currentPage"-->
-<!--								[totalPages]="workersService.totalPages"-->
-<!--								(changePage)="workersService.currentPageChanged($event)"/>-->
+<ng-template #addWorkerTemplate>
+
+	<app-stepper [(selectedIndex)]='selectedIndexAddWorker'>
+
+		<cdk-step>
+			<div class='wrapper flex flex-col gap-2'>
+				<button class='button-on-surface'
+								(click)='selectedIndexAddWorker =
+			 1'
+				>
+					Регистрация
+				</button>
+				<button class='button-on-surface'
+								(click)='selectedIndexAddWorker = 3'
+				>
+					Создание авторизационных данных
+				</button>
+				<button class='button-on-surface'
+								(click)='selectedIndexAddWorker = 2'
+				>
+					Обновление зарегистрированного пользователя
+				</button>
+			</div>
+		</cdk-step>
+
+		<cdk-step label='Регистрация'>
+			<app-form-register
+				(submit)='addWorker($event)'
+			></app-form-register>
+			<ng-container [ngTemplateOutlet]='backButton'></ng-container>
+		</cdk-step>
+
+		<cdk-step
+			label='Обновление зарегистрированного пользователя'
+		>
+			<ng-container [ngTemplateOutlet]='backButton'></ng-container>
+		</cdk-step>
+		<cdk-step
+			label='Создание авторизационных данных'
+		>
+			<ng-container [ngTemplateOutlet]='backButton'></ng-container>
+		</cdk-step>
+
+		<ng-template #backButton>
+			<button
+				class='button-on-surface'
+				(click)='selectedIndexAddWorker =
+			 0'
+			>
+				Назад
+			</button>
+		</ng-template>
+
+	</app-stepper>
+
+</ng-template>

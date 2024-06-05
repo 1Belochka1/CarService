@@ -20,7 +20,7 @@ import {NgIf, NgTemplateOutlet} from '@angular/common'
 })
 export class AboutComponent implements AfterContentInit {
 	@Input()
-	title: string = ''
+	title: string | null = ''
 
 	@Input()
 	item: any

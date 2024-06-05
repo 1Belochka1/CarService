@@ -11,65 +11,68 @@ namespace CarService.Api.Controllers;
 [Route("api/[controller]")]
 public class ImagesController : ControllerBase
 {
-	private readonly IImageRepository _imageRepository;
+	private readonly ImageService _imageService;
 
 	private readonly UsersService _usersService;
 
-	public ImagesController(IImageRepository imageRepository,
+	public ImagesController(ImageService imageService,
 		UsersService usersService)
 	{
-		_imageRepository = imageRepository;
+		_imageService = imageService;
 		_usersService = usersService;
 	}
 
-	[HttpPost]
-	public async Task UploadImageAsync(IFormFile? file,
-		Guid? userInfoId, Guid? productId)
+	[HttpPost("upload")]
+	public async Task<IActionResult> UploadImageAsync(
+		IFormFile? file,
+		Guid? userInfoId, Guid? productId, Guid? serviceId)
 	{
-		if (file == null || file.Length == 0)
+		var result = await _imageService.UploadImageAsync(file,
+			userInfoId,
+			productId, serviceId);
+
+		if (result.IsFailure)
 		{
-			HttpContext.Response.StatusCode = 400;
-			return;
+			return BadRequest(result.Error);
 		}
 
-		var id = Guid.NewGuid();
-
-		var filename = id + $"_{file.FileName}";
-
-		var path = Path.Combine(Directory.GetCurrentDirectory(),
-			"../Images", filename);
-
-		Directory.CreateDirectory(Path.GetDirectoryName(path));
-
-		await using (var stream =
-		             new FileStream(path, FileMode.Create))
-		{
-			await file.CopyToAsync(stream);
-		}
-
-		var image = Image.Create(id, filename, null, productId,
-			userInfoId);
-
-		await _imageRepository.Create(image);
+		return Ok();
 	}
 
-
-	[Authorize]
-	[HttpGet("{filename}")]
-	public async Task GetImagesAsync(
-		string filename)
+	[HttpPost("update")]
+	public async Task<IActionResult> UpdateImageAsync(
+		Guid imageId,
+		IFormFile? newFile,
+		Guid? userInfoId, Guid? productId, Guid? serviceId)
 	{
-		var image = await _imageRepository
-			.GetByName
-				(filename);
+		var result = await _imageService.UpdateImageAsync(
+			imageId,
+			newFile,
+			userInfoId,
+			productId, serviceId);
 
-		if (image == null)
+		if (result.IsFailure)
+		{
+			return BadRequest(result.Error);
+		}
+
+		return Ok();
+	}
+
+	[HttpGet("get/{imageId}")]
+	public async Task GetImagesAsync(
+		Guid imageId)
+	{
+		var image = await _imageService
+			.GetImageAsync(imageId);
+
+		if (image.IsFailure)
 		{
 			HttpContext.Response.StatusCode = 404;
 			return;
 		}
 
 		await HttpContext.Response
-			.SendFileAsync(image.FullName);
+			.SendFileAsync(image.Value.FullName);
 	}
 }

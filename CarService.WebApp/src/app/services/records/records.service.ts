@@ -7,7 +7,7 @@ import {HttpClient} from '@angular/common/http'
 @Injectable({
 	providedIn: 'root'
 })
-export class RecordsService  {
+export class RecordsService {
 
 	httpClient: HttpClient = inject(HttpClient)
 
@@ -24,5 +24,20 @@ export class RecordsService  {
 			priority,
 			status
 		}, {withCredentials: true})
+	}
+
+	create(name: string,
+				 phone: string,
+				 description: string,
+				 carInfo: string
+	) {
+		const req = {
+			phone,
+			firstName: name,
+			carInfo,
+			description,
+		}
+
+		return this.httpClient.post(apiUrls.records.createWithOutAuth, req)
 	}
 }

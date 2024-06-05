@@ -12,6 +12,8 @@ import {
 } from '../../../../components/select/select.component'
 import {Priority} from '../../../../enums/priority.enum'
 import {Status} from '../../../../enums/status.enum'
+import {AboutComponent} from '../../../../components/about/about.component'
+import {BTemplateDirective} from '../../../../direcrives/b-template.directive'
 
 @Component({
 	selector: 'app-day-record-lending-page',
@@ -22,6 +24,8 @@ import {Status} from '../../../../enums/status.enum'
 		FullNamePipe,
 		NgIf,
 		SelectComponent,
+		AboutComponent,
+		BTemplateDirective,
 	],
 	templateUrl: './record-page.component.html',
 	styleUrl: './record-page.component.scss',
@@ -78,9 +82,9 @@ export class RecordPageComponent {
 
 	}
 
-	dialogOpen(template: TemplateRef<any>, context: any) {
+	dialogOpen(template: TemplateRef<any>, context: any, title: string) {
 		this.modalService.open(template, {
-			title: 'Приоритет',
+			title: title,
 			context: context
 		})?.subscribe((result) => {
 

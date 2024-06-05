@@ -1,31 +1,34 @@
 <div class="wrapper"
 		 *ngIf="record"
 >
-	<div class="about">
-		<h1>Заявка от
-			{{ record.createTime | date: 'dd MMMM hh:mm ' }}
-		</h1>
-		<div class="table-about">
+	<app-about
+		[title]='"Заявка от " + (record.createTime |
+		date:"dd MMMM hh:mm")'
+		[item]='record'
+	>
+		<ng-template bTemplate="about-content"
+								 let-item
+		>
 			<h3>Фио</h3>
 			<p data-name="Полное имя">
-				{{ record.client | fullName }}
+				{{ item.client | fullName }}
 			</p>
 			<h3>Номер телефона</h3>
 			<p>
-				{{ record.client.phone }}
+				{{ item.client.phone }}
 			</p>
 			<h3>Описание</h3>
-			<p>{{ record.description }}</p>
-			<ng-container *ngIf="record.carInfo">
+			<p>{{ item.description }}</p>
+			<ng-container *ngIf="item.carInfo">
 				<h3>Автомобиль</h3>
-				<p>{{ record.carInfo }}</p>
+				<p>{{ item.carInfo }}</p>
 			</ng-container>
 			<h3>Приоритет</h3>
 			<p>
 				<span class="priority"
-							[attr.data-priority]="record.priority"
+							[attr.data-priority]="item.priority"
 				>
-								{{ priority[record.priority] }}
+								{{ priority[item.priority] }}
 				</span>
 			</p>
 			<h3>Статус</h3>
@@ -36,18 +39,20 @@
 								{{ status[record.status] }}
 				</span>
 			</p>
-		</div>
-	</div>
+		</ng-template>
+	</app-about>
 
 	<div class="action">
 		<!-- TODO: доделать страницу -->
 		<button (click)="dialogOpen(modalPriority,
-		{selectItems: priorityItems, priority: record.priority})"
+		{selectItems: priorityItems, priority:
+		record.priority}, 'Приоритет')"
 		>
 			Изменить приоритет
 		</button>
 		<button (click)="dialogOpen(modalStatus,
-		{selectItems: statusItems, status: record.status})"
+		{selectItems: statusItems, status: record.status},
+		'Статус')"
 		>
 			Изменить
 			статус

@@ -5,158 +5,215 @@
 @layer input;
 
 :root {
-  --color-background: 10, 25, 80;
-  --color-surface: 1, 22, 39;
-  --color-on-surface: 228, 228, 228;
+	--color-background: 10, 25, 80;
+	--color-surface: 1, 22, 39;
+	--color-on-surface: 228, 228, 228;
 
-  --color-primary: 255, 138, 99;
-  --color-secondary: 228, 228, 231;
+	--color-primary: 255, 138, 99;
+	--color-secondary: 228, 228, 231;
 
-  --color-header: #274ab6;
+	--color-header: 39, 74, 182;
 
-  --width-menu: 16.875rem;
+	--width-menu: 16.875rem;
 
-  --color-input-border: rgb(var(--color-primary));
-  --color-input-text: inherit;
-  --color-input-background: inherit;
+	--color-input-border: rgb(var(--color-primary));
+	--color-input-text: inherit;
+	--color-input-background: inherit;
 
-  @media (max-width: 1280px) {
-    font-size: 14px;
-  }
+	@media (max-width: 1280px) {
+		font-size: 14px;
+	}
 }
 
 
 /* W3C standard
    сейчас только для Firefox */
 * {;
-  scrollbar-width: thin;
-  scrollbar-color: rgb(var(--color-on-surface)) rgb(var(--color-surface));
+	scrollbar-width: thin;
+	scrollbar-color: rgb(var(--color-on-surface)) rgb(var(--color-surface));
 }
 
 /* для Chrome/Edge/Safari */
 *::-webkit-scrollbar {
-  width: 6px;
+	width: 6px;
 }
 
 *::-webkit-scrollbar-track {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  @apply bg-surface;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	@apply bg-surface;
 }
 
 *::-webkit-scrollbar-thumb {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
 
-  //@apply bg-surface border-surface border-2 border-solid;
+	//@apply bg-surface border-surface border-2 border-solid;
 }
 
 * {
-  box-sizing: border-box;
-  @apply font-montserrat;
+	box-sizing: border-box;
+	@apply font-montserrat;
 }
 
 html {
-  @apply min-h-screen;
+	@apply min-h-screen min-h-svh scroll-smooth;
 }
 
 body {
-  background: -webkit-linear-gradient(145deg, #242436, #0a1950, #0a1450);
-  background: linear-gradient(145deg, #242436, #0a1950, #0a1450);
-  background-repeat: no-repeat;
+	background: -webkit-linear-gradient(145deg, #242436, #0a1950, #0a1450);
+	background: linear-gradient(145deg, #242436, #0a1950, #0a1450);
+	background-repeat: no-repeat;
 }
 
-input {
-  @apply border-none appearance-none;
-  background: none;
-  outline: none;
+input, textarea {
+	@apply border-none appearance-none;
+	background: none;
+	outline: none;
 }
 
 img {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 .svg-nav {
-  height: 1.875rem;
-  width: 1.875rem;
-  @apply fill-primary stroke-white;
+	height: 1.875rem;
+	width: 1.875rem;
+	@apply fill-primary stroke-white;
 }
 
 .svg-table {
-  height: 1.875rem;
-  width: 1.875rem;
-  @apply stroke-white;
+	height: 1.875rem;
+	width: 1.875rem;
+	@apply stroke-white;
 }
 
 .priority {
-  @apply inline-block text-center p-1 text-nowrap;
+	@apply inline-block text-center p-1 text-nowrap;
 
-  border-radius: 0.625rem;
+	border-radius: 0.625rem;
 
-  &[data-priority="0"] {
-    @apply bg-gray-400/50 border-gray-400 border-solid border;
-    backdrop-filter: blur(10px);
-  }
+	&[data-priority="0"] {
+		@apply bg-gray-400/50 border-gray-400 border-solid border;
+		backdrop-filter: blur(10px);
+	}
 
-  &[data-priority="1"] {
-    @apply bg-green-400/20 border-green-400 border-solid border;
-  }
+	&[data-priority="1"] {
+		@apply bg-green-400/20 border-green-400 border-solid border;
+	}
 
-  &[data-priority="2"] {
-    @apply bg-red-400/20 border-red-400 border-solid border;
-  }
+	&[data-priority="2"] {
+		@apply bg-red-400/20 border-red-400 border-solid border;
+	}
 
-  &[data-priority="3"] {
-    @apply bg-red-800/20 border-red-800 border-solid border;
-  }
+	&[data-priority="3"] {
+		@apply bg-red-800/20 border-red-800 border-solid border;
+	}
 }
 
 .status {
-  @apply inline-block text-center p-1 text-nowrap;
+	@apply inline-block text-center p-1 text-nowrap;
 
-  border-radius: 0.625rem;
+	border-radius: 0.625rem;
 
-  &[data-status="0"] {
-    @apply bg-red-500/20 border-red-500 border-solid border;
-  }
+	&[data-status="0"] {
+		@apply bg-red-500/20 border-red-500 border-solid border;
+	}
 
-  &[data-status="1"] {
-    @apply bg-orange-400/20 border-orange-400 border-solid border;
-  }
+	&[data-status="1"] {
+		@apply bg-orange-400/20 border-orange-400 border-solid border;
+	}
 
-  &[data-status="2"] {
-    @apply bg-sky-400/20 border-sky-400 border-solid border;
-  }
+	&[data-status="2"] {
+		@apply bg-sky-400/20 border-sky-400 border-solid border;
+	}
 
-  &[data-status="3"] {
-    @apply bg-gray-400/20 border-gray-400 border-solid border;
-  }
+	&[data-status="3"] {
+		@apply bg-gray-400/20 border-gray-400 border-solid border;
+	}
 
-  &[data-status="4"] {
-    @apply bg-green-400/20 border-green-400 border-solid border;
-  }
+	&[data-status="4"] {
+		@apply bg-green-400/20 border-green-400 border-solid border;
+	}
 
 }
 
 .table-about {
-  display: grid;
-  grid-template-columns: auto 1fr;
+	display: grid;
+	grid-template-columns: auto 1fr;
 
-  column-gap: 10px;
+	column-gap: 10px;
 
-  row-gap: 5px;
+	row-gap: 5px;
 
-  align-items: center;
+	align-items: center;
 
-  h2 {
-    font-size: 20px;
-    font-weight: 300;
-    grid-column: span 2;
-  }
+	h2 {
+		font-size: 20px;
+		font-weight: 300;
+		grid-column: span 2;
+	}
 
-  h3 {
-    font-weight: 600;
-  }
+	h3 {
+		font-weight: 600;
+	}
 }
 
+.button {
+	@apply p-2 bg-surface bg-opacity-60 hover:bg-opacity-100 transition-colors duration-500;
+
+	border-radius: 0.625rem;
+}
+
+.button-on-surface {
+	@apply text-on-surface w-full p-2 border-header border border-solid bg-header bg-opacity-20 hover:bg-opacity-100 transition-colors duration-500;
+
+	border-radius: 0.625rem;
+}
+
+
+.form {
+	@apply flex flex-col max-w-md mx-auto;
+
+	--border-radius-form: 0.625rem;
+
+	border-radius: var(--border-radius-form);
+
+	&__group {
+		@apply mb-4 text-on-surface;
+	}
+
+	&__label {
+		@apply font-bold mb-2;
+	}
+
+	&__input, &__textarea {
+		@apply w-full p-2 border border-primary border-solid;
+		background-color: var(--color-input-background);
+		color: var(--color-input-text);
+		border-radius: var(--border-radius-form);
+	}
+
+	&__error {
+		@apply text-red-500 text-xs mt-1;
+	}
+
+	&__button {
+		@apply px-4 py-2 bg-primary text-white border-none cursor-pointer text-lg;
+
+		border-radius: var(--border-radius-form);
+
+		&:disabled {
+			@apply opacity-30;
+		}
+	}
+}
+
+@media (max-width: 1280px) {
+	.form {
+		&__button {
+			@apply w-full py-3 text-sm;
+		}
+	}
+}

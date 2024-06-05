@@ -27,13 +27,13 @@ span {
   }
 
   &__descending {
-    @apply flex items-center bg-surface/70;
+    @apply flex items-center bg-surface;
     border-radius: 0.625rem;
     padding: 0 0.9375rem;
 
 
     &-icon {
-      stroke: black;
+      @apply stroke-on-surface;
     }
 
     .arrow-down {

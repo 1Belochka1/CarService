@@ -12,6 +12,7 @@ export const apiUrls = {
 	users: {
 		login: `${USER_URL}/login`,
 		register: `${USER_URL}/register`,
+		registerMaster: `${USER_URL}/register/master`,
 		getByCookie: `${USER_URL}/get/ByCookie`,
 		getIsAuth: `${USER_URL}/get/isAuth`,
 		getClients: `${USER_URL}/get/clients`,
@@ -21,11 +22,12 @@ export const apiUrls = {
 	},
 	records: {
 		create: `${RECORD_URL}/create`,
+		createWithOutAuth: `${RECORD_URL}/create/WithoutUserAuth`,
 		update: `${RECORD_URL}/update`,
 		getById: `${RECORD_URL}/get/`,
 		getAll: `${RECORD_URL}/get/All`,
-		getCompletedByMasterId: `${RECORD_URL}/getCompletedByMasterId/`,
-		getActiveByMasterId: `${RECORD_URL}/getActiveByMasterId/`,
+		getCompletedByMasterId: `${RECORD_URL}/get/CompletedByMasterId/`,
+		getActiveByMasterId: `${RECORD_URL}/get/ActiveByMasterId/`,
 	},
 	calendars: {
 		create: `${CALENDAR_URL}/create`,
@@ -48,6 +50,11 @@ export const apiUrls = {
 		get: `${SERVICE_URL}`,
 		getLending: `${SERVICE_URL}/lending`,
 		create: `${SERVICE_URL}`,
+	},
+	images: {
+		getById: `${API_URL}images/get/`,
+		upload: `${API_URL}images/upload`,
+		update: `${API_URL}images/update`
 	}
 }
 

@@ -6,8 +6,10 @@ import {
 	ViewChild
 } from '@angular/core'
 import {
+	JsonPipe,
 	NgClass,
 	NgForOf,
+	NgIf,
 	NgOptimizedImage,
 	NgTemplateOutlet
 } from '@angular/common'
@@ -18,7 +20,6 @@ import {
 	HeaderLendingComponent
 } from '../../components/header-lending/header-lending.component'
 import {SliderComponent} from '../../components/slider/slider.component'
-import {SliderItem} from '../../components/slider/slider.types'
 import {
 	CalendarRecordService
 } from '../../services/calendars/calendar-record.service'
@@ -30,6 +31,14 @@ import {CdkStep} from '@angular/cdk/stepper'
 import {
 	FormRecordComponent
 } from '../../components/form-record/form-record.component'
+import {apiUrls} from '../../services/apiUrl'
+import {
+	CardLendingComponent
+} from '../../components/card-lending/card-lending.component'
+import {
+	CardBookingComponent
+} from '../../components/card-booking/card-booking.component'
+import {RecordsService} from '../../services/records/records.service'
 
 @Component({
 	selector: 'app-lending-page',
@@ -46,7 +55,11 @@ import {
 		NgTemplateOutlet,
 		StepperLendingRecordComponent,
 		CdkStep,
-		FormRecordComponent
+		FormRecordComponent,
+		NgIf,
+		JsonPipe,
+		CardLendingComponent,
+		CardBookingComponent,
 	],
 	templateUrl: './lending-page.component.html',
 	styleUrl: './lending-page.component.scss',
@@ -63,9 +76,9 @@ export class LendingPageComponent implements OnInit {
 
 	@ViewChild('defaultRecord', {static: true})
 	defaultRecord: TemplateRef<any>
+	protected readonly apiUrls = apiUrls
 
-	constructor(private _servicesService: ServicesService, private _calendarService: CalendarRecordService) {
-
+	constructor(private _servicesService: ServicesService, private _calendarService: CalendarRecordService, private _recordService: RecordsService) {
 		firstValueFrom(_servicesService.GetServicesLending())
 		.then((d: any) => this.services = d)
 	}
@@ -76,5 +89,15 @@ export class LendingPageComponent implements OnInit {
 			this.calendars = calendarsRecord
 		})
 
+	}
+
+	createRecord($event: {
+		name: string;
+		phone: string;
+		problemDescription: string;
+		carDescription: string
+	}) {
+		firstValueFrom(this._recordService.create($event.name, $event.phone, $event.problemDescription, $event.carDescription))
+		.then(() => console.log('create'))
 	}
 }

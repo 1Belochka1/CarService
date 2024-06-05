@@ -88,7 +88,6 @@ export class DayRecordLendingComponent {
 				if (isConfirm) {
 					this._dayRecordLendingService.updateRecord(id, this.phone, this.name)
 				}
-
 				if (isCancel) {
 					this._dayRecordLendingService.cancelBooking()
 				}

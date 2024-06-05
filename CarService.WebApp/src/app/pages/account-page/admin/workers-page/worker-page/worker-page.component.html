@@ -5,12 +5,16 @@
 	<ng-template bTemplate="about-content"
 							 let-item
 	>
-		<span data-name="Почта">{{ item.email }}</span>
-		<span data-name="Фамилия">{{ item.lastName }}</span>
-		<span data-name="Имя">{{ item.firstName }}</span>
-		<span data-name="Отчество">{{ item.patronymic }}</span>
-		<span data-name="Номер телефона">{{ item.phone }}</span>
-		<span data-name="Адрес">{{ item.address }}</span>
+		<h3>Фамилия</h3>
+		<p>{{ item.lastName }}</p>
+		<h3>Имя</h3>
+		<p>{{ item.firstName }}</p>
+		<h3>Отчество</h3>
+		<p>{{ item.patronymic }}</p>
+		<h3>Номер телефона</h3>
+		<p>{{ item.phone }}</p>
+		<h3>Адрес</h3>
+		<p>{{ item.address }}</p>
 	</ng-template>
 </app-about>
 
@@ -71,7 +75,6 @@
 					{value: 'priority', name: 'Приоритет'}
 				]"
 		>
-			<!--TODO: Доделать шаблоны -->
 			<ng-template bTemplate="body"
 									 let-item
 			>

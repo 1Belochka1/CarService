@@ -1,0 +1,129 @@
+<form class="form"
+			[formGroup]="requestForm"
+			(ngSubmit)="onSubmit()"
+>
+	<div class="form__group">
+		<label class="form__label"
+					 for="phone"
+		>Номер
+			телефона*</label>
+		<input class="form__input"
+					 id="phone"
+					 type="text"
+					 formControlName="phone"
+					 placeholder="Введите номер телефона"
+		/>
+		<div class="form__error"
+				 *ngIf="requestForm.get('phone')?.hasError('required')"
+		>Номер телефона обязателен
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('phone')?.hasError('pattern')"
+		>Неверный формат номера
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="firstName"
+		>Имя*</label>
+		<input class="form__input"
+					 id="firstName"
+					 type="text"
+					 formControlName="firstName"
+					 placeholder="Введите ваше имя"
+		/>
+		<div class="form__error"
+				 *ngIf="requestForm.get('firstName')?.hasError('required')"
+		>Имя обязательно
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('firstName')?.hasError('minlength')"
+		>Имя должно содержать минимум 2 символа
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="lastName"
+		>Фамилия</label>
+		<input class="form__input"
+					 id="lastName"
+					 type="text"
+					 formControlName="lastName"
+					 placeholder="Введите вашу фамилию"
+		/>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="middleName"
+		>Отчество</label>
+		<input class="form__input"
+					 id="middleName"
+					 type="text"
+					 formControlName="patronymic"
+					 placeholder="Введите ваше отчество"
+		/>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="address"
+		>Адрес</label>
+		<input class="form__input"
+					 id="address"
+					 type="text"
+					 formControlName="address"
+					 placeholder="Введите ваш адрес"
+		/>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="password"
+		>Пароль*
+		</label>
+		<input class="form__input"
+					 id="password"
+					 type="password"
+					 formControlName="password"
+					 placeholder="Введите пароль"
+		/>
+		<div class="form__error"
+				 *ngIf="requestForm.get('password')?.hasError('required')"
+		>Пароль обязателен
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('password')?.hasError('minlength')"
+		>Пароль должен содержать минимум 6 символов
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="confirmPassword"
+		>Подтверждение
+			пароля*</label>
+		<input class="form__input"
+					 id="confirmPassword"
+					 type="password"
+					 formControlName="confirmPassword"
+					 placeholder="Подтвердите пароль"
+		/>
+		<div class="form__error"
+				 *ngIf="requestForm.get('confirmPassword')?.hasError('required')"
+		>Подтверждение пароля обязательно
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('confirmPassword')?.hasError('mismatch')"
+		>Пароли не совпадают
+		</div>
+	</div>
+
+	<button class="form__button"
+					type="submit"
+					[disabled]="requestForm.invalid"
+	>Отправить
+	</button>
+</form>

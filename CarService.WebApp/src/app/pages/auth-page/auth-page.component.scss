@@ -1,5 +1,5 @@
 :host {
-	@apply relative flex items-center justify-center h-screen w-full p-3;
+	@apply relative grid items-center justify-center min-h-screen w-full p-5;
 
 	//background-image: url("/assets/lending-1.jpg");
 	//background-position: center;

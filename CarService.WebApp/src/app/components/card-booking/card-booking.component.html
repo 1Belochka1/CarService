@@ -1,0 +1,38 @@
+<div class="booking-card">
+	<div class="booking-card-image">
+		<img *ngIf="image"
+				 [src]="image"
+				 alt="Service Image"
+
+		>
+	</div>
+
+	<div class="booking-card-content">
+
+		<ng-container
+			*ngIf='templateContent'
+			[ngTemplateOutlet]='templateContent.template'
+		>
+		</ng-container>
+
+		<ng-container *ngIf='!templateContent'>
+			<h3 class="booking-card-title"
+					*ngIf='title'
+			>
+				{{ title }}
+			</h3>
+			<p class="booking-card-description"
+				 *ngIf='title'
+			>
+				{{ description }}
+			</p>
+			<a *ngIf='title'
+				 [routerLink]='link'
+				 class="booking-card-button"
+			>
+				Записаться
+			</a>
+		</ng-container>
+
+	</div>
+</div>

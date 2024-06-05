@@ -5,16 +5,11 @@
 .table {
 
 	&__toolbox {
-		@apply text-on-surface;
+		@apply text-on-surface gap-2.5;
 
 		display: flex;
-		gap: 20px;
 		flex-wrap: wrap;
 
-
-		@media (max-width: 768px) {
-			flex-direction: column;
-		}
 	}
 
 	&__wrapper {

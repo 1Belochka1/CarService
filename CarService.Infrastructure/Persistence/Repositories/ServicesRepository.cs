@@ -30,6 +30,7 @@ public class ServicesRepository : IServicesRepository
 	{
 		return await _context.Services
 			.Include(x => x.ServiceTypes)
+			.Include(x => x.Image)
 			.Where(x => x.IsShowLending)
 			.ToListAsync();
 	}
@@ -49,11 +50,18 @@ public class ServicesRepository : IServicesRepository
 			x.Name == name);
 	}
 
+	public async Task<Service?> GetByIdAsync(Guid id)
+	{
+		return await _context.Services.FirstOrDefaultAsync(x =>
+			x.Id == id);
+	}
+
 	public async Task<ListWithPage<Service>> GetAllAsync(
 		ParamsWhitFilter parameters)
 	{
 		var query = await _context.Services
 			.Include(x => x.ServiceTypes)
+			.Include(x => x.Image)
 			.ToListAsync();
 
 		if (parameters.Filters != null)
@@ -72,6 +80,13 @@ public class ServicesRepository : IServicesRepository
 				parameters.SortDescending);
 
 		return query.Page(parameters.Page, parameters.PageSize);
+	}
+
+	public async Task UpdateAsync(Service service)
+	{
+		_context.Services.Update(service);
+
+		await _context.SaveChangesAsync();
 	}
 }
 

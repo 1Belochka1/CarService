@@ -1,10 +1,7 @@
 :host {
-  @apply flex h-screen;
+  @apply flex min-h-svh;
 
 
-  @media (max-width: 768px) {
-    @apply h-auto;
-  }
 
   //background: -webkit-linear-gradient(315deg, #000000, #690202); /* Chrome 10-25, Safari 5.1-6 */
   //background: linear-gradient(40deg, #000000, #690202); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -17,72 +14,6 @@
 
 .wrapper {
   @apply flex w-full;
-
-  .menu {
-    @apply flex flex-col gap-5;
-    @apply w-[var(--width-surface)] h-full px-10 py-5 fixed z-50;
-    @apply bg-surface;
-    @apply text-on-surface;
-
-    transition: all 0.3s ease;
-
-    .profile {
-
-      @apply flex items-center gap-[0.3125rem];
-
-      padding: 5px 5px 5px 0;
-
-      &__icon {
-        @apply rounded-3xl border border-primary;
-        height: 3.125rem;
-        width: 3.125rem;
-      }
-
-      &__title {
-      }
-    }
-
-    .line {
-      @apply border-2 border-primary;
-    }
-
-    .nav {
-      &__wrapper {
-      }
-
-      &__list {
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-      }
-
-      &__item {
-        border-radius: 0.625rem;
-        cursor: pointer;
-        display: flex;
-        gap: 0.3125rem;
-
-        padding: 5px 5px 5px 0;
-
-        &:hover {
-          @apply bg-primary text-surface;
-          .svg-nav {
-            @apply stroke-surface;
-          }
-        }
-      }
-
-      &__icon {
-        @apply flex items-center justify-center shrink-0 w-[3.125rem];
-      }
-
-      &__title {
-        align-items: center;
-        display: flex;
-      }
-
-    }
-  }
 
   .content {
     @apply p-5 h-full w-full;

@@ -9,7 +9,12 @@ import {
 import {firstValueFrom} from 'rxjs'
 import {AuthService} from '../../services/auth.service'
 import {Router} from '@angular/router'
-import {CustomInputComponent} from '../../components/custom-input/custom-input.component'
+import {
+	CustomInputComponent
+} from '../../components/custom-input/custom-input.component'
+import {
+	FormRegisterComponent
+} from '../../components/form-register/form-register.component'
 
 @Component({
 	selector: 'app-auth-page',
@@ -18,7 +23,8 @@ import {CustomInputComponent} from '../../components/custom-input/custom-input.c
 		ReactiveFormsModule,
 		NgClass,
 		NgIf,
-		CustomInputComponent
+		CustomInputComponent,
+		FormRegisterComponent
 	],
 	templateUrl: './auth-page.component.html',
 	styleUrl: './auth-page.component.scss'
@@ -35,26 +41,11 @@ export class AuthPageComponent {
 		}
 	)
 
-	formRegister = this._formBuilder.group(
-		{
-			email: new FormControl('', [Validators.required]),
-			lastName: new FormControl('', [Validators.required]),
-			firstName: new FormControl('', [Validators.required]),
-			patronymic: new FormControl('', [Validators.required]),
-			address: new FormControl('', [Validators.required]),
-			phone: new FormControl('', [Validators.minLength(11), Validators.maxLength(11)]),
-			password: new FormControl('', [Validators.minLength(11), Validators.maxLength(11)])
-		}
-	)
-
 	activePage: 1 | 2 = 1
 
 	constructor(private _formBuilder: FormBuilder, private _authService: AuthService, private _router: Router) {
 	}
 
-	authChanged(event: any) {
-		this.activePage = event.target.value
-	}
 
 	login() {
 		firstValueFrom(
@@ -67,17 +58,23 @@ export class AuthPageComponent {
 		)
 	}
 
-	register() {
+	register($event: {
+		phone: string,
+		firstName: string,
+		lastName: string,
+		patronymic: string,
+		address: string,
+		password: string
+	}) {
 		firstValueFrom(
 			this._authService
 					.register(
-						this.formRegister.value.email!,
-						this.formRegister.value.lastName!,
-						this.formRegister.value.firstName!,
-						this.formRegister.value.patronymic!,
-						this.formRegister.value.address!,
-						this.formRegister.value.phone!,
-						this.formRegister.value.password!
+						$event.lastName,
+						$event.firstName,
+						$event.patronymic,
+						$event.address,
+						$event.phone,
+						$event.password
 					)
 		).then(() => {
 				console.log('succ')

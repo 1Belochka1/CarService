@@ -9,9 +9,9 @@
 					{value: 'priority', name: 'Приоритет'},
 					{value: 'status', name: 'Статус'}
 				]"
+	[addButton]='true'
+	(addButtonClick)='openModalAddRecord(addRecord)'
 >
-
-
 	<ng-template bTemplate="body" let-item>
 		<tr (click)="navigateRecord(item.id)">
 			<td data-name="Описание">
@@ -41,3 +41,8 @@
 		</tr>
 	</ng-template>
 </b-table>
+
+
+<ng-template #addRecord>
+	<app-form-add-record></app-form-add-record>
+</ng-template>

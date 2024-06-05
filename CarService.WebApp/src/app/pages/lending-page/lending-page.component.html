@@ -1,5 +1,7 @@
 <div class="wrapper">
-	<section class="section-header">
+	<section id='header'
+					 class="section-header"
+	>
 		<div class="section-header__wrapper">
 
 			<app-header-lending></app-header-lending>
@@ -20,28 +22,31 @@
 
 	<section class="section-record">
 
-		<h2>Записаться</h2>
+		<h2 id='record'>Записаться</h2>
 
 		<app-stepper-lending-record>
 
 			<cdk-step>
-				<app-form-record></app-form-record>
+				<div
+					class='record__new'
+				>
+					<app-form-record
+						(submit)='createRecord($event)'
+					></app-form-record>
+				</div>
 			</cdk-step>
 
 			<ng-container *ngFor='let item of calendars'>
 				<cdk-step>
-					<h3>
-						{{ item.name }} онлайн
-					</h3>
-					<div class='details-wrapper'>
-						<div class='description'>
-							{{ item.description }}
-						</div>
-						<a [routerLink]='["/day-record-lending",
-						item.id]'
-						>
-							Записаться</a>
-					</div>
+					<app-card-booking
+						[title]='item.name'
+						[description]='item.description'
+						[image]='item.service.imageId ?
+						apiUrls.images.getById + item.service.imageId
+						: undefined'
+						[link]='["/day-record-lending", item.id]'
+					>
+					</app-card-booking>
 				</cdk-step>
 			</ng-container>
 
@@ -49,20 +54,20 @@
 
 	</section>
 
-	<section class="section-services">
+	<section id='services'
+					 class="section-services"
+	>
 		<h2>Предоставляемые услуги</h2>
 		<div class="section-services__list">
-			<div
-				class="section-services__item"
+			<app-card-lending
 				*ngFor="let item of services"
+				[image]='item.imageId ? apiUrls.images.getById +
+				item.imageId : undefined'
+				[description]='item.description'
+				[title]='item.name'
+				[class.image]='item.imageId'
 			>
-				<h3>
-					{{ item.name }}
-				</h3>
-				<p>
-					{{ item.description }}
-				</p>
-			</div>
+			</app-card-lending>
 		</div>
 	</section>
 

@@ -26,6 +26,7 @@ module.exports = {
 				'on-surface': 'rgba(var(--color-on-surface),<alpha-value>)',
 				'primary': 'rgba(var(--color-primary),<alpha-value>)',
 				'secondary': 'rgba(var(--color-secondary),<alpha-value>)',
+				'header': 'rgba(var(--color-header),<alpha-value>)',
 			},
 		},
 	},

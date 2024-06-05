@@ -1,7 +1,7 @@
 :host {
 	@apply fixed top-0 right-0 bottom-0 left-0 z-50;
 
-	@apply flex items-center justify-center p-2;
+	@apply grid items-center justify-center p-5 overflow-y-auto;
 }
 
 .modal {
@@ -34,18 +34,18 @@
 	}
 
 	.confirm {
-		@apply bg-green-500/50 border-green-500 border border-solid;
+		@apply text-on-surface bg-green-500 bg-opacity-20 hover:bg-opacity-100 border-green-500 border border-solid;
 
 	}
 
 	.close {
-		@apply bg-red-500/50 border-red-500 border border-solid;
+		@apply text-on-surface bg-red-500 bg-opacity-20 hover:bg-opacity-100 border-red-500 border border-solid;
 	}
 }
 
 
 .modal-backdrop {
-	@apply absolute top-0 right-0 bottom-0 left-0 bg-surface/50 -z-10;
+	@apply fixed top-0 right-0 left-0 bottom-0 bg-gray-600/10 -z-10 h-full;
 
 	backdrop-filter: blur(10px);
 }

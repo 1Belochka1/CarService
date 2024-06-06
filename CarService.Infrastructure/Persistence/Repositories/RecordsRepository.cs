@@ -94,6 +94,7 @@ public class RecordsRepository : IRecordsRepository
 	public async Task<Record?> GetByIdAsync(Guid id)
 	{
 		return await _context.Records
+			.Include(x => x.Masters)
 			.Include(x => x.Client)
 			.FirstOrDefaultAsync(x =>
 				x.Id == id);

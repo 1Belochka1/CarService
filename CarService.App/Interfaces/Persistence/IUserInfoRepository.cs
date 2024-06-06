@@ -20,4 +20,7 @@ public interface IUserInfoRepository
 	Task<UserInfo?> GetByIdAsync(Guid id);
 
 	Task UpdateAsync(UserInfo user);
+
+	Task<List<(Guid id, string fullname)>>
+		GetWorkersForAutocomplete();
 }

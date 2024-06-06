@@ -13,5 +13,5 @@ export type RecordType = {
 	priority: Priority,
 	status: Status,
 	services: [],
-	masters: []
+	masters: any[]
 }

@@ -81,7 +81,7 @@ public class RecordsController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPost("Update/AddMaster")]
+	[HttpPost("Update/AddMaster/{id}")]
 	public async Task<IActionResult> AddMasters(Guid id,
 		List<Guid> mastersIds)
 	{

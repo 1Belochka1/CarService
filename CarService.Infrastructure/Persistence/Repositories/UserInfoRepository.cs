@@ -26,6 +26,17 @@ public class UserInfoRepository : IUserInfoRepository
 		return user.Id;
 	}
 
+	public async Task<List<(Guid id, string fullname)>>
+		GetWorkersForAutocomplete()
+	{
+		return await this._context.UserInfos.Include(x => x
+				.UserAuth)
+			.Where(x => x.UserAuth.RoleId == 2)
+			.Select(x => new Tuple<Guid, string>(x.Id,
+				x.LastName + " " + x.FirstName + " " +
+				x.Patronymic).ToValueTuple()).ToListAsync();
+	}
+
 	public async Task<ListWithPage<WorkersDto>>
 		GetWorkersAsync(Params parameters, Func<UserAuth,
 			bool>? predicate)

@@ -32,7 +32,7 @@ export const apiUrls = {
 		getAll: `${RECORD_URL}/get/All`,
 		getCompletedByMasterId: `${RECORD_URL}/get/CompletedByMasterId/`,
 		getActiveByMasterId: `${RECORD_URL}/get/ActiveByMasterId/`,
-		addMaster:  `${RECORD_URL}/update/addmasters/`,
+		addMaster:  `${RECORD_URL}/update/addmaster/`,
 	},
 	calendars: {
 		create: `${CALENDAR_URL}/create`,

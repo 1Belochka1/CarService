@@ -188,6 +188,15 @@ public class UsersController : ControllerBase
 	}
 
 	[Authorize(Roles = "1")]
+	[HttpGet("Get/Workers/Autocomplete")]
+	public async Task<IActionResult>
+		GetWorkersForAutocomplete()
+	{
+		return Ok(JsonSerializerHelp.Serialize(
+			await _usersService.GetWorkersForAutocomplete()));
+	}
+
+	[Authorize(Roles = "1")]
 	[HttpGet("Get/Workers/ByRecordId")]
 	public async Task<IActionResult> GetWorkersByRecordId(
 		Guid recordId)

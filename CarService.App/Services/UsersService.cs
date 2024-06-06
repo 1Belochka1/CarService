@@ -120,6 +120,13 @@ public class UsersService
 			parameters, null);
 	}
 
+	public async Task<List<(Guid id, string fullname)>>
+		GetWorkersForAutocomplete()
+	{
+		return await _userInfoRepository
+			.GetWorkersForAutocomplete();
+	}
+
 	public async Task<ListWithPage<ClientsDto>>
 		GetClientsAsync(
 			Params parameters

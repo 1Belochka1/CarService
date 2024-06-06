@@ -2,7 +2,6 @@ import {AsyncPipe, NgClass, NgForOf} from '@angular/common'
 import {Component, inject} from '@angular/core'
 import {RouterLink, RouterOutlet} from '@angular/router'
 import {SvgIconComponent} from 'angular-svg-icon'
-import {menuItems} from './menu.data'
 import {TitleService} from '../../services/title.service'
 import {
 	HeaderLendingComponent
@@ -24,8 +23,6 @@ export class AccountPageComponent {
 	title = inject(TitleService).getTitle()
 
 	isMinimize: boolean = true
-
-	protected readonly menuItems = menuItems
 
 	constructor() {
 	}

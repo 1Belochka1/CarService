@@ -57,8 +57,6 @@ export abstract class TableService {
 		this.update()
 	}
 
-
-
 	public sortChanged(event: number): void {
 		if (event == 0) {
 			this.sortDescending = null

@@ -52,7 +52,11 @@ export class AuthService {
 		)
 	}
 
-	public logout(): void {
+	public logout() {
+		return this.http.get(apiUrls.users.logout,
+			{withCredentials: true}).pipe(
+			catchError(() => of(false))
+		)
 	}
 
 }

@@ -1,8 +1,6 @@
 using System.Security.Claims;
-using CarService.Api.Contracts;
 using CarService.Api.Contracts.Records;
 using CarService.Api.Hubs;
-using CarService.App.Common.ListWithPage;
 using CarService.App.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -106,20 +104,11 @@ public class RecordsController : ControllerBase
 	[Authorize(Roles = "1,2")]
 	[HttpGet("Get/CompletedByMasterId/{id}")]
 	public async Task<IActionResult> GetCompletedByMasterId(
-		Guid id,
-		[FromQuery] GetListWithPageRequest request)
+		Guid id)
 	{
 		var records =
 			await _recordsService
-				.GetCompletedRecordsByMasterIdAsync(id, new Params(
-					null,
-					null,
-					request.SortDescending,
-					request.SearchValue,
-					request.Page,
-					request.PageSize,
-					request.SortProperty
-				));
+				.GetCompletedRecordsByMasterIdAsync(id);
 
 		return Ok(records);
 	}
@@ -127,28 +116,18 @@ public class RecordsController : ControllerBase
 	[Authorize(Roles = "1,2")]
 	[HttpGet("Get/ActiveByMasterId/{id}")]
 	public async Task<IActionResult> GetActiveByMasterId(
-		Guid id,
-		[FromQuery] GetListWithPageRequest request)
+		Guid id)
 	{
 		var records =
 			await _recordsService.GetActiveRecordsByMasterIdAsync(
-				id, new Params(
-					null,
-					null,
-					request.SortDescending,
-					request.SearchValue,
-					request.Page,
-					request.PageSize,
-					request.SortProperty
-				));
+				id);
 
 		return Ok(records);
 	}
 
 	[Authorize]
 	[HttpGet("Get/All")]
-	public async Task<IActionResult> GetAll(
-		[FromQuery] GetListWithPageAndFilterRequest request)
+	public async Task<IActionResult> GetAll()
 	{
 		var roleId =
 			HttpContext.User.FindFirstValue(ClaimTypes.Role);
@@ -156,17 +135,8 @@ public class RecordsController : ControllerBase
 		var userId = HttpContext.User.FindFirstValue
 			(ClaimTypes.NameIdentifier);
 
-		var records = await _recordsService.GetAllRecordsAsync(
-			new ParamsWhitFilter(
-				Guid.Parse(userId!), roleId,
-				request.SearchValue,
-				request.Filters,
-				request.Page,
-				request.PageSize,
-				request.SortProperty,
-				request.SortDescending
-			)
-		);
+		var records = await _recordsService
+			.GetAllRecordsAsync(roleId!, Guid.Parse(userId!));
 
 		return Ok(records);
 	}
@@ -292,8 +262,7 @@ public class RecordsController : ControllerBase
 	[Authorize]
 	[HttpGet("TimeRecords/Get/ByRecordId/{id}")]
 	public async Task<IActionResult> GetTimeRecordsByRecordId(
-		Guid id,
-		[FromQuery] GetListWithPageRequest request)
+		Guid id)
 	{
 		var result = await _recordsService
 			.GetTimeRecordsByRecordIdAsync(id);
@@ -317,5 +286,62 @@ public class RecordsController : ControllerBase
 			[result.Value]);
 
 		return Ok(result.Value);
+	}
+
+	[HttpGet("filllllll")]
+	public async Task FillRecord()
+	{
+		var numbers = GeneratePhoneNumbers(100);
+
+		string[] firstNames =
+		{
+			"Ярослав", "Евгений", "Дмитрий", "Александр",
+			"Максим",
+			"Андрей", "Артём", "Илья", "Михаил", "Никита",
+			"Алексей", "Роман", "Данил", "Егор", "Арсений",
+			"Владимир", "Матвей", "Тимофей", "Кирилл", "Глеб"
+		};
+
+		var random = new Random();
+
+		for (int i = 0; i < 5000; i++)
+		{
+			await _recordsService.CreateWithoutAuthUser
+			(numbers[random.Next(0, 100)],
+				firstNames[random.Next(0, 20)], null,
+				"Тут будет большое описание. " +
+				"Тут будет большое описание. " +
+				"Тут будет большое описание. " +
+				"Тут будет большое описание. " +
+				"Тут будет большое описание", null);
+		}
+	}
+
+	private static List<string> GeneratePhoneNumbers(
+		int count)
+	{
+		var phoneNumbers = new List<string>();
+		var random = new Random();
+
+		for (int i = 0; i < count; i++)
+		{
+			string phoneNumber = GeneratePhoneNumber(random);
+			phoneNumbers.Add(phoneNumber);
+		}
+
+		return phoneNumbers;
+	}
+
+	private static string GeneratePhoneNumber(Random random)
+	{
+		var number = "8900"; // Начало номера
+
+		// Генерация оставшихся 7 цифр
+		for (int i = 0; i < 7; i++)
+		{
+			number += random.Next(0, 10).ToString();
+		}
+
+		return number;
 	}
 }

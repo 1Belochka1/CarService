@@ -1,9 +1,8 @@
-using CarService.App.Common.ListWithPage;
+using CarService.App.Common.Records;
 using CarService.App.Common.Users;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Records;
 using CarService.Core.Users;
-using CarService.Infrastructure.Expansion;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.Infrastructure.Persistence.
@@ -57,9 +56,8 @@ public class RecordsRepository : IRecordsRepository
 			.ExecuteDeleteAsync();
 	}
 
-	public async Task<ListWithPage<Record>> GetAllAsync
-	(ParamsWhitFilter
-		parameters)
+	public async Task<List<Record>> GetAllAsync(string
+		roleId, Guid? userId)
 	{
 		var query = await _context.Records
 			.Include(x => x.Masters)
@@ -67,37 +65,23 @@ public class RecordsRepository : IRecordsRepository
 			.AsNoTracking()
 			.ToListAsync();
 
-		if (parameters.RoleId == "3")
+		if (roleId == "3")
 			query = query
-				.Where(x => x.ClientId == parameters
-					.UserId)
+				.Where(x => x.ClientId == userId)
 				.ToList();
 
-		if (parameters.Filters != null)
-			parameters.Filters.ForEach(x =>
-			{
-				query = query.FilterWithName(x.Name, x.Value);
-			});
-
-		if (!string.IsNullOrEmpty(parameters.SearchValue))
-			query = query
-				.Where(x => x.Search(parameters.SearchValue))
-				.ToList();
-
-		if (parameters.SortProperty != null)
-			query = query.Sort(parameters.SortProperty,
-				parameters.SortDescending);
-
-		return query.Page(parameters.Page, parameters.PageSize);
+		return query;
 	}
 
-	public async Task<Record?> GetByIdAsync(Guid id)
+	public async Task<RecordsDto?> GetByIdAsync(Guid id)
 	{
-		return await _context.Records
+		var records = SelectRecords(await _context.Records
 			.Include(x => x.Masters)
-			.Include(x => x.Client)
-			.FirstOrDefaultAsync(x =>
-				x.Id == id);
+			.ThenInclude(x => x.UserInfo)
+			.Include(x => x.Client).ToListAsync());
+
+		return records.FirstOrDefault(x =>
+			x.Id == id);
 	}
 
 	public async Task<IEnumerable<Record>> GetByClientIdAsync(
@@ -107,46 +91,29 @@ public class RecordsRepository : IRecordsRepository
 			.Where(x => x.ClientId == clientId).ToListAsync();
 	}
 
-	public async Task<ListWithPage<Record>>
-		GetCompletedByMasterIdAsync(Guid masterId,
-			Params parameters)
+	public async Task<List<Record>>
+		GetCompletedByMasterIdAsync(Guid masterId)
 	{
 		var query = await _context.Records
+			.Include(x => x.Masters)
 			.Where(x => x.Masters.Any(m => m.Id == masterId)
 			            && x.Status == RecordStatus.Done)
 			.ToListAsync();
 
-		if (!string.IsNullOrEmpty(parameters.SearchValue))
-			query = query
-				.Where(x => x.Search(parameters.SearchValue))
-				.ToList();
 
-		if (parameters.SortProperty != null)
-			query = query.Sort(parameters.SortProperty,
-				parameters.SortDescending);
-
-		return query.Page(parameters.Page, parameters.PageSize);
+		return query;
 	}
 
-	public async Task<ListWithPage<Record>>
-		GetActiveByMasterIdAsync(Guid masterId,
-			Params parameters)
+	public async Task<List<Record>>
+		GetActiveByMasterIdAsync(Guid masterId)
 	{
 		var query = await _context.Records
+			.Include(x => x.Masters)
 			.Where(x => x.Masters.Any(m => m.Id == masterId)
-			            && x.Status == RecordStatus.Work)
+			            && x.Status != RecordStatus.Done)
 			.ToListAsync();
 
-		if (!string.IsNullOrEmpty(parameters.SearchValue))
-			query = query
-				.Where(x => x.Search(parameters.SearchValue))
-				.ToList();
-
-		if (parameters.SortProperty != null)
-			query = query.Sort(parameters.SortProperty,
-				parameters.SortDescending);
-
-		return query.Page(parameters.Page, parameters.PageSize);
+		return query;
 	}
 
 	public async Task AddMasters(Guid recordId,
@@ -155,7 +122,6 @@ public class RecordsRepository : IRecordsRepository
 		var record = await _context.Records
 			.Include(r => r.Masters)
 			.FirstAsync(r => r.Id == recordId);
-
 		record.AddMasters(masters);
 
 		await _context.SaveChangesAsync();
@@ -169,5 +135,32 @@ public class RecordsRepository : IRecordsRepository
 		record.SetStatus(RecordStatus.Done);
 
 		await _context.SaveChangesAsync();
+	}
+
+	private static List<RecordsDto> SelectRecords(
+		List<Record> query)
+	{
+		return query.Select(x => new RecordsDto(
+			x.Id,
+			x.ClientId,
+			x.Client,
+			x.CarInfo,
+			x.Description,
+			x.CreateTime,
+			x.VisitTime,
+			x.IsTransferred,
+			x.CompleteTime,
+			x.Priority,
+			x.Status,
+			x.Masters.Select(x => new WorkersDto(
+				x.Id,
+				x.UserInfo.LastName,
+				x.UserInfo.FirstName,
+				x.UserInfo.Patronymic,
+				x.UserInfo.Address,
+				x.UserInfo.Phone,
+				x.RoleId
+			)).ToList()
+		)).ToList();
 	}
 }

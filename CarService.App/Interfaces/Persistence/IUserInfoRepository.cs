@@ -1,4 +1,3 @@
-using CarService.App.Common.ListWithPage;
 using CarService.App.Common.Users;
 using CarService.Core.Users;
 
@@ -8,12 +7,9 @@ public interface IUserInfoRepository
 {
 	Task<Guid> CreateAsync(UserInfo user);
 
-	Task<ListWithPage<WorkersDto>> GetWorkersAsync(
-		Params parameters, Func<UserAuth,
-			bool>? predicate);
+	Task<List<WorkersDto>> GetWorkersAsync();
 
-	Task<ListWithPage<ClientsDto>> GetClientsAsync(
-		Params parameters);
+	Task<List<ClientsDto>> GetClientsAsync();
 
 	Task<UserInfo?> GetByPhone(string phone);
 
@@ -23,4 +19,7 @@ public interface IUserInfoRepository
 
 	Task<List<(Guid id, string fullname)>>
 		GetWorkersForAutocomplete();
+
+	Task<List<WorkersDto>> GetByPredicate
+		(Func<UserAuth, bool> func);
 }

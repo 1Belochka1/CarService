@@ -1,5 +1,3 @@
-using CarService.App.Common.ListWithPage;
-using CarService.App.Common.Users;
 using CarService.Core.Users;
 
 namespace CarService.App.Interfaces.Persistence;

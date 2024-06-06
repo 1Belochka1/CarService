@@ -1,7 +1,7 @@
 <div class='wrapper'>
 	<app-about
 		header="О сотруднике"
-		[item]="user"
+		[item]="worker"
 	>
 		<ng-template bTemplate="about-content"
 								 let-item
@@ -16,7 +16,6 @@
 			<p>{{ item.phone }}</p>
 			<h3>Адрес</h3>
 			<p>{{ item.address | notSpecified }}</p>
-
 		</ng-template>
 	</app-about>
 
@@ -31,97 +30,30 @@
 		>
 			Удалить аккаунт пользователя
 		</button>
-
 		<ng-template #updateFormModal></ng-template>
-
 	</div>
-
-
 </div>
 <div class="tabs">
-	<app-tabs (tabsChange)="tabsChange($event)">
-
-		<app-tabs-table-content
+	<app-tabs>
+		<app-tabs-content
 			header="Активные работы"
 			type="active"
-			[selected]="true"
 			class="tabs__content"
-			[service]="recordsService"
-			[headItems]="
-				[
-					{value: -1, name: 'Не выбрано'},
-					{value: 'description', name: 'Описание'},
-					{value: 'createtime', name: 'Дата создания'},
-					{value: 'priority', name: 'Приоритет'}
-				]"
+			[selected]="true"
 		>
-			<ng-template bTemplate="body"
-									 let-item
-			>
-				<tr>
-					<td data-name="Описание">
-						{{ item.description }}
-					</td>
-					<td data-name="Дата создания">
-						{{
-							item.createTime | date: 'dd MMMM YYYY hh:mm:ss' : undefined :
-								"ru"
-						}}
-					</td>
-					<td data-name="Приоритет">
-						<div>
-							<span class="priority"
-										[attr.data-priority]="item.priority"
-							>
-								{{ Priority[item.priority] }}
-							</span>
-						</div>
-					</td>
-				</tr>
-			</ng-template>
-
-		</app-tabs-table-content>
-
-		<app-tabs-table-content
+			<app-table-records
+				[items]='activeWorks | async'
+			></app-table-records>
+		</app-tabs-content>
+		<app-tabs-content
 			type="completed"
 			header="Завершенные работы"
 			class="tabs__content"
-			[service]="recordsService"
-			[headItems]="
-				[
-					{value: -1, name: 'Не выбрано'},
-					{value: 'description', name: 'Описание'},
-					{value: 'createtime', name: 'Дата создания'},
-					{value: 'priority', name: 'Приоритет'}
-				]"
 		>
-			<ng-template bTemplate="body"
-									 let-item
-			>
-				<tr>
-					<td data-name="Описание">
-						{{ item.description }}
-					</td>
-					<td data-name="Дата создания">
-						{{
-							item.createTime | date: 'dd MMMM YYYY hh:mm:ss' : undefined :
-								"ru"
-						}}
-					</td>
-					<td data-name="Приоритет">
-						<div>
-							<span class="priority"
-										[attr.data-priority]="item.priority"
-							>
-								{{ Priority[item.priority] }}
-							</span>
-						</div>
-					</td>
-				</tr>
-			</ng-template>
-
-		</app-tabs-table-content>
-
+			<app-table-records
+				[items]='completedWorks | async'
+			></app-table-records>
+		</app-tabs-content>
 	</app-tabs>
 </div>
 

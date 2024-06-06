@@ -1,25 +1,17 @@
-import {Injectable} from '@angular/core'
-import {TableService} from '../table.service'
-import {
-	GetListWithPageAndFilterRequest,
-	GetListWithPageRequest
-} from '../Requests/GetWorkersParamsRequest'
+import {inject, Injectable} from '@angular/core'
 import {apiUrls} from '../apiUrl'
-import {Observable} from 'rxjs'
+import {HttpClient} from '@angular/common/http'
 
 @Injectable({
 	providedIn: 'root'
 })
-export class ServicesService extends TableService {
+export class ServicesService {
+
+	httpClient: HttpClient = inject(HttpClient)
 
 	masterId: string
 
-	serviceQuery: Observable<any>
-
-	method: 'getAll' | 'getByMasterId' = 'getAll'
-
 	constructor() {
-		super()
 	}
 
 	public GetServicesLending() {
@@ -27,18 +19,10 @@ export class ServicesService extends TableService {
 	}
 
 	public GetService() {
-		this.serviceQuery = this.httpClient.get<any>(apiUrls.services.get, {
+		return this.httpClient.get<any>(apiUrls.services.get, {
 			withCredentials: true,
-			params: this.params.value
 		})
 	}
 
-	public GetByMasterId() {
-		this.query = this.httpClient.get<any>(apiUrls.services.get)
-	}
-
-	public override setQuery(): void {
-		this.query = this.serviceQuery
-	}
 
 }

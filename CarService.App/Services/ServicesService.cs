@@ -1,4 +1,3 @@
-using CarService.App.Common.ListWithPage;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Services;
 using CSharpFunctionalExtensions;
@@ -43,9 +42,8 @@ public class ServicesService
 		return await _serviceRepository.GetLendingAsync();
 	}
 
-	public async Task<ListWithPage<Service>> GetAllAsync(
-		ParamsWhitFilter parameters)
+	public async Task<List<Service>> GetAllAsync()
 	{
-		return await _serviceRepository.GetAllAsync(parameters);
+		return await _serviceRepository.GetAllAsync();
 	}
 }

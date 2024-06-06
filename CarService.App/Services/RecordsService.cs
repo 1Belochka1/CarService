@@ -1,5 +1,4 @@
-using CarService.App.Common.DayRecordsWithWeeks;
-using CarService.App.Common.ListWithPage;
+using CarService.App.Common.Records;
 using CarService.App.Interfaces.CalendarsHelper;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Records;
@@ -104,40 +103,39 @@ public class RecordsService
 		return Result.Success(recordId);
 	}
 
-	public async Task<Result<Record>> GetRecordByIdAsync(
+	public async Task<Result<RecordsDto>> GetRecordByIdAsync(
 		Guid id)
 	{
 		var record = await _recordsRepository.GetByIdAsync(id);
 
 		if (record == null)
-			return Result.Failure<Record>("Запись не найдена");
+			return
+				Result.Failure<RecordsDto>("Запись не найдена");
 
 		return Result.Success(record);
 	}
 
-	public async Task<ListWithPage<Record>>
-		GetAllRecordsAsync(ParamsWhitFilter parameters)
+	public async Task<List<Record>>
+		GetAllRecordsAsync(string roleId, Guid? userId)
 	{
-		return await _recordsRepository.GetAllAsync(parameters);
+		return await _recordsRepository.GetAllAsync(roleId,
+			userId);
 	}
 
-	public async Task<ListWithPage<Record>>
+	public async Task<List<Record>>
 		GetActiveRecordsByMasterIdAsync(
-			Guid masterId,
-			Params parameters)
+			Guid masterId)
 	{
 		return await
-			_recordsRepository.GetActiveByMasterIdAsync(masterId,
-				parameters);
+			_recordsRepository.GetActiveByMasterIdAsync(masterId);
 	}
 
-	public async Task<ListWithPage<Record>>
+	public async Task<List<Record>>
 		GetCompletedRecordsByMasterIdAsync(
-			Guid masterId,
-			Params parameters)
+			Guid masterId)
 	{
 		return await _recordsRepository
-			.GetCompletedByMasterIdAsync(masterId, parameters);
+			.GetCompletedByMasterIdAsync(masterId);
 	}
 
 	public async Task UpdateRecordAsync(

@@ -1,5 +1,5 @@
-const API_URL = 'http://localhost:5053/api/'
-// const API_URL = 'https://belka.local.com/api/'
+// const API_URL = 'http://localhost:5053/api/'
+const API_URL = 'https://belka.local.com/api/'
 
 const USER_URL = API_URL + 'users'
 const RECORD_URL = API_URL + 'records'
@@ -11,6 +11,7 @@ const SERVICE_URL = API_URL + 'services'
 export const apiUrls = {
 	users: {
 		login: `${USER_URL}/login`,
+		logout: `${USER_URL}/logout`,
 		register: `${USER_URL}/register`,
 		registerMaster: `${USER_URL}/register/master`,
 		getByCookie: `${USER_URL}/get/ByCookie`,

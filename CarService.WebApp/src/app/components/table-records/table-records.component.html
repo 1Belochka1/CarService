@@ -1,0 +1,75 @@
+<b-table
+	[items]="items"
+	[addButton]='addButton'
+	(addButtonClick)='onAddClick()'
+>
+	<ng-template bTemplate='head'
+							 let-sortFn="sortFn"
+							 let-sortProp="sortProp"
+							 let-sortDirection='sortDirection'
+	>
+		<tr>
+			<th appTableSortHeaderIcon
+					[isActive]='sortProp == "description"'
+					[sortDirection]='sortDirection ? "desc" : "asc"'
+					(click)='sortFn("description")'
+			>
+				Описание
+			</th>
+			<th appTableSortHeaderIcon
+					[isActive]='sortProp == "createTime"'
+					[sortDirection]='sortDirection ? "desc" : "asc"'
+					(click)='sortFn("createTime")'
+			>
+				Дата создания
+			</th>
+			<th appTableSortHeaderIcon
+					[isActive]='sortProp == "priority"'
+					[sortDirection]='sortDirection ? "desc" : "asc"'
+					(click)='sortFn("priority")'
+			>
+				Приоритет
+			</th>
+			<th appTableSortHeaderIcon
+					[isActive]='sortProp == "status"'
+					[sortDirection]='sortDirection ? "desc" : "asc"'
+					(click)='sortFn("status")'
+			>
+				Статус
+			</th>
+		</tr>
+	</ng-template>
+	<ng-template bTemplate="body"
+							 let-item
+	>
+		<tr (click)="navigateRecord(item.id)">
+			<td data-name="Описание">
+				{{
+					item.description
+				}}
+			</td>
+			<td class="text-nowrap"
+					data-name="Дата создания"
+			>
+				{{
+					item.createTime | date:
+						'dd MMMM YYYY hh:mm:ss'
+				}}
+			</td>
+			<td data-name="Приоритет">
+				<span class="priority"
+							[attr.data-priority]="item.priority"
+				>
+								{{ priority[item.priority] }}
+				</span>
+			</td>
+			<td data-name="Статус">
+				<span class="status"
+							[attr.data-status]="item.status"
+				>
+								{{ status[item.status] }}
+				</span>
+			</td>
+		</tr>
+	</ng-template>
+</b-table>

@@ -6,7 +6,8 @@
 					<button (click)='previousMonth()'
 									data-direction='left'
 					></button>
-					{{ currentDate.toString() | date: 'MMMM yyyy' }}
+					{{ currentDate.toString() | date: 'MMMM yyyy'
+					}}
 					<button (click)='nextMonth()'
 									data-direction='right'
 					></button>

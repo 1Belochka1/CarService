@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using CarService.Core.Records;
 using CarService.Core.Services;
-using CarService.Core.Stocks;
 using CSharpFunctionalExtensions;
 
 namespace CarService.Core.Users;
@@ -41,12 +40,6 @@ public class UserAuth
 	public List<Service> Services { get; private set; } = [];
 
 	public List<Record> Works { get; private set; } =
-		[];
-
-	public List<Product> Products { get; private set; } =
-		[];
-
-	public List<Cart> Carts { get; private set; } =
 		[];
 
 	public void SetRoleId(int roleId)

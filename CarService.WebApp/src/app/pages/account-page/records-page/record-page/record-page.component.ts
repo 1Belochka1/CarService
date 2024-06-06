@@ -25,6 +25,9 @@ import {
 	AutocompleteComponent
 } from '../../../../components/autocomplete/autocomplete.component'
 import {UsersService} from '../../../../services/users/users.service'
+import {
+	TableWorkersComponent
+} from '../../../../components/table-workers/table-workers.component'
 
 @Component({
 	selector: 'app-day-record-lending-page',
@@ -40,6 +43,7 @@ import {UsersService} from '../../../../services/users/users.service'
 		PaginatorModule,
 		ReactiveFormsModule,
 		AutocompleteComponent,
+		TableWorkersComponent,
 	],
 	templateUrl: './record-page.component.html',
 	styleUrl: './record-page.component.scss',

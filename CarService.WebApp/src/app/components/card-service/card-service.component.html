@@ -1,0 +1,12 @@
+<div class="service-card"
+		 [ngClass]="{'with-image': image}"
+>
+	<img *ngIf="image"
+			 [src]="image"
+			 alt="Service Image"
+	>
+	<div class="card-text">
+		<h3>{{ title }}</h3>
+		<p>{{ description }}</p>
+	</div>
+</div>

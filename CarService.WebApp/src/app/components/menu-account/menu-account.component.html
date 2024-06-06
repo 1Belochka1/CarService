@@ -1,4 +1,6 @@
-<div class='menu' [class.minimize]='isMinimize'>
+<div class='menu'
+		 [class.minimize]='isMinimize'
+>
 	<hr class="line">
 	<nav class="nav__wrapper">
 		<ul class="nav__list">
@@ -11,9 +13,9 @@
 					<svg-icon
 						*ngIf='item.icon'
 						[src]="item.icon"
-										class="nav__icon"
-										svgClass="svg-nav"
-										viewBox="0 0 30 30"
+						class="nav__icon"
+						svgClass="svg-nav"
+						viewBox="0 0 30 30"
 					/>
 					<div class="nav__title">
 						{{ item.title }}
@@ -32,6 +34,11 @@
 				<div class="nav__title">
 					Свернуть
 				</div>
+			</li>
+			<li class='nav__item'>
+				<button (click)='logout()'>Выйти из
+					аккаунта
+				</button>
 			</li>
 		</ul>
 	</nav>

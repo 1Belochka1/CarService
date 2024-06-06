@@ -1,8 +1,6 @@
-using CarService.App.Common.ListWithPage;
 using CarService.App.Common.Users;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Users;
-using CarService.Infrastructure.Expansion;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.Infrastructure.Persistence.
@@ -37,41 +35,30 @@ public class UserInfoRepository : IUserInfoRepository
 				x.Patronymic).ToValueTuple()).ToListAsync();
 	}
 
-	public async Task<ListWithPage<WorkersDto>>
-		GetWorkersAsync(Params parameters, Func<UserAuth,
-			bool>? predicate)
+	public async Task<List<WorkersDto>> GetByPredicate
+		(Func<UserAuth, bool> func)
+	{
+		return SelectWorkers(_context.UserAuths
+			.Include(x => x.Works).Where(func)
+			.ToList());
+	}
+
+	public async Task<List<WorkersDto>>
+		GetWorkersAsync()
 	{
 		var query = await _context.UserAuths
 			.Include(u => u.Works)
 			.Include(u => u.UserInfo)
 			.Include(u => u.Role)
-			.AsNoTracking()
 			.ToListAsync();
 
 		query = query.Where(x => x.RoleId == 2).ToList();
 
-		if (predicate != null)
-			query = query.Where(predicate).ToList();
-
-		var resultList = SelectWorkers(query);
-
-		if (!string.IsNullOrEmpty(parameters.SearchValue))
-			resultList = resultList
-				.Where(x => x.Search(parameters.SearchValue))
-				.ToList();
-
-		if (parameters.SortProperty != null)
-			resultList = resultList.Sort(parameters.SortProperty,
-				parameters.SortDescending);
-
-		return resultList.Page(parameters.Page,
-			parameters.PageSize);
+		return SelectWorkers(query);
 	}
 
-	public async Task<ListWithPage<ClientsDto>>
-		GetClientsAsync(
-			Params parameters
-		)
+	public async Task<List<ClientsDto>>
+		GetClientsAsync()
 	{
 		var query = await _context.UserInfos
 			.Include(u => u.UserAuth)
@@ -83,23 +70,7 @@ public class UserInfoRepository : IUserInfoRepository
 		                         == 3)
 			.ToList();
 
-		var resultList = SelectClients(query);
-
-		if (!string.IsNullOrEmpty(parameters.SearchValue))
-			resultList = resultList
-				.Where(x => x.Search(parameters.SearchValue))
-				.ToList();
-
-		if (parameters.SortProperty == "LastRecordTime")
-			resultList = resultList
-				.Where(x => x.LastRecordTime != null).ToList();
-
-		else if (parameters.SortProperty != null)
-			resultList = resultList.Sort(parameters.SortProperty,
-				parameters.SortDescending);
-
-		return resultList.Page(parameters.Page,
-			parameters.PageSize);
+		return SelectClients(query);
 	}
 
 	public Task<UserInfo?> GetByPhone(string phone)
@@ -140,7 +111,7 @@ public class UserInfoRepository : IUserInfoRepository
 				? x.Records.MaxBy(u => u.CreateTime)
 					?.CreateTime
 				: null,
-			x.UserAuth?.RoleId
+			x.UserAuth?.RoleId != null
 		)).ToList();
 	}
 

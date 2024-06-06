@@ -1,10 +1,6 @@
 <div class="contents">
 	<b-table
-		[service]="clientsService"
 		[items]="clientsService.items$ | async"
-		[isLoading]="clientsService.isLoading"
-		[notFound]="!clientsService.isLoading && clientsService.totalCount == 0"
-
 	>
 		<ng-template bTemplate="head">
 			<tr>

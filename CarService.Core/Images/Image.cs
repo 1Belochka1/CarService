@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CarService.Core.Services;
-using CarService.Core.Stocks;
 using CarService.Core.Users;
 
 namespace CarService.Core.Images;
@@ -23,13 +18,9 @@ public class Image
 
 	public byte[]? Data { get; private set; }
 
-	public Guid? ProductId { get; private set; }
-
 	public Guid? UserInfoId { get; private set; }
 
 	public Guid? ServiceId { get; private set; }
-
-	public Product? Product { get; private set; }
 
 	public UserInfo? UserInfo { get; private set; }
 
@@ -41,10 +32,9 @@ public class Image
 	}
 
 	public void UpdateDetails(Guid? userInfoId,
-		Guid? productId, Guid? serviceId)
+		Guid? serviceId)
 	{
 		UserInfoId = userInfoId;
-		ProductId = productId;
 		ServiceId = serviceId;
 	}
 

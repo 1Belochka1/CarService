@@ -2,30 +2,26 @@ import {
 	AfterContentInit,
 	ChangeDetectorRef,
 	Component,
-	ContentChildren, EventEmitter,
+	ContentChildren,
+	EventEmitter,
 	Input,
-	OnChanges, OnInit, Output,
+	OnChanges,
+	OnInit,
+	Output,
 	QueryList,
 	SimpleChanges,
 	TemplateRef
 } from '@angular/core'
 import {BTemplateDirective} from '../../direcrives/b-template.directive'
-import {
-	NgClass,
-	NgForOf,
-	NgIf,
-	NgTemplateOutlet
-} from '@angular/common'
+import {NgClass, NgForOf, NgIf, NgTemplateOutlet} from '@angular/common'
 import {PaginationComponent} from '../pagination/pagination.component'
-import {TableService} from '../../services/table.service'
 import {SearchComponent} from '../search/search.component'
-import {
-	IItem,
-	SelectComponent
-} from '../select/select.component'
+import {SelectComponent} from '../select/select.component'
 import {SvgIconComponent} from 'angular-svg-icon'
 import {SortComponent} from '../sort/sort.component'
 import {DistinctPipe} from '../../pipe/distinct.pipe'
+import {SortingPipe} from '../../pipe/sorting.pipe'
+import {PaginationPipe} from '../../pipe/pagination.pipe'
 
 @Component({
 	selector: 'b-table',
@@ -41,55 +37,56 @@ import {DistinctPipe} from '../../pipe/distinct.pipe'
 		DistinctPipe,
 		NgClass,
 		SortComponent,
-		DistinctPipe
+		DistinctPipe,
+		SortingPipe,
+		PaginationPipe
 	],
 	templateUrl: './b-table.component.html',
 	styleUrl: './b-table.component.scss',
 })
-export class BTableComponent implements OnInit, AfterContentInit, OnChanges {
+export class BTableComponent implements OnInit, OnChanges, AfterContentInit {
 
-	@Input()
-	headItems: IItem<any>[]
+	@Input({transform: (value: any[] | null): any[] => value == null ? [] : value}) items: any[]
 
-	@Input()
-	service: TableService
+	@Input() addButton: boolean = false
 
-	@Input()
-	items: any
+	@Input() headTemplate?: TemplateRef<any>
 
-	@Input()
-	addButton: boolean = false
+	@Input() bodyTemplate?: TemplateRef<any>
 
-	@Input()
+	@Output() addButtonClick: EventEmitter<any> = new EventEmitter<any>()
+
+	@ContentChildren(BTemplateDirective) templates?: QueryList<BTemplateDirective>
+
+	currentPage: number = 1
+	filteredItems: any[]
 	isLoading: boolean = false
-
-	@Input()
 	notFound: boolean = false
-
-	@Input()
-	toolboxTemplate: TemplateRef<any>
-
-	@Input()
-	headTemplate?: TemplateRef<any>
-
-	@Input()
-	bodyTemplate?: TemplateRef<any>
-
-	@Output()
-	addButtonClick: EventEmitter<void> = new EventEmitter<void>()
-
-	@ContentChildren(BTemplateDirective)
-	templates?: QueryList<BTemplateDirective>
-
-	rowCount: number = 5
-
-	emptyRows: any[] = []
+	pageSize: number = 25
+	searchText: string
+	selectSortColumn: string = ''
+	sortDescending: boolean = false
+	totalPages: number
+	update: boolean = false
 
 	constructor(private cd: ChangeDetectorRef) {
 	}
 
+	ngOnChanges(changes: SimpleChanges): void {
+		this.setItems()
+		this._page()
+	}
+
 	ngOnInit(): void {
-		this.service.sortProperties = this.headItems
+	}
+
+	setItems() {
+		this.filteredItems = this.items
+		this.notFound = this.filteredItems.length < 1
+	}
+
+	addClick() {
+		this.addButtonClick.emit()
 	}
 
 	ngAfterContentInit(): void {
@@ -101,34 +98,46 @@ export class BTableComponent implements OnInit, AfterContentInit, OnChanges {
 
 					if (template.bTemplate === 'head')
 						this.headTemplate = template.template
-
-					if (template.bTemplate === 'toolbox')
-						this.toolboxTemplate = template.template
 				}
 			)
 		}
 	}
 
-	ngOnChanges(changes: SimpleChanges): void {
-		if (this.rowCount == 0) {
-			this.rowCount = this.service.pageSize
+	onSearchChange(searchText: string) {
+		this.isLoading = true
+		this.filteredItems = this.items.filter(item => {
+			return Object.values(item).some(value =>
+				value != null && value.toString().toLowerCase().includes(searchText.toLowerCase())
+			)
+		})
+		this.currentPage = 1
+		this.isLoading = false
+
+		this.notFound = this.filteredItems.length < 1
+
+		this._filteredPage()
+	}
+
+	currentPageChanged(page: number) {
+		this.currentPage = page
+	}
+
+	sortChange(sortColumn: string) {
+		if (this.selectSortColumn == sortColumn) {
+			this.sortDescending = !this.sortDescending
 		}
-		if (this.items && this.items.length < this.rowCount && !this.service.notFound)
-			this.emptyRows = new Array(this.rowCount - this.items.length)
-		else
-			this.emptyRows = []
+
+		this.selectSortColumn = sortColumn
+
+		this.currentPage = 1
+		this.update = !this.update
 	}
 
-	sortChange(sortProp: IItem<any>) {
-
-		if (this.service.sortProperty == sortProp)
-			this.service.toggleDescending()
-		else
-			this.service.sortProperty = sortProp
-
+	private _page() {
+		this.totalPages = Math.ceil(this.items.length / this.pageSize)
 	}
 
-	addClick() {
-		this.addButtonClick.emit()
+	private _filteredPage() {
+		this.totalPages = Math.ceil(this.filteredItems.length / this.pageSize)
 	}
 }

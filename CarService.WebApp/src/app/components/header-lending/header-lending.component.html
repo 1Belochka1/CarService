@@ -20,12 +20,17 @@
 		<nav class="header__lending">
 			<ul>
 				<li><a [routerLink]='["/lending"]'
-							 href='#header'
+							 fragment='header'
 				>Главная
 				</a></li>
-				<li><a href='#services'>Услуги</a></li>
+				<li><a routerLink=''
+							 fragment='services'
+				>Услуги</a></li>
 				<li><a>О нас</a></li>
-				<li><a href='#record'>Записаться</a></li>
+				<li><a routerLink=''
+							 fragment='record'
+				>
+					Записаться</a></li>
 			</ul>
 		</nav>
 		<nav class="header__link">

@@ -41,9 +41,7 @@
 					<app-card-booking
 						[title]='item.name'
 						[description]='item.description'
-						[image]='item.service.imageId ?
-						apiUrls.images.getById + item.service.imageId
-						: undefined'
+						[image]='item.service.imageId | srcImage'
 						[link]='["/day-record-lending", item.id]'
 					>
 					</app-card-booking>

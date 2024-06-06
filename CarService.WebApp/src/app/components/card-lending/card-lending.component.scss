@@ -15,37 +15,40 @@
 }
 
 .service-card {
+
 	@apply relative w-[300px] h-[200px] overflow-hidden bg-surface rounded-lg shadow-md transition-transform duration-300;
 
 	&:not(.with-image) {
 		@apply bg-surface;
 	}
-}
 
-.service-card img {
-	@apply w-full h-full object-cover;
-}
-
-.service-card .card-text {
-	@apply bg-surface text-white p-4 z-10;
-
-	h3 {
-		font-weight: 600;
-		font-size: 1.25rem;
+	img {
+		@apply w-full h-full object-cover;
 	}
 
-	p {
-		@apply text-secondary;
+	.card-text {
+		@apply bg-surface text-white p-4 z-10;
+
+		h3 {
+			font-weight: 600;
+			font-size: 1.25rem;
+		}
+
+		p {
+			@apply text-secondary;
+		}
+	}
+
+	&:hover {
+
+		@media (min-width: 1024px) {
+			@apply scale-105;
+		}
+
+		.card-text {
+			@apply translate-y-0;
+		}
 	}
 }
 
-.service-card:hover .card-text {
-	@apply translate-y-0;
-}
-
-.service-card:hover {
-	@media (min-width: 1024px) {
-		@apply scale-105;
-	}
-}
 

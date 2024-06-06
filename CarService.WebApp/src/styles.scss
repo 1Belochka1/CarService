@@ -234,3 +234,16 @@ img {
 .mat-option:hover {
 	@apply bg-primary #{!important};
 }
+.svg-white-sort {
+	svg {
+		@apply stroke-on-surface h-8;
+	}
+
+	&.asc {
+		transform: rotate(-90deg); /* Пример поворота для asc */
+	}
+
+	&.desc {
+		transform: rotate(90deg); /* Пример поворота для desc */
+	}
+}

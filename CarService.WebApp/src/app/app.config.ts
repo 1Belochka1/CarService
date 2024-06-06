@@ -1,7 +1,9 @@
 import {provideHttpClient} from '@angular/common/http'
 import {ApplicationConfig, LOCALE_ID} from '@angular/core'
-import {provideAnimationsAsync} from '@angular/platform-browser/animations/async'
-import {provideRouter} from '@angular/router'
+import {
+	provideAnimationsAsync
+} from '@angular/platform-browser/animations/async'
+import {provideRouter, withInMemoryScrolling} from '@angular/router'
 import {provideAngularSvgIcon} from 'angular-svg-icon'
 import {routes} from './app.routes'
 import {registerLocaleData} from '@angular/common'
@@ -18,7 +20,10 @@ registerLocaleData(localeRu)
 
 export const appConfig: ApplicationConfig = {
 	providers: [AuthService,
-		provideRouter(routes),
+		provideRouter(routes, withInMemoryScrolling({
+			anchorScrolling: 'enabled',
+			scrollPositionRestoration: 'top'
+		})),
 		provideAnimationsAsync(),
 		provideAngularSvgIcon(),
 		provideNativeDateAdapter(),

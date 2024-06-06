@@ -1,8 +1,6 @@
 using System.Security.Claims;
-using CarService.Api.Contracts;
 using CarService.Api.Contracts.Users;
 using CarService.Api.Helper.Json;
-using CarService.App.Common.ListWithPage;
 using CarService.App.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -169,20 +167,10 @@ public class UsersController : ControllerBase
 
 	[Authorize(Roles = "1")]
 	[HttpGet("Get/Workers")]
-	public async Task<IActionResult> GetWorkers(
-		[FromQuery] GetListWithPageRequest? request)
+	public async Task<IActionResult> GetWorkers()
 	{
 		var response =
-			await _usersService.GetWorkersAsync(
-				new Params(
-					null,
-					null,
-					request.SortDescending,
-					request.SearchValue,
-					request.Page,
-					request.PageSize,
-					request.SortProperty
-				));
+			await _usersService.GetWorkersAsync();
 
 		return Ok(JsonSerializerHelp.Serialize(response));
 	}
@@ -203,35 +191,17 @@ public class UsersController : ControllerBase
 	{
 		var response =
 			await _usersService.GetWorkersByRecordIdAsync(
-				new Params(
-					null,
-					null,
-					false,
-					null,
-					1,
-					0,
-					null
-				), recordId);
+				recordId);
 
 		return Ok(JsonSerializerHelp.Serialize(response));
 	}
 
-	[Authorize(Roles = "1")]
+	// [Authorize(Roles = "1")]
 	[HttpGet("Get/Clients")]
-	public async Task<IActionResult> GetClients(
-		[FromQuery] GetListWithPageRequest? request)
+	public async Task<IActionResult> GetClients()
 	{
 		var response =
-			await _usersService.GetClientsAsync(
-				new Params(
-					null,
-					null,
-					request.SortDescending,
-					request.SearchValue,
-					request.Page,
-					request.PageSize,
-					request.SortProperty
-				));
+			await _usersService.GetClientsAsync();
 
 		return Ok(JsonSerializerHelp.Serialize(response));
 	}
@@ -276,6 +246,13 @@ public class UsersController : ControllerBase
 		);
 
 		return Ok(response);
+	}
+
+	[HttpDelete("delete/dismiss/{id}")]
+	public async Task<IActionResult> DismissAsync(Guid id)
+	{
+		await _usersService.Update(id, roleId: 3);
+		return Ok();
 	}
 
 	[HttpGet("заполнить")]

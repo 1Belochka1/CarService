@@ -1,4 +1,4 @@
-import {Component, inject, TemplateRef} from '@angular/core'
+import {Component, TemplateRef} from '@angular/core'
 import {
 	FormBuilder,
 	FormGroup,
@@ -28,21 +28,24 @@ import {
 } from '../../../../direcrives/b-table-sort.directive'
 import {UsersService} from '../../../../services/users/users.service'
 import {WorkersService} from '../../../../services/users/workers.service'
-import {
-	SortMastersProperty
-} from '../../../../services/Requests/GetWorkersParamsRequest'
 import {FullNamePipe} from '../../../../pipe/full-name.pipe'
 import {ModalService} from '../../../../services/modal.service'
 import {AuthService} from '../../../../services/auth.service'
 import {
 	FormRegisterComponent
 } from '../../../../components/form-register/form-register.component'
-import {firstValueFrom} from 'rxjs'
+import {firstValueFrom, Observable} from 'rxjs'
 import {CdkStep, CdkStepLabel} from '@angular/cdk/stepper'
 import {
 	StepperComponent
 } from '../../../../components/stepper/stepper.component'
 import {NotSpecifiedPipe} from '../../../../pipe/not-specified.pipe'
+import {
+	TableSortHeaderIconDirective
+} from '../../../../direcrives/table-sort-header-icon.directive'
+import {
+	TableWorkersComponent
+} from '../../../../components/table-workers/table-workers.component'
 
 
 @Component({
@@ -71,41 +74,40 @@ import {NotSpecifiedPipe} from '../../../../pipe/not-specified.pipe'
 		CdkStepLabel,
 		ReactiveFormsModule,
 		NotSpecifiedPipe,
+		TableSortHeaderIconDirective,
+		TableWorkersComponent,
 	],
 	templateUrl: './workers-page.component.html',
 	styleUrl: './workers-page.component.scss',
 	providers: [ModalService]
 })
 export class WorkersPageComponent {
-	workersService: WorkersService = inject(WorkersService)
 	selectedIndexAddWorker: number
 	requestForm: FormGroup
-	protected readonly WorkersService = WorkersService
-	protected readonly SortMastersProperty = SortMastersProperty
 
-	constructor(private _userService: UsersService, private _router: Router,
+	items$: Observable<any>
+
+	constructor(private _userService: UsersService,
+							private _router: Router,
 							private _modalService: ModalService,
 							private _authService: AuthService,
+							private _workersService: WorkersService,
 							private fb: FormBuilder
 	) {
-		// inject(TitleService).setTitle("Сотрудники")
-		this.workersService.update()
+		this.setItems()
 
 		this.requestForm = this.fb.group({
 			phone: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]]
 		})
 	}
 
-	// TODO перенести в клиента
+	setItems() {
+		this.items$ = this._workersService.getWorkers()
+	}
+
 	goToWorker(id: string) {
-		this._router.navigate(['account', 'worker', id])
-				.then(() => {
-					console.log('success')
-				})
-				.catch((e) => {
-					console.log(e)
-					// TODO: добавить уведомления
-				})
+		this._router.navigate(['account', 'worker', id]).then(() => {
+		})
 	}
 
 	openModalAddWorker(addWorkerTemplate: TemplateRef<any>) {
@@ -133,7 +135,7 @@ export class WorkersPageComponent {
 				true
 			)
 		).then(() => {
-			this.workersService.update()
+			this.setItems()
 			this._modalService.closeModal({isConfirm: true, isCancel: false})
 		})
 	}
@@ -142,9 +144,10 @@ export class WorkersPageComponent {
 		if (this.requestForm.valid) {
 			firstValueFrom(this._userService.updateByPhone(this.requestForm.get('phone')?.value))
 			.then(() => {
-				this.workersService.update()
+				this.setItems()
 				this._modalService.closeModal({isConfirm: true, isCancel: false})
 			})
 		}
 	}
+
 }

@@ -1,0 +1,29 @@
+.service-card {
+	width: 250px;
+	min-height: 100px;
+
+	@apply bg-surface shadow-2xl text-on-surface p-3;
+
+	border-radius: 0.625rem;
+
+	img {
+		border-radius: inherit;
+	}
+
+	&:hover .card-text p {
+		@apply max-h-none h-5 min-h-5 opacity-100;
+	}
+
+	.card-text {
+		@apply relative;
+
+		h3 {
+		}
+
+		p {
+			@apply max-h-0 min-h-0 opacity-0 transition-all duration-300;
+		}
+
+	}
+}
+

@@ -1,4 +1,3 @@
-using CarService.App.Common.ListWithPage;
 using CarService.Core.Services;
 
 namespace CarService.App.Interfaces.Persistence;
@@ -15,8 +14,7 @@ public interface IServicesRepository
 	Task<Service?> GetByNameAsync(string name);
 	Task<Service?> GetByIdAsync(Guid id);
 
-	Task<ListWithPage<Service>> GetAllAsync(
-		ParamsWhitFilter parameters);
+	Task<List<Service>> GetAllAsync();
 
 	Task UpdateAsync(Service service);
 }

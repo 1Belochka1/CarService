@@ -1,110 +1,57 @@
 <div class="table__toolbox"
-		 *ngIf="service"
 >
-	<ng-container *ngIf="toolboxTemplate"
-								[ngTemplateOutlet]="toolboxTemplate"
+	<app-search
+		(searchChangedEvent)="onSearchChange($event)"
 	/>
 
-	<ng-container>
-
-		<app-search
-			(searchChangedEvent)="service.searchChange($event)"
-		/>
-
-		<app-sort *ngIf="service.sortProperties"
-							[service]="service"
-		/>
-
-		<button *ngIf='addButton'
-						(click)='addClick()'
-						class='button'
-		>Добавить
-		</button>
-	</ng-container>
+	<button *ngIf='addButton'
+					(click)='addClick()'
+					class='button'
+	>Добавить
+	</button>
 
 </div>
 
 <div class="table__wrapper">
 	<table>
-
 		<thead>
-
 			<ng-container *ngIf="headTemplate"
 										[ngTemplateOutlet]="headTemplate"
+										[ngTemplateOutletContext]='{
+											sortFn:sortChange.bind(this),
+											sortProp: selectSortColumn,
+											sortDirection: sortDescending
+										}'
 			/>
-
-			<tr
-				*ngIf="headItems"
-			>
-				<ng-container
-					*ngFor="let head of headItems; index as index"
-				>
-					<th *ngIf="head.value != -1">
-						<div
-							class="flex items-center justify-center"
-							(click)="sortChange(head)"
-						>
-							{{ head.name }}
-							<!--						<svg-icon-->
-							<!--							*ngIf="service.sortDescending != null &&-->
-							<!--						service.sortProperties.indexOf(service.sortProperty!) == index"-->
-							<!--							src="assets/svg/minimize-min.svg"-->
-							<!--							svgClass="svg-nav" viewBox="0 0 30 30"-->
-							<!--							[ngClass]="{'rotate-90':-->
-							<!--							service.sortDescending, '-rotate-90':-->
-							<!--							!service.sortDescending}"-->
-							<!--						/>-->
-						</div>
-					</th>
-				</ng-container>
-
-			</tr>
-
 		</thead>
-
-
 		<tbody>
-
-			<tr *ngIf="service.isLoading">
+			<tr *ngIf="isLoading">
 				<td class="message"
 						colspan="1000"
 				>Загрузка...
 				</td>
 			</tr>
-
-			<tr *ngIf="!service.isLoading && service.notFound">
+			<tr *ngIf="notFound">
 				<td class="message"
 						colspan="1000"
 				>Данных нет
 				</td>
 			</tr>
-
 			<ng-container *ngIf="bodyTemplate">
-				<ng-container *ngFor="let item of items"
+				<ng-container *ngFor="let item of filteredItems |
+            sorting: selectSortColumn : sortDescending |
+           pagination: currentPage : pageSize : update"
 											[ngTemplateOutlet]="bodyTemplate"
 											[ngTemplateOutletContext]="{$implicit:
                   item}"
 				/>
 			</ng-container>
-
-			<!--		<ng-container-->
-			<!--			*ngIf="items && rowCount < items.length +1; else empty"-->
-			<!--		>-->
-			<!--		</ng-container>-->
-
-			<!--		<ng-template #empty>-->
-			<!--			<tr *ngFor="let j of emptyRows">-->
-			<!--				<td colspan="1000">&nbsp;</td>-->
-			<!--			</tr>-->
-			<!--		</ng-template>-->
-
 		</tbody>
-
 	</table>
 </div>
 
-<app-pagination *ngIf="service && service.totalPages > 1"
-								[currentPage]="service.currentPage"
-								[totalPages]="service.totalPages"
-								(changePage)="service.currentPageChanged($event)"
+<app-pagination *ngIf="totalPages > 1"
+								[currentPage]="currentPage"
+								[totalPages]="totalPages"
+								(changePage)="currentPageChanged($event)"
 />

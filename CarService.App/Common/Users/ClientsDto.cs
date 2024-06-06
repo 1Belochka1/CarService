@@ -13,24 +13,22 @@ public class ClientsDto
 		string? patronymic,
 		string? address,
 		string phone,
-		DateTime? lastRecordTime, int? roleId)
+		DateTime? lastRecordTime,
+		bool isAuth)
 	{
 		Id = id;
-		LastName = lastName;
 		Address = address;
 		Phone = phone;
-		FirstName = firstName;
-		Patronymic = patronymic;
+		Fullname =
+			lastName + " " + firstName + " " + patronymic;
 		LastRecordTime = lastRecordTime;
-		RoleId = roleId;
+		IsAuth = isAuth;
 	}
 
 	public Guid Id { get; set; }
-	public string LastName { get; set; }
-	public string FirstName { get; set; }
-	public string? Patronymic { get; set; }
+	public string Fullname { get; set; }
 	public string? Address { get; set; }
 	public string Phone { get; set; }
 	public DateTime? LastRecordTime { get; set; }
-	public int? RoleId { get; set; }
+	public bool IsAuth { get; set; }
 }

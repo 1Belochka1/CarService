@@ -1,4 +1,3 @@
-using CarService.App.Common.ListWithPage;
 using CarService.App.Common.Users;
 using CarService.App.Interfaces.Auth;
 using CarService.App.Interfaces.Persistence;
@@ -111,13 +110,10 @@ public class UsersService
 		return Result.Success(token);
 	}
 
-	public async Task<ListWithPage<WorkersDto>>
-		GetWorkersAsync(
-			Params parameters
-		)
+	public async Task<List<WorkersDto>>
+		GetWorkersAsync()
 	{
-		return await _userInfoRepository.GetWorkersAsync(
-			parameters, null);
+		return await _userInfoRepository.GetWorkersAsync();
 	}
 
 	public async Task<List<(Guid id, string fullname)>>
@@ -127,21 +123,18 @@ public class UsersService
 			.GetWorkersForAutocomplete();
 	}
 
-	public async Task<ListWithPage<ClientsDto>>
-		GetClientsAsync(
-			Params parameters
-		)
+	public async Task<List<ClientsDto>>
+		GetClientsAsync()
 	{
-		return await _userInfoRepository.GetClientsAsync(
-			parameters);
+		return await _userInfoRepository.GetClientsAsync();
 	}
 
-	public async Task<ListWithPage<WorkersDto>>
-		GetWorkersByRecordIdAsync(Params parameters,
-			Guid recordId)
+	public async Task<List<WorkersDto>>
+		GetWorkersByRecordIdAsync(Guid recordId)
 	{
-		return await _userInfoRepository.GetWorkersAsync(
-			parameters, x => x.Works.Any(x => x.Id == recordId));
+		return await _userInfoRepository.GetByPredicate(x => x
+			.Works
+			.Any(x => x.Id == recordId));
 	}
 
 	public async Task<Result<UserInfo>> GetById(Guid userId)
@@ -169,7 +162,6 @@ public class UsersService
 		return Result.Success(user);
 	}
 
-	// TODO: переделать возвращаемое значение на Result 
 	public async Task<UserAuth?> GetWorkerByIdWithWorksAsync(
 		Guid userId)
 	{
@@ -177,7 +169,6 @@ public class UsersService
 			.GetWorkerByIdWithWorksAsync(userId);
 	}
 
-	// TODO: переделать возвращаемое значение на Result 
 	public async Task<UserAuth?>
 		GetClientByIdWithRecordsAsync(Guid userId)
 	{
@@ -185,16 +176,17 @@ public class UsersService
 			.GetClientByIdWithRecordsAsync(userId);
 	}
 
-	// TODO: переделать возвращаемое значение на Result 
 	// public async Task<ICollection<UserAuth>> GetWorkersByIds(
 	// 	ICollection<string> ids)
 	// {
 	// 	return await _userAuthRepository.GetWorkersByIds(ids);
 	// }
 
-	public async Task<Result> Update(Guid id, string? phone,
-		string? lastName, string? firstName, string? patronymic,
-		string? address, int? roleId)
+	public async Task<Result> Update(Guid id,
+		string? phone = null,
+		string? lastName = null, string? firstName = null,
+		string? patronymic = null,
+		string? address = null, int? roleId = null)
 	{
 		var userInfo = await _userInfoRepository.GetByIdAsync
 			(id);

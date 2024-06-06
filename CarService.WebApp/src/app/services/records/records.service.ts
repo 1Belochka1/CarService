@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core'
-import {Observable} from 'rxjs'
+import {Observable, tap} from 'rxjs'
 import {apiUrls} from '../apiUrl'
 import {RecordType} from '../../models/record.type'
 import {HttpClient} from '@angular/common/http'
@@ -45,5 +45,23 @@ export class RecordsService {
 		return this.httpClient
 							 .post(apiUrls.records.addMaster + id, [masterId],
 								 {withCredentials: true})
+	}
+
+	getCompletedByMasterId(masterId: string) {
+		return this.httpClient.get<RecordType[]>(apiUrls.records.getCompletedByMasterId + masterId, {
+			withCredentials: true
+		}).pipe(tap(d => console.log(d)))
+	}
+
+	getActiveByMasterId(masterId: string) {
+		return this.httpClient.get<RecordType[]>(apiUrls.records.getActiveByMasterId + masterId, {
+			withCredentials: true
+		}).pipe(tap(d => console.log(d)))
+	}
+
+	getAll() {
+		return this.httpClient.get<RecordType[]>(apiUrls.records.getAll, {
+			withCredentials: true
+		}).pipe(tap(d => console.log(d)))
 	}
 }

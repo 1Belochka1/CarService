@@ -1,6 +1,4 @@
 using System.Reflection;
-using CarService.App.Common.ListWithPage;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CarService.Infrastructure.Expansion;
 
@@ -36,35 +34,6 @@ public static partial class Query
 		return query;
 	}
 
-	public static ListWithPage<TModel> Page<TModel>(
-		this List<TModel> query,
-		int page, int pageSize)
-	{
-		var totalItems = query.Count;
-
-		if (pageSize <= 0)
-		{
-			return new ListWithPage<TModel>(totalItems, 1,
-				1, query);
-		}
-
-		var currentPage = page;
-
-		var totalPages =
-			(int)Math.Ceiling((double)totalItems / pageSize);
-
-		var result = query.Skip((page - 1) * pageSize)
-			.Take(pageSize).ToList();
-
-		if (currentPage <= totalPages)
-			return new ListWithPage<TModel>(totalItems,
-				totalPages, currentPage, result);
-
-		currentPage = 1;
-
-		return new ListWithPage<TModel>(totalItems, totalPages,
-			currentPage, result);
-	}
 
 	public static bool Search<TModel>(this TModel model,
 		string search)

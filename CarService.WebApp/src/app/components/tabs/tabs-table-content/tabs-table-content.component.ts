@@ -10,6 +10,7 @@ import {BTableComponent} from '../../b-table/b-table.component'
 import {TableService} from '../../../services/table.service'
 import {BTemplateDirective} from '../../../direcrives/b-template.directive'
 import { IItem } from '../../select/select.component'
+import {RecordType} from '../../../models/record.type'
 
 @Component({
 	selector: 'app-tabs-table-content',
@@ -25,8 +26,7 @@ import { IItem } from '../../select/select.component'
 })
 export class TabsTableContentComponent implements AfterContentInit {
 
-	@Input()
-	public headItems: IItem<any>[]
+	@Input({transform: (value: any[] | null): any[] => value == null ? [] : value}) items: any[]
 
 	@Input()
 	public header: string = ''
@@ -40,16 +40,12 @@ export class TabsTableContentComponent implements AfterContentInit {
 	@ViewChild('tmp')
 	public template: TemplateRef<any>
 
-	@Input()
-	public service: TableService
-
 	@ContentChildren(BTemplateDirective)
 	templates?: QueryList<BTemplateDirective>
 
 	bodyTemplate?: TemplateRef<any>
 
 	headTemplate?: TemplateRef<any>
-
 
 	constructor(public elementRef: ElementRef<HTMLElement>) {
 	}
@@ -68,6 +64,4 @@ export class TabsTableContentComponent implements AfterContentInit {
 				}
 			)
 	}
-
-
 }

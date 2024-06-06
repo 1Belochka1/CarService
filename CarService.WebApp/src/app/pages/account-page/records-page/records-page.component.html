@@ -1,47 +1,8 @@
-<b-table
-	[service]="recordsService"
-	[items]="recordsService.items$ | async"
-	[headItems]="
-				[
-					{value: -1, name: 'Не выбрано'},
-					{value: 'description', name: 'Описание'},
-					{value: 'createtime', name: 'Дата создания'},
-					{value: 'priority', name: 'Приоритет'},
-					{value: 'status', name: 'Статус'}
-				]"
+<app-table-records
 	[addButton]='true'
-	(addButtonClick)='openModalAddRecord(addRecord)'
->
-	<ng-template bTemplate="body" let-item>
-		<tr (click)="navigateRecord(item.id)">
-			<td data-name="Описание">
-				{{
-					item.description
-				}}
-			</td>
-			<td class="text-nowrap" data-name="Дата создания">
-				{{
-					item.createTime | date:
-						'dd MMMM YYYY hh:mm:ss'
-				}}
-			</td>
-			<td data-name="Приоритет">
-				<span class="priority"
-							[attr.data-priority]="item.priority">
-								{{ priority[item.priority] }}
-				</span>
-			</td>
-			<td data-name="Статус">
-				<span class="status"
-							[attr.data-status]="item.status"
-				>
-								{{ status[item.status] }}
-				</span>
-			</td>
-		</tr>
-	</ng-template>
-</b-table>
-
+	[items]='items | async'
+	(addClick)='openModalAddRecord(addRecord)'
+></app-table-records>
 
 <ng-template #addRecord>
 	<app-form-add-record></app-form-add-record>

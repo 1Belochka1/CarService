@@ -39,6 +39,7 @@ import {
 	CardBookingComponent
 } from '../../components/card-booking/card-booking.component'
 import {RecordsService} from '../../services/records/records.service'
+import {SrcImagePipe} from '../../pipe/src-image.pipe'
 
 @Component({
 	selector: 'app-lending-page',
@@ -60,6 +61,7 @@ import {RecordsService} from '../../services/records/records.service'
 		JsonPipe,
 		CardLendingComponent,
 		CardBookingComponent,
+		SrcImagePipe,
 	],
 	templateUrl: './lending-page.component.html',
 	styleUrl: './lending-page.component.scss',

@@ -1,32 +1,8 @@
-<b-table
-	[service]="workersService"
-	[items]="workersService.items$ | async"
-	[headItems]="workersService.headItems"
+<app-table-workers
+	[items]='items$ | async'
 	[addButton]='true'
-	(addButtonClick)='openModalAddWorker(addWorkerTemplate)'
->
-	<ng-template bTemplate="body"
-							 let-item
-	>
-		<tr (click)="goToWorker(item.id)">
-			<td data-name="Фио">
-				{{
-					item | fullName
-				}}
-			</td>
-			<td class="tablet:max-w-full max-w-36"
-					data-name="Номер"
-			>
-				{{ item.phone }}
-			</td>
-			<td class="break-all"
-					data-name="Адрес"
-			>
-				{{ item.address | notSpecified }}
-			</td>
-		</tr>
-	</ng-template>
-</b-table>
+	(addClick)='openModalAddWorker(addWorkerTemplate)'
+></app-table-workers>
 
 <ng-template #addWorkerTemplate>
 

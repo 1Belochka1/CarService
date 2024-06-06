@@ -138,7 +138,7 @@ public class ImageService
 			image.UpdateFilename(newFilename);
 		}
 
-		image.UpdateDetails(userInfoId, productId, serviceId);
+		image.UpdateDetails(userInfoId, serviceId);
 
 		await _imageRepository.Update(image);
 

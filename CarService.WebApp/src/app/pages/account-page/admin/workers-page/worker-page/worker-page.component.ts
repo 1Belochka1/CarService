@@ -23,17 +23,19 @@ import {
 	TabsTableContentComponent
 } from '../../../../../components/tabs/tabs-table-content/tabs-table-content.component'
 import {
-	RecordsTableService
-} from '../../../../../services/records/records-table.service'
-import {
 	IWorker,
 	UsersService
 } from '../../../../../services/users/users.service'
-import {firstValueFrom} from 'rxjs'
+import {firstValueFrom, Observable} from 'rxjs'
 import {Priority} from '../../../../../enums/priority.enum'
 import {NotSpecifiedPipe} from '../../../../../pipe/not-specified.pipe'
 import {ModalService} from '../../../../../services/modal.service'
 import {ToastrService} from 'ngx-toastr'
+import {RecordsService} from '../../../../../services/records/records.service'
+import {RecordType} from '../../../../../models/record.type'
+import {
+	TableRecordsComponent
+} from '../../../../../components/table-records/table-records.component'
 
 
 @Component({
@@ -52,24 +54,28 @@ import {ToastrService} from 'ngx-toastr'
 		TabsTableContentComponent,
 		NgIf,
 		AboutComponent,
-		NotSpecifiedPipe
+		NotSpecifiedPipe,
+		TableRecordsComponent
 	],
-	providers: [RecordsTableService, ModalService],
+	providers: [RecordsService, ModalService],
 	templateUrl: './worker-page.component.html',
 	styleUrl: './worker-page.component.scss',
 
 })
 export class WorkerPageComponent {
 
-	user: IWorker
+	workerId: string
+	worker: IWorker
+	activeWorks: Observable<RecordType[]>
+	completedWorks: Observable<RecordType[]>
 	protected readonly Priority = Priority
 
 	constructor(private _usersService: UsersService,
 							private _router: ActivatedRoute,
-							public recordsService: RecordsTableService,
 							private _modalService: ModalService,
+							private _recordsService: RecordsService,
 							private _location: Location,
-							private toastr: ToastrService
+							private _toastr: ToastrService
 	) {
 		const id = this._router.snapshot.paramMap.get('id')
 
@@ -77,27 +83,12 @@ export class WorkerPageComponent {
 			return
 		}
 
-		firstValueFrom(_usersService.getWorker(id)).then((user) => this.user = user)
+		this.workerId = id
 
-		recordsService.masterId = id
+		firstValueFrom(_usersService.getWorker(id)).then((user) => this.worker = user)
 
-		this.recordsService.getActiveByMasterId()
-	}
-
-	tabsChange(tab: TabsContentComponent) {
-		switch (tab.type) {
-			case 'active':
-				console.log('active')
-				this.recordsService.getActiveByMasterId()
-				break
-			case 'completed':
-				this.recordsService.getCompletedByMasterId()
-				break
-			default:
-				break
-		}
-
-		this.recordsService.update()
+		this.activeWorks = _recordsService.getActiveByMasterId(id)
+		this.completedWorks = _recordsService.getCompletedByMasterId(id)
 	}
 
 	openDismissModal(updateFormModal: TemplateRef<any>) {
@@ -106,10 +97,10 @@ export class WorkerPageComponent {
 				' хотите понизить роль пользователя до клиента?'
 		})?.subscribe(({isConfirm}) => {
 			if (isConfirm) {
-				firstValueFrom(this._usersService.dismissById(this.recordsService.masterId))
+				firstValueFrom(this._usersService.dismissById(this.workerId))
 				.then(() => {
 					this._location.back()
-					this.toastr.success("Операция прошла успешно", "Успешно", {progressBar: true})
+					this._toastr.success('Операция прошла успешно', 'Успешно', {progressBar: true})
 				})
 			}
 		})
@@ -121,10 +112,10 @@ export class WorkerPageComponent {
 				' хотите удалить аккаунт пользователя?'
 		})?.subscribe(({isConfirm}) => {
 			if (isConfirm) {
-				firstValueFrom(this._usersService.delete(this.recordsService.masterId))
+				firstValueFrom(this._usersService.delete(this.workerId))
 				.then(() => {
 					this._location.back()
-					this.toastr.success("Операция прошла успешно", "Успешно", {progressBar: true})
+					this._toastr.success('Операция прошла успешно', 'Успешно', {progressBar: true})
 				})
 			}
 		})

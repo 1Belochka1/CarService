@@ -1,8 +1,5 @@
-using CarService.App.Common;
-using CarService.App.Common.ListWithPage;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Services;
-using CarService.Infrastructure.Expansion;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.Infrastructure.Persistence.
@@ -56,30 +53,14 @@ public class ServicesRepository : IServicesRepository
 			x.Id == id);
 	}
 
-	public async Task<ListWithPage<Service>> GetAllAsync(
-		ParamsWhitFilter parameters)
+	public async Task<List<Service>> GetAllAsync()
 	{
 		var query = await _context.Services
 			.Include(x => x.ServiceTypes)
 			.Include(x => x.Image)
 			.ToListAsync();
 
-		if (parameters.Filters != null)
-			parameters.Filters.ForEach(x =>
-			{
-				query = query.FilterWithName(x.Name, x.Value);
-			});
-
-		if (!string.IsNullOrEmpty(parameters.SearchValue))
-			query = query
-				.Where(x => x.Search(parameters.SearchValue))
-				.ToList();
-
-		if (parameters.SortProperty != null)
-			query = query.Sort(parameters.SortProperty,
-				parameters.SortDescending);
-
-		return query.Page(parameters.Page, parameters.PageSize);
+		return query;
 	}
 
 	public async Task UpdateAsync(Service service)

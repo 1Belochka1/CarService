@@ -63,11 +63,10 @@
 		</button>
 	</div>
 
-	<div class="masters">
-		<h2 class="masters__title">
-			Исполнители
-		</h2>
-		<div class="masters__list"></div>
+	<div class="masters text-surface">
+		<app-table-workers
+			[items]='record.masters'>
+		</app-table-workers>
 	</div>
 </div>
 

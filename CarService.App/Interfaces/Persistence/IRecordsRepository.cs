@@ -1,4 +1,4 @@
-using CarService.App.Common.ListWithPage;
+using CarService.App.Common.Records;
 using CarService.Core.Records;
 using CarService.Core.Users;
 
@@ -14,20 +14,20 @@ public interface IRecordsRepository
 		RecordPriority? priority,
 		RecordStatus? status);
 
-	Task<ListWithPage<Record>> GetAllAsync(
-		ParamsWhitFilter parameters);
+	Task<List<Record>> GetAllAsync(string
+		roleId, Guid? userId);
 
 	Task AddMasters(Guid recordId,
 		ICollection<UserAuth> masters);
 
-	Task<ListWithPage<Record>> GetActiveByMasterIdAsync(
-		Guid masterId, Params parameters);
+	Task<List<Record>> GetActiveByMasterIdAsync(
+		Guid masterId);
 
-	Task<ListWithPage<Record>> GetCompletedByMasterIdAsync(
-		Guid masterId, Params parameters);
+	Task<List<Record>> GetCompletedByMasterIdAsync(
+		Guid masterId);
 
 	Task DeleteAsync(Guid id);
-	Task<Record?> GetByIdAsync(Guid id);
+	Task<RecordsDto?> GetByIdAsync(Guid id);
 
 	Task<IEnumerable<Record>> GetByClientIdAsync(
 		Guid clientId);

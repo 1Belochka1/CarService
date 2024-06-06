@@ -1,5 +1,4 @@
 using CarService.Api.Contracts;
-using CarService.App.Common.ListWithPage;
 using CarService.App.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,20 +38,9 @@ public class ServicesController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetServicesAsync(
-		[FromQuery] GetListWithPageAndFilterRequest request)
+	public async Task<IActionResult> GetServicesAsync()
 	{
-		var services = await _servicesService.GetAllAsync(
-			new ParamsWhitFilter(
-				null,
-				null,
-				request.SearchValue,
-				request.Filters,
-				request.Page,
-				request.PageSize,
-				request.SortProperty,
-				request.SortDescending
-			));
+		var services = await _servicesService.GetAllAsync();
 
 		return Ok(services);
 	}

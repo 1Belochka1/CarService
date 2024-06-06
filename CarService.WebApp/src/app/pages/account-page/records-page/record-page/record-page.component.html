@@ -2,7 +2,7 @@
 		 *ngIf="record"
 >
 	<app-about
-		[title]='"Заявка от " + (record.createTime |
+		[header]='"Заявка от " + (record.createTime |
 		date:"dd MMMM hh:mm")'
 		[item]='record'
 	>
@@ -43,21 +43,24 @@
 	</app-about>
 
 	<div class="action">
-		<!-- TODO: доделать страницу -->
 		<button (click)="dialogOpen(modalPriority,
 		{selectItems: priorityItems, priority:
-		record.priority}, 'Приоритет')"
+		record.priority}, 'Изменение приоритета')"
 		>
 			Изменить приоритет
 		</button>
 		<button (click)="dialogOpen(modalStatus,
 		{selectItems: statusItems, status: record.status},
-		'Статус')"
+		'Изменение статуса')"
 		>
 			Изменить
 			статус
 		</button>
-		<button>Добавить мастера</button>
+		<button
+			(click)='dialogAddMasterOpen(modalAddMasters)'
+		>Добавить
+			мастера
+		</button>
 	</div>
 
 	<div class="masters">
@@ -88,4 +91,13 @@
 		(selectionChange)="statusUpdate($event)"
 		class="full-w primary"
 	></app-select>
+</ng-template>
+
+<ng-template #modalAddMasters>
+
+	<app-autocomplete
+		[suggestions]='optionsMaster'
+		(selectSuggestion)='onAddMasterSubmit($event)'
+	></app-autocomplete>
+
 </ng-template>

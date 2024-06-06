@@ -1,23 +1,43 @@
-<app-about
-	title="О сотруднике"
-	[item]="user"
->
-	<ng-template bTemplate="about-content"
-							 let-item
+<div class='wrapper'>
+	<app-about
+		header="О сотруднике"
+		[item]="user"
 	>
-		<h3>Фамилия</h3>
-		<p>{{ item.lastName }}</p>
-		<h3>Имя</h3>
-		<p>{{ item.firstName }}</p>
-		<h3>Отчество</h3>
-		<p>{{ item.patronymic }}</p>
-		<h3>Номер телефона</h3>
-		<p>{{ item.phone }}</p>
-		<h3>Адрес</h3>
-		<p>{{ item.address }}</p>
-	</ng-template>
-</app-about>
+		<ng-template bTemplate="about-content"
+								 let-item
+		>
+			<h3>Фамилия</h3>
+			<p>{{ item.lastName }}</p>
+			<h3>Имя</h3>
+			<p>{{ item.firstName }}</p>
+			<h3>Отчество</h3>
+			<p>{{ item.patronymic | notSpecified }}</p>
+			<h3>Номер телефона</h3>
+			<p>{{ item.phone }}</p>
+			<h3>Адрес</h3>
+			<p>{{ item.address | notSpecified }}</p>
 
+		</ng-template>
+	</app-about>
+
+	<div class="action">
+		<button
+			(click)='openDismissModal(updateFormModal)'
+		>
+			Понизить роль пользователя до клиента
+		</button>
+		<button
+			(click)='openDeleteModal(updateFormModal)'
+		>
+			Удалить аккаунт пользователя
+		</button>
+
+		<ng-template #updateFormModal></ng-template>
+
+	</div>
+
+
+</div>
 <div class="tabs">
 	<app-tabs (tabsChange)="tabsChange($event)">
 
@@ -104,3 +124,4 @@
 
 	</app-tabs>
 </div>
+

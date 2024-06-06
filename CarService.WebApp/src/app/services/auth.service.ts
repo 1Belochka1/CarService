@@ -39,6 +39,7 @@ export class AuthService {
 		}, {withCredentials: true})
 	}
 
+
 	public getByCookie() {
 		return this.http.get<UserType>(apiUrls.users.getByCookie,
 			{withCredentials: true})

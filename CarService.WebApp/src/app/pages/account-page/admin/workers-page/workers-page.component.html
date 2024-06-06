@@ -22,7 +22,7 @@
 			<td class="break-all"
 					data-name="Адрес"
 			>
-				{{ item.address }}
+				{{ item.address | notSpecified }}
 			</td>
 		</tr>
 	</ng-template>
@@ -39,11 +39,6 @@
 			 1'
 				>
 					Регистрация
-				</button>
-				<button class='button-on-surface'
-								(click)='selectedIndexAddWorker = 3'
-				>
-					Создание авторизационных данных
 				</button>
 				<button class='button-on-surface'
 								(click)='selectedIndexAddWorker = 2'
@@ -63,13 +58,36 @@
 		<cdk-step
 			label='Обновление зарегистрированного пользователя'
 		>
+			<form
+				class='form'
+				[formGroup]="requestForm"
+				(ngSubmit)="onSubmit()"
+			>
+				<div class='form__group'>
+					<label class='form__label'
+								 for='phone'
+					>
+						Номер
+					</label>
+					<input class='form__input'
+								 type='text'
+								 id='phone'
+								 formControlName="phone"
+								 placeholder='Введите номер'
+					>
+
+				</div>
+				<button class="form__button"
+								type="submit"
+								[disabled]="requestForm.invalid"
+				>
+					Обновить
+				</button>
+			</form>
+
 			<ng-container [ngTemplateOutlet]='backButton'></ng-container>
 		</cdk-step>
-		<cdk-step
-			label='Создание авторизационных данных'
-		>
-			<ng-container [ngTemplateOutlet]='backButton'></ng-container>
-		</cdk-step>
+
 
 		<ng-template #backButton>
 			<button

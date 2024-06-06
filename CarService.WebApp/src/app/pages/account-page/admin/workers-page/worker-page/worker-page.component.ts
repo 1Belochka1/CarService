@@ -1,24 +1,39 @@
-import {Component} from '@angular/core'
-import {ActivatedRoute, Router} from '@angular/router'
+import {Component, TemplateRef} from '@angular/core'
+import {ActivatedRoute} from '@angular/router'
 import {
 	AsyncPipe,
 	DatePipe,
 	JsonPipe,
-	NgForOf, NgIf
+	Location,
+	NgForOf,
+	NgIf
 } from '@angular/common'
-import { TabsComponent } from '../../../../../components/tabs/tabs.component'
-import {BTableComponent} from '../../../../../components/b-table/b-table.component'
-import {TabsContentComponent} from '../../../../../components/tabs/tabs-content/tabs-content.component'
-import {BTemplateDirective} from '../../../../../direcrives/b-template.directive'
+import {TabsComponent} from '../../../../../components/tabs/tabs.component'
+import {
+	BTableComponent
+} from '../../../../../components/b-table/b-table.component'
+import {
+	TabsContentComponent
+} from '../../../../../components/tabs/tabs-content/tabs-content.component'
+import {
+	BTemplateDirective
+} from '../../../../../direcrives/b-template.directive'
 import {AboutComponent} from '../../../../../components/about/about.component'
-import {TabsTableContentComponent} from '../../../../../components/tabs/tabs-table-content/tabs-table-content.component'
-import {RecordsTableService} from '../../../../../services/records/records-table.service'
+import {
+	TabsTableContentComponent
+} from '../../../../../components/tabs/tabs-table-content/tabs-table-content.component'
+import {
+	RecordsTableService
+} from '../../../../../services/records/records-table.service'
 import {
 	IWorker,
 	UsersService
 } from '../../../../../services/users/users.service'
 import {firstValueFrom} from 'rxjs'
 import {Priority} from '../../../../../enums/priority.enum'
+import {NotSpecifiedPipe} from '../../../../../pipe/not-specified.pipe'
+import {ModalService} from '../../../../../services/modal.service'
+import {ToastrService} from 'ngx-toastr'
 
 
 @Component({
@@ -36,9 +51,10 @@ import {Priority} from '../../../../../enums/priority.enum'
 		DatePipe,
 		TabsTableContentComponent,
 		NgIf,
-		AboutComponent
+		AboutComponent,
+		NotSpecifiedPipe
 	],
-	providers: [RecordsTableService],
+	providers: [RecordsTableService, ModalService],
 	templateUrl: './worker-page.component.html',
 	styleUrl: './worker-page.component.scss',
 
@@ -46,10 +62,14 @@ import {Priority} from '../../../../../enums/priority.enum'
 export class WorkerPageComponent {
 
 	user: IWorker
+	protected readonly Priority = Priority
 
 	constructor(private _usersService: UsersService,
 							private _router: ActivatedRoute,
-							public recordsService: RecordsTableService
+							public recordsService: RecordsTableService,
+							private _modalService: ModalService,
+							private _location: Location,
+							private toastr: ToastrService
 	) {
 		const id = this._router.snapshot.paramMap.get('id')
 
@@ -63,7 +83,6 @@ export class WorkerPageComponent {
 
 		this.recordsService.getActiveByMasterId()
 	}
-
 
 	tabsChange(tab: TabsContentComponent) {
 		switch (tab.type) {
@@ -81,5 +100,33 @@ export class WorkerPageComponent {
 		this.recordsService.update()
 	}
 
-	protected readonly Priority = Priority
+	openDismissModal(updateFormModal: TemplateRef<any>) {
+		this._modalService.open(updateFormModal, {
+			title: 'Вы действительно' +
+				' хотите понизить роль пользователя до клиента?'
+		})?.subscribe(({isConfirm}) => {
+			if (isConfirm) {
+				firstValueFrom(this._usersService.dismissById(this.recordsService.masterId))
+				.then(() => {
+					this._location.back()
+					this.toastr.success("Операция прошла успешно", "Успешно", {progressBar: true})
+				})
+			}
+		})
+	}
+
+	openDeleteModal(updateFormModal: TemplateRef<any>) {
+		this._modalService.open(updateFormModal, {
+			title: 'Вы действительно' +
+				' хотите удалить аккаунт пользователя?'
+		})?.subscribe(({isConfirm}) => {
+			if (isConfirm) {
+				firstValueFrom(this._usersService.delete(this.recordsService.masterId))
+				.then(() => {
+					this._location.back()
+					this.toastr.success("Операция прошла успешно", "Успешно", {progressBar: true})
+				})
+			}
+		})
+	}
 }

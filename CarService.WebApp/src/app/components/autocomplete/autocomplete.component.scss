@@ -1,0 +1,40 @@
+:host {
+	::ng-deep{
+
+	}
+}
+.custom-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	max-width: 400px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.custom-form-field {
+	width: 100%;
+}
+
+
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+}
+
+.mat-form-field-appearance-fill .mat-form-field-infix {
+	border-top: none;
+}
+
+.suggestions {
+	@apply absolute top-full p-2 flex flex-col bg-surface text-on-surface w-full h-60 overflow-y-auto;
+
+	&__item {
+		@apply p-1 hover:bg-primary;
+	}
+}
+
+.mat-option {
+	padding: 10px;
+}
+

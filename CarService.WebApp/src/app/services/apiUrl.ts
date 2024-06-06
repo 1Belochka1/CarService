@@ -17,8 +17,12 @@ export const apiUrls = {
 		getIsAuth: `${USER_URL}/get/isAuth`,
 		getClients: `${USER_URL}/get/clients`,
 		getWorkers: `${USER_URL}/get/workers`,
+		getWorkersAutocomplete: `${USER_URL}/get/workers/autocomplete`,
 		getWorker: `${USER_URL}/get/worker/`,
 		getClient: `${USER_URL}/get/client/`,
+		updateByPhone: `${USER_URL}/update/byPhone`,
+		dismissById: `${USER_URL}/delete/dismiss/`,
+		delete: `${USER_URL}/delete/`,
 	},
 	records: {
 		create: `${RECORD_URL}/create`,
@@ -28,6 +32,7 @@ export const apiUrls = {
 		getAll: `${RECORD_URL}/get/All`,
 		getCompletedByMasterId: `${RECORD_URL}/get/CompletedByMasterId/`,
 		getActiveByMasterId: `${RECORD_URL}/get/ActiveByMasterId/`,
+		addMaster:  `${RECORD_URL}/update/addmasters/`,
 	},
 	calendars: {
 		create: `${CALENDAR_URL}/create`,

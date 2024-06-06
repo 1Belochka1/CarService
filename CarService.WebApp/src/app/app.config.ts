@@ -10,6 +10,7 @@ import {AuthService} from './services/auth.service'
 import {provideNativeDateAdapter} from '@angular/material/core'
 
 import {register} from 'swiper/element'
+import {provideToastr} from 'ngx-toastr'
 
 register()
 
@@ -21,6 +22,7 @@ export const appConfig: ApplicationConfig = {
 		provideAnimationsAsync(),
 		provideAngularSvgIcon(),
 		provideNativeDateAdapter(),
+		provideToastr(),
 		provideHttpClient(), {
 			provide: LOCALE_ID,
 			useValue: 'ru'

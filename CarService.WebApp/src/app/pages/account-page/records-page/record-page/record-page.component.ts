@@ -14,6 +14,17 @@ import {Priority} from '../../../../enums/priority.enum'
 import {Status} from '../../../../enums/status.enum'
 import {AboutComponent} from '../../../../components/about/about.component'
 import {BTemplateDirective} from '../../../../direcrives/b-template.directive'
+import {PaginatorModule} from 'primeng/paginator'
+import {
+	FormBuilder,
+	FormGroup,
+	ReactiveFormsModule,
+	Validators
+} from '@angular/forms'
+import {
+	AutocompleteComponent
+} from '../../../../components/autocomplete/autocomplete.component'
+import {UsersService} from '../../../../services/users/users.service'
 
 @Component({
 	selector: 'app-day-record-lending-page',
@@ -26,10 +37,13 @@ import {BTemplateDirective} from '../../../../direcrives/b-template.directive'
 		SelectComponent,
 		AboutComponent,
 		BTemplateDirective,
+		PaginatorModule,
+		ReactiveFormsModule,
+		AutocompleteComponent,
 	],
 	templateUrl: './record-page.component.html',
 	styleUrl: './record-page.component.scss',
-	providers: [ModalService]
+	providers: [ModalService, UsersService, RecordsService]
 })
 export class RecordPageComponent {
 
@@ -54,17 +68,20 @@ export class RecordPageComponent {
 		]
 
 	record: RecordType
-
+	requestForm: FormGroup
 	prioritySelect?: number
 	statusSelect?: number
-
+	optionsMaster: { v: string, n: string }[]
 	protected readonly status = Status
 	protected readonly priority = Priority
+	private idMaster: string
 
 	constructor(
 		private _router: ActivatedRoute,
 		public recordsService: RecordsService,
-		public modalService: ModalService
+		public modalService: ModalService,
+		private _userService: UsersService,
+		private fb: FormBuilder
 	) {
 
 		const id = this._router.snapshot.paramMap.get('id')
@@ -73,13 +90,27 @@ export class RecordPageComponent {
 			return
 		}
 
+		this.getRecord(id)
+
+		this.requestForm = this.fb.group({
+			phone: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]]
+		})
+
+		firstValueFrom(this._userService.getMasterAutocomplete())
+		.then((x: any[]) => {
+			this.optionsMaster = x.map(item => {
+				return {n: item.item2, v: item.item1}
+			})
+		})
+	}
+
+	getRecord(id: string) {
 		firstValueFrom(this.recordsService.getById(id)).then((data) => {
 			this.record = data
 			this.prioritySelect = data.priority
 			this.statusSelect = data.status
 			console.log(this.record)
 		})
-
 	}
 
 	dialogOpen(template: TemplateRef<any>, context: any, title: string) {
@@ -117,11 +148,28 @@ export class RecordPageComponent {
 		})
 	}
 
+	dialogAddMasterOpen(template: TemplateRef<any>) {
+		this.modalService.open(template, {
+			title: 'Добавление мастера',
+		})?.subscribe(({isConfirm}) => {
+			if (isConfirm && this.idMaster) {
+				firstValueFrom(this.recordsService.addMaster(this.record.id, this.idMaster))
+				.then(() => {
+					this.getRecord(this.record.id)
+				})
+			}
+		})
+	}
+
 	priorityUpdate(priority: number) {
 		this.prioritySelect = priority
 	}
 
 	statusUpdate(status: number) {
 		this.statusSelect = status
+	}
+
+	onAddMasterSubmit(event: { v: string, n: string }) {
+		this.idMaster = event.v
 	}
 }

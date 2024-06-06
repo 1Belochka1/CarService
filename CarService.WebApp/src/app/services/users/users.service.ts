@@ -53,5 +53,19 @@ export class UsersService {
 		return this.http.get<any>(apiUrls.users.getClient + id, {withCredentials: true})
 	}
 
+	updateByPhone(phone: string) {
+		return this.http.post(apiUrls.users.updateByPhone, {phone}, {withCredentials: true})
+	}
 
+	dismissById(id: string) {
+		return this.http.delete(apiUrls.users.dismissById + id, {withCredentials: true})
+	}
+
+	delete(id: string) {
+		return this.http.delete(apiUrls.users.delete + id, {withCredentials: true})
+	}
+
+	getMasterAutocomplete() {
+		return this.http.get<any[]>(apiUrls.users.getWorkersAutocomplete, {withCredentials: true})
+	}
 }

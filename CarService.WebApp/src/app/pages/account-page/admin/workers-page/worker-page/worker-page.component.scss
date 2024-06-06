@@ -4,44 +4,18 @@
   border-radius: 0.625rem;
 }
 
-.about-worker {
-  @apply bg-surface;
-  padding: 0.9375rem;
+.wrapper {
+  @apply flex flex-col gap-5 text-on-surface;
 
-  border-radius: 0.625rem;
-
-  hr {
-    height: 1px;
-    width: 100%;
-    @apply border-surface;
-    margin: 0.5rem 0 1rem 0;
-  }
-
-  .title {
-    font-size: 1.3rem;
-  }
-
-  .info {
-    @apply flex flex-col;
-
-    span {
-      @apply grid text-wrap break-all;
-
-      //grid-template-columns: 100px 1fr;
-
-      grid-template-columns: 1fr 5fr;
-
-      @media (max-width: 768px) {
-        grid-template-columns: auto;
-      }
-
-      &:before {
-        @apply font-bold;
-        content: attr(data-name) ": ";
-      }
+  .action {
+    @apply flex gap-5;
+    button {
+      @apply bg-surface/40 border-surface border border-solid p-1 hover:bg-surface;
+      border-radius: 0.625rem;
     }
   }
 }
+
 
 .tabs {
   @apply min-h-0 flex-1;

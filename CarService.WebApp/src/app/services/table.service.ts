@@ -1,5 +1,5 @@
-import {catchError, map, Observable, throwError} from 'rxjs'
-import { HttpClient } from '@angular/common/http'
+import {catchError, map, Observable} from 'rxjs'
+import {HttpClient} from '@angular/common/http'
 import {inject} from '@angular/core'
 import {IItem} from '../components/select/select.component'
 import {
@@ -32,9 +32,6 @@ export abstract class TableService {
 	sortProperties: IItem<any>[]
 	sortDescending: boolean | null = null
 
-	filterProperty: any = null
-	filterValue: any = null
-
 	query: Observable<any>
 
 	params: GetListWithPageRequest | GetListWithPageAndFilterRequest
@@ -60,8 +57,7 @@ export abstract class TableService {
 		this.update()
 	}
 
-	public updateFilter() {
-	}
+
 
 	public sortChanged(event: number): void {
 		if (event == 0) {

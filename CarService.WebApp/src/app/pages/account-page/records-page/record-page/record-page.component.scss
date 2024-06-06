@@ -1,23 +1,5 @@
-:host {
-
-}
-
 .wrapper {
 	@apply flex flex-col gap-5 text-on-surface;
-
-
-	.about {
-		@apply bg-surface;
-
-		padding: 0.9375rem;
-
-		border-radius: 0.625rem;
-
-		h1{
-			@apply border-b-on-surface border-b border-solid mb-5;
-			font-size: 1.5rem;
-		}
-	}
 
 	.action {
 		@apply flex gap-5;

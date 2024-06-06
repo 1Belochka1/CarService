@@ -62,12 +62,12 @@ export const routes: Routes = [
 			{
 				path: 'workers',
 				component: WorkersPageComponent,
-				title: 'Личный кабинет - Сотрудники'
+				title: 'Сотрудники'
 			},
 			{
 				path: 'services',
 				component: ServicesPageComponent,
-				title: 'Личный кабинет - Услуги'
+				title: 'Услуги'
 			},
 			{
 				path: 'calendars',
@@ -92,21 +92,22 @@ export const routes: Routes = [
 			{
 				path: 'worker/:id',
 				component: WorkerPageComponent,
+				title: 'Работник'
 			},
 			{
 				path: 'clients',
 				component: ClientsPageComponent,
-				title: 'Личный кабинет - Клиенты'
+				title: 'Клиенты'
 			},
 			{
 				path: 'records',
 				component: RecordsPageComponent,
-				title: 'Личный кабинет - Заявки'
+				title: 'Заявки'
 			},
 			{
 				path: 'record/:id',
 				component: RecordPageComponent,
-				title: 'Личный кабинет - Заявка'
+				title: 'Заявка'
 			}
 		]
 	},

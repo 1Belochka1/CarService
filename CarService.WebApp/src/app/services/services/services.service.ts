@@ -41,21 +41,4 @@ export class ServicesService extends TableService {
 		this.query = this.serviceQuery
 	}
 
-	public override setParams() {
-
-		// this.filterProperty = "ServiceTypes.Name"
-		// this.filterValue = "Ремонт двигателя"
-
-		this.params = new GetListWithPageAndFilterRequest(
-			this.search,
-			this.currentPage,
-			this.pageSize,
-			this.sortProperty?.value,
-			this.sortDescending,
-			this.filterProperty,
-			this.filterValue
-		)
-	}
-
-
 }

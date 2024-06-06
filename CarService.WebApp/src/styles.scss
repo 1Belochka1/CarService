@@ -1,8 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer input;
+@import 'ngx-toastr/toastr';
 
 :root {
 	--color-background: 10, 25, 80;
@@ -19,6 +18,8 @@
 	--color-input-border: rgb(var(--color-primary));
 	--color-input-text: inherit;
 	--color-input-background: inherit;
+
+	--border-radius-form: 0.625rem;
 
 	@media (max-width: 1280px) {
 		font-size: 14px;
@@ -216,4 +217,20 @@ img {
 			@apply w-full py-3 text-sm;
 		}
 	}
+}
+
+.input {
+	@apply w-full p-2 text-on-surface border border-primary border-solid;
+	border-radius: var(--border-radius-form);
+}
+
+.mat-mdc-autocomplete-panel{
+	--mat-option-selected-state-layer-color: rgba(var(--color-primary)) !important;
+	--mat-option-hover-state-layer-color: rgba(var(--color-primary)) !important;
+	--mat-option-label-text-color: rgba(var(--color-on-surface)) !important;
+	@apply bg-surface text-on-surface #{!important};
+}
+
+.mat-option:hover {
+	@apply bg-primary #{!important};
 }

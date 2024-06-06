@@ -40,4 +40,10 @@ export class RecordsService {
 
 		return this.httpClient.post(apiUrls.records.createWithOutAuth, req)
 	}
+
+	addMaster(id: string, masterId: string) {
+		return this.httpClient
+							 .post(apiUrls.records.addMaster + id, [masterId],
+								 {withCredentials: true})
+	}
 }

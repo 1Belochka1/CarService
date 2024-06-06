@@ -1,0 +1,20 @@
+<form [formGroup]="autocompleteForm"
+			class="custom-form"
+>
+	<input
+		type="text"
+		matInput
+		placeholder="Введите ФИО"
+		formControlName="search"
+		class="input"
+	/>
+	<div class='suggestions'
+			 *ngIf='filteredSuggestions.length > 0'>
+		<div class='suggestions__item'
+				 *ngFor='let sugg of filteredSuggestions'
+				 (click)='onSelectSuggestion(sugg)'
+		>
+			{{ sugg.n }}
+		</div>
+	</div>
+</form>

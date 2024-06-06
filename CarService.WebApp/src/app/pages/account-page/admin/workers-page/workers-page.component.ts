@@ -1,5 +1,11 @@
 import {Component, inject, TemplateRef} from '@angular/core'
-import {FormsModule} from '@angular/forms'
+import {
+	FormBuilder,
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
+	Validators
+} from '@angular/forms'
 import {SvgIconComponent} from 'angular-svg-icon'
 import {
 	AsyncPipe,
@@ -36,6 +42,7 @@ import {CdkStep, CdkStepLabel} from '@angular/cdk/stepper'
 import {
 	StepperComponent
 } from '../../../../components/stepper/stepper.component'
+import {NotSpecifiedPipe} from '../../../../pipe/not-specified.pipe'
 
 
 @Component({
@@ -62,6 +69,8 @@ import {
 		StepperComponent,
 		NgTemplateOutlet,
 		CdkStepLabel,
+		ReactiveFormsModule,
+		NotSpecifiedPipe,
 	],
 	templateUrl: './workers-page.component.html',
 	styleUrl: './workers-page.component.scss',
@@ -70,15 +79,21 @@ import {
 export class WorkersPageComponent {
 	workersService: WorkersService = inject(WorkersService)
 	selectedIndexAddWorker: number
+	requestForm: FormGroup
 	protected readonly WorkersService = WorkersService
 	protected readonly SortMastersProperty = SortMastersProperty
 
 	constructor(private _userService: UsersService, private _router: Router,
 							private _modalService: ModalService,
-							private _authService: AuthService
+							private _authService: AuthService,
+							private fb: FormBuilder
 	) {
 		// inject(TitleService).setTitle("Сотрудники")
 		this.workersService.update()
+
+		this.requestForm = this.fb.group({
+			phone: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]]
+		})
 	}
 
 	// TODO перенести в клиента
@@ -121,5 +136,15 @@ export class WorkersPageComponent {
 			this.workersService.update()
 			this._modalService.closeModal({isConfirm: true, isCancel: false})
 		})
+	}
+
+	onSubmit() {
+		if (this.requestForm.valid) {
+			firstValueFrom(this._userService.updateByPhone(this.requestForm.get('phone')?.value))
+			.then(() => {
+				this.workersService.update()
+				this._modalService.closeModal({isConfirm: true, isCancel: false})
+			})
+		}
 	}
 }

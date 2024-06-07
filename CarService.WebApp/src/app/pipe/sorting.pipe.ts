@@ -32,8 +32,6 @@ export class SortingPipe implements PipeTransform {
 
       let result: number
 
-      console.log(dateA, dateB)
-
       if (!isNaN(dateA) || !isNaN(dateB)) {
         result = (!isNaN(dateA) ? dateA : 1) - (!isNaN(dateB) ? dateB : 0)
         return sortOrder ? result : -result

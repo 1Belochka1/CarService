@@ -38,11 +38,17 @@ export class UsersService {
 	}
 
 
-	getClients(params: GetListWithPageRequest): Observable<IClient[]> {
+	getClients(): Observable<IClient[]> {
 		return this.http.get<any>(apiUrls.users.getClients, {
-			params: params.value,
 			withCredentials: true
 		})
+	}
+
+	public getWorkers() {
+		return this.http.get<any>(apiUrls.users.getWorkers, {
+				withCredentials: true
+			}
+		)
 	}
 
 	getWorker(id: string): Observable<IWorker> {

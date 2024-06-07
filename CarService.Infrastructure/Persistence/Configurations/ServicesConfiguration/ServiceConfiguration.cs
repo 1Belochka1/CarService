@@ -50,6 +50,6 @@ public class
 		builder.HasOne(x => x.Image)
 			.WithOne(x => x.Service)
 			.HasForeignKey<Service>(x => x.ImageId)
-			.OnDelete(DeleteBehavior.Cascade);
+			.OnDelete(DeleteBehavior.SetNull);
 	}
 }

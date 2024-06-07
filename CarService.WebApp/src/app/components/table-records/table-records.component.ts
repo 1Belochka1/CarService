@@ -8,6 +8,7 @@ import {
 	TableSortHeaderIconDirective
 } from '../../direcrives/table-sort-header-icon.directive'
 import {Router} from '@angular/router'
+import {NotSpecifiedPipe} from '../../pipe/not-specified.pipe'
 
 @Component({
   selector: 'app-table-records',
@@ -17,7 +18,8 @@ import {Router} from '@angular/router'
 		BTableComponent,
 		BTemplateDirective,
 		DatePipe,
-		TableSortHeaderIconDirective
+		TableSortHeaderIconDirective,
+		NotSpecifiedPipe
 	],
   templateUrl: './table-records.component.html',
   styleUrl: './table-records.component.scss'

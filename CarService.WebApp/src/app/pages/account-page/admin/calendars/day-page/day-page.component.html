@@ -1,9 +1,10 @@
-<div *ngFor="let time of times$ | async">
-	{{ time.startTime }} >
-	{{ time.isBusy }}
-</div>
-
 <b-table [items]='times$ | async'>
+	<ng-template bTemplate='head'>
+		<tr>
+			<th>Начало</th>
+			<th>Конец</th>
+		</tr>
+	</ng-template>
 	<ng-template bTemplate='body'
 							 let-time
 	>

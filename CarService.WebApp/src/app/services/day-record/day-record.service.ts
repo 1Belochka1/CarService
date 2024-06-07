@@ -20,7 +20,6 @@ export class DayRecordService implements OnDestroy {
 	private _selectTimeId: string
 
 	constructor() {
-
 	}
 
 	createHub() {
@@ -96,7 +95,8 @@ export class DayRecordService implements OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this._hubConnection.stop().catch(e => console.error(e))
+		if (this._hubConnection)
+			this._hubConnection.stop().catch(e => console.error(e))
 	}
 
 }

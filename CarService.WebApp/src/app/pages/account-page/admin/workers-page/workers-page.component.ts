@@ -91,7 +91,6 @@ export class WorkersPageComponent {
 							private _router: Router,
 							private _modalService: ModalService,
 							private _authService: AuthService,
-							private _workersService: WorkersService,
 							private fb: FormBuilder
 	) {
 		this.setItems()
@@ -102,7 +101,7 @@ export class WorkersPageComponent {
 	}
 
 	setItems() {
-		this.items$ = this._workersService.getWorkers()
+		this.items$ = this._userService.getWorkers()
 	}
 
 	goToWorker(id: string) {

@@ -1,5 +1,11 @@
 <div class="table__toolbox"
 >
+	<ng-container *ngIf='toolboxTemplate'
+								[ngTemplateOutlet]='toolboxTemplate'
+								[ngTemplateOutletContext]='{filterData:
+								onSearchChange.bind(this)}'
+	></ng-container>
+
 	<app-search
 		*ngIf='searchVisible'
 		(searchChangedEvent)="onSearchChange($event)"

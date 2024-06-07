@@ -141,6 +141,27 @@ public class UsersController : ControllerBase
 		return Ok();
 	}
 
+	[HttpPost("Update/byPhone")]
+	[Authorize(Roles = "1")]
+	public async Task<IActionResult> UpdateByPhone(
+		string phone)
+	{
+		var user = await _usersService.GetByPhone(phone);
+
+		if (user.IsFailure)
+			return BadRequest(user.Error);
+
+		var result = await _usersService.Update(
+			user.Value.Id,
+			roleId: 2
+		);
+
+		if (result.IsFailure)
+			return BadRequest(result.Error);
+
+		return Ok();
+	}
+
 	//
 	//
 	// METHOD: Get

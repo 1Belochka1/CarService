@@ -22,6 +22,7 @@ import {SortComponent} from '../sort/sort.component'
 import {DistinctPipe} from '../../pipe/distinct.pipe'
 import {SortingPipe} from '../../pipe/sorting.pipe'
 import {PaginationPipe} from '../../pipe/pagination.pipe'
+import {Data} from '@angular/router'
 
 @Component({
 	selector: 'b-table',
@@ -55,17 +56,21 @@ export class BTableComponent implements OnInit, OnChanges, AfterContentInit {
 
 	@Input() bodyTemplate?: TemplateRef<any>
 
+	@Input() toolboxTemplate?: TemplateRef<any>
+
 	@Output() addButtonClick: EventEmitter<any> = new EventEmitter<any>()
 
 	@ContentChildren(BTemplateDirective) templates?: QueryList<BTemplateDirective>
 
 	@Input() selectSortColumn: string = ''
 	@Input() sortDescending: boolean = false
+	@Input() pageSize: number = 25
+
+	filterData: Data
 	currentPage: number = 1
 	filteredItems: any[]
 	isLoading: boolean = false
 	notFound: boolean = false
-	pageSize: number = 25
 	searchText: string
 	totalPages: number
 	update: boolean = false
@@ -99,6 +104,9 @@ export class BTableComponent implements OnInit, OnChanges, AfterContentInit {
 
 					if (template.bTemplate === 'head')
 						this.headTemplate = template.template
+
+					if (template.bTemplate === 'toolbox')
+						this.toolboxTemplate = template.template
 				}
 			)
 		}

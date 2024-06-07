@@ -81,30 +81,6 @@
 		</div>
 	</div>
 
-	<div class="form__group">
-		<label class="form__label"
-					 for="priority"
-		>Приоритет</label>
-		<select class="form__select"
-						id="priority"
-						formControlName="priority"
-		>
-			<option value=""
-							disabled
-							selected
-			>Выберите приоритет
-			</option>
-			<option *ngFor="let priority of priorities"
-							[value]="priority"
-			>{{ priority }}
-			</option>
-		</select>
-		<div class="form__error"
-				 *ngIf="requestForm.get('priority')?.hasError('required')"
-		>Приоритет обязателен
-		</div>
-	</div>
-
 	<button class="form__button"
 					type="submit"
 					[disabled]="requestForm.invalid"

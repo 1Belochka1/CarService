@@ -190,14 +190,13 @@ img {
 	}
 
 	&__input, &__textarea {
-		@apply w-full p-2 border border-primary border-solid;
-		background-color: var(--color-input-background);
+		@apply bg-surface w-full p-2 border border-primary border-solid;
 		color: var(--color-input-text);
 		border-radius: var(--border-radius-form);
 	}
 
 	&__checkbox {
-		@apply p-2 appearance-auto;
+		@apply p-2 appearance-auto bg-surface;
 	}
 
 	&__error {

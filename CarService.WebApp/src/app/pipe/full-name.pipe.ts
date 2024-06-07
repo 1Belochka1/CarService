@@ -6,7 +6,7 @@ import {Pipe, PipeTransform} from '@angular/core'
 })
 export class FullNamePipe implements PipeTransform {
 
-	transform(value: any): unknown {
+	transform(value: any): string {
 		let result: string = ''
 
 		if (value.lastName)

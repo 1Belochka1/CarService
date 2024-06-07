@@ -2,7 +2,26 @@
 	<b-table [items]='calendar.daysRecords'
 					 selectSortColumn='date'
 					 [sortDescending]='true'
+					 [searchVisible]='false'
 	>
+
+		<ng-template bTemplate='toolbox'
+								 let-filterFn='filterData'
+		>
+
+			<input type='date'
+						 name=''
+						 id=''
+						 class='p-2 bg-surface rounded-[0.625rem]'
+						 (change)='filterFn(convertEvent($event).value.toString())'
+			>
+
+			<button class='button'
+							(click)='openModal(remove)'
+			>Удалить
+			</button>
+
+		</ng-template>
 
 		<ng-template bTemplate='head'
 		>
@@ -36,3 +55,5 @@
 		</ng-template>
 	</b-table>
 </ng-container>
+
+<ng-template #remove></ng-template>

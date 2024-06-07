@@ -25,4 +25,8 @@ export class CalendarRecordService {
 	getDayRecordsByCalendarId(id: string) {
 		return this._http.get(apiUrls.calendars.getById + id, {withCredentials: true})
 	}
+
+	delete(id: string) {
+		return this._http.delete(apiUrls.calendars.delete + id, {withCredentials: true})
+	}
 }

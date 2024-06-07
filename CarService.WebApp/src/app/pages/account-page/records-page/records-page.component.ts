@@ -7,8 +7,6 @@ import {BTableSortDirective} from '../../../direcrives/b-table-sort.directive'
 import {
 	TabsTableContentComponent
 } from '../../../components/tabs/tabs-table-content/tabs-table-content.component'
-import {Priority} from '../../../enums/priority.enum'
-import {Status} from '../../../enums/status.enum'
 import {ModalService} from '../../../services/modal.service'
 import {
 	FormAddRecordComponent
@@ -46,11 +44,15 @@ export class RecordsPageComponent {
 	items: Observable<RecordType[]>
 
 	constructor(private _router: Router, private _modalService: ModalService, private _recordService: RecordsService) {
+		this.setItems()
+	}
+
+	setItems() {
 		this.items = this._recordService.getAll()
 	}
 
 	navigateRecord(id: string) {
-		this._router.navigate(['account','record', id]).then(
+		this._router.navigate(['account', 'record', id]).then(
 			() => console.log('navigateRecord success')
 		)
 	}
@@ -60,6 +62,11 @@ export class RecordsPageComponent {
 	}
 
 	openModalAddRecord(templateRef: TemplateRef<any>) {
-		this._modalService.open(templateRef, {})?.subscribe()
+		this._modalService.open(templateRef, {actionVisible: false})?.subscribe()
+	}
+
+	submit() {
+		this._modalService.closeModal(true)
+		this.setItems()
 	}
 }

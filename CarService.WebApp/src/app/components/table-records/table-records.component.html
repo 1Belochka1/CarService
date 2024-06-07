@@ -17,6 +17,13 @@
 				Описание
 			</th>
 			<th appTableSortHeaderIcon
+					[isActive]='sortProp == "carInfo"'
+					[sortDirection]='sortDirection ? "desc" : "asc"'
+					(click)='sortFn("carInfo")'
+			>
+				Автомобиль
+			</th>
+			<th appTableSortHeaderIcon
 					[isActive]='sortProp == "createTime"'
 					[sortDirection]='sortDirection ? "desc" : "asc"'
 					(click)='sortFn("createTime")'
@@ -46,6 +53,11 @@
 			<td data-name="Описание">
 				{{
 					item.description
+				}}
+			</td>
+			<td data-name="Автомобиль">
+				{{
+					item.carInfo | notSpecified
 				}}
 			</td>
 			<td class="text-nowrap"

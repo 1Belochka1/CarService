@@ -10,11 +10,6 @@ export class WorkersService {
 	constructor(private httpClient: HttpClient) {
 	}
 
-	public getWorkers() {
-		return this.httpClient.get<any>(apiUrls.users.getWorkers, {
-				withCredentials: true
-			}
-		)
-	}
+
 
 }

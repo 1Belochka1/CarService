@@ -37,4 +37,11 @@ public class ImageRepository : IImageRepository
 
 		await _dbContext.SaveChangesAsync();
 	}
+
+	public Task Delete(Image image)
+	{
+		_dbContext.Images.Remove(image);
+
+		return _dbContext.SaveChangesAsync();
+	}
 }

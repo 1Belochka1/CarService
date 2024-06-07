@@ -2,6 +2,7 @@
 	<b-table
 		[items]="clientsService.items$ | async"
 	>
+		<!-- TODO: добавить сортировку -->
 		<ng-template bTemplate="head">
 			<tr>
 				<th>ФИО</th>
@@ -11,16 +12,21 @@
 				<th>Зарегистрирован</th>
 			</tr>
 		</ng-template>
-		<ng-template bTemplate="body" let-item>
+		<ng-template bTemplate="body"
+								 let-item
+		>
 			<tr>
 				<td data-name="ФИО">
 					{{ item | fullName }}
 				</td>
-				<td class="break-all" data-name="Адрес">
+				<td class="break-all"
+						data-name="Адрес"
+				>
 					{{ item.address | notSpecified }}
 				</td>
 				<td class="tablet:max-w-full max-w-32"
-						data-name="Номер">
+						data-name="Номер"
+				>
 					{{ item.phone }}
 				</td>
 				<td data-name="Последняя заявка (Дата)">

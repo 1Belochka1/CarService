@@ -1,4 +1,15 @@
 <div *ngFor="let time of times$ | async">
 	{{ time.startTime }} >
-	{{ time.endTime }}
+	{{ time.isBusy }}
 </div>
+
+<b-table [items]='times$ | async'>
+	<ng-template bTemplate='body'
+							 let-time
+	>
+		<tr [class.isBusy]='time.isBusy'>
+			<td data-name='Начало'>{{ time.startTime }}</td>
+			<td data-name='Конец'>{{ time.endTime }}</td>
+		</tr>
+	</ng-template>
+</b-table>

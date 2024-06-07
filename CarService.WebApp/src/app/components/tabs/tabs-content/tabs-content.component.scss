@@ -1,9 +1,14 @@
 :host {
-  @apply min-h-0;
+	@apply min-h-0;
+	&[data-selected="true"] {
+		flex: 1
+	}
+	&[data-selected="false"] {
+		@apply hidden;
+	}
 }
 
 
 .tabs__content {
-  @apply h-full;
-  padding: var(--padding-content, 0.9375rem);
+	@apply h-full;
 }

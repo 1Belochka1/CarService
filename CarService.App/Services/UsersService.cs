@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using CarService.App.Common.Users;
 using CarService.App.Interfaces.Auth;
 using CarService.App.Interfaces.Persistence;
@@ -205,5 +206,10 @@ public class UsersService
 		await _userInfoRepository.UpdateAsync(userInfo);
 
 		return Result.Success();
+	}
+
+	public async Task DeleteAsync(Guid id)
+	{
+		await _userInfoRepository.Delete(id);
 	}
 }

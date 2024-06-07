@@ -26,10 +26,7 @@ export class ModalComponent implements AfterContentInit, OnDestroy {
 
 	actionVisible: boolean
 
-	@Output() closeEvent = new EventEmitter<{
-		isConfirm: boolean,
-		isCancel: boolean
-	}>()
+	@Output() closeEvent = new EventEmitter<boolean>()
 	protected readonly onkeydown = onkeydown
 
 	constructor(private elementRef: ElementRef) {
@@ -50,12 +47,12 @@ export class ModalComponent implements AfterContentInit, OnDestroy {
 
 	close(): void {
 		this.elementRef.nativeElement.remove()
-		this.closeEvent.emit({isCancel: true, isConfirm: false})
+		this.closeEvent.emit(false)
 	}
 
 	submit(): void {
 		this.elementRef.nativeElement.remove()
-		this.closeEvent.emit({isCancel: false, isConfirm: true})
+		this.closeEvent.emit(true)
 	}
 
 	keydown(event: any) {

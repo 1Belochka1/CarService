@@ -69,6 +69,20 @@ public class ServicesRepository : IServicesRepository
 
 		await _context.SaveChangesAsync();
 	}
+
+	public async Task DeleteAsync(Guid id)
+	{
+		await _context.Services.Where(x => x.Id == id)
+			.ExecuteDeleteAsync();
+	}
+
+	public async Task<List<(Guid id, string fullname)>>
+		GetServicesForAutocomplete()
+	{
+		return await _context.Services
+			.Select(x => new Tuple<Guid, string>(x.Id, x.Name)
+				.ToValueTuple()).ToListAsync();
+	}
 }
 
 

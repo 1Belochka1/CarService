@@ -1,10 +1,86 @@
-<div class="wrapper bg-surface">
-	<ul class="calendars_list">
-		<li *ngFor="let calendar of calendars | async">
-			<a [routerLink]="['/account', 'calendar',
-			calendar.id]">
-				{{ calendar.name }}
-			</a>
-		</li>
-	</ul>
-</div>
+<b-table [addButton]='true'
+				 (addButtonClick)='onAdd(addTemplate)'
+				 [items]='calendars | async'
+				 [searchVisible]='false'
+>
+	<ng-template bTemplate='head'>
+		<tr>
+			<th>Название услуги</th>
+		</tr>
+	</ng-template>
+	<ng-template bTemplate='body'
+							 let-item
+	>
+
+		<tr>
+			<td data-name='Название услуги'
+					(click)="navigate(['/account',
+			'calendar',
+			item.id])"
+			>
+				<a [routerLink]="['/account', 'calendar', item.id]">
+					{{ item.service.name }}
+				</a>
+			</td>
+		</tr>
+	</ng-template>
+</b-table>
+
+
+<ng-template #addTemplate>
+	<form class="form"
+				[formGroup]="requestForm"
+				(ngSubmit)="onSubmit()"
+	>
+		<app-autocomplete [suggestions]='services | async'
+											(selectSuggestion)='serviceSelect($event)'
+		>
+		</app-autocomplete>
+
+		<div class="form__group">
+			<label class="form__label"
+						 for="name"
+			>Название</label>
+			<input class="form__input"
+						 id="name"
+						 type="text"
+						 formControlName="name"
+						 placeholder="Введите название услуги"
+			/>
+			<div class="form__error"
+					 *ngIf="requestForm.get('name')?.touched &&
+				 requestForm.get('name')?.hasError('required')"
+			>Название обязательно
+			</div>
+			<div class="form__error"
+					 *ngIf="requestForm.get('name')?.touched &&
+				 requestForm.get('name')?.hasError('minlength')"
+			>
+				Название должно содержать минимум 3 символа
+			</div>
+		</div>
+
+
+		<div class="form__group">
+			<label class="form__label"
+						 for="description"
+			>Описание услуги</label>
+			<textarea class="form__textarea"
+								id="description"
+								formControlName="description"
+								placeholder="Опишите услугу"
+			></textarea>
+			<div class="form__error"
+					 *ngIf="requestForm.get('description')?.hasError('minlength')"
+			>Описание услуги должно содержать минимум 5 символов
+			</div>
+		</div>
+
+
+		<button class="form__button"
+						type="submit"
+						[disabled]="requestForm.invalid"
+		>Отправить
+		</button>
+	</form>
+</ng-template>

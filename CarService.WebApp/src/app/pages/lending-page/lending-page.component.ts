@@ -81,7 +81,7 @@ export class LendingPageComponent implements OnInit {
 	protected readonly apiUrls = apiUrls
 
 	constructor(private _servicesService: ServicesService, private _calendarService: CalendarRecordService, private _recordService: RecordsService) {
-		firstValueFrom(_servicesService.GetServicesLending())
+		firstValueFrom(_servicesService.getServicesLending())
 		.then((d: any) => this.services = d)
 	}
 

@@ -136,7 +136,7 @@ export class WorkersPageComponent {
 			)
 		).then(() => {
 			this.setItems()
-			this._modalService.closeModal({isConfirm: true, isCancel: false})
+			this._modalService.closeModal(true)
 		})
 	}
 
@@ -145,7 +145,7 @@ export class WorkersPageComponent {
 			firstValueFrom(this._userService.updateByPhone(this.requestForm.get('phone')?.value))
 			.then(() => {
 				this.setItems()
-				this._modalService.closeModal({isConfirm: true, isCancel: false})
+				this._modalService.closeModal(true)
 			})
 		}
 	}

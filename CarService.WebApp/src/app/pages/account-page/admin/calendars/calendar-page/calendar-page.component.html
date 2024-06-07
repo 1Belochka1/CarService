@@ -1,17 +1,38 @@
-<div *ngFor="let day of dayRecords | async">
-	<a [routerLink]="day.id">
-		Перейти
-	</a>
-	<div>
-		{{ day.date | date: "short" }}
-	</div>
-	<div>
-		{{ day.startTime }}
-	</div>
-	<div>
-		{{ day.endTime }}
-	</div>
-	<div>
-		{{ day.isWeekend ? "Выходной" : "Рабочий день" }}
-	</div>
-</div>
+<ng-container *ngIf='calendar$ | async as calendar'>
+	<b-table [items]='calendar.daysRecords'
+					 selectSortColumn='date'
+					 [sortDescending]='true'
+	>
+
+		<ng-template bTemplate='head'
+		>
+			<tr>
+				<th>
+					Дата
+				</th>
+				<th>
+					Начало работы
+				</th>
+				<th>
+					Конец работы
+				</th>
+			</tr>
+		</ng-template>
+
+		<ng-template bTemplate='body'
+								 let-item
+		>
+			<tr (click)='navigate(item.id)'>
+				<td data-name='Дата'>
+					{{ item.date | date: "dd.MM.YYYY" }}
+				</td>
+				<td data-name='Начало работы'>
+					{{ item.startTime }}
+				</td>
+				<td data-name='Конец работы'>
+					{{ item.endTime }}
+				</td>
+			</tr>
+		</ng-template>
+	</b-table>
+</ng-container>

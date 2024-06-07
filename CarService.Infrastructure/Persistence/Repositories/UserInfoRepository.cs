@@ -43,6 +43,12 @@ public class UserInfoRepository : IUserInfoRepository
 			.ToList());
 	}
 
+	public async Task Delete(Guid id)
+	{
+		await _context.UserInfos.Where(x => x.Id == id)
+			.ExecuteDeleteAsync();
+	}
+
 	public async Task<List<WorkersDto>>
 		GetWorkersAsync()
 	{

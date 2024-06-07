@@ -17,4 +17,9 @@ public interface IServicesRepository
 	Task<List<Service>> GetAllAsync();
 
 	Task UpdateAsync(Service service);
+
+	Task DeleteAsync(Guid id);
+
+	Task<List<(Guid id, string fullname)>>
+		GetServicesForAutocomplete();
 }

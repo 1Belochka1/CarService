@@ -1,8 +1,6 @@
 import {Component, forwardRef, TemplateRef} from '@angular/core'
 import {AsyncPipe, DatePipe, NgClass, NgForOf, NgIf} from '@angular/common'
-import {
-	CalendarComponent
-} from '../../components/calendar/calendar.component'
+import {CalendarComponent} from '../../components/calendar/calendar.component'
 import {
 	HeaderLendingComponent
 } from '../../components/header-lending/header-lending.component'
@@ -10,8 +8,8 @@ import {ActivatedRoute} from '@angular/router'
 import {firstValueFrom, Observable} from 'rxjs'
 import {DayRecord} from '../../models/DayRecord.type'
 import {
-	DayRecordLendingService
-} from '../../services/day-record/day-record-lending.service'
+	DayRecordService
+} from '../../services/day-record/day-record.service'
 import {CdkStepperModule} from '@angular/cdk/stepper'
 import {StepperComponent} from '../../components/stepper/stepper.component'
 import {
@@ -41,7 +39,7 @@ import {
 	],
 	templateUrl: './day-record-lending.component.html',
 	styleUrl: './day-record-lending.component.scss',
-	providers: [DayRecordLendingService, ModalService]
+	providers: [DayRecordService, ModalService]
 })
 export class DayRecordLendingComponent {
 
@@ -54,7 +52,7 @@ export class DayRecordLendingComponent {
 	phone: string
 
 	constructor(
-		private _dayRecordLendingService: DayRecordLendingService,
+		private _dayRecordLendingService: DayRecordService,
 		private _authService: AuthService,
 		private _router: ActivatedRoute,
 		private _modalService: ModalService
@@ -69,6 +67,8 @@ export class DayRecordLendingComponent {
 		.then(response => this.isAuth = response !== undefined)
 		.catch(() => this.isAuth = false)
 
+		this._dayRecordLendingService.createHub()
+
 		this._dayRecordLendingService.startConnection()
 
 		this._dayRecordLendingService.getDayRecordLending(id)
@@ -77,18 +77,16 @@ export class DayRecordLendingComponent {
 
 		this._dayRecordLendingService.listenUpdateRecord()
 
-
 	}
 
 	public openModal(template: TemplateRef<any>, id: string) {
 		this._dayRecordLendingService.bookTimeRecord(id)
 
 		this._modalService.open(template, {actionVisible: false})?.subscribe(
-			({isCancel, isConfirm}) => {
+			(isConfirm) => {
 				if (isConfirm) {
 					this._dayRecordLendingService.updateRecord(id, this.phone, this.name)
-				}
-				if (isCancel) {
+				} else {
 					this._dayRecordLendingService.cancelBooking()
 				}
 			}
@@ -98,7 +96,7 @@ export class DayRecordLendingComponent {
 	public submit(event: { name: string, phone: string }) {
 		this.name = event.name
 		this.phone = event.phone
-		this._modalService.closeModal({isConfirm: true, isCancel: false})
+		this._modalService.closeModal(true)
 	}
 
 }

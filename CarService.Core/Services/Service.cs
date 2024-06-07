@@ -56,52 +56,17 @@ public class Service
 		private set;
 	} = [];
 
-	public void SetName(string name)
+	public void Update(string? name = null, string?
+		description = null, bool? isShowLending = null)
 	{
-		Name = name;
-	}
+		if (name != null)
+			Name = name;
 
-	public void SetDescription(string description)
-	{
-		Description = description;
-	}
+		if (description != null)
+			Description = description;
 
-	public void SetIsShowLending(bool isShowLending)
-	{
-		IsShowLending = isShowLending;
-	}
-
-	public void SetServiceTypes(
-		List<ServiceType> serviceTypes)
-	{
-		ServiceTypes = serviceTypes;
-	}
-
-	public void AddServiceTypes(
-		List<ServiceType> serviceTypes)
-	{
-		foreach (var serviceType in serviceTypes)
-			ServiceTypes.Add(serviceType);
-	}
-
-	public void SetRecords(List<Record> records)
-	{
-		Records = records;
-	}
-
-	public void AddRecords(List<Record> records)
-	{
-		foreach (var record in records) Records.Add(record);
-	}
-
-	public void SetMasters(List<UserAuth> masters)
-	{
-		Masters = masters;
-	}
-
-	public void AddMasters(List<UserAuth> masters)
-	{
-		foreach (var master in masters) Masters.Add(master);
+		if (isShowLending != null)
+			IsShowLending = isShowLending.Value;
 	}
 
 	public void SetImageId(Guid? imageId)

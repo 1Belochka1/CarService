@@ -75,9 +75,6 @@ public class ImageService
 			return Result.Failure<FileInfo>("Файл не найден");
 		}
 
-		if (image == null)
-			return null;
-
 		// Получаем текущий путь, где выполняется приложение
 		string currentDirectory =
 			Directory.GetCurrentDirectory();
@@ -94,7 +91,8 @@ public class ImageService
 		var fileInfo = new FileInfo(relativeFilePath);
 
 		if (!fileInfo.Exists)
-			return null;
+			return Result.Failure<FileInfo>("Файл не найден");
+		;
 
 		return Result.Success(fileInfo);
 	}
@@ -141,6 +139,30 @@ public class ImageService
 		image.UpdateDetails(userInfoId, serviceId);
 
 		await _imageRepository.Update(image);
+
+		return Result.Success();
+	}
+
+	public async Task<Result> DeleteImageAsync(
+		Guid imageId)
+	{
+		// Найти изображение в базе данных
+		var image = await _imageRepository.GetById(imageId);
+		if (image == null)
+		{
+			return Result.Failure("Изображение не найдено");
+		}
+
+		// Удалить файл с диска
+		var path = Path.Combine(Directory.GetCurrentDirectory(),
+			"../Images", image.FileName);
+		if (File.Exists(path))
+		{
+			File.Delete(path);
+		}
+
+		// Удалить запись об изображении из базы данных
+		await _imageRepository.Delete(image);
 
 		return Result.Success();
 	}

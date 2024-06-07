@@ -95,7 +95,7 @@ export class WorkerPageComponent {
 		this._modalService.open(updateFormModal, {
 			title: 'Вы действительно' +
 				' хотите понизить роль пользователя до клиента?'
-		})?.subscribe(({isConfirm}) => {
+		})?.subscribe((isConfirm) => {
 			if (isConfirm) {
 				firstValueFrom(this._usersService.dismissById(this.workerId))
 				.then(() => {
@@ -110,7 +110,7 @@ export class WorkerPageComponent {
 		this._modalService.open(updateFormModal, {
 			title: 'Вы действительно' +
 				' хотите удалить аккаунт пользователя?'
-		})?.subscribe(({isConfirm}) => {
+		})?.subscribe((isConfirm) => {
 			if (isConfirm) {
 				firstValueFrom(this._usersService.delete(this.workerId))
 				.then(() => {

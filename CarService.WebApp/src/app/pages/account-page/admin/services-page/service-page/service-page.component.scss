@@ -1,0 +1,38 @@
+.service {
+	@apply grid gap-5 text-on-surface;
+
+	grid-template-areas: 'text' 'action';
+	grid-template-rows: 1fr auto;
+
+	&:has(.service__image) {
+		grid-template-areas: 'image text' 'image action';
+
+		grid-template-columns: auto 1fr;
+
+		.service__image {
+			@apply p-5 bg-surface;
+			width: 300px;
+			grid-area: image;
+			border-radius: 0.625rem;
+
+			img {
+				border-radius: inherit;
+			}
+		}
+	}
+
+	&__text {
+		@apply p-5 bg-surface;
+		grid-area: text;
+		border-radius: 0.625rem;
+	}
+
+	&__action {
+		@apply flex gap-5;
+		grid-area: action;
+		//border-radius: 0.625rem;
+	}
+
+	&__button {
+	}
+}

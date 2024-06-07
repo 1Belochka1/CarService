@@ -1,29 +1,35 @@
 .service-card {
 	width: 250px;
-	min-height: 100px;
 
-	@apply bg-surface shadow-2xl text-on-surface p-3;
+	@apply  flex flex-col gap-3 bg-surface border border-solid border-primary shadow-md text-on-surface p-3 cursor-pointer;
 
 	border-radius: 0.625rem;
 
 	img {
-		border-radius: inherit;
-	}
-
-	&:hover .card-text p {
-		@apply max-h-none h-5 min-h-5 opacity-100;
+		@apply w-full object-cover ;
+		border-radius: 0.625rem;
 	}
 
 	.card-text {
-		@apply relative;
 
 		h3 {
+			font-size: 1.25rem;
+			font-weight: 600;
+			border-radius: 0.625rem;
+		}
+	}
+
+	&:hover {
+		img {
+			@apply translate-y-0 opacity-100;
 		}
 
-		p {
-			@apply max-h-0 min-h-0 opacity-0 transition-all duration-300;
+		.card-text h3 {
 		}
 
+		.card-button {
+
+		}
 	}
 }
 

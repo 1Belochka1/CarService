@@ -9,7 +9,7 @@ import {TimeRecord} from '../../models/TimeRecord.type'
 @Injectable({
 	providedIn: 'root'
 })
-export class DayRecordLendingService implements OnDestroy {
+export class DayRecordService implements OnDestroy {
 
 	private _dayRecords: BehaviorSubject<DayRecord[]> = new BehaviorSubject<DayRecord[]>([])
 
@@ -20,6 +20,10 @@ export class DayRecordLendingService implements OnDestroy {
 	private _selectTimeId: string
 
 	constructor() {
+
+	}
+
+	createHub() {
 		this._hubConnection =
 			new HubConnectionBuilder()
 			.withUrl(apiHubUrls.timeRecords, {
@@ -83,6 +87,12 @@ export class DayRecordLendingService implements OnDestroy {
 
 	getDayRecords() {
 		return this._dayRecords.asObservable()
+	}
+
+	getTimeRecord(id: string) {
+		return this._http.get<TimeRecord[]>(apiUrls.timeRecords.getAllByDayRecordId + id, {
+			withCredentials: true
+		})
 	}
 
 	ngOnDestroy(): void {

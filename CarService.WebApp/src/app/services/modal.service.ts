@@ -31,10 +31,7 @@ export class ModalService {
 
 	public title: string
 
-	private modalNotifier?: Subject<{
-		isConfirm: boolean,
-		isCancel: boolean
-	}>
+	private modalNotifier?: Subject<boolean>
 
 	private isOpen: boolean = false
 
@@ -78,11 +75,10 @@ export class ModalService {
 		return this.modalNotifier?.asObservable()
 	}
 
-	closeModal(data: {
+	closeModal(
 		isConfirm: boolean,
-		isCancel: boolean
-	}) {
-		this.modalNotifier?.next(data)
+	) {
+		this.modalNotifier?.next(isConfirm)
 		this.modalNotifier?.complete()
 		this._modalComponent.destroy()
 		this.isOpen = false

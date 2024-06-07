@@ -1,34 +1,45 @@
-<!--<b-table [items]="items$ | async"-->
-<!--&gt;-->
-<!--	<ng-template bTemplate="body"-->
-<!--							 let-item-->
-<!--	>-->
-<!--		<tr>-->
-<!--			<td data-name="Название">-->
-<!--				{{ item.name }}-->
-<!--			</td>-->
-<!--			<td data-name="Описание">-->
-<!--				{{ item.description }}-->
-<!--			</td>-->
-<!--			<td data-name="Категории">-->
-<!--				{{-->
-<!--					item.serviceTypes[0]?.name-->
-<!--				}}-->
-<!--			</td>-->
-<!--		</tr>-->
-<!--	</ng-template>-->
-<!--</b-table>-->
-<div class='services'>
-	<div class='services__list'>
-		<div class='services__items'
-				 *ngFor='let service of
-		items$ | async'
-		>
-			<app-card-service
-				[title]='service.name'
-				[description]='service.description'
-				[image]='service.imageId | srcImage'
-			></app-card-service>
-		</div>
-	</div>
-</div>
+<b-table [items]="items$ | async"
+				 [addButton]='true'
+				 (addButtonClick)='addClick(addService)'
+>
+	<ng-template bTemplate="head"
+							 let-sortFn="sortFn"
+							 let-sortProp="sortProp"
+							 let-sortDirection='sortDirection'
+	>
+		<tr>
+			<th appTableSortHeaderIcon
+					[isActive]='sortProp == "name"'
+					[sortDirection]='sortDirection ? "desc" : "asc"'
+					(click)='sortFn("name")'
+			>
+				Название
+			</th>
+			<th appTableSortHeaderIcon
+					[isActive]='sortProp == "description"'
+					[sortDirection]='sortDirection ? "desc" : "asc"'
+					(click)='sortFn("description")'
+			>
+				Описание
+			</th>
+		</tr>
+	</ng-template>
+	<ng-template bTemplate="body"
+							 let-item
+	>
+		<tr (click)='navigate(item.id)'>
+			<td data-name="Название">
+				{{ item.name }}
+			</td>
+			<td data-name="Описание">
+				{{ item.description }}
+			</td>
+		</tr>
+	</ng-template>
+</b-table>
+
+<ng-template #addService>
+	<app-form-add-service
+		(submit)='addSubmit($event)'
+	></app-form-add-service>
+</ng-template>

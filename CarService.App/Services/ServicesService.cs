@@ -46,4 +46,44 @@ public class ServicesService
 	{
 		return await _serviceRepository.GetAllAsync();
 	}
+
+	public async Task<Result<Service>> GetById(Guid id)
+	{
+		var service =
+			await _serviceRepository.GetByIdAsync(id);
+
+		if (service == null)
+			return Result.Failure<Service>(
+				"Услуга не найдена");
+
+		return Result.Success(service);
+	}
+
+	public async Task<Result> UpdateAsync(Guid id, string?
+		name, string? description, bool? isShowLending)
+	{
+		var service = await _serviceRepository.GetByIdAsync(id);
+
+		if (service == null)
+			return Result.Failure(
+				"Услуга не найдена");
+
+		service.Update(name, description, isShowLending);
+
+		await _serviceRepository.UpdateAsync(service);
+
+		return Result.Success();
+	}
+
+	public async Task DeleteAsync(Guid id)
+	{
+		await _serviceRepository.DeleteAsync(id);
+	}
+
+	public async Task<List<(Guid id, string fullname)>>
+		GetServicesForAutocomplete()
+	{
+		return await _serviceRepository
+			.GetServicesForAutocomplete();
+	}
 }

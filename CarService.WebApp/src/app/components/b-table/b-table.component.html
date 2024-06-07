@@ -1,6 +1,7 @@
 <div class="table__toolbox"
 >
 	<app-search
+		*ngIf='searchVisible'
 		(searchChangedEvent)="onSearchChange($event)"
 	/>
 

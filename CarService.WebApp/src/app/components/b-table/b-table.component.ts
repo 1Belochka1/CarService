@@ -49,6 +49,7 @@ export class BTableComponent implements OnInit, OnChanges, AfterContentInit {
 	@Input({transform: (value: any[] | null): any[] => value == null ? [] : value}) items: any[]
 
 	@Input() addButton: boolean = false
+	@Input() searchVisible: boolean = true
 
 	@Input() headTemplate?: TemplateRef<any>
 
@@ -58,14 +59,14 @@ export class BTableComponent implements OnInit, OnChanges, AfterContentInit {
 
 	@ContentChildren(BTemplateDirective) templates?: QueryList<BTemplateDirective>
 
+	@Input() selectSortColumn: string = ''
+	@Input() sortDescending: boolean = false
 	currentPage: number = 1
 	filteredItems: any[]
 	isLoading: boolean = false
 	notFound: boolean = false
 	pageSize: number = 25
 	searchText: string
-	selectSortColumn: string = ''
-	sortDescending: boolean = false
 	totalPages: number
 	update: boolean = false
 

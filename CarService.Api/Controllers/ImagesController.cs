@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using CarService.Api.Contracts.Images;
 using CarService.App.Interfaces.Persistence;
 using CarService.App.Services;
 using CarService.Core.Images;
@@ -23,13 +24,14 @@ public class ImagesController : ControllerBase
 	}
 
 	[HttpPost("upload")]
-	public async Task<IActionResult> UploadImageAsync(
-		IFormFile? file,
-		Guid? userInfoId, Guid? productId, Guid? serviceId)
+	[Consumes("multipart/form-data")]
+	public async Task<IActionResult> UploadImageAsync
+		([FromForm] UploadImagesRequest request)
 	{
-		var result = await _imageService.UploadImageAsync(file,
-			userInfoId,
-			productId, serviceId);
+		var result = await _imageService.UploadImageAsync(
+			request.File,
+			request.UserInfoId,
+			request.ProductId, request.ServiceId);
 
 		if (result.IsFailure)
 		{
@@ -40,16 +42,16 @@ public class ImagesController : ControllerBase
 	}
 
 	[HttpPost("update")]
+	[Consumes("multipart/form-data")]
 	public async Task<IActionResult> UpdateImageAsync(
-		Guid imageId,
-		IFormFile? newFile,
-		Guid? userInfoId, Guid? productId, Guid? serviceId)
+		[FromForm] UpdateImagesRequest request)
 	{
 		var result = await _imageService.UpdateImageAsync(
-			imageId,
-			newFile,
-			userInfoId,
-			productId, serviceId);
+			request.ImageId,
+			request.NewFile,
+			request.UserInfoId,
+			request.ProductId,
+			request.ServiceId);
 
 		if (result.IsFailure)
 		{
@@ -74,5 +76,19 @@ public class ImagesController : ControllerBase
 
 		await HttpContext.Response
 			.SendFileAsync(image.Value.FullName);
+	}
+
+	[HttpDelete("delete/{id}")]
+	public async Task<IActionResult> DeleteImageAsync(
+		Guid id)
+	{
+		var result = await _imageService.DeleteImageAsync(id);
+
+		if (result.IsFailure)
+		{
+			return BadRequest(result.Error);
+		}
+
+		return Ok();
 	}
 }

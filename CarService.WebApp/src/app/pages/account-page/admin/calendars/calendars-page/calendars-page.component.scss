@@ -1,4 +1,14 @@
-.wrapper {
-	padding: 0.9375rem;
-	border-radius: 0.625rem;
+
+.calendars {
+	@apply text-on-surface;
+
+	&__list {
+		@apply flex flex-wrap;
+	}
+
+	&__item {
+		@apply p-5 bg-surface;
+		border-radius: 0.625rem;
+	}
+
 }

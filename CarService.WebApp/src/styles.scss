@@ -196,6 +196,10 @@ img {
 		border-radius: var(--border-radius-form);
 	}
 
+	&__checkbox {
+		@apply p-2 appearance-auto;
+	}
+
 	&__error {
 		@apply text-red-500 text-xs mt-1;
 	}
@@ -224,7 +228,7 @@ img {
 	border-radius: var(--border-radius-form);
 }
 
-.mat-mdc-autocomplete-panel{
+.mat-mdc-autocomplete-panel {
 	--mat-option-selected-state-layer-color: rgba(var(--color-primary)) !important;
 	--mat-option-hover-state-layer-color: rgba(var(--color-primary)) !important;
 	--mat-option-label-text-color: rgba(var(--color-on-surface)) !important;
@@ -234,6 +238,7 @@ img {
 .mat-option:hover {
 	@apply bg-primary #{!important};
 }
+
 .svg-white-sort {
 	svg {
 		@apply stroke-on-surface h-8;

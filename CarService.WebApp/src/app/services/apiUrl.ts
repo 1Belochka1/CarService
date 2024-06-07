@@ -1,5 +1,5 @@
-// const API_URL = 'http://localhost:5053/api/'
-const API_URL = 'https://belka.local.com/api/'
+const API_URL = 'http://localhost:5053/api/'
+// const API_URL = 'https://belka.local.com/api/'
 
 const USER_URL = API_URL + 'users'
 const RECORD_URL = API_URL + 'records'
@@ -53,14 +53,19 @@ export const apiUrls = {
 		getAllByDayRecordId: `${TIMERECORD_URL}/Get/ByRecordId/`,
 	},
 	services: {
-		get: `${SERVICE_URL}`,
-		getLending: `${SERVICE_URL}/lending`,
-		create: `${SERVICE_URL}`,
+		getAll: `${SERVICE_URL}/get/all`,
+		getById: `${SERVICE_URL}/get/`,
+		getLending: `${SERVICE_URL}/get/lending`,
+		create: `${SERVICE_URL}/create`,
+		update: `${SERVICE_URL}/update`,
+		delete: `${SERVICE_URL}/delete/`,
+		getServicesAutocomplete: `${SERVICE_URL}/get/autocomplete`,
 	},
 	images: {
 		getById: `${API_URL}images/get/`,
 		upload: `${API_URL}images/upload`,
-		update: `${API_URL}images/update`
+		update: `${API_URL}images/update`,
+		delete: `${API_URL}images/delete`
 	}
 }
 

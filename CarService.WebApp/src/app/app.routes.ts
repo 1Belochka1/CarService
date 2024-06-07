@@ -36,6 +36,9 @@ import {
 import {
 	DayRecordLendingComponent
 } from './pages/day-record-lending/day-record-lending.component'
+import {
+	ServicePageComponent
+} from './pages/account-page/admin/services-page/service-page/service-page.component'
 
 
 export const routes: Routes = [
@@ -68,6 +71,11 @@ export const routes: Routes = [
 				path: 'services',
 				component: ServicesPageComponent,
 				title: 'Услуги'
+			},
+			{
+				path: 'services/:serviceId',
+				component: ServicePageComponent,
+				title: 'Услуга'
 			},
 			{
 				path: 'calendars',

@@ -1,0 +1,77 @@
+<form class="form"
+			[formGroup]="requestForm"
+			(ngSubmit)="onSubmit()"
+>
+	<div class="form__group">
+		<label class="form__label"
+					 for="name"
+		>Название</label>
+		<input class="form__input"
+					 id="name"
+					 type="text"
+					 formControlName="name"
+					 placeholder="Введите название услуги"
+		/>
+		<div class="form__error"
+				 *ngIf="requestForm.get('name')?.touched &&
+				 requestForm.get('name')?.hasError('required')"
+		>Название обязательно
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('name')?.touched &&
+				 requestForm.get('name')?.hasError('minlength')"
+		>
+			Название должно содержать минимум 3 символа
+		</div>
+	</div>
+
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="description"
+		>Описание услуги</label>
+		<textarea class="form__textarea"
+							id="description"
+							formControlName="description"
+							placeholder="Опишите услугу"
+		></textarea>
+		<div class="form__error"
+				 *ngIf="requestForm.get('description')?.hasError('required')"
+		>Описание услуги обязательно
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('description')?.hasError('minlength')"
+		>Описание услуги должно содержать минимум 5 символов
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="image"
+		>Изображение</label>
+		<input type='file'
+					 class="form__input "
+					 id="image"
+					 formControlName="image"
+					 placeholder="Выберите изображение"
+					 (change)='fileUpload($event)'
+		>
+	</div>
+
+	<div class="form__group">
+		<input type='checkbox'
+					 class="form__checkbox"
+					 id="isShowLending"
+					 formControlName="isShowLanding"
+		>
+		<label class="form__label"
+					 for="isShowLending"
+		>Отображать на лендинге?</label>
+	</div>
+
+	<button class="form__button"
+					type="submit"
+					[disabled]="requestForm.invalid"
+	>Отправить
+	</button>
+</form>

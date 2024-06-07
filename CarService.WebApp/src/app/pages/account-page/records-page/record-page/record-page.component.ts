@@ -123,7 +123,7 @@ export class RecordPageComponent {
 			context: context
 		})?.subscribe((result) => {
 
-			if (result.isConfirm) {
+			if (result) {
 				firstValueFrom(
 					this.recordsService.update(this.record.id, this.prioritySelect, this.statusSelect)
 				).then(() => {
@@ -143,8 +143,7 @@ export class RecordPageComponent {
 
 				})
 			}
-
-			if (result.isCancel) {
+			if (!result) {
 				console.log('cancel')
 				this.prioritySelect = undefined
 				this.statusSelect = undefined
@@ -155,7 +154,7 @@ export class RecordPageComponent {
 	dialogAddMasterOpen(template: TemplateRef<any>) {
 		this.modalService.open(template, {
 			title: 'Добавление мастера',
-		})?.subscribe(({isConfirm}) => {
+		})?.subscribe((isConfirm) => {
 			if (isConfirm && this.idMaster) {
 				firstValueFrom(this.recordsService.addMaster(this.record.id, this.idMaster))
 				.then(() => {

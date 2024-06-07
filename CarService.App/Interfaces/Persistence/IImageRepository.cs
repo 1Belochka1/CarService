@@ -10,4 +10,5 @@ public interface IImageRepository
 		Guid imageId);
 
 	Task Update(Image image);
+	Task Delete(Image image);
 }

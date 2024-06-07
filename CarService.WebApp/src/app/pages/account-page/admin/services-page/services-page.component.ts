@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core'
+import {Component, TemplateRef} from '@angular/core'
 import {BTableComponent} from '../../../../components/b-table/b-table.component'
 import {AsyncPipe, JsonPipe, NgForOf} from '@angular/common'
 import {BTemplateDirective} from '../../../../direcrives/b-template.directive'
@@ -8,6 +8,14 @@ import {
 	CardServiceComponent
 } from '../../../../components/card-service/card-service.component'
 import {SrcImagePipe} from '../../../../pipe/src-image.pipe'
+import {
+	FormAddServiceComponent
+} from '../../../../components/form-add-service/form-add-service.component'
+import {ModalService} from '../../../../services/modal.service'
+import {
+	TableSortHeaderIconDirective
+} from '../../../../direcrives/table-sort-header-icon.directive'
+import {Router} from '@angular/router'
 
 @Component({
 	selector: 'app-services-page',
@@ -19,18 +27,45 @@ import {SrcImagePipe} from '../../../../pipe/src-image.pipe'
 		JsonPipe,
 		CardServiceComponent,
 		NgForOf,
-		SrcImagePipe
+		SrcImagePipe,
+		FormAddServiceComponent,
+		TableSortHeaderIconDirective
 	],
 	templateUrl: './services-page.component.html',
-	styleUrl: './services-page.component.scss'
+	styleUrl: './services-page.component.scss',
+	providers: [ModalService, ServicesService]
 })
 export class ServicesPageComponent {
 
 	items$: Observable<any>
 
-	constructor(private servicesService: ServicesService ) {
-		this.items$ = servicesService.GetService()
+	constructor(private servicesService: ServicesService,
+							private _modalService: ModalService,
+							private _router: Router
+	) {
+		this.setItems()
 	}
 
+	setItems() {
+		this.items$ = this.servicesService.getServices()
+	}
 
+	addClick(template: TemplateRef<any>) {
+		this._modalService.open(template, {
+			title: 'Создание услуги',
+			actionVisible: false
+		})?.subscribe((isConfirm) => {
+			if (isConfirm) {
+				this.setItems()
+			}
+		})
+	}
+
+	addSubmit(success: boolean) {
+		this._modalService.closeModal(success)
+	}
+
+	navigate(id: string) {
+		this._router.navigate(['account', 'services', id]).then()
+	}
 }

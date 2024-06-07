@@ -255,6 +255,15 @@ public class UsersController : ControllerBase
 		return Ok();
 	}
 
+
+	[HttpDelete("delete/{id}")]
+	public async Task<IActionResult> DeleteAsync(Guid id)
+	{
+		await _usersService.DeleteAsync(id);
+
+		return Ok();
+	}
+
 	[HttpGet("заполнить")]
 	public async Task<IActionResult> CreateUsersTest()
 	{

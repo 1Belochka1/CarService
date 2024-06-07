@@ -22,4 +22,6 @@ public interface IUserInfoRepository
 
 	Task<List<WorkersDto>> GetByPredicate
 		(Func<UserAuth, bool> func);
+
+	Task Delete(Guid id);
 }

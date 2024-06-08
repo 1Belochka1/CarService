@@ -63,39 +63,39 @@ public class ImageService
 		return Result.Success();
 	}
 
-	public async Task<Result<FileInfo>> GetImageAsync(
-		Guid imageId)
-	{
-		var image = await _imageRepository
-			.GetById
-				(imageId);
+public async Task<Result<FileInfo>> GetImageAsync(Guid imageId)
+{
+    // Получаем изображение по идентификатору из репозитория
+    var image = await _imageRepository.GetById(imageId);
 
-		if (image == null)
-		{
-			return Result.Failure<FileInfo>("Файл не найден");
-		}
+    // Если изображение не найдено, возвращаем результат с ошибкой
+    if (image == null)
+    {
+        return Result.Failure<FileInfo>("Файл не найден");
+    }
 
-		// Получаем текущий путь, где выполняется приложение
-		string currentDirectory =
-			Directory.GetCurrentDirectory();
+    // Получаем текущий путь, где выполняется приложение
+    string currentDirectory = Directory.GetCurrentDirectory();
 
-		// Поднимаемся на несколько уровней вверх до папки решения
-		string solutionDirectory =
-			Path.GetFullPath(Path.Combine(currentDirectory,
-				"../"));
+    // Поднимаемся на несколько уровней вверх до папки решения
+    string solutionDirectory = Path.GetFullPath(Path.Combine(currentDirectory, "../"));
 
-		// Указываем относительный путь к файлу относительно папки решения
-		string relativeFilePath = Path.Combine
-			(solutionDirectory, "Images", image.FileName);
+    // Указываем относительный путь к файлу относительно папки решения
+    string relativeFilePath = Path.Combine(solutionDirectory, "Images", image.FileName);
 
-		var fileInfo = new FileInfo(relativeFilePath);
+    // Создаем объект FileInfo для указанного файла
+    var fileInfo = new FileInfo(relativeFilePath);
 
-		if (!fileInfo.Exists)
-			return Result.Failure<FileInfo>("Файл не найден");
-		;
+    // Проверяем, существует ли файл
+    if (!fileInfo.Exists)
+    {
+        return Result.Failure<FileInfo>("Файл не найден");
+    }
 
-		return Result.Success(fileInfo);
-	}
+    // Если файл найден, возвращаем успешный результат с информацией о файле
+    return Result.Success(fileInfo);
+}
+
 
 	public async Task<Result> UpdateImageAsync(
 		Guid imageId,

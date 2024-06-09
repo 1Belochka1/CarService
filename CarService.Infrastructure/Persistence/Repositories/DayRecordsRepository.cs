@@ -1,6 +1,5 @@
-using CarService.App.Common.DayRecordsWithWeeks;
 using CarService.App.Interfaces.Persistence;
-using CarService.Core.Records;
+using CarService.Core.Requests;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.Infrastructure.Persistence.

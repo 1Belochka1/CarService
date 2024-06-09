@@ -1,10 +1,10 @@
-using CarService.Core.Records;
+using CarService.Core.Requests;
 
 namespace CarService.Api.Contracts.Records;
 
-public record UpdateRecordRequest(
+public record UpdateRequestRequest(
 	Guid Id,
 	string? Phone = null,
 	string? Description = null,
-	RecordPriority? Priority = null,
-	RecordStatus? Status = null);
+	RequestPriority? Priority = null,
+	RequestStatus? Status = null);

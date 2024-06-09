@@ -1,40 +1,40 @@
 using CarService.App.Common.Records;
 using CarService.App.Common.Users;
 using CarService.App.Interfaces.Persistence;
-using CarService.Core.Records;
+using CarService.Core.Requests;
 using CarService.Core.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.Infrastructure.Persistence.
 	Repositories;
 
-public class RecordsRepository : IRecordsRepository
+public class RequestRepository : IRequestRepository
 {
 	private readonly CarServiceDbContext _context;
 
-	public RecordsRepository(CarServiceDbContext context)
+	public RequestRepository(CarServiceDbContext context)
 	{
 		_context = context;
 	}
 
-	public async Task<Guid> CreateAsync(Record record)
+	public async Task<Guid> CreateAsync(Request request)
 	{
-		await _context.Records.AddAsync(record);
+		await _context.Request.AddAsync(request);
 
 		await _context.SaveChangesAsync();
 
-		return record.Id;
+		return request.Id;
 	}
 
 	public async Task UpdateAsync(
 		Guid id,
 		string? phone = null,
 		string? description = null,
-		RecordPriority? priority = null,
-		RecordStatus? status = null
+		RequestPriority? priority = null,
+		RequestStatus? status = null
 	)
 	{
-		var record = await _context.Records
+		var record = await _context.Request
 			.FirstAsync(r => r.Id == id);
 
 		if (description != null)
@@ -51,15 +51,15 @@ public class RecordsRepository : IRecordsRepository
 
 	public async Task DeleteAsync(Guid id)
 	{
-		await _context.Records
+		await _context.Request
 			.Where(r => r.Id == id)
 			.ExecuteDeleteAsync();
 	}
 
-	public async Task<List<Record>> GetAllAsync(string
+	public async Task<List<Request>> GetAllAsync(string
 		roleId, Guid? userId)
 	{
-		var query = await _context.Records
+		var query = await _context.Request
 			.Include(x => x.Masters)
 			.Include(x => x.Services)
 			.AsNoTracking()
@@ -73,9 +73,9 @@ public class RecordsRepository : IRecordsRepository
 		return query;
 	}
 
-	public async Task<RecordsDto?> GetByIdAsync(Guid id)
+	public async Task<RequestsDto?> GetByIdAsync(Guid id)
 	{
-		var records = SelectRecords(await _context.Records
+		var records = SelectRequests(await _context.Request
 			.Include(x => x.Masters)
 			.ThenInclude(x => x.UserInfo)
 			.Include(x => x.Client).ToListAsync());
@@ -84,33 +84,33 @@ public class RecordsRepository : IRecordsRepository
 			x.Id == id);
 	}
 
-	public async Task<IEnumerable<Record>> GetByClientIdAsync(
+	public async Task<IEnumerable<Request>> GetByClientIdAsync(
 		Guid clientId)
 	{
-		return await _context.Records
+		return await _context.Request
 			.Where(x => x.ClientId == clientId).ToListAsync();
 	}
 
-	public async Task<List<Record>>
+	public async Task<List<Request>>
 		GetCompletedByMasterIdAsync(Guid masterId)
 	{
-		var query = await _context.Records
+		var query = await _context.Request
 			.Include(x => x.Masters)
 			.Where(x => x.Masters.Any(m => m.Id == masterId)
-			            && x.Status == RecordStatus.Done)
+			            && x.Status == RequestStatus.Done)
 			.ToListAsync();
 
 
 		return query;
 	}
 
-	public async Task<List<Record>>
+	public async Task<List<Request>>
 		GetActiveByMasterIdAsync(Guid masterId)
 	{
-		var query = await _context.Records
+		var query = await _context.Request
 			.Include(x => x.Masters)
 			.Where(x => x.Masters.Any(m => m.Id == masterId)
-			            && x.Status != RecordStatus.Done)
+			            && x.Status != RequestStatus.Done)
 			.ToListAsync();
 
 		return query;
@@ -119,7 +119,7 @@ public class RecordsRepository : IRecordsRepository
 	public async Task AddMasters(Guid recordId,
 		ICollection<UserAuth> masters)
 	{
-		var record = await _context.Records
+		var record = await _context.Request
 			.Include(r => r.Masters)
 			.FirstAsync(r => r.Id == recordId);
 		record.AddMasters(masters);
@@ -129,18 +129,18 @@ public class RecordsRepository : IRecordsRepository
 
 	public async Task Complete(Guid recordId)
 	{
-		var record = await _context.Records
+		var record = await _context.Request
 			.FirstAsync(r => r.Id == recordId);
 
-		record.SetStatus(RecordStatus.Done);
+		record.SetStatus(RequestStatus.Done);
 
 		await _context.SaveChangesAsync();
 	}
 
-	private static List<RecordsDto> SelectRecords(
-		List<Record> query)
+	private static List<RequestsDto> SelectRequests(
+		List<Request> query)
 	{
-		return query.Select(x => new RecordsDto(
+		return query.Select(x => new RequestsDto(
 			x.Id,
 			x.ClientId,
 			x.Client,

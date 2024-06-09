@@ -13,7 +13,8 @@ public class ServicesController : ControllerBase
 	private readonly ServicesService _servicesService;
 	private readonly ImageService _imageService;
 
-	public ServicesController(ServicesService servicesService,
+	public ServicesController(
+		ServicesService servicesService,
 		ImageService imageService)
 	{
 		_servicesService = servicesService;
@@ -22,8 +23,7 @@ public class ServicesController : ControllerBase
 
 	[HttpPost("create")]
 	[Consumes("multipart/form-data")]
-	public async Task<IActionResult> CreateServiceAsync
-		([FromForm] CreateServiceRequest request)
+	public async Task<IActionResult> CreateServiceAsync([FromForm] CreateServiceRequest request)
 	{
 		var serviceResult = await _servicesService.CreateAsync(
 			request.Name, request.Description
@@ -34,8 +34,16 @@ public class ServicesController : ControllerBase
 
 		if (request.File != null)
 		{
+			byte[]? fileBytes;
+			using (var memoryStream = new MemoryStream())
+			{
+				await request.File.CopyToAsync(memoryStream);
+				fileBytes = memoryStream.ToArray();
+			}
+
+
 			var fileResult = await _imageService.UploadImageAsync
-			(request.File,
+			(fileBytes, request.File.FileName,
 				null, null, serviceResult.Value);
 
 			if (fileResult.IsFailure)
@@ -80,8 +88,7 @@ public class ServicesController : ControllerBase
 	}
 
 	[HttpPost("update")]
-	public async Task<IActionResult> Update
-		(UpdateServiceRequest request)
+	public async Task<IActionResult> Update(UpdateServiceRequest request)
 	{
 		var serviceResult = await _servicesService.UpdateAsync(
 			request.Id,
@@ -97,8 +104,7 @@ public class ServicesController : ControllerBase
 	}
 
 	[HttpDelete("delete/{id}")]
-	public async Task<IActionResult> Delete
-		(Guid id)
+	public async Task<IActionResult> Delete(Guid id)
 	{
 		try
 		{

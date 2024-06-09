@@ -1,6 +1,3 @@
-using CarService.Core.Records;
-using CarService.Core.Services;
-
 namespace CarService.Api.Contracts.Users;
 
 public record GetWorkerResponse(

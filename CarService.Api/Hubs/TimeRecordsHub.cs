@@ -17,11 +17,15 @@ public class TimeRecordsHub : Hub
 		_recordsService = recordsService;
 	}
 
-	public async Task RecordTimeRecord(Guid id, bool isBusy,
-		string? phone, string? name)
+	public async Task RecordTimeRecord(
+		Guid id,
+		bool isBusy,
+		string? email,
+		string? phone,
+		string? name)
 	{
 		var result = await _recordsService
-			.UpdateTimeRecordAsync(id, isBusy, phone, name);
+			.UpdateTimeRecordAsync(id, isBusy, email, phone, name);
 
 		if (_clientBookings.ContainsKey(Context.ConnectionId))
 		{
@@ -31,11 +35,10 @@ public class TimeRecordsHub : Hub
 		}
 	}
 
-
 	public async Task BookTimeRecord(Guid timeRecordId)
 	{
 		var result = await _recordsService
-			.UpdateTimeRecordAsync(timeRecordId, true, null,
+			.UpdateTimeRecordAsync(timeRecordId, true, null, null,
 				null);
 
 		_clientBookings[Context.ConnectionId] = timeRecordId;
@@ -50,7 +53,7 @@ public class TimeRecordsHub : Hub
 			    out var timeRecordId))
 		{
 			var result = await _recordsService
-				.UpdateTimeRecordAsync(timeRecordId, false, null,
+				.UpdateTimeRecordAsync(timeRecordId, false, null, null,
 					null);
 
 			_clientBookings.Remove(Context.ConnectionId);

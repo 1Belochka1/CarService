@@ -6,4 +6,4 @@ public record CreateServiceRequest(
 	string Name,
 	string Description,
 	bool IsShowLanding,
-	IFormFile? File = null);
+	IFormFile File = null);

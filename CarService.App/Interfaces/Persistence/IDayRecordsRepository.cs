@@ -1,5 +1,4 @@
-using CarService.App.Common.DayRecordsWithWeeks;
-using CarService.Core.Records;
+using CarService.Core.Requests;
 
 namespace CarService.App.Interfaces.Persistence;
 
@@ -16,7 +15,8 @@ public interface IDayRecordsRepository
 
 	Task<List<DayRecord>> GetByCalendarIdByMonthByYearId(
 		Guid calendarId,
-		int? month, int? year);
+		int? month,
+		int? year);
 
 	Task<List<DayRecord>> GetByCalendarId(Guid calendarId);
 }

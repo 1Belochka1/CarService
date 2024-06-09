@@ -1,6 +1,5 @@
 using CarService.Api.Contracts.DayRecords;
 using CarService.App.Interfaces.Persistence;
-using CarService.Core.Records;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarService.Api.Controllers;

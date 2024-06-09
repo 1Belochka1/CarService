@@ -2,15 +2,15 @@ using CarService.Core.Services;
 using CarService.Core.Users;
 using CSharpFunctionalExtensions;
 
-namespace CarService.Core.Records;
+namespace CarService.Core.Requests;
 
-public class Record
+public class Request
 {
-	public Record()
+	public Request()
 	{
 	}
 
-	private Record(
+	private Request(
 		Guid id,
 		Guid? clientId,
 		string? carInfo,
@@ -46,11 +46,11 @@ public class Record
 
 	public DateTime? CompleteTime { get; private set; }
 
-	public RecordPriority Priority { get; private set; } =
-		RecordPriority.Normal;
+	public RequestPriority Priority { get; private set; } =
+		RequestPriority.Normal;
 
-	public RecordStatus Status { get; private set; } =
-		RecordStatus.New;
+	public RequestStatus Status { get; private set; } =
+		RequestStatus.New;
 
 	public Guid? TimeRecordId { get; private set; }
 
@@ -79,12 +79,12 @@ public class Record
 		Description = description;
 	}
 
-	public void SetPriority(RecordPriority priority)
+	public void SetPriority(RequestPriority priority)
 	{
 		Priority = priority;
 	}
 
-	public void SetStatus(RecordStatus status)
+	public void SetStatus(RequestStatus status)
 	{
 		Status = status;
 	}
@@ -115,7 +115,7 @@ public class Record
 		VisitTime = visitTime;
 	}
 
-	public static Result<Record> Create(
+	public static Result<Request> Create(
 		Guid id,
 		Guid? userId,
 		string? carInfo,
@@ -125,21 +125,21 @@ public class Record
 		Guid? dayRecordsId)
 	{
 		if (id == Guid.Empty)
-			return Result.Failure<Record>("Id can't be empty");
+			return Result.Failure<Request>("Id can't be empty");
 
 		if (string.IsNullOrEmpty(description))
-			return Result.Failure<Record>(
+			return Result.Failure<Request>(
 				"Описание заявки не может быть пустым");
 
 		if (createTime == DateTime.MinValue)
-			return Result.Failure<Record>(
+			return Result.Failure<Request>(
 				"Дата создания заявки не может быть пустой");
 
 		if (visitTime == DateTime.MinValue)
-			return Result.Failure<Record>(
+			return Result.Failure<Request>(
 				"Дата приема не может быть пустой");
 
-		var record = new Record(
+		var record = new Request(
 			id,
 			userId,
 			carInfo,

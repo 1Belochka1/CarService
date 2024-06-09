@@ -1,5 +1,4 @@
-using System.Globalization;
-using CarService.Core.Records;
+using CarService.Core.Requests;
 using CarService.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -11,8 +10,6 @@ namespace
 public class
 	ServiceConfiguration : IEntityTypeConfiguration<Service>
 {
-	// TODO: Возможно убрать связи с мастором и заявками
-
 	public void Configure(EntityTypeBuilder<Service> builder)
 	{
 		builder.HasKey(x => x.Id);
@@ -30,22 +27,10 @@ public class
 		builder.HasIndex(x => x.Name)
 			.IsUnique();
 
-		builder.HasMany(x => x.ServiceTypes)
-			.WithMany(x => x.Services)
-			.UsingEntity("ServiceTypesServices");
-
-		builder.HasMany(x => x.Masters)
-			.WithMany(x => x.Services)
-			.UsingEntity("MastersServices");
-
-		builder.HasMany(x => x.Records)
-			.WithMany(x => x.Services)
-			.UsingEntity("RecordsServices");
-
 		builder.HasOne(x =>
-				x.Calendar)
+				x.Record)
 			.WithOne(x => x.Service)
-			.HasForeignKey<CalendarRecord>(x => x.ServiceId);
+			.HasForeignKey<Record>(x => x.ServiceId);
 
 		builder.HasOne(x => x.Image)
 			.WithOne(x => x.Service)

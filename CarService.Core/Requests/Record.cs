@@ -1,11 +1,11 @@
 ﻿using CarService.Core.Services;
 using CSharpFunctionalExtensions;
 
-namespace CarService.Core.Records;
+namespace CarService.Core.Requests;
 
-public class CalendarRecord
+public class Record
 {
-	private CalendarRecord(Guid id, string name,
+	private Record(Guid id, string name,
 		string? description, Guid? serviceId)
 	{
 		Id = id;
@@ -27,23 +27,23 @@ public class CalendarRecord
 	public List<DayRecord>
 		DaysRecords { get; private set; } = [];
 
-	public static Result<CalendarRecord> Create(Guid id,
+	public static Result<Record> Create(Guid id,
 		string
 			name, string? description, Guid? serviceId)
 	{
 		if (id == Guid.Empty)
-			return Result.Failure<CalendarRecord>(
+			return Result.Failure<Record>(
 				"Id can't be empty");
 
 		if (string.IsNullOrEmpty(name))
-			return Result.Failure<CalendarRecord>(
+			return Result.Failure<Record>(
 				"Название не может быть пустым");
 
-		var calendarRecords = new CalendarRecord(id, name,
+		var Records = new Record(id, name,
 			description,
 			serviceId);
 
-		return Result.Success(calendarRecords);
+		return Result.Success(Records);
 	}
 
 	public void Update(string? requestName,

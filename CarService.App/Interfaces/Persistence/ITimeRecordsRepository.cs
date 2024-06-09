@@ -1,5 +1,4 @@
-using CarService.App.Common.DayRecordsWithWeeks;
-using CarService.Core.Records;
+using CarService.Core.Requests;
 
 namespace CarService.App.Interfaces.Persistence;
 
@@ -14,6 +13,5 @@ public interface ITimeRecordsRepository
 	Task<TimeRecord?> GetById(Guid id);
 	Task<List<TimeRecord>> GetAll();
 
-	Task<List<TimeRecord>> GetTimeRecordsByRecordIdAsync
-		(Guid id);
+	Task<List<TimeRecord>> GetTimeRecordsByRecordIdAsync(Guid id);
 }

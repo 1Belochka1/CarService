@@ -26,7 +26,6 @@ public class ServicesRepository : IServicesRepository
 	public async Task<List<Service>> GetLendingAsync()
 	{
 		return await _context.Services
-			.Include(x => x.ServiceTypes)
 			.Include(x => x.Image)
 			.Where(x => x.IsShowLending)
 			.ToListAsync();
@@ -56,7 +55,6 @@ public class ServicesRepository : IServicesRepository
 	public async Task<List<Service>> GetAllAsync()
 	{
 		var query = await _context.Services
-			.Include(x => x.ServiceTypes)
 			.Include(x => x.Image)
 			.ToListAsync();
 

@@ -1,6 +1,5 @@
-using System.Net.Mime;
 using CarService.Core.Images;
-using CarService.Core.Records;
+using CarService.Core.Requests;
 using CarService.Core.Users;
 using CSharpFunctionalExtensions;
 
@@ -12,7 +11,10 @@ public class Service
 	{
 	}
 
-	private Service(Guid id, string name, string description,
+	private Service(
+		Guid id,
+		string name,
+		string description,
 		bool isShowLending)
 	{
 		Id = id;
@@ -35,29 +37,15 @@ public class Service
 
 	public Image? Image { get; private set; }
 
-	public virtual CalendarRecord? Calendar
-	{
-		get;
-		private set;
-	}
+	public virtual Record? Record { get; private set; }
 
-	public virtual List<ServiceType> ServiceTypes
-	{
-		get;
-		private set;
-	} = [];
+	public virtual List<UserAuth> Masters { get; private set; } = [];
 
-	public virtual List<Record>
-		Records { get; private set; } = [];
-
-	public virtual List<UserAuth> Masters
-	{
-		get;
-		private set;
-	} = [];
-
-	public void Update(string? name = null, string?
-		description = null, bool? isShowLending = null)
+	public void Update(
+		string? name = null,
+		string?
+			description = null,
+		bool? isShowLending = null)
 	{
 		if (name != null)
 			Name = name;
@@ -74,21 +62,33 @@ public class Service
 		ImageId = imageId;
 	}
 
-	public static Result<Service> Create(Guid id, string name,
-		string description, bool isShowLending)
+	public static Result<Service> Create(
+		Guid id,
+		string name,
+		string description,
+		bool isShowLending)
 	{
-		if (id == Guid.Empty)
-			return Result.Failure<Service>("Id can't be empty");
-
-		if (string.IsNullOrWhiteSpace(name))
-			return Result.Failure<Service>("Name can't be empty");
-
-		if (string.IsNullOrWhiteSpace(description))
-			return Result.Failure<Service>(
-				"Description can't be empty");
-
 		var service =
 			new Service(id, name, description, isShowLending);
+
+		return service.ValidationCreateService();
+	}
+}
+
+public static class Extensions
+{
+	public static Result<Service> ValidationCreateService(
+		this Service service)
+	{
+		if (service.Id == Guid.Empty)
+			return Result.Failure<Service>("Id can't be empty");
+
+		if (string.IsNullOrWhiteSpace(service.Name))
+			return Result.Failure<Service>("Name can't be empty");
+
+		if (string.IsNullOrWhiteSpace(service.Description))
+			return Result.Failure<Service>(
+				"Description can't be empty");
 
 		return Result.Success(service);
 	}

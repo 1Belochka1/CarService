@@ -1,17 +1,17 @@
-using CarService.Core.Records;
+using CarService.Core.Requests;
 
 namespace CarService.App.Interfaces.Persistence;
 
-public interface ICalendarRecordsRepository
+public interface IRecordsRepository
 {
-	Task<Guid> Create(CalendarRecord record);
-	Task Update(CalendarRecord record);
+	Task<Guid> Create(Record record);
+	Task Update(Record record);
 	Task Delete(Guid id);
 
-	Task<CalendarRecord?> GetByServiceId(
+	Task<Record?> GetByServiceId(
 		Guid serviceId);
 
-	Task<CalendarRecord?> GetById(Guid id);
+	Task<Record?> GetById(Guid id);
 
-	Task<List<CalendarRecord>> GetAll();
+	Task<List<Record>> GetAll();
 }

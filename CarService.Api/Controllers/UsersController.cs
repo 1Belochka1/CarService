@@ -30,7 +30,7 @@ public class UsersController : ControllerBase
 		RegisterUserRequest request
 	)
 	{
-		var result = await _usersService.Register(
+		var result = await _usersService.Register(request.Email,
 			request.LastName, request.FirstName,
 			request.Patronymic, request.Address, request.Phone,
 			request.Password);
@@ -47,7 +47,7 @@ public class UsersController : ControllerBase
 		RegisterUserRequest request
 	)
 	{
-		var result = await _usersService.Register(
+		var result = await _usersService.Register(request.Email,
 			request.LastName, request.FirstName,
 			request.Patronymic, request.Address, request.Phone,
 			request.Password, 2);
@@ -94,11 +94,11 @@ public class UsersController : ControllerBase
 	//
 
 	[HttpPost("Create/UserInfo")]
-	public async Task<IActionResult> CreateUserInfo
-		(CreateUserInfoRequest request)
+	public async Task<IActionResult> CreateUserInfo(CreateUserInfoRequest request)
 	{
 		var userInfo = await _usersService
 			.CreateUserInfoAsync(
+				request.Email,
 				request.Phone,
 				request.LastName,
 				request.FirstName,
@@ -111,7 +111,6 @@ public class UsersController : ControllerBase
 
 		return Ok();
 	}
-
 
 	//
 	//
@@ -127,6 +126,7 @@ public class UsersController : ControllerBase
 	{
 		var result = await _usersService.Update(
 			request.Id,
+			request.Email,
 			request.Phone,
 			request.LastName,
 			request.FirstName,
@@ -276,7 +276,6 @@ public class UsersController : ControllerBase
 		return Ok();
 	}
 
-
 	[HttpDelete("delete/{id}")]
 	public async Task<IActionResult> DeleteAsync(Guid id)
 	{
@@ -321,10 +320,11 @@ public class UsersController : ControllerBase
 		var random = new Random();
 		for (var i = 0; i <= 100; i++)
 			await _usersService.Register(
+				$"{random.Next(0, 20)}@mail.ru",
 				$"{lastNames[random.Next(0, 20)]}",
 				$"{firstNames[random.Next(0, 20)]}",
 				$"{middleNames[random.Next(0, 20)]}",
-				$"address{random.Next(0, 100000)}/address/asdporg/aewragrew/aergaeg",
+				$"address{random.Next(0, 100000)}/aergaeg",
 				$"8{random.Next(100, 1000)}{random.Next(100, 1000)}{random.Next(10, 100)}{random.Next(10, 100)}",
 				"123456",
 				roleId.Next(1, 4)

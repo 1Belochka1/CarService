@@ -16,7 +16,8 @@ public class ImagesController : ControllerBase
 
 	private readonly UsersService _usersService;
 
-	public ImagesController(ImageService imageService,
+	public ImagesController(
+		ImageService imageService,
 		UsersService usersService)
 	{
 		_imageService = imageService;
@@ -25,11 +26,18 @@ public class ImagesController : ControllerBase
 
 	[HttpPost("upload")]
 	[Consumes("multipart/form-data")]
-	public async Task<IActionResult> UploadImageAsync
-		([FromForm] UploadImagesRequest request)
+	public async Task<IActionResult> UploadImageAsync([FromForm] UploadImagesRequest request)
 	{
+		byte[]? fileBytes;
+		using (var memoryStream = new MemoryStream())
+		{
+			await request.File.CopyToAsync(memoryStream);
+			fileBytes = memoryStream.ToArray();
+		}
+
 		var result = await _imageService.UploadImageAsync(
-			request.File,
+			fileBytes,
+			request.File.FileName,
 			request.UserInfoId,
 			request.ProductId, request.ServiceId);
 
@@ -46,9 +54,19 @@ public class ImagesController : ControllerBase
 	public async Task<IActionResult> UpdateImageAsync(
 		[FromForm] UpdateImagesRequest request)
 	{
+		byte[]? fileBytes;
+		if (request.NewFile == null)
+			return BadRequest("Ошибка при обновлении");
+		using (var memoryStream = new MemoryStream())
+		{
+			await request.NewFile.CopyToAsync(memoryStream);
+			fileBytes = memoryStream.ToArray();
+		}
+
 		var result = await _imageService.UpdateImageAsync(
 			request.ImageId,
-			request.NewFile,
+			fileBytes,
+			request.NewFile.FileName,
 			request.UserInfoId,
 			request.ProductId,
 			request.ServiceId);

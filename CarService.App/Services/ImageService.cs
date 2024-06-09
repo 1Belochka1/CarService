@@ -1,7 +1,6 @@
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Images;
 using CSharpFunctionalExtensions;
-using Microsoft.AspNetCore.Http;
 
 namespace CarService.App.Services;
 
@@ -18,17 +17,17 @@ public class ImageService
 	}
 
 	public async Task<Result> UploadImageAsync(
-		IFormFile? file,
+		byte[] file, string fileName,
 		Guid? userInfoId, Guid? productId, Guid? serviceId)
 	{
-		if (file == null || file.Length == 0)
+		if (file.Length == 0)
 		{
 			return Result.Failure("Ошибка при загрузке файла");
 		}
 
 		var id = Guid.NewGuid();
 
-		var filename = id + $"_{file.FileName}";
+		var filename = id + $"_{fileName}";
 
 		var path = Path.Combine(Directory.GetCurrentDirectory(),
 			"../Images", filename);
@@ -38,7 +37,7 @@ public class ImageService
 		await using (var stream =
 		             new FileStream(path, FileMode.Create))
 		{
-			await file.CopyToAsync(stream);
+			await stream.WriteAsync(file);
 		}
 
 		var image = Image.Create(id, filename, null);
@@ -99,7 +98,7 @@ public async Task<Result<FileInfo>> GetImageAsync(Guid imageId)
 
 	public async Task<Result> UpdateImageAsync(
 		Guid imageId,
-		IFormFile? newFile,
+		byte[]? newFile, string oldFileName,
 		Guid? userInfoId, Guid? productId, Guid? serviceId)
 	{
 		var image = await _imageRepository.GetById(imageId);
@@ -110,7 +109,7 @@ public async Task<Result<FileInfo>> GetImageAsync(Guid imageId)
 
 		if (newFile != null && newFile.Length > 0)
 		{
-			var newFilename = imageId + $"_{newFile.FileName}";
+			var newFilename = imageId + $"_{oldFileName}";
 			var newPath = Path.Combine(
 				Directory.GetCurrentDirectory(), "../Images",
 				newFilename);
@@ -121,7 +120,7 @@ public async Task<Result<FileInfo>> GetImageAsync(Guid imageId)
 			await using (var stream =
 			             new FileStream(newPath, FileMode.Create))
 			{
-				await newFile.CopyToAsync(stream);
+				await stream.WriteAsync(newFile);
 			}
 
 			// Optionally delete the old file if necessary

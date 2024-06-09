@@ -1,56 +1,56 @@
 using CarService.App.Interfaces.Persistence;
-using CarService.Core.Records;
+using CarService.Core.Requests;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.Infrastructure.Persistence.
 	Repositories;
 
 public class
-	CalendarRecordsRepository : ICalendarRecordsRepository
+	RecordsRepository : IRecordsRepository
 {
 	private readonly CarServiceDbContext _context;
 
-	public CalendarRecordsRepository(
+	public RecordsRepository(
 		CarServiceDbContext context)
 	{
 		_context = context;
 	}
 
-	public async Task<Guid> Create(CalendarRecord record)
+	public async Task<Guid> Create(Record record)
 	{
-		await _context.CalendarRecords.AddAsync(record);
+		await _context.Records.AddAsync(record);
 		await _context.SaveChangesAsync();
 
 		return record.Id;
 	}
 
-	public async Task Update(CalendarRecord record)
+	public async Task Update(Record record)
 	{
-		_context.CalendarRecords.Update(record);
+		_context.Records.Update(record);
 		await _context.SaveChangesAsync();
 	}
 
 	public async Task Delete(Guid id)
 	{
-		var records = await _context.CalendarRecords
+		var records = await _context.Records
 			.FirstOrDefaultAsync(x => x.Id == id);
 
-		_context.CalendarRecords.Remove(records);
+		_context.Records.Remove(records);
 		await _context.SaveChangesAsync();
 	}
 
-	public async Task<CalendarRecord?> GetByServiceId(
+	public async Task<Record?> GetByServiceId(
 		Guid serviceId)
 	{
-		return await _context.CalendarRecords
+		return await _context.Records
 			.Include(x => x.Service)
 			.ThenInclude(x => x.Image)
 			.FirstOrDefaultAsync(x => x.ServiceId == serviceId);
 	}
 
-	public async Task<CalendarRecord?> GetById(Guid id)
+	public async Task<Record?> GetById(Guid id)
 	{
-		return await _context.CalendarRecords
+		return await _context.Records
 			.Include(x => x.DaysRecords)
 			.ThenInclude(x => x.TimeRecords)
 			.Include(x => x.Service)
@@ -58,9 +58,9 @@ public class
 			.FirstOrDefaultAsync(x => x.Id == id);
 	}
 
-	public async Task<List<CalendarRecord>> GetAll()
+	public async Task<List<Record>> GetAll()
 	{
-		return await _context.CalendarRecords
+		return await _context.Records
 			.Include(x => x.Service)
 			.ToListAsync();
 	}

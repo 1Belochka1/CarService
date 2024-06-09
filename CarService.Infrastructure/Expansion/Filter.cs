@@ -1,35 +1,17 @@
-using System.Linq.Expressions;
-using CarService.Core.Records;
-using CarService.Core.Services;
-using Microsoft.EntityFrameworkCore;
+using CarService.Core.Requests;
 
 namespace CarService.Infrastructure.Expansion;
 
 public static class FilterQuery
 {
-	public static List<Service> FilterServices(
-		this List<Service> serviceList,
+	public static List<Request> FilterRecords(
+		this List<Request> recordList,
 		string filterName,
 		string filterValue)
 	{
 		return filterName switch
 		{
-			nameof(Service.ServiceTypes) + ".Name" => serviceList
-				.Where(x =>
-					x.ServiceTypes.Any(y => y.Name == filterValue))
-				.ToList(),
-			_ => serviceList
-		};
-	}
-
-	public static List<Record> FilterRecords(
-		this List<Record> recordList,
-		string filterName,
-		string filterValue)
-	{
-		return filterName switch
-		{
-			nameof(Record.Priority) => recordList
+			nameof(Request.Priority) => recordList
 				.Where(x =>
 					x.Priority.ToString() == filterValue)
 				.ToList(),
@@ -37,8 +19,10 @@ public static class FilterQuery
 		};
 	}
 
-	public static List<T> FilterWithName<T>(this List<T> list,
-		string filterName, string filterValue)
+	public static List<T> FilterWithName<T>(
+		this List<T> list,
+		string filterName,
+		string filterValue)
 	{
 		var result = list
 			.Where(x =>

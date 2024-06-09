@@ -68,7 +68,7 @@ public class UserInfoRepository : IUserInfoRepository
 	{
 		var query = await _context.UserInfos
 			.Include(u => u.UserAuth)
-			.Include(x => x.Records)
+			.Include(x => x.Requests)
 			.ToListAsync();
 
 		query = query.Where(x => x.UserAuth == null ||
@@ -113,8 +113,8 @@ public class UserInfoRepository : IUserInfoRepository
 			x.Patronymic,
 			x.Address,
 			x.Phone,
-			x.Records.Count > 0
-				? x.Records.MaxBy(u => u.CreateTime)
+			x.Requests.Count > 0
+				? x.Requests.MaxBy(u => u.CreateTime)
 					?.CreateTime
 				: null,
 			x.UserAuth?.RoleId != null

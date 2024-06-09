@@ -1,6 +1,7 @@
 namespace CarService.Api.Contracts.Records;
 
-public record CreateRecordWithoutAuthUserRequest(
+public record CreateRequestWithoutAuthUserRequest(
+	string Email,
 	string Phone,
 	string FirstName,
 	string? CarInfo,

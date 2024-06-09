@@ -1,16 +1,15 @@
-using CarService.Core.Records;
+using CarService.Core.Requests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace
 	CarService.Infrastructure.Persistence.Configurations.
 	RecordsConfiguration;
 
 public class
-	RecordConfiguration : IEntityTypeConfiguration<Record>
+	RecordConfiguration : IEntityTypeConfiguration<Request>
 {
-	public void Configure(EntityTypeBuilder<Record> builder)
+	public void Configure(EntityTypeBuilder<Request> builder)
 	{
 		builder.HasKey(x => x.Id);
 		builder.Property(x => x.Id)
@@ -38,8 +37,8 @@ public class
 			.HasMaxLength(15)
 			.HasConversion(
 				v => Enum.GetName(v),
-				v => (RecordPriority)Enum.Parse(
-					typeof(RecordPriority),
+				v => (RequestPriority)Enum.Parse(
+					typeof(RequestPriority),
 					v!)
 			);
 
@@ -47,17 +46,17 @@ public class
 			.HasMaxLength(15)
 			.HasConversion(
 				v => Enum.GetName(v),
-				v => (RecordStatus)Enum.Parse(typeof(RecordStatus),
+				v => (RequestStatus)Enum.Parse(typeof(RequestStatus),
 					v!)
 			);
 
 		builder.HasOne(x => x.Client)
-			.WithMany(x => x.Records)
+			.WithMany(x => x.Requests)
 			.HasForeignKey(x => x.ClientId)
 			.OnDelete(DeleteBehavior.Restrict);
 
 		builder.HasMany(x => x.Masters)
 			.WithMany(x => x.Works)
-			.UsingEntity("RecordsMasters");
+			.UsingEntity("RequestMasters");
 	}
 }

@@ -27,18 +27,16 @@ public static class DependencyInjection
 				UserAuthRepository>()
 			.AddScoped<IUserInfoRepository,
 				UserInfoRepository>()
-			.AddScoped<IRecordsRepository, RecordsRepository>()
+			.AddScoped<IRequestRepository, RequestRepository>()
 			.AddScoped<IServicesRepository,
 				ServicesRepository>()
 			.AddScoped<IImageRepository, ImageRepository>()
-			.AddScoped<ICalendarRecordsRepository,
-				CalendarRecordsRepository>()
+			.AddScoped<IRecordsRepository,
+				RecordsRepository>()
 			.AddScoped<IDayRecordsRepository,
 				DayRecordsRepository>()
 			.AddScoped<
-				ITimeRecordsRepository, TimeRecordsRepository>()
-			.AddScoped<IServiceTypesRepository,
-				ServiceTypesRepository>();
+				ITimeRecordsRepository, TimeRecordsRepository>();
 
 		services
 			.AddSingleton<ICalendarHelper, CalendarHelper>();

@@ -27,6 +27,7 @@ public class UsersService
 	}
 
 	public async Task<Result<UserInfo>> CreateUserInfoAsync(
+		string email,
 		string phone,
 		string lastName,
 		string firstName,
@@ -39,8 +40,15 @@ public class UsersService
 			return Result.Failure<UserInfo>(
 				"Пользователь с таким номером уже существует");
 
-		var userInfo = UserInfo.Create(Guid.NewGuid(),
-			lastName, firstName, patronymic, address, phone);
+		var userInfo = UserInfo.Create(
+			Guid.NewGuid(),
+			email,
+			lastName,
+			firstName,
+			patronymic,
+			address,
+			phone
+		);
 
 		await _userInfoRepository.CreateAsync(userInfo.Value);
 
@@ -48,6 +56,7 @@ public class UsersService
 	}
 
 	public async Task<Result<string>> Register(
+		string email,
 		string lastName,
 		string firstName,
 		string? patronymic,
@@ -71,7 +80,7 @@ public class UsersService
 
 		if (user == null)
 		{
-			var userInfo = UserInfo.Create(id, lastName,
+			var userInfo = UserInfo.Create(id, email, lastName,
 				firstName,
 				patronymic, address, phone).Value;
 
@@ -79,7 +88,7 @@ public class UsersService
 		}
 		else
 		{
-			user.Update(null, lastName, firstName, patronymic,
+			user.Update(null, null, lastName, firstName, patronymic,
 				address);
 
 			await _userInfoRepository.UpdateAsync(user);
@@ -93,8 +102,8 @@ public class UsersService
 		return Result.Success("Аккаунт создан");
 	}
 
-
-	public async Task<Result<string>> Login(string email,
+	public async Task<Result<string>> Login(
+		string email,
 		string password)
 	{
 		var userAuth =
@@ -183,11 +192,15 @@ public class UsersService
 	// 	return await _userAuthRepository.GetWorkersByIds(ids);
 	// }
 
-	public async Task<Result> Update(Guid id,
+	public async Task<Result> Update(
+		Guid id,
+		string? email = null,
 		string? phone = null,
-		string? lastName = null, string? firstName = null,
+		string? lastName = null,
+		string? firstName = null,
 		string? patronymic = null,
-		string? address = null, int? roleId = null)
+		string? address = null,
+		int? roleId = null)
 	{
 		var userInfo = await _userInfoRepository.GetByIdAsync
 			(id);
@@ -199,7 +212,7 @@ public class UsersService
 		if (roleId != null)
 			userInfo.UserAuth?.SetRoleId(roleId.Value);
 
-		userInfo.Update(phone, lastName,
+		userInfo.Update(email, phone, lastName,
 			firstName, patronymic,
 			address);
 

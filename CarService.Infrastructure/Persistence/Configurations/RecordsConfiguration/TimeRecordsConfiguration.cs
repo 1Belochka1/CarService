@@ -1,4 +1,4 @@
-using CarService.Core.Records;
+using CarService.Core.Requests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -26,10 +26,6 @@ public class TimeRecordsConfiguration :
 			.WithMany(x => x.TimeRecords)
 			.HasForeignKey(x => x.ClientId)
 			.OnDelete(DeleteBehavior.SetNull);
-
-		builder.HasOne(x => x.Record)
-			.WithOne(x => x.TimeRecord)
-			.HasForeignKey<TimeRecord>(x => x.RecordId)
-			.OnDelete(DeleteBehavior.SetNull);
+		
 	}
 }

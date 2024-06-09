@@ -1,4 +1,4 @@
-﻿namespace CarService.Core.Records;
+﻿namespace CarService.Core.Requests;
 
 public class DayRecord
 {
@@ -38,7 +38,7 @@ public class DayRecord
 
 	public bool IsWeekend { get; private set; }
 
-	public CalendarRecord? Calendar { get; private set; }
+	public Record? Calendar { get; private set; }
 
 	public List<TimeRecord> TimeRecords { get; private set; }
 

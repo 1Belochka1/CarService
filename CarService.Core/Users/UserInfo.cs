@@ -1,14 +1,19 @@
 using CarService.Core.Images;
-using CarService.Core.Records;
+using CarService.Core.Requests;
 using CSharpFunctionalExtensions;
 
 namespace CarService.Core.Users;
 
 public class UserInfo
 {
-	private UserInfo(Guid id, string? lastName,
-		string firstName, string? patronymic, string? address,
-		string phone)
+	private UserInfo(
+		Guid id,
+		string? lastName,
+		string firstName,
+		string? patronymic,
+		string? address,
+		string phone,
+		string email)
 	{
 		Id = id;
 		LastName = lastName;
@@ -16,6 +21,7 @@ public class UserInfo
 		Patronymic = patronymic;
 		Address = address;
 		Phone = phone;
+		Email = email;
 	}
 
 	public Guid Id { get; private set; }
@@ -30,6 +36,8 @@ public class UserInfo
 
 	public string? Address { get; private set; }
 
+	public string Email { get; private set; }
+
 	public string Phone { get; private set; }
 
 	public Image? Image { get; private set; }
@@ -37,19 +45,23 @@ public class UserInfo
 	public virtual UserAuth? UserAuth { get; private set; } =
 		null!;
 
-	public virtual List<Record>
-		Records { get; private set; } = [];
+	public virtual List<Request>
+		Requests { get; private set; } = [];
 
-	public List<TimeRecord>? TimeRecords
-	{
-		get;
-		private set;
-	} = [];
+	public List<TimeRecord>? TimeRecords { get; private set; } = [];
 
-	public void Update(string? phone, string?
-			lastName, string? firstName, string? patronymic,
+	public void Update(
+		string? email,
+		string? phone,
+		string?
+			lastName,
+		string? firstName,
+		string? patronymic,
 		string? address)
 	{
+		if (email != null)
+			Email = email;
+
 		if (phone != null)
 			Phone = phone;
 
@@ -68,6 +80,7 @@ public class UserInfo
 
 	public static Result<UserInfo> Create(
 		Guid id,
+		string email,
 		string? lastName,
 		string firstName,
 		string? patronymic,
@@ -79,14 +92,18 @@ public class UserInfo
 
 		if (string.IsNullOrWhiteSpace(firstName))
 			return Result.Failure<UserInfo>(
-				"FirstName can't be empty");
+				"Имя не может быть пустым");
 
 		if (string.IsNullOrWhiteSpace(phone))
 			return Result.Failure<UserInfo>(
-				"Phone can't be empty");
+				"Номер телефона не может быть пустым");
+
+		if (string.IsNullOrWhiteSpace(email))
+			return Result.Failure<UserInfo>(
+				"Почта не может быть пустой");
 
 		var user = new UserInfo(id, lastName, firstName,
-			patronymic, address, phone);
+			patronymic, address, phone, email);
 
 		return Result.Success(user);
 	}

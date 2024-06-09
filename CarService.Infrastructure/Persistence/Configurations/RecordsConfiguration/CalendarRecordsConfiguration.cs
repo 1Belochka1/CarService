@@ -1,4 +1,4 @@
-﻿using CarService.Core.Records;
+﻿using CarService.Core.Requests;
 using CarService.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,11 +8,11 @@ namespace
 	RecordsConfiguration;
 
 public class
-	CalendarRecordsConfiguration : IEntityTypeConfiguration<
-	CalendarRecord>
+	RecordsConfiguration : IEntityTypeConfiguration<
+	Record>
 {
 	public void Configure(
-		EntityTypeBuilder<CalendarRecord> builder)
+		EntityTypeBuilder<Record> builder)
 	{
 		builder.HasKey(x => x.Id);
 
@@ -27,7 +27,7 @@ public class
 
 		builder.HasOne(x =>
 				x.Service)
-			.WithOne(x => x.Calendar)
+			.WithOne(x => x.Record)
 			.HasForeignKey<Service>(x => x.CalendarId);
 	}
 }

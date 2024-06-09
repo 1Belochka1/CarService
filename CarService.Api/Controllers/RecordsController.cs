@@ -29,10 +29,11 @@ public class RecordsController : ControllerBase
 	[HttpPost("Create/WithoutUserAuth")]
 	public async Task<IActionResult>
 		CreateRecordWithoutAuthUser(
-			CreateRecordWithoutAuthUserRequest request)
+			CreateRequestWithoutAuthUserRequest request)
 	{
 		var result =
 			await _recordsService.CreateWithoutAuthUser(
+				request.Email,
 				request.Phone,
 				request.FirstName,
 				request.CarInfo,
@@ -66,7 +67,7 @@ public class RecordsController : ControllerBase
 
 	[HttpPost("Update")]
 	public async Task<IActionResult> Update(
-		UpdateRecordRequest request)
+		UpdateRequestRequest request)
 	{
 		await _recordsService.UpdateRecordAsync(
 			request.Id,
@@ -80,7 +81,8 @@ public class RecordsController : ControllerBase
 	}
 
 	[HttpPost("Update/AddMaster/{id}")]
-	public async Task<IActionResult> AddMasters(Guid id,
+	public async Task<IActionResult> AddMasters(
+		Guid id,
 		List<Guid> mastersIds)
 	{
 		await _recordsService.AddMastersAsync(
@@ -143,10 +145,9 @@ public class RecordsController : ControllerBase
 
 	[Authorize(Roles = "1")]
 	[HttpPost("Calendars/Create")]
-	public async Task<IActionResult> CreateCalendarRecords
-		(CreateCalendarRecordRequest request)
+	public async Task<IActionResult> CreateRecords(CreateRequestRequest request)
 	{
-		await _recordsService.CreateCalendarRecordAsync(
+		await _recordsService.CreateRecordAsync(
 			request.ServiceId,
 			request.Name,
 			request.Description
@@ -155,24 +156,23 @@ public class RecordsController : ControllerBase
 		return Ok();
 	}
 
-
 	[HttpGet("Calendars/Get/All")]
-	public async Task<IActionResult> GetAllCalendarRecords
+	public async Task<IActionResult> GetAllRecords
 		()
 	{
 		var calendarsRecordsAsync = await _recordsService
-			.GetAllCalendarRecordsAsync();
+			.GetAllRecordsAsync();
 
 		return Ok(calendarsRecordsAsync);
 	}
 
 	[Authorize]
 	[HttpGet("Calendars/Get/{id}")]
-	public async Task<IActionResult> GetCalendarRecords(
+	public async Task<IActionResult> GetRecords(
 		Guid id)
 	{
 		var result = await _recordsService
-			.GetCalendarRecordsAsync(id);
+			.GetRecordsAsync(id);
 
 		if (result.IsFailure)
 			return BadRequest(result.Error);
@@ -182,11 +182,11 @@ public class RecordsController : ControllerBase
 
 	[Authorize(Roles = "1")]
 	[HttpPost("Calendars/Update")]
-	public async Task<IActionResult> UpdateCalendarRecords(
-		UpdateCalendarRecordRequest request)
+	public async Task<IActionResult> UpdateRecords(
+		UpdateRecordRequest request)
 	{
 		var result =
-			await _recordsService.UpdateCalendarRecordAsync(
+			await _recordsService.UpdateRecordAsync(
 				request.Id,
 				request.Name,
 				request.Description
@@ -200,11 +200,10 @@ public class RecordsController : ControllerBase
 
 	[Authorize(Roles = "1")]
 	[HttpDelete("Calendars/Delete/{id}")]
-	public async Task<IActionResult> DeleteCalendarRecords
-		(Guid id)
+	public async Task<IActionResult> DeleteRecords(Guid id)
 	{
 		var result =
-			await _recordsService.DeleteCalendarRecordsAsync(id);
+			await _recordsService.DeleteRecordsAsync(id);
 
 		if (result.IsFailure)
 			return BadRequest(result.Error);
@@ -232,11 +231,12 @@ public class RecordsController : ControllerBase
 		return Ok();
 	}
 
-
 	[HttpGet(
 		"DayRecords/Get/byCalendarId/{id}&{month}&{year}")]
 	public async Task<IActionResult>
-		GetAllDayRecordsByCalendarId(Guid id, int month,
+		GetAllDayRecordsByCalendarId(
+			Guid id,
+			int month,
 			int year)
 	{
 		var result = await _recordsService
@@ -273,10 +273,14 @@ public class RecordsController : ControllerBase
 	[Authorize]
 	[HttpGet("TimeRecords/Update")]
 	public async Task<IActionResult> UpdateTimeRecords(
-		Guid id, bool isBusy, string? phone, string? name)
+		Guid id,
+		bool isBusy,
+		string? email,
+		string? phone,
+		string? name)
 	{
 		var result = await _recordsService
-			.UpdateTimeRecordAsync(id, isBusy, phone, name);
+			.UpdateTimeRecordAsync(id, isBusy, email, phone, name);
 
 		if (result.IsFailure)
 			return BadRequest(result.Error);
@@ -308,7 +312,7 @@ public class RecordsController : ControllerBase
 		{
 			await _recordsService.CreateWithoutAuthUser
 			(numbers[random.Next(0, 100)],
-				firstNames[random.Next(0, 20)], null,
+				firstNames[random.Next(0, 20)], null, null,
 				"Тут будет большое описание. " +
 				"Тут будет большое описание. " +
 				"Тут будет большое описание. " +

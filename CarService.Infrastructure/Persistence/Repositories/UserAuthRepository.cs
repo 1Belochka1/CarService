@@ -51,7 +51,7 @@ public class UserAuthRepository : IUserAuthRepository
 	{
 		return await _context.UserAuths
 			.Include(u => u.UserInfo)
-			.ThenInclude(u => u.Records)
+			.ThenInclude(u => u.Requests)
 			.FirstOrDefaultAsync(x => x.Id == userId);
 	}
 

@@ -1,4 +1,4 @@
-using CarService.Core.Records;
+using CarService.Core.Requests;
 
 namespace CarService.App.Common.DayRecordsWithWeeks;
 

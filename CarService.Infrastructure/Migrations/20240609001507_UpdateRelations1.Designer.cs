@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarService.Infrastructure.Migrations
 {
     [DbContext(typeof(CarServiceDbContext))]
-    [Migration("20240529180621_RecordUpdate1")]
-    partial class RecordUpdate1
+    [Migration("20240609001507_UpdateRelations1")]
+    partial class UpdateRelations1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,8 +23,6 @@ namespace CarService.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "record_priority", new[] { "low", "normal", "high", "very_high" });
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "record_status", new[] { "new", "processing", "awaiting", "work", "done" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CarService.Core.Images.Image", b =>
@@ -39,7 +37,7 @@ namespace CarService.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
-                    b.Property<Guid?>("ProductId")
+                    b.Property<Guid?>("ServiceId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("UserInfoId")
@@ -47,15 +45,43 @@ namespace CarService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
                     b.HasIndex("UserInfoId")
                         .IsUnique();
 
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.CalendarRecords", b =>
+            modelBuilder.Entity("CarService.Core.Requests.DayRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CalendarId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<bool>("IsWeekend")
+                        .HasColumnType("boolean");
+
+                    b.Property<short>("Offset")
+                        .HasColumnType("smallint");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CalendarId");
+
+                    b.ToTable("DaysRecords");
+                });
+
+            modelBuilder.Entity("CarService.Core.Requests.Record", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -74,37 +100,13 @@ namespace CarService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CalendarRecords");
+                    b.HasIndex("ServiceId")
+                        .IsUnique();
+
+                    b.ToTable("Records");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.DayRecords", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CalendarId")
-                        .HasColumnType("uuid");
-
-                    b.Property<TimeOnly>("EndTime")
-                        .HasColumnType("time without time zone");
-
-                    b.Property<bool?>("IsWeekend")
-                        .HasColumnType("boolean");
-
-                    b.Property<short>("Offset")
-                        .HasColumnType("smallint");
-
-                    b.Property<TimeOnly>("StartTime")
-                        .HasColumnType("time without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CalendarId");
-
-                    b.ToTable("DaysRecords");
-                });
-
-            modelBuilder.Entity("CarService.Core.Records.Record", b =>
+            modelBuilder.Entity("CarService.Core.Requests.Request", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -123,7 +125,6 @@ namespace CarService.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
@@ -152,10 +153,10 @@ namespace CarService.Infrastructure.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Records");
+                    b.ToTable("Request");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.TimeRecords", b =>
+            modelBuilder.Entity("CarService.Core.Requests.TimeRecord", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -203,6 +204,9 @@ namespace CarService.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
+                    b.Property<Guid?>("ImageId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsShowLending")
                         .HasColumnType("boolean");
 
@@ -211,97 +215,20 @@ namespace CarService.Infrastructure.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)");
 
+                    b.Property<Guid?>("RequestId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CalendarId")
+                    b.HasIndex("ImageId")
                         .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();
+
+                    b.HasIndex("RequestId");
 
                     b.ToTable("Services");
-                });
-
-            modelBuilder.Entity("CarService.Core.Services.ServiceType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("ServiceTypes");
-                });
-
-            modelBuilder.Entity("CarService.Core.Stocks.Cart", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Quantity")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(1);
-
-                    b.HasKey("UserId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("CarService.Core.Stocks.Product", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<int>("InStock")
-                        .HasColumnType("serial");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric(10, 2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("CarService.Core.Stocks.ProductCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("CarService.Core.Users.Role", b =>
@@ -362,12 +289,17 @@ namespace CarService.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValue(1);
 
+                    b.Property<Guid?>("ServiceId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Phone")
                         .IsUnique();
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("ServiceId");
 
                     b.ToTable("UserAuths");
                 });
@@ -380,6 +312,10 @@ namespace CarService.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -410,37 +346,7 @@ namespace CarService.Infrastructure.Migrations
                     b.ToTable("UserInfos");
                 });
 
-            modelBuilder.Entity("MastersServices", b =>
-                {
-                    b.Property<Guid>("MastersId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ServicesId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("MastersId", "ServicesId");
-
-                    b.HasIndex("ServicesId");
-
-                    b.ToTable("MastersServices");
-                });
-
-            modelBuilder.Entity("ProductsCategories", b =>
-                {
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProductsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("CategoryId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("ProductsCategories");
-                });
-
-            modelBuilder.Entity("RecordsMasters", b =>
+            modelBuilder.Entity("RequestMasters", b =>
                 {
                     b.Property<Guid>("MastersId")
                         .HasColumnType("uuid");
@@ -452,57 +358,21 @@ namespace CarService.Infrastructure.Migrations
 
                     b.HasIndex("WorksId");
 
-                    b.ToTable("RecordsMasters");
-                });
-
-            modelBuilder.Entity("RecordsServices", b =>
-                {
-                    b.Property<Guid>("RecordsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ServicesId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("RecordsId", "ServicesId");
-
-                    b.HasIndex("ServicesId");
-
-                    b.ToTable("RecordsServices");
-                });
-
-            modelBuilder.Entity("ServiceTypesServices", b =>
-                {
-                    b.Property<Guid>("ServiceTypesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ServicesId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("ServiceTypesId", "ServicesId");
-
-                    b.HasIndex("ServicesId");
-
-                    b.ToTable("ServiceTypesServices");
+                    b.ToTable("RequestMasters");
                 });
 
             modelBuilder.Entity("CarService.Core.Images.Image", b =>
                 {
-                    b.HasOne("CarService.Core.Stocks.Product", "Product")
-                        .WithMany("Images")
-                        .HasForeignKey("ProductId");
-
                     b.HasOne("CarService.Core.Users.UserInfo", "UserInfo")
                         .WithOne("Image")
                         .HasForeignKey("CarService.Core.Images.Image", "UserInfoId");
 
-                    b.Navigation("Product");
-
                     b.Navigation("UserInfo");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.DayRecords", b =>
+            modelBuilder.Entity("CarService.Core.Requests.DayRecord", b =>
                 {
-                    b.HasOne("CarService.Core.Records.CalendarRecords", "Calendar")
+                    b.HasOne("CarService.Core.Requests.Record", "Calendar")
                         .WithMany("DaysRecords")
                         .HasForeignKey("CalendarId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -511,7 +381,16 @@ namespace CarService.Infrastructure.Migrations
                     b.Navigation("Calendar");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.Record", b =>
+            modelBuilder.Entity("CarService.Core.Requests.Record", b =>
+                {
+                    b.HasOne("CarService.Core.Services.Service", "Service")
+                        .WithOne("Record")
+                        .HasForeignKey("CarService.Core.Requests.Record", "ServiceId");
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("CarService.Core.Requests.Request", b =>
                 {
                     b.HasOne("CarService.Core.Users.UserInfo", "Client")
                         .WithMany("Records")
@@ -521,22 +400,22 @@ namespace CarService.Infrastructure.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.TimeRecords", b =>
+            modelBuilder.Entity("CarService.Core.Requests.TimeRecord", b =>
                 {
                     b.HasOne("CarService.Core.Users.UserInfo", "Client")
                         .WithMany("TimeRecords")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("CarService.Core.Records.DayRecords", "DayRecord")
+                    b.HasOne("CarService.Core.Requests.DayRecord", "DayRecord")
                         .WithMany("TimeRecords")
                         .HasForeignKey("DayRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CarService.Core.Records.Record", "Record")
+                    b.HasOne("CarService.Core.Requests.Request", "Record")
                         .WithOne("TimeRecord")
-                        .HasForeignKey("CarService.Core.Records.TimeRecords", "RecordId")
+                        .HasForeignKey("CarService.Core.Requests.TimeRecord", "RecordId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Client");
@@ -548,30 +427,16 @@ namespace CarService.Infrastructure.Migrations
 
             modelBuilder.Entity("CarService.Core.Services.Service", b =>
                 {
-                    b.HasOne("CarService.Core.Records.CalendarRecords", "Calendar")
+                    b.HasOne("CarService.Core.Images.Image", "Image")
                         .WithOne("Service")
-                        .HasForeignKey("CarService.Core.Services.Service", "CalendarId");
+                        .HasForeignKey("CarService.Core.Services.Service", "ImageId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Calendar");
-                });
+                    b.HasOne("CarService.Core.Requests.Request", null)
+                        .WithMany("Services")
+                        .HasForeignKey("RequestId");
 
-            modelBuilder.Entity("CarService.Core.Stocks.Cart", b =>
-                {
-                    b.HasOne("CarService.Core.Stocks.Product", "Product")
-                        .WithMany("Carts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CarService.Core.Users.UserAuth", "User")
-                        .WithMany("Carts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("CarService.Core.Users.UserAuth", b =>
@@ -588,12 +453,16 @@ namespace CarService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("CarService.Core.Services.Service", null)
+                        .WithMany("Masters")
+                        .HasForeignKey("ServiceId");
+
                     b.Navigation("Role");
 
                     b.Navigation("UserInfo");
                 });
 
-            modelBuilder.Entity("MastersServices", b =>
+            modelBuilder.Entity("RequestMasters", b =>
                 {
                     b.HasOne("CarService.Core.Users.UserAuth", null)
                         .WithMany()
@@ -601,105 +470,45 @@ namespace CarService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CarService.Core.Services.Service", null)
-                        .WithMany()
-                        .HasForeignKey("ServicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ProductsCategories", b =>
-                {
-                    b.HasOne("CarService.Core.Stocks.ProductCategory", null)
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CarService.Core.Stocks.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RecordsMasters", b =>
-                {
-                    b.HasOne("CarService.Core.Users.UserAuth", null)
-                        .WithMany()
-                        .HasForeignKey("MastersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CarService.Core.Records.Record", null)
+                    b.HasOne("CarService.Core.Requests.Request", null)
                         .WithMany()
                         .HasForeignKey("WorksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RecordsServices", b =>
+            modelBuilder.Entity("CarService.Core.Images.Image", b =>
                 {
-                    b.HasOne("CarService.Core.Records.Record", null)
-                        .WithMany()
-                        .HasForeignKey("RecordsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CarService.Core.Services.Service", null)
-                        .WithMany()
-                        .HasForeignKey("ServicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ServiceTypesServices", b =>
-                {
-                    b.HasOne("CarService.Core.Services.ServiceType", null)
-                        .WithMany()
-                        .HasForeignKey("ServiceTypesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CarService.Core.Services.Service", null)
-                        .WithMany()
-                        .HasForeignKey("ServicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CarService.Core.Records.CalendarRecords", b =>
-                {
-                    b.Navigation("DaysRecords");
-
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.DayRecords", b =>
+            modelBuilder.Entity("CarService.Core.Requests.DayRecord", b =>
                 {
                     b.Navigation("TimeRecords");
                 });
 
-            modelBuilder.Entity("CarService.Core.Records.Record", b =>
+            modelBuilder.Entity("CarService.Core.Requests.Record", b =>
                 {
+                    b.Navigation("DaysRecords");
+                });
+
+            modelBuilder.Entity("CarService.Core.Requests.Request", b =>
+                {
+                    b.Navigation("Services");
+
                     b.Navigation("TimeRecord");
                 });
 
-            modelBuilder.Entity("CarService.Core.Stocks.Product", b =>
+            modelBuilder.Entity("CarService.Core.Services.Service", b =>
                 {
-                    b.Navigation("Carts");
+                    b.Navigation("Masters");
 
-                    b.Navigation("Images");
+                    b.Navigation("Record");
                 });
 
             modelBuilder.Entity("CarService.Core.Users.Role", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("CarService.Core.Users.UserAuth", b =>
-                {
-                    b.Navigation("Carts");
                 });
 
             modelBuilder.Entity("CarService.Core.Users.UserInfo", b =>

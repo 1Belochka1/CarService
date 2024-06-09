@@ -1,4 +1,4 @@
-using CarService.Core.Records;
+using CarService.Core.Requests;
 using Microsoft.AspNetCore.SignalR;
 using SignalRSwaggerGen.Attributes;
 

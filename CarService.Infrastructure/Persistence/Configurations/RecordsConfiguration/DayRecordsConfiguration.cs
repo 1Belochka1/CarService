@@ -1,4 +1,4 @@
-﻿using CarService.Core.Records;
+﻿using CarService.Core.Requests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

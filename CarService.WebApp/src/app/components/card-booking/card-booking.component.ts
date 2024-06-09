@@ -22,7 +22,7 @@ import {BTemplateDirective} from '../../direcrives/b-template.directive'
 	styleUrl: './card-booking.component.scss'
 })
 export class CardBookingComponent implements AfterContentInit {
-	@Input() image?: string
+	@Input() image?: string | null
 	@Input() title?: string
 	@Input() description?: string
 	@Input() link?: string[]

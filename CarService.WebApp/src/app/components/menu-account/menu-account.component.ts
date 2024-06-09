@@ -5,6 +5,7 @@ import {SvgIconComponent} from 'angular-svg-icon'
 import {RouterLink} from '@angular/router'
 import {TitleService} from '../../services/title.service'
 import {AuthService} from '../../services/auth.service'
+import {MatIcon} from '@angular/material/icon'
 
 @Component({
 	selector: 'app-menu-account',
@@ -14,7 +15,8 @@ import {AuthService} from '../../services/auth.service'
 		SvgIconComponent,
 		RouterLink,
 		NgClass,
-		NgIf
+		NgIf,
+		MatIcon
 	],
 	templateUrl: './menu-account.component.html',
 	styleUrl: './menu-account.component.scss'

@@ -23,7 +23,7 @@ export class CalendarRecordService {
 	}
 
 	getDayRecordsByCalendarId(id: string) {
-		return this._http.get(apiUrls.calendars.getById + id, {withCredentials: true})
+		return this._http.get<any>(apiUrls.calendars.getById + id, {withCredentials: true})
 	}
 
 	delete(id: string) {

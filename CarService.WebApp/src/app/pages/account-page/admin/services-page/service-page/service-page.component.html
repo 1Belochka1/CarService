@@ -4,7 +4,7 @@
 	<div class='service__image'
 			 *ngIf='service.imageId'
 	>
-		<img [src]='service.imageId | srcImage'
+		<img [src]='imageId | async | srcImage'
 				 [alt]='service.name'
 		>
 	</div>

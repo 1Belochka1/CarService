@@ -32,11 +32,16 @@
 				[formGroup]="requestForm"
 				(ngSubmit)="onSubmit()"
 	>
-		<app-autocomplete [suggestions]='services | async'
-											(selectSuggestion)='serviceSelect($event)'
-		>
-		</app-autocomplete>
-
+		<div class="form__group">
+			<label class="form__label"
+						 for="service"
+			>Услуга</label>
+			<app-autocomplete id='service'
+												[suggestions]='services$ | async'
+												(selectSuggestion)='serviceSelect($event)'
+			>
+			</app-autocomplete>
+		</div>
 		<div class="form__group">
 			<label class="form__label"
 						 for="name"

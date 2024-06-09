@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Output} from '@angular/core'
-import {CustomInputComponent} from '../custom-input/custom-input.component'
 import {
 	FormBuilder,
 	FormGroup,
@@ -12,7 +11,6 @@ import {NgIf} from '@angular/common'
 	selector: 'app-form-time-record',
 	standalone: true,
 	imports: [
-		CustomInputComponent,
 		NgIf,
 		ReactiveFormsModule
 	],

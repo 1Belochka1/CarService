@@ -7,26 +7,17 @@ import {
 	of,
 	switchMap
 } from 'rxjs'
-import {
-	MatAutocomplete,
-	MatAutocompleteTrigger,
-	MatOption
-} from '@angular/material/autocomplete'
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete'
 import {AsyncPipe, NgForOf, NgIf} from '@angular/common'
-import {MatFormField, MatInput} from '@angular/material/input'
 
 @Component({
 	selector: 'app-autocomplete',
 	standalone: true,
 	imports: [
-		MatAutocomplete,
-		MatOption,
 		NgForOf,
 		AsyncPipe,
 		MatAutocompleteTrigger,
 		ReactiveFormsModule,
-		MatInput,
-		MatFormField,
 		NgIf
 	],
 	templateUrl: './autocomplete.component.html',

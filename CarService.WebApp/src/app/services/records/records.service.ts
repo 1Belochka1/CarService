@@ -26,12 +26,15 @@ export class RecordsService {
 		}, {withCredentials: true})
 	}
 
-	create(name: string,
-				 phone: string,
-				 description: string,
-				 carInfo: string
+	create(
+		email: string,
+		description: string,
+		carInfo: string,
+		name?: string,
+		phone?: string,
 	) {
 		const req = {
+			email,
 			phone,
 			firstName: name,
 			carInfo,
@@ -63,5 +66,9 @@ export class RecordsService {
 		return this.httpClient.get<RecordType[]>(apiUrls.records.getAll, {
 			withCredentials: true
 		}).pipe(tap(d => console.log(d)))
+	}
+
+	delete(id: string) {
+		return this.httpClient.delete(apiUrls.records.delete + id, {withCredentials: true})
 	}
 }

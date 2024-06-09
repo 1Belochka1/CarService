@@ -10,13 +10,7 @@
 				<a [routerLink]="item.routerLink"
 					 class="nav__item"
 				>
-					<svg-icon
-						*ngIf='item.icon'
-						[src]="item.icon"
-						class="nav__icon"
-						svgClass="svg-nav"
-						viewBox="0 0 30 30"
-					/>
+					<mat-icon>{{ item.icon }}</mat-icon>
 					<div class="nav__title">
 						{{ item.title }}
 					</div>
@@ -25,19 +19,22 @@
 			<li (click)="toggleMenu()"
 					class="nav__item"
 			>
-				<svg-icon
-					[ngClass]="{'minimize__icon': isMinimize, 'nav__icon': true}"
-					src="assets/svg/minimize-min.svg"
-					svgClass="svg-nav"
-					viewBox="0 0 30 30"
-				/>
+				<mat-icon [class.minimize__icon]='!isMinimize'
+									class='nav__icon'
+				>
+					keyboard_arrow_right
+				</mat-icon>
 				<div class="nav__title">
 					Свернуть
 				</div>
 			</li>
 			<li class='nav__item'>
-				<button (click)='logout()'>Выйти из
-					аккаунта
+				<button (click)='logout()'>
+					<mat-icon [class.minimize__icon]='!isMinimize'
+										class='nav__icon'
+					>
+						logout
+					</mat-icon>
 				</button>
 			</li>
 		</ul>

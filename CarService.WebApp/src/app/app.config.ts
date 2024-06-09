@@ -1,4 +1,4 @@
-import {provideHttpClient} from '@angular/common/http'
+import {provideHttpClient, withInterceptors} from '@angular/common/http'
 import {ApplicationConfig, LOCALE_ID} from '@angular/core'
 import {
 	provideAnimationsAsync
@@ -13,6 +13,7 @@ import {provideNativeDateAdapter} from '@angular/material/core'
 
 import {register} from 'swiper/element'
 import {provideToastr} from 'ngx-toastr'
+import {accessDeniedInterceptor} from './interceptors/access-denied.interceptor'
 
 register()
 
@@ -28,8 +29,10 @@ export const appConfig: ApplicationConfig = {
 		provideAngularSvgIcon(),
 		provideNativeDateAdapter(),
 		provideToastr(),
-		provideHttpClient(), {
+		provideHttpClient(
+			withInterceptors([accessDeniedInterceptor])
+		), {
 			provide: LOCALE_ID,
 			useValue: 'ru'
-		}]
+		}, provideAnimationsAsync(), provideAnimationsAsync()]
 }

@@ -15,6 +15,14 @@ import {
 	BTableSortDirective
 } from '../../../../../direcrives/b-table-sort.directive'
 import {ModalService} from '../../../../../services/modal.service'
+import {FormGroup, ReactiveFormsModule} from '@angular/forms'
+import {
+	DateRangePickerComponent
+} from '../../../../../components/date-picker/date-range-picker.component'
+import {
+	DayRecordService
+} from '../../../../../services/day-record/day-record.service'
+import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server'
 
 @Component({
 	selector: 'app-calendar-page',
@@ -27,7 +35,9 @@ import {ModalService} from '../../../../../services/modal.service'
 		NgIf,
 		BTableComponent,
 		BTemplateDirective,
-		BTableSortDirective
+		BTableSortDirective,
+		ReactiveFormsModule,
+		DateRangePickerComponent,
 	],
 	templateUrl: './calendar-page.component.html',
 	styleUrl: './calendar-page.component.scss',
@@ -37,6 +47,7 @@ export class CalendarPageComponent {
 
 	calendar$: Observable<any>
 	HtmlInputElement = HTMLInputElement
+	filter: FormGroup
 	private readonly _id: string
 
 	constructor(
@@ -44,7 +55,7 @@ export class CalendarPageComponent {
 		private _route: ActivatedRoute,
 		private _router: Router,
 		private _location: Location,
-		private _modalService: ModalService
+		private _modalService: ModalService, private _dayRecord: DayRecordService
 	) {
 		const id = this._route.snapshot.paramMap.get('calendarId')
 
@@ -55,6 +66,7 @@ export class CalendarPageComponent {
 		this._id = id
 
 		this.calendar$ = this._calendarRecordService.getDayRecordsByCalendarId(id)
+
 	}
 
 	navigate(id: string) {
@@ -65,7 +77,7 @@ export class CalendarPageComponent {
 		return event.target as HTMLInputElement
 	}
 
-	openModal(templateRef: TemplateRef<any>) {
+	delete(templateRef: TemplateRef<any>) {
 		this._modalService.open(templateRef, {
 			title: 'Вы дейстивтельно хотите' +
 				' удалить расписание?'
@@ -77,5 +89,27 @@ export class CalendarPageComponent {
 						}
 					}
 				)
+	}
+
+	fill(templateRef: TemplateRef<any>) {
+		this._modalService.open(templateRef, {
+			title: ''
+		})?.subscribe()
+	}
+
+	submitFill(event: any) {
+		console.log(event)
+		firstValueFrom(this._dayRecord.fillDaysRecord(
+			this._id,
+			event.startDate,
+			event.endDate,
+			event.startTime,
+			event.endTime,
+			event.breakStartTime,
+			event.breakEndTime,
+			event.duration
+		)).then(x => {
+			console.log(x)
+		})
 	}
 }

@@ -7,7 +7,7 @@ import {apiUrls} from '../services/apiUrl'
 })
 export class SrcImagePipe implements PipeTransform {
 
-	transform(value: string | undefined, ...args: unknown[]): string | undefined {
+	transform(value: string | undefined | null, ...args: unknown[]): string | undefined | null {
 		return value ?
 			apiUrls.images.getById + value
 			: undefined

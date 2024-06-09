@@ -1,5 +1,6 @@
-const API_URL = 'http://localhost:5053/api/'
-// const API_URL = 'https://belka.local.com/api/'
+import {environment} from '../../environments/environment'
+
+const API_URL = environment.api
 
 const USER_URL = API_URL + 'users'
 const RECORD_URL = API_URL + 'records'
@@ -34,6 +35,7 @@ export const apiUrls = {
 		getCompletedByMasterId: `${RECORD_URL}/get/CompletedByMasterId/`,
 		getActiveByMasterId: `${RECORD_URL}/get/ActiveByMasterId/`,
 		addMaster:  `${RECORD_URL}/update/addmaster/`,
+		delete:  `${RECORD_URL}/delete/`,
 	},
 	calendars: {
 		create: `${CALENDAR_URL}/create`,
@@ -71,5 +73,6 @@ export const apiUrls = {
 
 export const apiHubUrls = {
 	dayRecords: API_URL + 'hubs' + '/dayrecords',
-	timeRecords: API_URL + 'hubs' + '/timerecords'
+	timeRecords: API_URL + 'hubs' + '/timerecords',
+	notify: API_URL + 'hubs' + '/notify'
 }

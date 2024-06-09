@@ -1,56 +1,79 @@
 <form class="form"
+			*ngIf='requestForm'
 			[formGroup]="requestForm"
 			(ngSubmit)="onSubmit()"
 >
-	<div class="form__group">
-		<label class="form__label"
-					 for="name"
-		>Имя</label>
-		<input class="form__input"
-					 id="name"
-					 type="text"
-					 formControlName="name"
-					 placeholder="Введите ваше имя"
-		/>
-		<div class="form__error"
-				 *ngIf="requestForm.get('name')?.hasError('required')"
-		>
-			Имя обязательно
+	<ng-container>
+		<div class="form__group">
+			<label class="form__label"
+						 for="name"
+			>Имя*</label>
+			<input class="form__input"
+						 id="name"
+						 type="text"
+						 formControlName="name"
+						 placeholder="Введите имя"
+			/>
+			<div class="form__error"
+					 *ngIf="requestForm.get('name')?.hasError('required')"
+			>
+				Имя обязательно
+			</div>
+			<div class="form__error"
+					 *ngIf="requestForm.get('name')?.hasError('minlength')"
+			>Имя должно содержать минимум 3 символа
+			</div>
 		</div>
-		<div class="form__error"
-				 *ngIf="requestForm.get('name')?.hasError('minlength')"
-		>Имя должно содержать минимум 3 символа
-		</div>
-	</div>
 
-	<div class="form__group">
-		<label class="form__label"
-					 for="phone"
-		>Номер телефона</label>
-		<input class="form__input"
-					 id="phone"
-					 type="text"
-					 formControlName="phone"
-					 placeholder="Введите номер телефона"
-		/>
-		<div class="form__error"
-				 *ngIf="requestForm.get('phone')?.hasError('required')"
-		>Номер телефона обязателен
+		<div class="form__group">
+			<label class="form__label"
+						 for="phone"
+			>Почта*</label>
+			<input class="form__input"
+						 id="email"
+						 type="text"
+						 formControlName="email"
+						 placeholder="Введите номер телефона"
+			/>
+			<div class="form__error"
+					 *ngIf="requestForm.get('email')?.hasError('required')"
+			>Почта обязателена
+			</div>
+			<div class="form__error"
+					 *ngIf="requestForm.get('email')?.hasError('email')"
+			>Неверный формат почты
+			</div>
 		</div>
-		<div class="form__error"
-				 *ngIf="requestForm.get('phone')?.hasError('pattern')"
-		>Неверный формат номера
+
+		<div class="form__group">
+			<label class="form__label"
+						 for="phone"
+			>Номер телефона*</label>
+			<input class="form__input"
+						 id="phone"
+						 type="text"
+						 formControlName="phone"
+						 placeholder="Введите номер телефона"
+			/>
+			<div class="form__error"
+					 *ngIf="requestForm.get('phone')?.hasError('required')"
+			>Номер телефона обязателен
+			</div>
+			<div class="form__error"
+					 *ngIf="requestForm.get('phone')?.hasError('pattern')"
+			>Неверный формат номера
+			</div>
 		</div>
-	</div>
+	</ng-container>
 
 	<div class="form__group">
 		<label class="form__label"
 					 for="problemDescription"
-		>Описание проблемы</label>
+		>Описание проблемы*</label>
 		<textarea class="form__textarea"
 							id="problemDescription"
 							formControlName="problemDescription"
-							placeholder="Опишите вашу проблему"
+							placeholder="Опишите проблему"
 		></textarea>
 		<div class="form__error"
 				 *ngIf="requestForm.get('problemDescription')?.hasError('required')"
@@ -65,11 +88,11 @@
 	<div class="form__group">
 		<label class="form__label"
 					 for="carDescription"
-		>Описание автомобиля</label>
+		>Описание автомобиля*</label>
 		<textarea class="form__textarea"
 							id="carDescription"
 							formControlName="carDescription"
-							placeholder="Опишите ваш автомобиль"
+							placeholder="Опишите автомобиль"
 		></textarea>
 		<div class="form__error"
 				 *ngIf="requestForm.get('carDescription')?.hasError('required')"

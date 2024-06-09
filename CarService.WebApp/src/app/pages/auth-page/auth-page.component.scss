@@ -6,8 +6,16 @@
 	//background-repeat: no-repeat;
 	//background-size: cover;
 
-
 	//background: linear-gradient(to right bottom, rgb(var(--color-surface)), rgb(var(--color-primary)));
+	::ng-deep {
+		--mdc-filled-text-field-input-text-color: #fff;
+		--mdc-filled-text-field-container-color: rgb(var(--color-input-background));
+
+		.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+			@apply border-primary border border-solid;
+			border-radius: 0.625rem 0.625rem 0 0 ;
+		}
+	}
 }
 
 .wrapper {
@@ -62,12 +70,6 @@
 			}
 		}
 	}
-}
-
-input {
-	@apply border-primary border border-solid w-full p-2;
-
-	border-radius: 0.625rem;
 }
 
 .dirty {

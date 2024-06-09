@@ -1,8 +1,9 @@
 :host {
-	::ng-deep{
+	::ng-deep {
 
 	}
 }
+
 .custom-form {
 	display: flex;
 	flex-direction: column;
@@ -18,23 +19,13 @@
 }
 
 
-
-.mat-form-field-appearance-fill .mat-form-field-flex {
-}
-
-.mat-form-field-appearance-fill .mat-form-field-infix {
-	border-top: none;
-}
-
 .suggestions {
-	@apply absolute top-full p-2 flex flex-col bg-surface text-on-surface w-full h-60 overflow-y-auto;
+	@apply absolute top-full p-2 flex flex-col bg-surface text-on-surface w-full h-60 overflow-y-auto border-primary border border-solid;
+
+	border-radius: 0.625rem;
 
 	&__item {
 		@apply p-1 hover:bg-primary;
 	}
-}
-
-.mat-option {
-	padding: 10px;
 }
 

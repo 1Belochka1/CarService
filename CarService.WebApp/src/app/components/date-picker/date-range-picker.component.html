@@ -1,0 +1,141 @@
+<form class="form"
+			[formGroup]="dateTimeRangeForm"
+			(ngSubmit)="onSubmit()"
+>
+	<div class="form__group">
+		<label class="form__label"
+					 for="startDate"
+		>Дата начала*</label>
+		<input
+			class="form__input"
+			id="startDate"
+			type="date"
+			formControlName="startDate"
+			placeholder="Введтите дату начала"
+		/>
+		<div class="form__error"
+				 *ngIf="dateTimeRangeForm.get('startDate')?.hasError('required')"
+		>
+			Дата начала обязательна
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="endDate"
+		>Дата конца*</label>
+		<input
+			class="form__input"
+			id="endDate"
+			type="date"
+			formControlName="endDate"
+			placeholder="Введите дату конца"
+		/>
+		<div class="form__error"
+				 *ngIf="dateTimeRangeForm.get('endDate')?.hasError('required')"
+		>
+			Дата конца обязательна
+		</div>
+		<div class="form__error"
+				 *ngIf="dateTimeRangeForm.hasError('startDateInvalid')"
+		>
+			Дата начала не может быть ранее завтрашнего дня
+		</div>
+		<div class="form__error"
+				 *ngIf="dateTimeRangeForm.hasError('dateRangeInvalid')"
+		>
+			Дата начала не может быть позже даты окончания
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="startTime"
+		>Время начала дня*</label>
+		<input
+			class="form__input"
+			id="startTime"
+			step='10'
+			type="time"
+			formControlName="startTime"
+			placeholder="Введите время начала дня"
+		/>
+		<div class="form__error"
+				 *ngIf="dateTimeRangeForm.get('startTime')?.hasError('required')"
+		>
+			Время начала дня обязательно
+		</div>
+
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="endTime"
+		>Время конца дня*</label>
+		<input
+			class="form__input"
+			id="endTime"
+			type="time"
+			step='10'
+			formControlName="endTime"
+			placeholder="Введите время конца дня"
+		/>
+		<div class="form__error"
+				 *ngIf="dateTimeRangeForm.get('endTime')?.hasError('required')"
+		>
+			Время конца дня обязательно
+		</div>
+		<div class="form__error"
+				 *ngIf="dateTimeRangeForm.hasError('timeRangeInvalid')"
+		>
+			Время начала не может быть позже времени окончания
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="breakStartTime"
+		>Время начала обеда</label>
+		<input
+			class="form__input"
+			id="breakStartTime"
+			type="time"
+			step='10'
+			formControlName="breakStartTime"
+			placeholder="Введите время начало обеда"
+		/>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
+					 for="breakEndTime"
+		>Время конца обеда</label>
+		<input
+			class="form__input"
+			id="breakEndTime"
+			type="time"
+			step='10'
+			formControlName="breakEndTime"
+			placeholder="Введите время конца обеда"
+		/>
+	</div>
+	<div class="form__group">
+		<label class="form__label"
+					 for="duration"
+		>Продолжительность</label>
+		<input
+			class="form__input"
+			id="duration"
+			type="number"
+			formControlName="duration"
+			placeholder="Введите продолжительность"
+		/>
+	</div>
+
+	<button class="form__button"
+					type="submit"
+					[disabled]="dateTimeRangeForm.invalid"
+	>
+		Заполнить
+	</button>
+</form>

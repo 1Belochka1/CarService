@@ -24,6 +24,8 @@
 	@media (max-width: 1280px) {
 		font-size: 14px;
 	}
+
+
 }
 
 
@@ -227,17 +229,6 @@ img {
 	border-radius: var(--border-radius-form);
 }
 
-.mat-mdc-autocomplete-panel {
-	--mat-option-selected-state-layer-color: rgba(var(--color-primary)) !important;
-	--mat-option-hover-state-layer-color: rgba(var(--color-primary)) !important;
-	--mat-option-label-text-color: rgba(var(--color-on-surface)) !important;
-	@apply bg-surface text-on-surface #{!important};
-}
-
-.mat-option:hover {
-	@apply bg-primary #{!important};
-}
-
 .svg-white-sort {
 	svg {
 		@apply stroke-on-surface h-8;
@@ -251,3 +242,5 @@ img {
 		transform: rotate(90deg); /* Пример поворота для desc */
 	}
 }
+
+

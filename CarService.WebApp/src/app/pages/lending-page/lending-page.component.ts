@@ -28,9 +28,6 @@ import {
 	StepperLendingRecordComponent
 } from '../../components/stepper-lending-record/stepper-lending-record.component'
 import {CdkStep} from '@angular/cdk/stepper'
-import {
-	FormRecordComponent
-} from '../../components/form-record/form-record.component'
 import {apiUrls} from '../../services/apiUrl'
 import {
 	CardLendingComponent
@@ -40,6 +37,9 @@ import {
 } from '../../components/card-booking/card-booking.component'
 import {RecordsService} from '../../services/records/records.service'
 import {SrcImagePipe} from '../../pipe/src-image.pipe'
+import {
+	FormAddRecordComponent
+} from '../../components/form-add-record/form-add-record.component'
 
 @Component({
 	selector: 'app-lending-page',
@@ -56,12 +56,12 @@ import {SrcImagePipe} from '../../pipe/src-image.pipe'
 		NgTemplateOutlet,
 		StepperLendingRecordComponent,
 		CdkStep,
-		FormRecordComponent,
 		NgIf,
 		JsonPipe,
 		CardLendingComponent,
 		CardBookingComponent,
 		SrcImagePipe,
+		FormAddRecordComponent,
 	],
 	templateUrl: './lending-page.component.html',
 	styleUrl: './lending-page.component.scss',
@@ -91,15 +91,5 @@ export class LendingPageComponent implements OnInit {
 			this.calendars = calendarsRecord
 		})
 
-	}
-
-	createRecord($event: {
-		name: string;
-		phone: string;
-		problemDescription: string;
-		carDescription: string
-	}) {
-		firstValueFrom(this._recordService.create($event.name, $event.phone, $event.problemDescription, $event.carDescription))
-		.then(() => console.log('create'))
 	}
 }

@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router'
 import {firstValueFrom} from 'rxjs'
 import {RecordsService} from '../../../../services/records/records.service'
 import {RecordType} from '../../../../models/record.type'
-import {DatePipe, JsonPipe, NgIf} from '@angular/common'
+import {DatePipe, JsonPipe, Location, NgIf} from '@angular/common'
 import {FullNamePipe} from '../../../../pipe/full-name.pipe'
 import {ModalService} from '../../../../services/modal.service'
 import {
@@ -28,6 +28,7 @@ import {UsersService} from '../../../../services/users/users.service'
 import {
 	TableWorkersComponent
 } from '../../../../components/table-workers/table-workers.component'
+import {ToastrService} from 'ngx-toastr'
 
 @Component({
 	selector: 'app-day-record-lending-page',
@@ -85,7 +86,9 @@ export class RecordPageComponent {
 		public recordsService: RecordsService,
 		public modalService: ModalService,
 		private _userService: UsersService,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+		private location: Location,
+		private toastr: ToastrService
 	) {
 
 		const id = this._router.snapshot.paramMap.get('id')
@@ -159,6 +162,21 @@ export class RecordPageComponent {
 				firstValueFrom(this.recordsService.addMaster(this.record.id, this.idMaster))
 				.then(() => {
 					this.getRecord(this.record.id)
+				})
+			}
+		})
+	}
+
+	dialogDeleteConfirmOpen(template: TemplateRef<any>) {
+		this.modalService.open(template, {
+			title: 'Вы дейтвительно хотите удалить заявку?',
+		})?.subscribe((isConfirm) => {
+			if (isConfirm) {
+				firstValueFrom(this.recordsService.delete(this.record.id))
+				.then(() => {
+					this.location.back()
+					this.toastr.success('Заявка удалена', undefined,
+						{timeOut: 1000})
 				})
 			}
 		})

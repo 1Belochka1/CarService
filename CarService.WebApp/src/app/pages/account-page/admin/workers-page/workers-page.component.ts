@@ -116,6 +116,7 @@ export class WorkersPageComponent {
 	}
 
 	addWorker($event: {
+		email: string;
 		phone: string;
 		firstName: string;
 		lastName: string;
@@ -125,6 +126,7 @@ export class WorkersPageComponent {
 	}) {
 		firstValueFrom(
 			this._authService.register(
+				$event.email,
 				$event.lastName,
 				$event.firstName,
 				$event.patronymic,

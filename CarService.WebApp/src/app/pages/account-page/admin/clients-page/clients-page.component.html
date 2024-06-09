@@ -6,8 +6,9 @@
 		<ng-template bTemplate="head">
 			<tr>
 				<th>ФИО</th>
-				<th>Адрес</th>
+				<th>Почта</th>
 				<th>Номер</th>
+				<th>Адрес</th>
 				<th>Последняя заявка (Дата)</th>
 				<th>Зарегистрирован</th>
 			</tr>
@@ -19,15 +20,20 @@
 				<td data-name="ФИО">
 					{{ item.fullname }}
 				</td>
-				<td class="break-all"
-						data-name="Адрес"
+				<td
+					data-name="Почта"
 				>
-					{{ item.address | notSpecified }}
+					{{ item.email }}
 				</td>
 				<td class="tablet:max-w-full max-w-32"
 						data-name="Номер"
 				>
 					{{ item.phone }}
+				</td>
+				<td class="break-all"
+						data-name="Адрес"
+				>
+					{{ item.address | notSpecified }}
 				</td>
 				<td data-name="Последняя заявка (Дата)">
 					{{

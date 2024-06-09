@@ -1,20 +1,14 @@
 import {Component, forwardRef, TemplateRef} from '@angular/core'
 import {AsyncPipe, DatePipe, NgClass, NgForOf, NgIf} from '@angular/common'
-import {CalendarComponent} from '../../components/calendar/calendar.component'
 import {
 	HeaderLendingComponent
 } from '../../components/header-lending/header-lending.component'
 import {ActivatedRoute} from '@angular/router'
 import {firstValueFrom, Observable} from 'rxjs'
 import {DayRecord} from '../../models/DayRecord.type'
-import {
-	DayRecordService
-} from '../../services/day-record/day-record.service'
+import {DayRecordService} from '../../services/day-record/day-record.service'
 import {CdkStepperModule} from '@angular/cdk/stepper'
 import {StepperComponent} from '../../components/stepper/stepper.component'
-import {
-	FormRecordComponent
-} from '../../components/form-record/form-record.component'
 import {AuthService} from '../../services/auth.service'
 import {ModalService} from '../../services/modal.service'
 import {
@@ -30,11 +24,9 @@ import {
 		NgClass,
 		NgIf,
 		DatePipe,
-		CalendarComponent,
 		HeaderLendingComponent,
 		forwardRef(() => StepperComponent),
 		CdkStepperModule,
-		FormRecordComponent,
 		FormTimeRecordComponent
 	],
 	templateUrl: './day-record-lending.component.html',

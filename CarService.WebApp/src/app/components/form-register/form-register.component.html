@@ -4,6 +4,26 @@
 >
 	<div class="form__group">
 		<label class="form__label"
+					 for="email"
+		>Почта*</label>
+		<input class="form__input"
+					 id="email"
+					 type="text"
+					 formControlName="email"
+					 placeholder="Введите номер телефона"
+		/>
+		<div class="form__error"
+				 *ngIf="requestForm.get('email')?.hasError('required')"
+		>Почта обязательна
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('email')?.hasError('email')"
+		>Неверный формат
+		</div>
+	</div>
+
+	<div class="form__group">
+		<label class="form__label"
 					 for="phone"
 		>Номер
 			телефона*</label>
@@ -46,13 +66,21 @@
 	<div class="form__group">
 		<label class="form__label"
 					 for="lastName"
-		>Фамилия</label>
+		>Фамилия*</label>
 		<input class="form__input"
 					 id="lastName"
 					 type="text"
 					 formControlName="lastName"
 					 placeholder="Введите вашу фамилию"
 		/>
+		<div class="form__error"
+				 *ngIf="requestForm.get('lastName')?.hasError('required')"
+		>Фамилия обязательно
+		</div>
+		<div class="form__error"
+				 *ngIf="requestForm.get('lastName')?.hasError('minlength')"
+		>Фамилия должно содержать минимум 2 символа
+		</div>
 	</div>
 
 	<div class="form__group">

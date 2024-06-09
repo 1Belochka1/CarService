@@ -61,6 +61,10 @@
 		>Добавить
 			мастера
 		</button>
+		<button
+			(click)='dialogDeleteConfirmOpen(remove)'
+		>Удалить
+		</button>
 	</div>
 
 	<div class="masters text-surface">
@@ -100,3 +104,4 @@
 	></app-autocomplete>
 
 </ng-template>
+<ng-template #remove></ng-template>

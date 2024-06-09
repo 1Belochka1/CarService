@@ -43,7 +43,9 @@ export class FormAddServiceComponent {
 			formData.append('Name', this.requestForm.get('name')!.value)
 			formData.append('Description', this.requestForm.get('description')!.value)
 			formData.append('IsShowLanding', this.requestForm.get('isShowLanding')!.value)
-			formData.append('File', this.requestForm.get('image')!.value)
+
+			if (this._file)
+				formData.append('File', this._file)
 
 			this._servicesService.create(formData)
 					.subscribe({
@@ -64,7 +66,9 @@ export class FormAddServiceComponent {
 		const files = ($event.target as HTMLInputElement).files
 
 		if (files && files.length > 0) {
-			this.requestForm.patchValue({image: files[0]})
+
+			this._file = files[0]
+			this.requestForm.patchValue({image: true})
 		}
 	}
 }

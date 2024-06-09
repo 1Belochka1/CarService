@@ -11,11 +11,11 @@ export class ImageService {
 	}
 
 	public createImage(formData: FormData) {
-		return this.httpClient.post(apiUrls.images.upload, formData, {withCredentials: true})
+		return this.httpClient.post<string>(apiUrls.images.upload, formData, {withCredentials: true})
 	}
 
 	public update(formData: FormData){
-		return this.httpClient.post(apiUrls.images.update, formData, {withCredentials: true})
+		return this.httpClient.post<string>(apiUrls.images.update, formData, {withCredentials: true})
 	}
 
 	public delete(formData: FormData) {

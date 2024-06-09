@@ -17,8 +17,13 @@
 			>
 
 			<button class='button'
-							(click)='openModal(remove)'
+							(click)='delete(remove)'
 			>Удалить
+			</button>
+
+			<button class='button'
+							(click)='fill(fillT)'
+			>Заполнить расписание
 			</button>
 
 		</ng-template>
@@ -57,3 +62,8 @@
 </ng-container>
 
 <ng-template #remove></ng-template>
+<ng-template #fillT>
+	<app-date-picker
+		(subFill)='submitFill($event)'
+	></app-date-picker>
+</ng-template>

@@ -10,11 +10,11 @@ import {firstValueFrom} from 'rxjs'
 import {AuthService} from '../../services/auth.service'
 import {Router} from '@angular/router'
 import {
-	CustomInputComponent
-} from '../../components/custom-input/custom-input.component'
-import {
 	FormRegisterComponent
 } from '../../components/form-register/form-register.component'
+import {ToastrService} from 'ngx-toastr'
+import {MatError, MatFormField, MatLabel} from '@angular/material/form-field'
+import {MatInput} from '@angular/material/input'
 
 @Component({
 	selector: 'app-auth-page',
@@ -23,8 +23,11 @@ import {
 		ReactiveFormsModule,
 		NgClass,
 		NgIf,
-		CustomInputComponent,
-		FormRegisterComponent
+		FormRegisterComponent,
+		MatFormField,
+		MatInput,
+		MatLabel,
+		MatError
 	],
 	templateUrl: './auth-page.component.html',
 	styleUrl: './auth-page.component.scss'
@@ -33,7 +36,7 @@ export class AuthPageComponent {
 
 	formLogin = this._formBuilder.group(
 		{
-			email: new FormControl('', [Validators.required]),
+			email: new FormControl('', [Validators.required, Validators.email]),
 			password: new FormControl('', [Validators.required]),
 		},
 		{
@@ -43,7 +46,7 @@ export class AuthPageComponent {
 
 	activePage: 1 | 2 = 1
 
-	constructor(private _formBuilder: FormBuilder, private _authService: AuthService, private _router: Router) {
+	constructor(private _formBuilder: FormBuilder, private _authService: AuthService, private _router: Router, private _toastr: ToastrService) {
 	}
 
 
@@ -52,13 +55,14 @@ export class AuthPageComponent {
 			this._authService
 					.login(this.formLogin.value.email!, this.formLogin.value.password!))
 		.then(() => {
-				console.log('succ')
+				this._toastr.success("Выполнен вход")
 				this._router.navigate(['account'])
 			}
 		)
 	}
 
 	register($event: {
+		email: string,
 		phone: string,
 		firstName: string,
 		lastName: string,
@@ -69,6 +73,7 @@ export class AuthPageComponent {
 		firstValueFrom(
 			this._authService
 					.register(
+						$event.email,
 						$event.lastName,
 						$event.firstName,
 						$event.patronymic,

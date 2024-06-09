@@ -33,7 +33,7 @@ export const menuItems = [
 	},
 	// TODO: Обновить иконку
 	{
-		icon: folder + 'settings-min.svg',
+		icon: "keyboard_arrow_right",
 		title: 'На главную',
 		routerLink: '/lending'
 	}

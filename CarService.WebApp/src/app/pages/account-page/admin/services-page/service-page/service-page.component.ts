@@ -1,9 +1,9 @@
-import {Component, TemplateRef} from '@angular/core'
+import {ChangeDetectorRef, Component, TemplateRef} from '@angular/core'
 import {
 	ServicesService
 } from '../../../../../services/services/services.service'
 import {ActivatedRoute} from '@angular/router'
-import {firstValueFrom, Observable, tap} from 'rxjs'
+import {BehaviorSubject, firstValueFrom, Observable, tap} from 'rxjs'
 import {AsyncPipe, Location, NgIf} from '@angular/common'
 import {SrcImagePipe} from '../../../../../pipe/src-image.pipe'
 import {ModalService} from '../../../../../services/modal.service'
@@ -31,6 +31,7 @@ import {
 })
 export class ServicePageComponent {
 
+	imageId: BehaviorSubject<string> = new BehaviorSubject<string>('')
 	service: Observable<any>
 
 	updateForm: FormGroup
@@ -39,7 +40,6 @@ export class ServicePageComponent {
 
 	private _file?: File
 
-	private _imageId: string
 
 	constructor(private _servicesService: ServicesService,
 							private fb: FormBuilder,
@@ -47,7 +47,8 @@ export class ServicePageComponent {
 							private _modalService: ModalService,
 							private _imageService: ImageService,
 							private _toastr: ToastrService,
-							private _location: Location
+							private _location: Location,
+							private _cd: ChangeDetectorRef
 	) {
 		const id = this._route.snapshot.paramMap.get('serviceId')
 
@@ -75,7 +76,9 @@ export class ServicePageComponent {
 						description: service.description,
 						isShowLending: service.isShowLending,
 					})
-					this._imageId = service.imageId
+
+					this.imageId.next(service.imageId)
+					this._cd.detectChanges()
 				})
 			)
 		}
@@ -88,17 +91,23 @@ export class ServicePageComponent {
 					if (this._file) {
 						const formData = new FormData()
 
-						formData.append('imageId', this._imageId)
+						formData.append('imageId', this.imageId.value)
 						formData.append('serviceId', this._id)
 
-						if (this._imageId && this._imageId != '') {
+						if (this.imageId && this.imageId.value != '') {
 							formData.append('newFile', this._file)
 							firstValueFrom(this._imageService.update(formData))
-							.then((v) => this.setItem())
+							.then((v) => {
+								this._toastr.success('Данные обновлены')
+								this.setItem()
+							})
 						} else {
 							formData.append('file', this._file)
 							firstValueFrom(this._imageService.createImage(formData))
-							.then((v) => this.setItem())
+							.then((v) => {
+								this._toastr.success('Данные обновлены')
+								this.setItem()
+							})
 						}
 						this._file = undefined
 					} else {
@@ -123,6 +132,7 @@ export class ServicePageComponent {
 			this.updateForm.get('description')?.value,
 			this.updateForm.get('isShowLending')?.value,
 		)).then(() => {
+			this._toastr.success('Данные обновлены')
 			this._modalService.closeModal(
 				true)
 		})
@@ -134,7 +144,7 @@ export class ServicePageComponent {
 				' удалить данные услуги'
 		})?.subscribe((isConfirm) => {
 			firstValueFrom(this._servicesService.delete(this._id)).then(() => {
-				this._toastr.success("Данные услуги удалены")
+				this._toastr.success('Данные услуги удалены')
 				this._location.back()
 			})
 		})

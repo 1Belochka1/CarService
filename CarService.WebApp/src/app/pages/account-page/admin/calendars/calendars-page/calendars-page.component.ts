@@ -49,7 +49,7 @@ export class CalendarsPageComponent {
 
 	requestForm: FormGroup
 
-	services: Observable<any>
+	services$: Observable<any>
 
 	constructor(private _fb: FormBuilder,
 							private _calendarRecordService: CalendarRecordService,
@@ -58,8 +58,8 @@ export class CalendarsPageComponent {
 							private _servicesService: ServicesService
 	) {
 		this.setItems()
-		this.services = this._servicesService.getForAutocomplete()
-												.pipe(map(
+		this.services$ = this._servicesService.getForAutocomplete()
+												 .pipe(map(
 													x => x.map(v => {
 														return {n: v.item2, v: v.item1}
 													})))

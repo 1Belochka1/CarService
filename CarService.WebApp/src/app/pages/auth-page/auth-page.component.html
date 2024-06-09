@@ -8,24 +8,44 @@
 			@case (1) {
 				<h1>Авторизация</h1>
 
-				<custom-input
-					[formControl]="formLogin.controls.email"
-					type="email"
-					placeholder="Почта"
-					title="Введите почту"
-				/>
+				<mat-form-field appearance='outline'>
+					<mat-label></mat-label>
+					<input
+						matInput
+						[formControl]="formLogin.controls.email"
+						type="email"
+						placeholder="Почта"
+						title="Введите почту"
+					/>
+					<mat-error
+						*ngIf='formLogin.controls.email?.hasError("email")'
+					>
+						Неверный формат
+					</mat-error>
+				</mat-form-field>
 
-				<custom-input
-					[formControl]="formLogin.controls.password"
-					type="password"
-					placeholder="Пароль"
-					title="Введите пароль"
-				/>
+				<mat-form-field>
+					<input
+						matInput
+						[formControl]="formLogin.controls.password"
+						type="password"
+						placeholder="Пароль"
+						title="Введите пароль"
+					/>
+					<mat-error
+						*ngIf='formLogin.get("email")?.hasError("email")'
+					>
+						Неверный формат
+					</mat-error>
+				</mat-form-field>
+
+
 				<button (click)="login()">Вход</button>
 			}
 			@case (2) {
 				<app-form-register
-					(submit)='register($event)'></app-form-register>
+					(submit)='register($event)'
+				></app-form-register>
 			}
 		}
 	</form>

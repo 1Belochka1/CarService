@@ -3,6 +3,7 @@ import {apiUrls} from './apiUrl'
 import {HttpClient} from '@angular/common/http'
 import {UserType} from '../models/user.type'
 import {catchError, Observable, of} from 'rxjs'
+import {UserInfo} from '../models/user-info.type'
 
 @Injectable({
 	providedIn: 'root'
@@ -21,6 +22,7 @@ export class AuthService {
 	}
 
 	public register(
+		email: string,
 		lastName: string,
 		firstName: string,
 		patronymic: string,
@@ -30,6 +32,7 @@ export class AuthService {
 		isMaster: boolean = false
 	) {
 		return this.http.post(isMaster ? apiUrls.users.registerMaster : apiUrls.users.register, {
+			email,
 			lastName,
 			firstName,
 			patronymic,
@@ -41,7 +44,7 @@ export class AuthService {
 
 
 	public getByCookie() {
-		return this.http.get<UserType>(apiUrls.users.getByCookie,
+		return this.http.get<UserInfo | null>(apiUrls.users.getByCookie,
 			{withCredentials: true})
 	}
 

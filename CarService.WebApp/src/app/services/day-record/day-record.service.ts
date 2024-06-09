@@ -94,6 +94,30 @@ export class DayRecordService implements OnDestroy {
 		})
 	}
 
+	fillDaysRecord(
+		id: string,
+		startDate: Date,
+		endDate: Date,
+		timeStart: string,
+		timeEnd: string,
+		breakStartTime: string,
+		breakEndTime: string,
+		duration: number
+	) {
+		console.log(id)
+		return this._http.post(apiUrls.dayRecords.fill, {
+			CalendarId: id,
+			StartDate: startDate,
+			EndDate: endDate,
+			StartTime: timeStart,
+			EndTime: timeEnd,
+			BreakStartTime: breakStartTime,
+			BreakEndTime: breakEndTime,
+			Duration: duration,
+			Offset: 0
+		}, {withCredentials: true})
+	}
+
 	ngOnDestroy(): void {
 		if (this._hubConnection)
 			this._hubConnection.stop().catch(e => console.error(e))

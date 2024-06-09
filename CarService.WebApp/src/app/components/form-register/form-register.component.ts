@@ -23,6 +23,7 @@ export class FormRegisterComponent {
 
 	@Output()
 	submit = new EventEmitter<{
+		email: string,
 		phone: string,
 		firstName: string,
 		lastName: string,
@@ -35,16 +36,15 @@ export class FormRegisterComponent {
 
 	constructor(private fb: FormBuilder) {
 		this.requestForm = this.fb.group({
-			phone: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]],
+			email: ['', [Validators.required, Validators.email]],
+			phone: ['', [Validators.required, Validators.pattern('^8\\d{10}$')]],
 			firstName: ['', [Validators.required, Validators.minLength(2)]],
-			lastName: [''],
+			lastName: ['', [Validators.required, Validators.minLength(2)]],
 			patronymic: [''],
 			address: [''],
 			password: ['', [Validators.required, Validators.minLength(6)]],
 			confirmPassword: ['', [Validators.required]]
 		}, {validators: [this.passwordConfirmValidator]})
-
-
 	}
 
 	passwordConfirmValidator: ValidatorFn = (
@@ -77,6 +77,7 @@ export class FormRegisterComponent {
 	onSubmit() {
 		if (this.requestForm.valid) {
 			this.submit.emit({
+				email: this.requestForm.get('email')?.value!,
 				phone: this.requestForm.get('phone')?.value!,
 				firstName: this.requestForm.get('firstName')?.value!,
 				lastName: this.requestForm.get('lastName')?.value!,

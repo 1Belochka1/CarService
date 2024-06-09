@@ -4,15 +4,19 @@ import {AuthService} from './services/auth.service'
 import {
 	HeaderLendingComponent
 } from './components/header-lending/header-lending.component'
+import {NotifyService} from './services/notify.service'
 
 @Component({
 	selector: 'app-root',
 	standalone: true,
 	imports: [RouterOutlet, HeaderLendingComponent],
 	templateUrl: './app.component.html',
-	styleUrl: './app.component.scss'
+	styleUrl: './app.component.scss',
+	providers: [],
 })
 export class AppComponent {
-	constructor(private _authService: AuthService) {
+	constructor(private _authService: AuthService, private _notifyService: NotifyService) {
+		this._notifyService.createHub()
+		this._notifyService.startConnection()
 	}
 }

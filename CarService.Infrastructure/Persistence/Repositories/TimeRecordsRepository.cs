@@ -51,4 +51,10 @@ public class TimeRecordsRepository : ITimeRecordsRepository
 			.OrderBy(x => x.StartTime)
 			.Where(t => t.DayRecordId == id).ToListAsync();
 	}
+
+	public async Task Delete(Guid id)
+	{
+		await _context.TimesRecords.Where(x => x.Id == id)
+			.ExecuteDeleteAsync();
+	}
 }

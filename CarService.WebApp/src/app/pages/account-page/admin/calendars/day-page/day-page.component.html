@@ -3,6 +3,10 @@
 		<tr>
 			<th>Начало</th>
 			<th>Конец</th>
+			<th
+			>
+				Действия
+			</th>
 		</tr>
 	</ng-template>
 	<ng-template bTemplate='body'
@@ -11,6 +15,15 @@
 		<tr [class.isBusy]='time.isBusy'>
 			<td data-name='Начало'>{{ time.startTime }}</td>
 			<td data-name='Конец'>{{ time.endTime }}</td>
+			<td data-name="Действия">
+				<button mat-icon-button
+				>
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button mat-icon-button >
+					<mat-icon color="warn">delete</mat-icon>
+				</button>
+			</td>
 		</tr>
 	</ng-template>
 </b-table>

@@ -9,6 +9,8 @@ import {
 } from '../../direcrives/table-sort-header-icon.directive'
 import {Router} from '@angular/router'
 import {NotSpecifiedPipe} from '../../pipe/not-specified.pipe'
+import {MatIcon} from '@angular/material/icon'
+import {MatIconButton} from '@angular/material/button'
 
 @Component({
   selector: 'app-table-records',
@@ -19,7 +21,9 @@ import {NotSpecifiedPipe} from '../../pipe/not-specified.pipe'
 		BTemplateDirective,
 		DatePipe,
 		TableSortHeaderIconDirective,
-		NotSpecifiedPipe
+		NotSpecifiedPipe,
+		MatIcon,
+		MatIconButton
 	],
   templateUrl: './table-records.component.html',
   styleUrl: './table-records.component.scss'

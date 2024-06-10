@@ -8,7 +8,7 @@ public class ClientsDto
 	{
 	}
 
-	public ClientsDto(Guid id, string lastName,
+	public ClientsDto(Guid id, string email, string lastName,
 		string firstName,
 		string? patronymic,
 		string? address,
@@ -23,12 +23,15 @@ public class ClientsDto
 			lastName + " " + firstName + " " + patronymic;
 		LastRecordTime = lastRecordTime;
 		IsAuth = isAuth;
+		Email = email;
 	}
 
 	public Guid Id { get; set; }
 	public string Fullname { get; set; }
 	public string? Address { get; set; }
 	public string Phone { get; set; }
+	public string Email { get; set; }
+
 	public DateTime? LastRecordTime { get; set; }
 	public bool IsAuth { get; set; }
 }

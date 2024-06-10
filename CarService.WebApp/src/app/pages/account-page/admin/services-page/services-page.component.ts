@@ -16,6 +16,8 @@ import {
 	TableSortHeaderIconDirective
 } from '../../../../direcrives/table-sort-header-icon.directive'
 import {Router} from '@angular/router'
+import {MatIconButton} from '@angular/material/button'
+import {MatIcon} from '@angular/material/icon'
 
 @Component({
 	selector: 'app-services-page',
@@ -29,7 +31,9 @@ import {Router} from '@angular/router'
 		NgForOf,
 		SrcImagePipe,
 		FormAddServiceComponent,
-		TableSortHeaderIconDirective
+		TableSortHeaderIconDirective,
+		MatIconButton,
+		MatIcon
 	],
 	templateUrl: './services-page.component.html',
 	styleUrl: './services-page.component.scss',

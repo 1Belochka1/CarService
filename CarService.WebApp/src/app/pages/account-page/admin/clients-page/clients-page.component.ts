@@ -12,12 +12,14 @@ import {BTemplateDirective} from '../../../../direcrives/b-template.directive'
 import {FullNamePipe} from '../../../../pipe/full-name.pipe'
 import {NotSpecifiedPipe} from '../../../../pipe/not-specified.pipe'
 import {Observable} from 'rxjs'
+import {MatIcon} from '@angular/material/icon'
+import {MatIconButton} from '@angular/material/button'
 
 
 @Component({
 	selector: 'app-clients-page',
 	standalone: true,
-	imports: [AsyncPipe, NgForOf, NgIf, PaginationComponent, SearchComponent, SelectComponent, DatePipe, SvgIconComponent, NgClass, BTableComponent, BTemplateDirective, FullNamePipe, NotSpecifiedPipe],
+	imports: [AsyncPipe, NgForOf, NgIf, PaginationComponent, SearchComponent, SelectComponent, DatePipe, SvgIconComponent, NgClass, BTableComponent, BTemplateDirective, FullNamePipe, NotSpecifiedPipe, MatIcon, MatIconButton],
 	templateUrl: './clients-page.component.html',
 	styleUrl: './clients-page.component.scss'
 })

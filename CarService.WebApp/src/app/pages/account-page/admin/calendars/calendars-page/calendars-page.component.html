@@ -6,7 +6,12 @@
 	<ng-template bTemplate='head'>
 		<tr>
 			<th>Название услуги</th>
+			<th
+			>
+				Действия
+			</th>
 		</tr>
+
 	</ng-template>
 	<ng-template bTemplate='body'
 							 let-item
@@ -21,6 +26,15 @@
 				<a [routerLink]="['/account', 'calendar', item.id]">
 					{{ item.service.name }}
 				</a>
+			</td>
+			<td data-name="Действия">
+				<button mat-icon-button
+				>
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button mat-icon-button>
+					<mat-icon color="warn">delete</mat-icon>
+				</button>
 			</td>
 		</tr>
 	</ng-template>

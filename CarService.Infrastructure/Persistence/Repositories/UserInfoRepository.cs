@@ -79,12 +79,20 @@ public class UserInfoRepository : IUserInfoRepository
 		return SelectClients(query);
 	}
 
-	public Task<UserInfo?> GetByPhone(string phone)
+	public async Task<UserInfo?> GetByPhone(string phone)
 	{
-		return _context.UserInfos
+		return await _context.UserInfos
 			.Include(x => x.UserAuth)
 			.FirstOrDefaultAsync(x =>
 				x.Phone == phone);
+	}
+
+	public async Task<UserInfo?> GetByEmail(string email)
+	{
+		return await _context.UserInfos
+			.Include(x => x.UserAuth)
+			.FirstOrDefaultAsync(x =>
+				x.Email == email);
 	}
 
 
@@ -108,6 +116,7 @@ public class UserInfoRepository : IUserInfoRepository
 	{
 		return query.Select(x => new ClientsDto(
 			x.Id,
+			x.Email,
 			x.LastName,
 			x.FirstName,
 			x.Patronymic,
@@ -126,6 +135,7 @@ public class UserInfoRepository : IUserInfoRepository
 	{
 		return query.Select(x => new WorkersDto(
 			x.Id,
+			x.Email,
 			x.UserInfo.LastName,
 			x.UserInfo.FirstName,
 			x.UserInfo.Patronymic,

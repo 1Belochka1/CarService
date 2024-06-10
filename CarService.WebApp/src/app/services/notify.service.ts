@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core'
 import {HubConnection, HubConnectionBuilder, LogLevel} from '@microsoft/signalr'
 import {apiHubUrls} from './apiUrl'
 import {ToastrService} from 'ngx-toastr'
+import {firstValueFrom} from 'rxjs'
+import {AuthService} from './auth.service'
 
 @Injectable({
 	providedIn: 'root'
@@ -9,7 +11,8 @@ import {ToastrService} from 'ngx-toastr'
 export class NotifyService {
 	private _hubConnection: HubConnection
 
-	constructor(private _toastr: ToastrService) {
+	constructor(private _toastr: ToastrService, private _authService: AuthService) {
+
 	}
 
 	createHub() {
@@ -24,16 +27,31 @@ export class NotifyService {
 			.configureLogging(LogLevel.Debug)
 			.build()
 
-		this._hubConnection.on("SuccessRequest", (message: string) => {
+		this._hubConnection.on('SuccessRequest', (message: string) => {
 			this._toastr.success(message)
 		})
 	}
 
 	startConnection() {
-		this._hubConnection.start().catch(e => console.error(e))
+		this._hubConnection.start()
+				.then(() => firstValueFrom(this._authService.getByCookie()).then(user => {
+					if (user?.userAuth.roleId == 2) {
+						this.onNewRequestForYou()
+					}
+				}))
+				.catch(e => console.error(e))
 	}
 
 	accessDenied() {
-		this._toastr.error("")
+		this._toastr.error('')
+	}
+
+	onNewRequestForYou() {
+		console.log('слушаем')
+		this._hubConnection.on('NewRequestForYou', (id) => {
+			this._toastr.info('У вас новая заявка, вы можете посмотреть ее в' +
+				' таблице')
+			console.log(id)
+		})
 	}
 }

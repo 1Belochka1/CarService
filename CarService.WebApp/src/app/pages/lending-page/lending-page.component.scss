@@ -3,11 +3,12 @@
 }
 
 .wrapper {
-	@apply max-w-[1440px];
-
-	margin: 0 auto;
 
 	section {
+		@apply max-w-[1440px];
+
+		margin: 0 auto;
+
 		@apply p-5;
 
 		&:not(:last-child) {
@@ -16,7 +17,7 @@
 
 		h2 {
 			@apply mb-5;
-			//@apply text-surface;
+			@apply text-surface;
 			font-size: 2rem;
 		}
 
@@ -27,7 +28,7 @@
 	}
 
 	.section-header {
-		@apply h-screen relative text-white;
+		@apply h-screen relative text-white max-w-full;
 
 		//height: calc(100vh - 4.25rem);
 

@@ -9,15 +9,25 @@ import {
 	Validators
 } from '@angular/forms'
 import {NgIf} from '@angular/common'
+import {MatError, MatFormField, MatLabel} from '@angular/material/form-field'
+import {MatInput} from '@angular/material/input'
+import {MatButton} from '@angular/material/button'
 
 @Component({
 	selector: 'app-form-register',
 	standalone: true,
 	imports: [
 		ReactiveFormsModule,
-		NgIf
+		NgIf,
+		MatFormField,
+		MatInput,
+		MatButton,
+		MatLabel,
+		MatError,
+
 	],
 	templateUrl: './form-register.component.html',
+	styleUrl: './form-register.component.scss'
 })
 export class FormRegisterComponent {
 

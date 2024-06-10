@@ -1,14 +1,14 @@
 :host {
-	@apply flex flex-col gap-5 max-w-[1440px] p-5;
+	@apply flex flex-col gap-5 max-w-[1440px] p-5 text-surface;
 
 	margin: 0 auto;
 }
 
 .wrapper {
 	.days {
-		@apply flex flex-col gap-5;
+		@apply flex flex-col gap-5 ;
 		.day {
-			@apply flex gap-3 p-2 items-center text-on-surface border border-solid border-surface;
+			@apply flex gap-3 p-2 items-center  border border-solid border-surface;
 
 			border-radius: 0.625rem;
 
@@ -17,7 +17,7 @@
 			}
 
 			.times {
-				@apply flex flex-wrap gap-3;
+				@apply flex flex-wrap gap-3 text-on-surface;
 
 				.time {
 					@apply p-2 bg-surface;

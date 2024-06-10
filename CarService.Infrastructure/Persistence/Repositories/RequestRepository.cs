@@ -1,4 +1,4 @@
-using CarService.App.Common.Records;
+using CarService.App.Common.Requests;
 using CarService.App.Common.Users;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Requests;
@@ -70,6 +70,12 @@ public class RequestRepository : IRequestRepository
 				.Where(x => x.ClientId == userId)
 				.ToList();
 
+		if (roleId == "2")
+			query = query
+				.Where(x =>
+					x.Masters.Any(x => x.UsesInfoId == userId))
+				.ToList();
+
 		return query;
 	}
 
@@ -84,8 +90,9 @@ public class RequestRepository : IRequestRepository
 			x.Id == id);
 	}
 
-	public async Task<IEnumerable<Request>> GetByClientIdAsync(
-		Guid clientId)
+	public async Task<IEnumerable<Request>>
+		GetByClientIdAsync(
+			Guid clientId)
 	{
 		return await _context.Request
 			.Where(x => x.ClientId == clientId).ToListAsync();
@@ -154,6 +161,7 @@ public class RequestRepository : IRequestRepository
 			x.Status,
 			x.Masters.Select(x => new WorkersDto(
 				x.Id,
+				x.Email,
 				x.UserInfo.LastName,
 				x.UserInfo.FirstName,
 				x.UserInfo.Patronymic,

@@ -12,7 +12,7 @@ import {NotifyService} from './services/notify.service'
 	imports: [RouterOutlet, HeaderLendingComponent],
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss',
-	providers: [],
+	providers: [NotifyService],
 })
 export class AppComponent {
 	constructor(private _authService: AuthService, private _notifyService: NotifyService) {

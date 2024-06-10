@@ -7,6 +7,8 @@ import {
 	TableSortHeaderIconDirective
 } from '../../direcrives/table-sort-header-icon.directive'
 import {Router} from '@angular/router'
+import {MatIcon} from '@angular/material/icon'
+import {MatIconButton} from '@angular/material/button'
 
 @Component({
 	selector: 'app-table-workers',
@@ -16,7 +18,9 @@ import {Router} from '@angular/router'
 		BTableComponent,
 		BTemplateDirective,
 		NotSpecifiedPipe,
-		TableSortHeaderIconDirective
+		TableSortHeaderIconDirective,
+		MatIcon,
+		MatIconButton
 	],
 	templateUrl: './table-workers.component.html',
 	styleUrl: './table-workers.component.scss'

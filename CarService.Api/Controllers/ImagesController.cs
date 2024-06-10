@@ -26,7 +26,8 @@ public class ImagesController : ControllerBase
 
 	[HttpPost("upload")]
 	[Consumes("multipart/form-data")]
-	public async Task<IActionResult> UploadImageAsync([FromForm] UploadImagesRequest request)
+	public async Task<IActionResult> UploadImageAsync(
+		[FromForm] UploadImagesRequest request)
 	{
 		byte[]? fileBytes;
 		using (var memoryStream = new MemoryStream())
@@ -46,7 +47,7 @@ public class ImagesController : ControllerBase
 			return BadRequest(result.Error);
 		}
 
-		return Ok();
+		return Ok(result.Value);
 	}
 
 	[HttpPost("update")]
@@ -76,7 +77,7 @@ public class ImagesController : ControllerBase
 			return BadRequest(result.Error);
 		}
 
-		return Ok();
+		return Ok(request.ImageId);
 	}
 
 	[HttpGet("get/{imageId}")]

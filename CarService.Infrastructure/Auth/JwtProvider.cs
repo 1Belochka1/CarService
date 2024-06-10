@@ -18,7 +18,7 @@ public class JwtProvider : IJwtProvider
 		_jwtOptions = jwtSettings.Value;
 	}
 
-	public string GenerateToken(UserAuth user)
+	public string GenerateTokenForAuth(UserAuth user)
 	{
 		var signingCredentials = new SigningCredentials(
 			new SymmetricSecurityKey(
@@ -29,7 +29,7 @@ public class JwtProvider : IJwtProvider
 		var claims = new[]
 		{
 			new Claim(JwtRegisteredClaimNames.Sub,
-				user.Id.ToString()),
+				user.UsesInfoId.ToString()),
 			new Claim(JwtRegisteredClaimNames.Jti,
 				Guid.NewGuid().ToString()),
 			new Claim(ClaimTypes.Role, user.RoleId.ToString()),
@@ -46,4 +46,33 @@ public class JwtProvider : IJwtProvider
 		return new JwtSecurityTokenHandler().WriteToken(
 			securityToken);
 	}
+
+	// public string GenerateTokenForCancelRequest()
+	// {
+	// 	var signingCredentials = new SigningCredentials(
+	//    			new SymmetricSecurityKey(
+	//    				Encoding.UTF8.GetBytes(_jwtOptions.Secret)),
+	//    			SecurityAlgorithms.HmacSha256);
+	//    
+	//    
+	//    		var claims = new[]
+	//    		{
+	//    			new Claim(JwtRegisteredClaimNames.Sub,
+	//    				user.Id.ToString()),
+	//    			new Claim(JwtRegisteredClaimNames.Jti,
+	//    				Guid.NewGuid().ToString()),
+	//    			new Claim(ClaimTypes.Role, user.RoleId.ToString()),
+	//    		};
+	//    
+	//    		var securityToken = new JwtSecurityToken(
+	//    			_jwtOptions.Issuer,
+	//    			_jwtOptions.Audience,
+	//    			expires: DateTime.UtcNow.AddMinutes(
+	//    				_jwtOptions.ExpiryMinutes),
+	//    			claims: claims,
+	//    			signingCredentials: signingCredentials);
+	//    
+	//    		return new JwtSecurityTokenHandler().WriteToken(
+	//    			securityToken);
+	// }
 }

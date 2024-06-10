@@ -9,6 +9,9 @@ import {
 import {
 	MenuAccountComponent
 } from '../../components/menu-account/menu-account.component'
+import {AuthService} from '../../services/auth.service'
+import {firstValueFrom} from 'rxjs'
+import {NotifyService} from '../../services/notify.service'
 
 @Component({
 	selector: 'app-account-page',
@@ -24,7 +27,8 @@ export class AccountPageComponent {
 
 	isMinimize: boolean = true
 
-	constructor() {
+	constructor(private _authService: AuthService, private _notifyService: NotifyService) {
+
 	}
 
 	toggleMenu() {

@@ -1,7 +1,8 @@
+using CarService.App.Common.Requests;
 using CarService.Core.Requests;
 using CarService.Core.Users;
 
-namespace CarService.Infrastructure.Persistence.Repositories;
+namespace CarService.App.Interfaces.Persistence;
 
 public interface IRequestRepository
 {

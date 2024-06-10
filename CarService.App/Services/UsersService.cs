@@ -1,6 +1,8 @@
 using System.Reflection.Metadata;
+using CarService.App.Common.Email;
 using CarService.App.Common.Users;
 using CarService.App.Interfaces.Auth;
+using CarService.App.Interfaces.Email;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Users;
 using CSharpFunctionalExtensions;
@@ -13,17 +15,19 @@ public class UsersService
 	private readonly IPasswordHasher _passwordHasher;
 	private readonly IUserAuthRepository _userAuthRepository;
 	private readonly IUserInfoRepository _userInfoRepository;
+	private readonly IEmailService _emailService;
 
 	public UsersService(
 		IUserAuthRepository userAuthRepository,
 		IUserInfoRepository userInfoRepository,
 		IPasswordHasher passwordHasher,
-		IJwtProvider jwtProvider)
+		IJwtProvider jwtProvider, IEmailService emailService)
 	{
 		_userAuthRepository = userAuthRepository;
 		_userInfoRepository = userInfoRepository;
 		_passwordHasher = passwordHasher;
 		_jwtProvider = jwtProvider;
+		_emailService = emailService;
 	}
 
 	public async Task<Result<UserInfo>> CreateUserInfoAsync(
@@ -55,7 +59,7 @@ public class UsersService
 		return userInfo;
 	}
 
-	public async Task<Result<string>> Register(
+	public async Task<Result> Register(
 		string email,
 		string lastName,
 		string firstName,
@@ -67,9 +71,9 @@ public class UsersService
 	{
 		var passwordHash = _passwordHasher.Generate(password);
 
-		if (await _userAuthRepository.GetByPhoneAsync(phone) !=
+		if (await _userAuthRepository.GetByEmailAsync(email) !=
 		    null)
-			return Result.Failure<string>(
+			return Result.Failure(
 				"Пользователь с таким email уже существует");
 
 		var user =
@@ -80,26 +84,36 @@ public class UsersService
 
 		if (user == null)
 		{
-			var userInfo = UserInfo.Create(id, email, lastName,
+			user = UserInfo.Create(id, email, lastName,
 				firstName,
 				patronymic, address, phone).Value;
 
-			await _userInfoRepository.CreateAsync(userInfo);
+			await _userInfoRepository.CreateAsync(user);
 		}
 		else
 		{
-			user.Update(null, null, lastName, firstName, patronymic,
+			user.Update(null, null, lastName, firstName,
+				patronymic,
 				address);
 
 			await _userInfoRepository.UpdateAsync(user);
 		}
 
-		var userAuth = UserAuth.Create(id, phone, passwordHash,
+		var userAuth = UserAuth.Create(id, user.Id, email,
+			passwordHash,
 			DateTime.UtcNow, roleId).Value;
 
 		await _userAuthRepository.CreateAsync(userAuth);
 
-		return Result.Success("Аккаунт создан");
+		// await _emailService.SendEmail(new EmailDto
+		// {
+		// 	To = email,
+		// 	Subject = "Регистрация в автосервисе",
+		// 	Body =
+		// 		"<i>Вы успешно зарегистрировались в сервисе</i>"
+		// });
+
+		return Result.Success();
 	}
 
 	public async Task<Result<string>> Login(
@@ -107,7 +121,7 @@ public class UsersService
 		string password)
 	{
 		var userAuth =
-			await _userAuthRepository.GetByPhoneAsync(email);
+			await _userAuthRepository.GetByEmailAsync(email);
 
 		if (userAuth == null ||
 		    !_passwordHasher.Validate(password,
@@ -115,7 +129,7 @@ public class UsersService
 			return Result.Failure<string>(
 				"Неверный логин или пароль");
 
-		var token = _jwtProvider.GenerateToken(userAuth);
+		var token = _jwtProvider.GenerateTokenForAuth(userAuth);
 
 		return Result.Success(token);
 	}
@@ -172,25 +186,6 @@ public class UsersService
 		return Result.Success(user);
 	}
 
-	public async Task<UserAuth?> GetWorkerByIdWithWorksAsync(
-		Guid userId)
-	{
-		return await _userAuthRepository
-			.GetWorkerByIdWithWorksAsync(userId);
-	}
-
-	public async Task<UserAuth?>
-		GetClientByIdWithRecordsAsync(Guid userId)
-	{
-		return await _userAuthRepository
-			.GetClientByIdWithRecordsAsync(userId);
-	}
-
-	// public async Task<ICollection<UserAuth>> GetWorkersByIds(
-	// 	ICollection<string> ids)
-	// {
-	// 	return await _userAuthRepository.GetWorkersByIds(ids);
-	// }
 
 	public async Task<Result> Update(
 		Guid id,

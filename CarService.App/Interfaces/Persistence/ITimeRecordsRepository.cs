@@ -13,5 +13,8 @@ public interface ITimeRecordsRepository
 	Task<TimeRecord?> GetById(Guid id);
 	Task<List<TimeRecord>> GetAll();
 
-	Task<List<TimeRecord>> GetTimeRecordsByRecordIdAsync(Guid id);
+	Task<List<TimeRecord>> GetTimeRecordsByRecordIdAsync(
+		Guid id);
+
+	Task Delete(Guid id);
 }

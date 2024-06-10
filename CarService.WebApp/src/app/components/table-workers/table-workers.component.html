@@ -16,6 +16,12 @@
 			>ФИО
 			</th>
 			<th appTableSortHeaderIcon
+					[isActive]='sortProp == "email"'
+					[sortDirection]='sortDirection ? "desc" : "asc"'
+					(click)='sortFn("email")'
+			>Почта
+			</th>
+			<th appTableSortHeaderIcon
 					[isActive]='sortProp == "phone"'
 					[sortDirection]='sortDirection ? "desc" : "asc"'
 					(click)='sortFn("phone")'
@@ -33,11 +39,16 @@
 	<ng-template bTemplate="body"
 							 let-item
 	>
-		<tr (click)="goToWorker(item.id)">
+		<tr>
 			<td data-name="Фио">
 				{{
 					item.fullname
 				}}
+			</td>
+			<td class="tablet:max-w-full max-w-36"
+					data-name="Почта"
+			>
+				{{ item.email }}
 			</td>
 			<td class="tablet:max-w-full max-w-36"
 					data-name="Номер"
@@ -48,6 +59,17 @@
 					data-name="Адрес"
 			>
 				{{ item.address | notSpecified }}
+			</td>
+			<td data-name="Действия">
+				<button mat-icon-button
+								(click)='goToWorker(item.id)'
+				>
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button mat-icon-button >
+					<mat-icon color="warn">delete</mat-icon>
+				</button>
+
 			</td>
 		</tr>
 	</ng-template>

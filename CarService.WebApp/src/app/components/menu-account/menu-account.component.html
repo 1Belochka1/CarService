@@ -3,19 +3,23 @@
 >
 	<hr class="line">
 	<nav class="nav__wrapper">
-		<ul class="nav__list">
-			<li *ngFor="let item of menuItems"
-					(click)="closeMenu()"
-			>
-				<a [routerLink]="item.routerLink"
-					 class="nav__item"
+		<ul class="nav__list" *ngIf='(roleId$ | async) as
+		roleId'>
+			<ng-container *ngFor="let item of menuItems">
+				<li *ngIf='roleId <= item.access'
+						(click)="closeMenu()"
 				>
-					<mat-icon>{{ item.icon }}</mat-icon>
-					<div class="nav__title">
-						{{ item.title }}
-					</div>
-				</a>
-			</li>
+					<a [routerLink]="item.routerLink"
+						 class="nav__item"
+					>
+						<mat-icon class='nav__icon'>{{ item.icon }}</mat-icon>
+						<div class="nav__title">
+							{{ item.title }}
+						</div>
+					</a>
+				</li>
+			</ng-container>
+
 			<li (click)="toggleMenu()"
 					class="nav__item"
 			>
@@ -30,12 +34,13 @@
 			</li>
 			<li class='nav__item'>
 				<button (click)='logout()'>
-					<mat-icon [class.minimize__icon]='!isMinimize'
-										class='nav__icon'
-					>
+					<mat-icon class='nav__icon'>
 						logout
 					</mat-icon>
 				</button>
+				<div class="nav__title">
+					Выйти
+				</div>
 			</li>
 		</ul>
 	</nav>

@@ -1,9 +1,11 @@
 using System.Text;
 using CarService.App.Interfaces.Auth;
 using CarService.App.Interfaces.CalendarsHelper;
+using CarService.App.Interfaces.Email;
 using CarService.App.Interfaces.Persistence;
 using CarService.Infrastructure.Auth;
 using CarService.Infrastructure.CalendarsHelper;
+using CarService.Infrastructure.Email;
 using CarService.Infrastructure.Persistence;
 using CarService.Infrastructure.Persistence.Repositories;
 using Clave.Expressionify;
@@ -36,7 +38,9 @@ public static class DependencyInjection
 			.AddScoped<IDayRecordsRepository,
 				DayRecordsRepository>()
 			.AddScoped<
-				ITimeRecordsRepository, TimeRecordsRepository>();
+				ITimeRecordsRepository, TimeRecordsRepository>()
+			.AddScoped<IEmailService, EmailService>();
+
 
 		services
 			.AddSingleton<ICalendarHelper, CalendarHelper>();
@@ -109,7 +113,7 @@ public static class DependencyInjection
 						{
 							context.Response.Cookies.Delete(
 								"cookies--service");
-						}
+						},
 					};
 				}
 			);

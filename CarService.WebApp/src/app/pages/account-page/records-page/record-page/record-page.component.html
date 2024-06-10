@@ -56,20 +56,21 @@
 			Изменить
 			статус
 		</button>
-		<button
-			(click)='dialogAddMasterOpen(modalAddMasters)'
+		<button *ngIf='(roleId$ | async) == 1'
+						(click)='dialogAddMasterOpen(modalAddMasters)'
 		>Добавить
 			мастера
 		</button>
-		<button
-			(click)='dialogDeleteConfirmOpen(remove)'
+		<button *ngIf='(roleId$ | async) == 1'
+						(click)='dialogDeleteConfirmOpen(remove)'
 		>Удалить
 		</button>
 	</div>
 
 	<div class="masters text-surface">
 		<app-table-workers
-			[items]='record.masters'>
+			[items]='record.masters'
+		>
 		</app-table-workers>
 	</div>
 </div>

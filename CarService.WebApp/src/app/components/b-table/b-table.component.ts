@@ -50,6 +50,7 @@ export class BTableComponent implements OnInit, OnChanges, AfterContentInit {
 	@Input({transform: (value: any[] | null): any[] => value == null ? [] : value}) items: any[]
 
 	@Input() addButton: boolean = false
+	@Input() deleteButton: boolean = true
 	@Input() searchVisible: boolean = true
 
 	@Input() headTemplate?: TemplateRef<any>
@@ -59,6 +60,7 @@ export class BTableComponent implements OnInit, OnChanges, AfterContentInit {
 	@Input() toolboxTemplate?: TemplateRef<any>
 
 	@Output() addButtonClick: EventEmitter<any> = new EventEmitter<any>()
+	@Output() deleteButtonClick: EventEmitter<any> = new EventEmitter<any>()
 
 	@ContentChildren(BTemplateDirective) templates?: QueryList<BTemplateDirective>
 
@@ -148,5 +150,9 @@ export class BTableComponent implements OnInit, OnChanges, AfterContentInit {
 
 	private _filteredPage() {
 		this.totalPages = Math.ceil(this.filteredItems.length / this.pageSize)
+	}
+
+	onDelete(id: any) {
+		this.deleteButtonClick.emit(id)
 	}
 }

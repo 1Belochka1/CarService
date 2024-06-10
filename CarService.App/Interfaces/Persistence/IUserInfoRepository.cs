@@ -12,6 +12,7 @@ public interface IUserInfoRepository
 	Task<List<ClientsDto>> GetClientsAsync();
 
 	Task<UserInfo?> GetByPhone(string phone);
+	Task<UserInfo?> GetByEmail(string email);
 
 	Task<UserInfo?> GetByIdAsync(Guid id);
 

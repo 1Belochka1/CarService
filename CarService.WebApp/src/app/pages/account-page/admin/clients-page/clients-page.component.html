@@ -11,6 +11,7 @@
 				<th>Адрес</th>
 				<th>Последняя заявка (Дата)</th>
 				<th>Зарегистрирован</th>
+				<th>Действия</th>
 			</tr>
 		</ng-template>
 		<ng-template bTemplate="body"
@@ -46,6 +47,16 @@
 					{{
 						item.isAuth ? "Да" : "Нет"
 					}}
+				</td>
+				<td data-name="Действия">
+					<button mat-icon-button
+
+					>
+						<mat-icon>edit</mat-icon>
+					</button>
+					<button mat-icon-button>
+						<mat-icon color="warn">delete</mat-icon>
+					</button>
 				</td>
 			</tr>
 		</ng-template>

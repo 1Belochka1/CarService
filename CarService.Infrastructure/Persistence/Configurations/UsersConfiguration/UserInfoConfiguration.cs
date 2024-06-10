@@ -16,6 +16,10 @@ public class
 		builder.Property(x => x.Id)
 			.ValueGeneratedNever();
 
+		builder.Property(x => x.Email)
+			.HasMaxLength(320)
+			.IsRequired();
+
 		builder.Property(x => x.LastName)
 			.HasMaxLength(100);
 
@@ -38,7 +42,7 @@ public class
 
 		builder.HasOne(x => x.UserAuth)
 			.WithOne(x => x.UserInfo)
-			.HasForeignKey<UserAuth>(x => x.Id)
+			.HasForeignKey<UserAuth>(x => x.UsesInfoId)
 			.OnDelete(DeleteBehavior.Cascade);
 
 		builder.HasOne(x => x.Image)

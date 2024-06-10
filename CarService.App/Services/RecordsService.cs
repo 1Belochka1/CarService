@@ -1,5 +1,7 @@
-using CarService.App.Common.Records;
+using CarService.App.Common.Email;
+using CarService.App.Common.Requests;
 using CarService.App.Interfaces.CalendarsHelper;
+using CarService.App.Interfaces.Email;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Requests;
 using CarService.Core.Users;
@@ -12,9 +14,7 @@ public class RecordsService
 	private readonly IRequestRepository _requestRepository;
 	private readonly IUserInfoRepository _userInfoRepository;
 	private readonly IUserAuthRepository _userAuthRepository;
-
-	private readonly IRecordsRepository
-		_RecordsRepository;
+	private readonly IRecordsRepository _recordsRepository;
 
 	private readonly IDayRecordsRepository
 		_dayRecordsRepository;
@@ -23,38 +23,47 @@ public class RecordsService
 		_timeRecordsRepository;
 
 	private readonly ICalendarHelper _calendarHelper;
+	private readonly IEmailService _emailService;
 
 	public RecordsService(
 		IRequestRepository requestRepository,
 		IUserInfoRepository userInfoRepository,
 		IUserAuthRepository userAuthRepository,
-		IRecordsRepository RecordsRepository,
+		IRecordsRepository recordsRepository,
 		ICalendarHelper calendarHelper,
 		IDayRecordsRepository dayRecordsRepository,
-		ITimeRecordsRepository timeRecordsRepository)
+		ITimeRecordsRepository timeRecordsRepository,
+		IEmailService emailService)
 	{
 		_requestRepository = requestRepository;
 		_userInfoRepository = userInfoRepository;
 		_userAuthRepository = userAuthRepository;
-		_RecordsRepository = RecordsRepository;
+		_recordsRepository = recordsRepository;
 		_calendarHelper = calendarHelper;
 		_dayRecordsRepository = dayRecordsRepository;
 		_timeRecordsRepository = timeRecordsRepository;
+		_emailService = emailService;
 	}
 
 	public async Task<Result<Guid>> CreateWithoutAuthUser(
 		string email,
-		string phone,
-		string firstName,
+		string? phone,
+		string? firstName,
 		string? carInfo,
-		string? description,
+		string description,
 		Guid? timeRecordsId
 	)
 	{
-		var user = await _userInfoRepository.GetByPhone(phone);
+		var user = await _userInfoRepository.GetByEmail(email);
 
 		if (user == null)
 		{
+			if (phone == null || firstName == null)
+			{
+				return Result.Failure<Guid>(
+					"Пользователь не найден");
+			}
+
 			var newUser = UserInfo.Create(
 				Guid.NewGuid(),
 				email,
@@ -73,23 +82,40 @@ public class RecordsService
 			user = newUser.Value;
 		}
 
-		var record = Request.Create(Guid.NewGuid(), user.Id,
+		var request = Request.Create(Guid.NewGuid(), user.Id,
 			carInfo,
 			description, DateTime.UtcNow, null, timeRecordsId);
 
 		var recordId =
 			await _requestRepository.CreateAsync(
-				record.Value);
+				request.Value);
+
+		// await _emailService.SendEmail(new EmailDto()
+		// {
+		// 	To = user.Email,
+		// 	Subject = "Заявка на ремонт",
+		// 	Body = $"Здравствуйте, {user.FirstName}. " +
+		// 	       $"Ваша заявка принята. " +
+		// 	       $"В ближайшее время с вами свяжется наш администратор."
+		// });
 
 		return Result.Success(recordId);
 	}
 
-	public async Task<Result<Guid>> CreateRecordAsync(
-		Guid clientId,
+	public async Task<Result<Guid>> CreateRequestAsync(
+		string email,
 		string? carInfo,
 		string description,
 		Guid? dayRecordsId)
 	{
+		var user =
+			await _userInfoRepository.GetByEmail(email);
+
+		if (user == null)
+			return Result.Failure<Guid>("Пользователь не найден");
+
+		var clientId = user.Id;
+
 		var id = Guid.NewGuid();
 
 		var record = Request.Create(id, clientId, carInfo,
@@ -100,6 +126,15 @@ public class RecordsService
 
 		var recordId = await _requestRepository.CreateAsync(
 			record.Value);
+
+		// await _emailService.SendEmail(new EmailDto()
+		// {
+		// 	To = user.Email,
+		// 	Subject = "Заявка на ремонт",
+		// 	Body = $"Здравствуйте, {user.FirstName}. " +
+		// 	       $"Ваша заявка принята. " +
+		// 	       $"В ближайшее время с вами свяжется наш администратор."
+		// });
 
 		return Result.Success(recordId);
 	}
@@ -117,14 +152,14 @@ public class RecordsService
 	}
 
 	public async Task<List<Request>>
-		GetAllRecordsAsync(string roleId, Guid? userId)
+		GetAllRequestAsync(string roleId, Guid? userId)
 	{
 		return await _requestRepository.GetAllAsync(roleId,
 			userId);
 	}
 
 	public async Task<List<Request>>
-		GetActiveRecordsByMasterIdAsync(
+		GetActiveRequestByMasterIdAsync(
 			Guid masterId)
 	{
 		return await
@@ -132,14 +167,14 @@ public class RecordsService
 	}
 
 	public async Task<List<Request>>
-		GetCompletedRecordsByMasterIdAsync(
+		GetCompletedRequestByMasterIdAsync(
 			Guid masterId)
 	{
 		return await _requestRepository
 			.GetCompletedByMasterIdAsync(masterId);
 	}
 
-	public async Task UpdateRecordAsync(
+	public async Task UpdateRequestAsync(
 		Guid id,
 		string? phone = null,
 		string? description = null,
@@ -158,7 +193,24 @@ public class RecordsService
 		var masters =
 			await _userAuthRepository.GetWorkersByIds(masterIds);
 
+
 		await _requestRepository.AddMasters(recordId, masters);
+	}
+
+	public async Task DeleteMastersAsync(
+		Guid recordId,
+		List<Guid> masterIds)
+	{
+		var masters =
+			await _userAuthRepository.GetWorkersByIds(masterIds);
+
+		await _requestRepository.AddMasters(recordId, masters);
+	}
+
+
+	public async Task DeleteRequestAsync(Guid id)
+	{
+		await _requestRepository.DeleteAsync(id);
 	}
 
 	// Record records
@@ -171,20 +223,20 @@ public class RecordsService
 		var calendar = Record.Create(Guid.NewGuid(),
 			name, description, serviceId);
 
-		await _RecordsRepository.Create(calendar.Value);
+		await _recordsRepository.Create(calendar.Value);
 	}
 
 	public async Task<List<Record>>
 		GetAllRecordsAsync()
 	{
-		return await _RecordsRepository.GetAll();
+		return await _recordsRepository.GetAll();
 	}
 
 	public async Task<Result<Record>>
 		GetRecordsAsync(Guid id)
 	{
 		var calendar =
-			await _RecordsRepository.GetById(id);
+			await _recordsRepository.GetById(id);
 
 		if (calendar == null)
 			return Result.Failure<Record>(
@@ -200,14 +252,14 @@ public class RecordsService
 		string? requestDescription)
 	{
 		var calendar =
-			await _RecordsRepository.GetById(requestId);
+			await _recordsRepository.GetById(requestId);
 
 		if (calendar == null)
-			return Result.Failure("Календарь не найден");
+			return Result.Failure("Расписание не найдено");
 
 		calendar.Update(requestName, requestDescription);
 
-		await _RecordsRepository.Update(calendar);
+		await _recordsRepository.Update(calendar);
 
 		return Result.Success();
 	}
@@ -216,12 +268,12 @@ public class RecordsService
 		Guid id)
 	{
 		var calendar =
-			await _RecordsRepository.GetById(id);
+			await _recordsRepository.GetById(id);
 
 		if (calendar == null)
-			return Result.Failure("Календарь не найден");
+			return Result.Failure("Расписание не найдено");
 
-		await _RecordsRepository.Delete(id);
+		await _recordsRepository.Delete(id);
 
 		return Result.Success();
 	}
@@ -235,17 +287,19 @@ public class RecordsService
 		TimeOnly? breakStartTime,
 		TimeOnly? breakEndTime,
 		int duration,
-		int offset,
-		List<DateTime> weekendsDay)
+		int offset)
 	{
+		var startDateUTC = startDate.ToUniversalTime();
+		var endDateUTC = endDate.ToUniversalTime();
 		var daysDateTime =
-			_calendarHelper.GenerateDays(startDate, endDate);
+			_calendarHelper.GenerateDays(startDateUTC,
+				endDateUTC);
 		var daysRecords = new List<DayRecord>();
 
 		foreach (var day in daysDateTime)
 		{
-			var isWeekend =
-				weekendsDay.Any(x => x.Date == day.Date);
+			var isWeekend = false;
+			// weekendsDay.Any(x => x.Date == day.Date);
 
 			var dayRecord = DayRecord.Create(
 				Guid.NewGuid(),
@@ -324,7 +378,8 @@ public class RecordsService
 	}
 
 	public async Task<Result<TimeRecord>>
-		UpdateTimeRecordAsync(Guid id, bool isBusy, string? email, string? phone, string? name)
+		UpdateTimeRecordAsync(Guid id, bool isBusy,
+			string? email, string? phone, string? name)
 	{
 		var timeRecord = await _timeRecordsRepository
 			.GetById(id);
@@ -367,5 +422,19 @@ public class RecordsService
 		await _timeRecordsRepository.Update(timeRecord);
 
 		return Result.Success(timeRecord);
+	}
+
+	public async Task<Result> DeleteTimeRecordAsync(
+		Guid id)
+	{
+		var timeRecord = await _timeRecordsRepository
+			.GetById(id);
+
+		if (timeRecord == null)
+			return Result.Failure("Запись не найдена");
+
+		await _timeRecordsRepository.Delete(timeRecord.Id);
+
+		return Result.Success();
 	}
 }

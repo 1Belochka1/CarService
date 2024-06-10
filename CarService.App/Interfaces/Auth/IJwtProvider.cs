@@ -4,5 +4,5 @@ namespace CarService.App.Interfaces.Auth;
 
 public interface IJwtProvider
 {
-    string GenerateToken(UserAuth user);
+	string GenerateTokenForAuth(UserAuth user);
 }

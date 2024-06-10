@@ -22,17 +22,36 @@
 			>
 				Описание
 			</th>
+			<th
+			>
+				Действия
+			</th>
 		</tr>
 	</ng-template>
 	<ng-template bTemplate="body"
 							 let-item
 	>
-		<tr (click)='navigate(item.id)'>
-			<td data-name="Название">
+		<tr>
+			<td data-name="Название"
+					(click)='navigate(item.id)'
+			>
 				{{ item.name }}
 			</td>
-			<td data-name="Описание">
+			<td data-name="Описание"
+					(click)='navigate(item.id)'
+			>
 				{{ item.description }}
+			</td>
+			<td data-name="Действия">
+				<button mat-icon-button
+								(click)='navigate(item.id)'
+				>
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button mat-icon-button >
+					<mat-icon color="warn">delete</mat-icon>
+				</button>
+
 			</td>
 		</tr>
 	</ng-template>

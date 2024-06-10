@@ -46,14 +46,15 @@ public class
 			.HasMaxLength(15)
 			.HasConversion(
 				v => Enum.GetName(v),
-				v => (RequestStatus)Enum.Parse(typeof(RequestStatus),
+				v => (RequestStatus)Enum.Parse(
+					typeof(RequestStatus),
 					v!)
 			);
 
 		builder.HasOne(x => x.Client)
 			.WithMany(x => x.Requests)
 			.HasForeignKey(x => x.ClientId)
-			.OnDelete(DeleteBehavior.Restrict);
+			.OnDelete(DeleteBehavior.SetNull);
 
 		builder.HasMany(x => x.Masters)
 			.WithMany(x => x.Works)

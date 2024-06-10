@@ -15,8 +15,8 @@ public class
 		builder.Property(x => x.Id)
 			.ValueGeneratedNever();
 
-		builder.Property(x => x.Phone)
-			.HasMaxLength(100)
+		builder.Property(x => x.Email)
+			.HasMaxLength(320)
 			.IsRequired();
 
 		builder.Property(x => x.PasswordHash)
@@ -27,7 +27,7 @@ public class
 			.HasDefaultValue(1)
 			.IsRequired();
 
-		builder.HasIndex(x => x.Phone)
+		builder.HasIndex(x => x.Email)
 			.IsUnique();
 
 		builder.Property(x => x.CreateDate);

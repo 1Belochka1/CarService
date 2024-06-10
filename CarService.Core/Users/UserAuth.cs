@@ -11,11 +11,12 @@ public class UserAuth
 	{
 	}
 
-	private UserAuth(Guid id, string phone,
+	private UserAuth(Guid id, Guid usesInfoId, string emial,
 		string passwordHash, DateTime createDate, int roleId)
 	{
 		Id = id;
-		Phone = phone;
+		UsesInfoId = usesInfoId;
+		Email = emial;
 		PasswordHash = passwordHash;
 		CreateDate = createDate;
 		RoleId = roleId;
@@ -23,7 +24,7 @@ public class UserAuth
 
 	public Guid Id { get; private set; }
 
-	public string Phone { get; private set; }
+	public string Email { get; private set; }
 
 	[JsonIgnore]
 	public string PasswordHash { get; private set; }
@@ -34,9 +35,11 @@ public class UserAuth
 
 	public Role Role { get; private set; } = null!;
 
+	public Guid UsesInfoId { get; private set; }
+
 	public UserInfo UserInfo { get; private set; } =
 		null!;
-	
+
 	public List<Request> Works { get; private set; } =
 		[];
 
@@ -46,13 +49,14 @@ public class UserAuth
 	}
 
 	public static Result<UserAuth> Create(Guid id,
-		string phone, string passwordHash, DateTime createDate,
+		Guid userInfoId,
+		string email, string passwordHash, DateTime createDate,
 		int roleId)
 	{
 		if (id == Guid.Empty)
 			return Result.Failure<UserAuth>("Id can't be empty");
 
-		if (string.IsNullOrWhiteSpace(phone))
+		if (string.IsNullOrWhiteSpace(email))
 			return Result.Failure<UserAuth>(
 				"Номер не может быть пустым");
 
@@ -64,7 +68,8 @@ public class UserAuth
 			return Result.Failure<UserAuth>(
 				"Роль не может быть пустой");
 
-		var user = new UserAuth(id, phone, passwordHash,
+		var user = new UserAuth(id, userInfoId, email,
+			passwordHash,
 			createDate, roleId);
 
 		return Result.Success(user);

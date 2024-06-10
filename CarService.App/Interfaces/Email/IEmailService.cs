@@ -1,6 +1,6 @@
 using CarService.App.Common.Email;
 
-namespace CarService.Infrastructure.Email;
+namespace CarService.App.Interfaces.Email;
 
 public interface IEmailService
 {

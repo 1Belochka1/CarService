@@ -45,13 +45,16 @@
 				</td>
 			</tr>
 			<ng-container *ngIf="bodyTemplate">
-				<ng-container *ngFor="let item of filteredItems |
+
+				<ng-container>
+					<ng-container *ngFor="let item of filteredItems |
             sorting: selectSortColumn : sortDescending |
            pagination: currentPage : pageSize : update"
-											[ngTemplateOutlet]="bodyTemplate"
-											[ngTemplateOutletContext]="{$implicit:
+												[ngTemplateOutlet]="bodyTemplate"
+												[ngTemplateOutletContext]="{$implicit:
                   item}"
-				/>
+					/>
+				</ng-container>
 			</ng-container>
 		</tbody>
 	</table>

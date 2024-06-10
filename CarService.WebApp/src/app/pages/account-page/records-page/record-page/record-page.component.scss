@@ -2,7 +2,7 @@
 	@apply flex flex-col gap-5 text-on-surface;
 
 	.action {
-		@apply flex gap-5;
+		@apply flex gap-5 flex-wrap;
 		button {
 			@apply bg-surface/40 border-surface border border-solid p-1 hover:bg-surface;
 			border-radius: 0.625rem;

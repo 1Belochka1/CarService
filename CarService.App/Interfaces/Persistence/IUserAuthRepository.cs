@@ -16,5 +16,5 @@ public interface IUserAuthRepository
 	Task<ICollection<UserAuth>> GetWorkersByIds(
 		ICollection<Guid> ids);
 
-	Task<UserAuth?> GetByPhoneAsync(string phone);
+	Task<UserAuth?> GetByEmailAsync(string email);
 }

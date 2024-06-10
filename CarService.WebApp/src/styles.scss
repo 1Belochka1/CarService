@@ -64,8 +64,8 @@ html {
 }
 
 body {
-	background: -webkit-linear-gradient(145deg, #242436, #0a1950, #0a1450);
-	background: linear-gradient(145deg, #242436, #0a1950, #0a1450);
+	background: -webkit-linear-gradient(145deg, #dcdcdc, #b4bbdb, #8b8bb5);
+	background: linear-gradient(145deg, #dcdcdc, #b4bbdb, #8b8bb5);
 	background-repeat: no-repeat;
 }
 
@@ -177,6 +177,13 @@ img {
 
 
 .form {
+
+	h1 {
+		@apply mb-5 text-on-surface;
+		font-size: 1.5rem;
+		text-align: center;
+	}
+
 	@apply flex flex-col max-w-md mx-auto;
 
 	--border-radius-form: 0.625rem;
@@ -206,7 +213,7 @@ img {
 	}
 
 	&__button {
-		@apply px-4 py-2 bg-primary text-white border-none cursor-pointer text-lg;
+		@apply w-full px-4 py-2 bg-primary text-white border-none cursor-pointer text-lg;
 
 		border-radius: var(--border-radius-form);
 
@@ -241,6 +248,19 @@ img {
 	&.desc {
 		transform: rotate(90deg); /* Пример поворота для desc */
 	}
+}
+
+input {
+	&::placeholder {
+		color: rgba(var(--color-on-surface), .5) !important;
+	}
+}
+
+mat-label {
+	color: rgba(var(--color-on-surface)) !important;
+	--mdc-filled-text-field-label-text-color: rgb(var(--color-on-surface)) !important;
+
+	--mdc-filled-text-field-hover-label-text-color: rgb(var(--color-on-surface)) !important;
 }
 
 

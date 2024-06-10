@@ -12,6 +12,8 @@ import {
 import {
 	BTemplateDirective
 } from '../../../../../direcrives/b-template.directive'
+import {MatIcon} from '@angular/material/icon'
+import {MatIconButton} from '@angular/material/button'
 
 @Component({
 	selector: 'app-day-page',
@@ -21,7 +23,9 @@ import {
 		JsonPipe,
 		NgForOf,
 		BTableComponent,
-		BTemplateDirective
+		BTemplateDirective,
+		MatIcon,
+		MatIconButton
 	],
 	templateUrl: './day-page.component.html',
 	styleUrl: './day-page.component.scss',

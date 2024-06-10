@@ -39,6 +39,9 @@ import {
 import {
 	ServicePageComponent
 } from './pages/account-page/admin/services-page/service-page/service-page.component'
+import {
+	ProfilePageComponent
+} from './pages/account-page/profile-page/profile-page.component'
 
 
 export const routes: Routes = [
@@ -63,6 +66,11 @@ export const routes: Routes = [
 		canActivate: [authGuard],
 		children: [
 			{
+				path: 'profile',
+				component: ProfilePageComponent,
+				title: 'Профиль'
+			},
+			{
 				path: 'workers',
 				component: WorkersPageComponent,
 				title: 'Сотрудники'
@@ -80,22 +88,22 @@ export const routes: Routes = [
 			{
 				path: 'calendars',
 				component: CalendarsPageComponent,
-				// TODO: ЗАМЕНИТЬ!!!
-				title: 'Я еще не придумал'
+				title: 'Расписание'
 			},
 			{
 				path: 'calendar/:calendarId',
 				component: CalendarPageComponent,
-				// TODO: ЗАМЕНИТЬ!!!
-				title: 'Я еще не придумал'
+				title: 'Расписание'
 			},
 			{
 				path: 'calendar/:calendarId/filldays',
-				component: FillDaysPageComponent
+				component: FillDaysPageComponent,
+				title: 'Заполнение'
 			},
 			{
 				path: 'calendar/:calendarId/:dayId',
-				component: DayPageComponent
+				component: DayPageComponent,
+				title: 'Расписание'
 			},
 			{
 				path: 'worker/:id',

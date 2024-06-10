@@ -1,9 +1,9 @@
 import {Component, TemplateRef} from '@angular/core'
 import {ActivatedRoute} from '@angular/router'
-import {firstValueFrom} from 'rxjs'
+import {firstValueFrom, Observable} from 'rxjs'
 import {RecordsService} from '../../../../services/records/records.service'
 import {RecordType} from '../../../../models/record.type'
-import {DatePipe, JsonPipe, Location, NgIf} from '@angular/common'
+import {AsyncPipe, DatePipe, JsonPipe, Location, NgIf} from '@angular/common'
 import {FullNamePipe} from '../../../../pipe/full-name.pipe'
 import {ModalService} from '../../../../services/modal.service'
 import {
@@ -29,6 +29,7 @@ import {
 	TableWorkersComponent
 } from '../../../../components/table-workers/table-workers.component'
 import {ToastrService} from 'ngx-toastr'
+import {AuthService} from '../../../../services/auth.service'
 
 @Component({
 	selector: 'app-day-record-lending-page',
@@ -45,12 +46,15 @@ import {ToastrService} from 'ngx-toastr'
 		ReactiveFormsModule,
 		AutocompleteComponent,
 		TableWorkersComponent,
+		AsyncPipe,
 	],
 	templateUrl: './record-page.component.html',
 	styleUrl: './record-page.component.scss',
 	providers: [ModalService, UsersService, RecordsService]
 })
 export class RecordPageComponent {
+
+	roleId$: Observable<number>
 
 	priorityItems: IItem<Priority>[] =
 		[
@@ -62,7 +66,6 @@ export class RecordPageComponent {
 				name: 'Очень высокий'
 			}
 		]
-
 	statusItems: IItem<Status>[] =
 		[
 			{value: Status['Новая'], name: 'Новая'},
@@ -71,7 +74,6 @@ export class RecordPageComponent {
 			{value: Status['В работе'], name: 'В работе'},
 			{value: Status['Выполнена'], name: 'Выполнена'}
 		]
-
 	record: RecordType
 	requestForm: FormGroup
 	prioritySelect?: number
@@ -79,10 +81,12 @@ export class RecordPageComponent {
 	optionsMaster: { v: string, n: string }[]
 	protected readonly status = Status
 	protected readonly priority = Priority
+
 	private idMaster: string
 
 	constructor(
 		private _router: ActivatedRoute,
+		private _authService: AuthService,
 		public recordsService: RecordsService,
 		public modalService: ModalService,
 		private _userService: UsersService,
@@ -103,12 +107,10 @@ export class RecordPageComponent {
 			phone: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]]
 		})
 
-		firstValueFrom(this._userService.getMasterAutocomplete())
-		.then((x: any[]) => {
-			this.optionsMaster = x.map(item => {
-				return {n: item.item2, v: item.item1}
-			})
-		})
+
+
+		this.roleId$ = this._authService.getRoleId()
+
 	}
 
 	getRecord(id: string) {
@@ -155,6 +157,13 @@ export class RecordPageComponent {
 	}
 
 	dialogAddMasterOpen(template: TemplateRef<any>) {
+		firstValueFrom(this._userService.getMasterAutocomplete())
+		.then((x: any[]) => {
+			this.optionsMaster = x.map(item => {
+				return {n: item.item2, v: item.item1}
+			})
+		})
+
 		this.modalService.open(template, {
 			title: 'Добавление мастера',
 		})?.subscribe((isConfirm) => {

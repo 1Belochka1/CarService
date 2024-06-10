@@ -16,13 +16,14 @@ public class ImageService
 		_servicesRepository = servicesRepository;
 	}
 
-	public async Task<Result> UploadImageAsync(
+	public async Task<Result<Guid>> UploadImageAsync(
 		byte[] file, string fileName,
 		Guid? userInfoId, Guid? productId, Guid? serviceId)
 	{
 		if (file.Length == 0)
 		{
-			return Result.Failure("Ошибка при загрузке файла");
+			return Result.Failure<Guid>(
+				"Ошибка при загрузке файла");
 		}
 
 		var id = Guid.NewGuid();
@@ -51,7 +52,7 @@ public class ImageService
 					.Value);
 			if (service == null)
 			{
-				return Result.Failure("Услуга не найдена");
+				return Result.Failure<Guid>("Услуга не найдена");
 			}
 
 			service.SetImageId(id);
@@ -59,41 +60,47 @@ public class ImageService
 			await _servicesRepository.UpdateAsync(service);
 		}
 
-		return Result.Success();
+		return Result.Success(id);
 	}
 
-public async Task<Result<FileInfo>> GetImageAsync(Guid imageId)
-{
-    // Получаем изображение по идентификатору из репозитория
-    var image = await _imageRepository.GetById(imageId);
+	public async Task<Result<FileInfo>> GetImageAsync(
+		Guid imageId)
+	{
+		// Получаем изображение по идентификатору из репозитория
+		var image = await _imageRepository.GetById(imageId);
 
-    // Если изображение не найдено, возвращаем результат с ошибкой
-    if (image == null)
-    {
-        return Result.Failure<FileInfo>("Файл не найден");
-    }
+		// Если изображение не найдено, возвращаем результат с ошибкой
+		if (image == null)
+		{
+			return Result.Failure<FileInfo>("Файл не найден");
+		}
 
-    // Получаем текущий путь, где выполняется приложение
-    string currentDirectory = Directory.GetCurrentDirectory();
+		// Получаем текущий путь, где выполняется приложение
+		string currentDirectory =
+			Directory.GetCurrentDirectory();
 
-    // Поднимаемся на несколько уровней вверх до папки решения
-    string solutionDirectory = Path.GetFullPath(Path.Combine(currentDirectory, "../"));
+		// Поднимаемся на несколько уровней вверх до папки решения
+		string solutionDirectory =
+			Path.GetFullPath(
+				Path.Combine(currentDirectory, "../"));
 
-    // Указываем относительный путь к файлу относительно папки решения
-    string relativeFilePath = Path.Combine(solutionDirectory, "Images", image.FileName);
+		// Указываем относительный путь к файлу относительно папки решения
+		string relativeFilePath =
+			Path.Combine(solutionDirectory, "Images",
+				image.FileName);
 
-    // Создаем объект FileInfo для указанного файла
-    var fileInfo = new FileInfo(relativeFilePath);
+		// Создаем объект FileInfo для указанного файла
+		var fileInfo = new FileInfo(relativeFilePath);
 
-    // Проверяем, существует ли файл
-    if (!fileInfo.Exists)
-    {
-        return Result.Failure<FileInfo>("Файл не найден");
-    }
+		// Проверяем, существует ли файл
+		if (!fileInfo.Exists)
+		{
+			return Result.Failure<FileInfo>("Файл не найден");
+		}
 
-    // Если файл найден, возвращаем успешный результат с информацией о файле
-    return Result.Success(fileInfo);
-}
+		// Если файл найден, возвращаем успешный результат с информацией о файле
+		return Result.Success(fileInfo);
+	}
 
 
 	public async Task<Result> UpdateImageAsync(

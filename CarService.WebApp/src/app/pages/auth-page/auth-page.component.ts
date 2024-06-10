@@ -1,5 +1,5 @@
 import {NgClass, NgIf} from '@angular/common'
-import {Component} from '@angular/core'
+import {Component, ViewEncapsulation} from '@angular/core'
 import {
 	FormBuilder,
 	FormControl,
@@ -15,6 +15,7 @@ import {
 import {ToastrService} from 'ngx-toastr'
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
+import {MatButton} from '@angular/material/button'
 
 @Component({
 	selector: 'app-auth-page',
@@ -27,10 +28,11 @@ import {MatInput} from '@angular/material/input'
 		MatFormField,
 		MatInput,
 		MatLabel,
-		MatError
+		MatError,
+		MatButton
 	],
 	templateUrl: './auth-page.component.html',
-	styleUrl: './auth-page.component.scss'
+	styleUrl: './auth-page.component.scss',
 })
 export class AuthPageComponent {
 
@@ -55,10 +57,14 @@ export class AuthPageComponent {
 			this._authService
 					.login(this.formLogin.value.email!, this.formLogin.value.password!))
 		.then(() => {
-				this._toastr.success("Выполнен вход")
+				this._toastr.success('Выполнен вход')
 				this._router.navigate(['account'])
 			}
 		)
+		.catch((err) => {
+			this._toastr.error(err.error)
+		})
+
 	}
 
 	register($event: {

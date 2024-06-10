@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core'
 import {apiUrls} from './apiUrl'
 import {HttpClient} from '@angular/common/http'
-import {UserType} from '../models/user.type'
-import {catchError, Observable, of} from 'rxjs'
+import {BehaviorSubject, catchError, Observable, of, Subject, tap} from 'rxjs'
 import {UserInfo} from '../models/user-info.type'
 
 @Injectable({
 	providedIn: 'root'
 })
 export class AuthService {
+	private _roleId: Subject<number> = new BehaviorSubject(0)
 
 	constructor(private http: HttpClient) {
 		console.log(document.cookie)
@@ -32,20 +32,22 @@ export class AuthService {
 		isMaster: boolean = false
 	) {
 		return this.http.post(isMaster ? apiUrls.users.registerMaster : apiUrls.users.register, {
-			email,
-			lastName,
-			firstName,
-			patronymic,
-			address,
-			phone,
-			password
+			Email: email,
+			LastName: lastName,
+			FirstName: firstName,
+			Patronymic: patronymic,
+			Address: address,
+			Phone: phone,
+			Password: password
 		}, {withCredentials: true})
 	}
 
 
 	public getByCookie() {
 		return this.http.get<UserInfo | null>(apiUrls.users.getByCookie,
-			{withCredentials: true})
+			{withCredentials: true}).pipe(tap(x => {
+			if (x) this._roleId.next(x?.userAuth.roleId)
+		}))
 	}
 
 	public isAuth(): Observable<boolean> {
@@ -62,4 +64,7 @@ export class AuthService {
 		)
 	}
 
+	getRoleId() {
+		return this._roleId.asObservable()
+	}
 }

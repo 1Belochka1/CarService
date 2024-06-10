@@ -1,0 +1,134 @@
+<form class="form"
+			[formGroup]="profileForm"
+			(ngSubmit)="onSubmit()"
+>
+	<h2 class="form__title">Профиль пользователя</h2>
+
+	<mat-form-field>
+		<mat-label>Имя</mat-label>
+		<input matInput
+					 formControlName="firstName"
+					 placeholder="Введите имя"
+		>
+		<mat-error *ngIf="profileForm.get('firstName')?.hasError('required')">
+			Имя обязательно
+		</mat-error>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Фамилия</mat-label>
+		<input matInput
+					 formControlName="lastName"
+					 placeholder="Введите фамилию"
+		>
+		<mat-error *ngIf="profileForm.get('lastName')?.hasError('required')">
+			Фамилия обязательна
+		</mat-error>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Отчество</mat-label>
+		<input matInput
+					 formControlName="middleName"
+					 placeholder="Введите отчество (необязательно)"
+		>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Почта</mat-label>
+		<input matInput
+					 formControlName="email"
+					 placeholder="Введите почту"
+		>
+		<mat-error *ngIf="profileForm.get('email')?.hasError('required')">
+			Почта обязательна
+		</mat-error>
+		<mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+			Неверный формат почты
+		</mat-error>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Номер телефона</mat-label>
+		<input matInput
+					 formControlName="phone"
+					 placeholder="Введите номер телефона"
+		>
+		<mat-error *ngIf="profileForm.get('phone')?.hasError('required')">
+			Номер телефона обязателен
+		</mat-error>
+		<mat-error *ngIf="profileForm.get('phone')?.hasError('pattern')">
+			Неверный формат номера
+		</mat-error>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Адрес</mat-label>
+		<input matInput
+					 formControlName="address"
+					 placeholder="Введите адрес (необязательно)"
+		>
+	</mat-form-field>
+
+	<button mat-raised-button
+					color="primary"
+					type="submit"
+	>Сохранить
+	</button>
+</form>
+
+<form class="form mt-8"
+			[formGroup]="passwordForm"
+			(ngSubmit)="onChangePassword()"
+>
+	<h2 class="form__title">Смена пароля</h2>
+
+	<mat-form-field>
+		<mat-label>Старый пароль</mat-label>
+		<input matInput
+					 type="password"
+					 formControlName="oldPassword"
+					 placeholder="Введите старый пароль"
+		>
+		<mat-error *ngIf="passwordForm.get('oldPassword')?.hasError('required')">
+			Старый пароль обязателен
+		</mat-error>
+	</mat-form-field>
+
+	F
+	<mat-form-field>
+		<mat-label>Новый пароль</mat-label>
+		<input matInput
+					 type="password"
+					 formControlName="newPassword"
+					 placeholder="Введите новый пароль"
+		>
+		<mat-error *ngIf="passwordForm.get('newPassword')?.hasError('required')">
+			Новый пароль обязателен
+		</mat-error>
+		<mat-error *ngIf="passwordForm.get('newPassword')?.hasError('minlength')">
+			Пароль должен содержать минимум 6 символов
+		</mat-error>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Подтверждение нового пароля</mat-label>
+		<input matInput
+					 type="password"
+					 formControlName="confirmPassword"
+					 placeholder="Подтвердите новый пароль"
+		>
+		<mat-error *ngIf="passwordForm.get('confirmPassword')?.hasError('required')">
+			Подтверждение пароля обязательно
+		</mat-error>
+		<mat-error *ngIf="passwordForm.hasError('passwordMismatch')">
+			Пароли не совпадают
+		</mat-error>
+	</mat-form-field>
+
+	<button mat-raised-button
+					color="primary"
+					type="submit"
+	>Сменить пароль
+	</button>
+</form>

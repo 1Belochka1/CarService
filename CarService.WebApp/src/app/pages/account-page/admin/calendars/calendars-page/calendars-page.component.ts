@@ -25,6 +25,8 @@ import {
 import {
 	AutocompleteComponent
 } from '../../../../../components/autocomplete/autocomplete.component'
+import {MatIcon} from '@angular/material/icon'
+import {MatIconButton} from '@angular/material/button'
 
 @Component({
 	selector: 'app-calendars-page',
@@ -38,7 +40,9 @@ import {
 		NgIf,
 		PaginatorModule,
 		ReactiveFormsModule,
-		AutocompleteComponent
+		AutocompleteComponent,
+		MatIcon,
+		MatIconButton
 	],
 	templateUrl: './calendars-page.component.html',
 	styleUrl: './calendars-page.component.scss',

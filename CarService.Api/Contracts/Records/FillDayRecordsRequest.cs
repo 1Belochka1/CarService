@@ -1,14 +1,13 @@
 namespace CarService.Api.Contracts.Records;
 
 public record FillDayRecordsRequest(
-	Guid CalendarId,
+	String CalendarId,
 	DateTime StartDate,
 	DateTime EndDate,
-	TimeOnly StartTime,
-	TimeOnly EndTime,
-	TimeOnly? BreakStartTime,
-	TimeOnly? BreakEndTime,
+	String StartTime,
+	String EndTime,
+	String? BreakStartTime,
+	String? BreakEndTime,
 	int Duration,
-	int Offset,
-	List<DateTime> WeekendsDay
+	int Offset
 );

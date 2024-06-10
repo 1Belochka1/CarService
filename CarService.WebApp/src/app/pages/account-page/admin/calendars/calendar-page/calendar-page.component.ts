@@ -23,6 +23,18 @@ import {
 	DayRecordService
 } from '../../../../../services/day-record/day-record.service'
 import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server'
+import {
+	MatDatepickerToggle, MatDateRangeInput,
+	MatDateRangePicker, MatEndDate, MatStartDate
+} from '@angular/material/datepicker'
+import {
+	MatFormField,
+	MatHint,
+	MatLabel,
+	MatSuffix
+} from '@angular/material/form-field'
+import {MatIcon} from '@angular/material/icon'
+import {MatIconButton} from '@angular/material/button'
 
 @Component({
 	selector: 'app-calendar-page',
@@ -38,6 +50,17 @@ import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server'
 		BTableSortDirective,
 		ReactiveFormsModule,
 		DateRangePickerComponent,
+		MatDateRangePicker,
+		MatDatepickerToggle,
+		MatSuffix,
+		MatHint,
+		MatEndDate,
+		MatStartDate,
+		MatDateRangeInput,
+		MatLabel,
+		MatFormField,
+		MatIcon,
+		MatIconButton,
 	],
 	templateUrl: './calendar-page.component.html',
 	styleUrl: './calendar-page.component.scss',

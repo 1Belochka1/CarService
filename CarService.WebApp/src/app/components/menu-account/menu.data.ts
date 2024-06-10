@@ -2,74 +2,46 @@ const folder = 'assets/svg/'
 
 export const menuItems = [
 	{
-		icon: folder + 'workers-min.svg',
+		icon: 'account_circle',
 		title: 'Профиль',
-		routerLink: 'profile'
+		routerLink: 'profile',
+		access: 3
 	},
 	{
-		icon: folder + 'clients-min.svg',
+		icon: 'people_alt',
 		title: 'Сотрудники',
-		routerLink: 'workers'
+		routerLink: 'workers',
+		access: 1
 	},
 	{
-		icon: folder + 'requests-min.svg',
+		icon: 'list_alt',
 		title: 'Заявки',
-		routerLink: 'records'
+		routerLink: 'records',
+		access: 3
 	},
 	{
-		icon: folder + 'requests-min.svg',
+		icon: 'work',
 		title: 'Услуги',
-		routerLink: 'services'
+		routerLink: 'services',
+		access: 1
 	},
 	{
-		icon: folder + 'chats-min.svg',
+		icon: 'event_note',
 		title: 'Расписание',
-		routerLink: 'calendars'
+		routerLink: 'calendars',
+		access: 2
 	},
 	{
-		icon: folder + 'clients-min.svg',
+		icon: 'group',
 		title: 'Клиенты',
-		routerLink: 'clients'
+		routerLink: 'clients',
+		access: 1
 	},
-	// TODO: Обновить иконку
 	{
-		icon: "keyboard_arrow_right",
+		icon: 'home',
 		title: 'На главную',
-		routerLink: '/lending'
+		routerLink: '/lending',
+		access: 3
 	}
 ]
 
-
-export const workerItems = [
-	{
-		icon: folder + 'clients-min.svg',
-		title: 'Профиль',
-		routerLink: 'profile'
-	},
-	{
-		icon: folder + 'requests-min.svg',
-		title: 'Заявки',
-		routerLink: 'records'
-	},
-	{
-		icon: folder + 'requests-min.svg',
-		title: 'Услуги',
-		routerLink: 'services'
-	},
-	{
-		icon: folder + 'chats-min.svg',
-		title: 'Расписание',
-		routerLink: 'calendars'
-	},
-	{
-		icon: folder + 'clients-min.svg',
-		title: 'Клиенты',
-		routerLink: 'clients'
-	},
-	// TODO: Обновить иконку
-	{
-		icon: folder + 'settings-min.svg',
-		title: 'На главную',
-		routerLink: '/lending'
-	}
-]

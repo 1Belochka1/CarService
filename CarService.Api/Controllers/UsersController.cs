@@ -1,9 +1,12 @@
 using System.Security.Claims;
 using CarService.Api.Contracts.Users;
 using CarService.Api.Helper.Json;
+using CarService.Api.Helper.Notify;
+using CarService.Api.Hubs;
 using CarService.App.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CarService.Api.Controllers;
 
@@ -12,10 +15,13 @@ namespace CarService.Api.Controllers;
 public class UsersController : ControllerBase
 {
 	private readonly UsersService _usersService;
+	private readonly IHubContext<NotifyHub> _notifyHubContext;
 
-	public UsersController(UsersService usersService)
+	public UsersController(UsersService usersService,
+		IHubContext<NotifyHub> notifyHubContext)
 	{
 		_usersService = usersService;
+		_notifyHubContext = notifyHubContext;
 	}
 
 	[HttpGet("get/isAuth")]
@@ -38,7 +44,7 @@ public class UsersController : ControllerBase
 		if (result.IsFailure)
 			return BadRequest(result.Error);
 
-		return Ok(result.Value);
+		return Ok();
 	}
 
 	[Authorize(Roles = "1")]
@@ -55,7 +61,7 @@ public class UsersController : ControllerBase
 		if (result.IsFailure)
 			return BadRequest(result.Error);
 
-		return Ok(result.Value);
+		return Ok();
 	}
 
 	[HttpPost("Login")]
@@ -94,7 +100,8 @@ public class UsersController : ControllerBase
 	//
 
 	[HttpPost("Create/UserInfo")]
-	public async Task<IActionResult> CreateUserInfo(CreateUserInfoRequest request)
+	public async Task<IActionResult> CreateUserInfo(
+		CreateUserInfoRequest request)
 	{
 		var userInfo = await _usersService
 			.CreateUserInfoAsync(
@@ -138,6 +145,9 @@ public class UsersController : ControllerBase
 		if (result.IsFailure)
 			return BadRequest(result.Error);
 
+		await HttpContext.SendNotify(_notifyHubContext,
+			"SuccessRequest", "Обновление выполнено");
+
 		return Ok();
 	}
 
@@ -159,6 +169,9 @@ public class UsersController : ControllerBase
 		if (result.IsFailure)
 			return BadRequest(result.Error);
 
+		await HttpContext.SendNotify(_notifyHubContext,
+			"SuccessRequest", "Обновление выполнено");
+
 		return Ok();
 	}
 
@@ -169,7 +182,6 @@ public class UsersController : ControllerBase
 	//
 
 	[HttpGet("Get/ByCookie")]
-	[Authorize]
 	public async Task<IActionResult> GetByCookie()
 	{
 		var userId =
@@ -178,10 +190,13 @@ public class UsersController : ControllerBase
 				?.Value;
 
 		if (string.IsNullOrEmpty(userId))
-			return Unauthorized();
+			return Ok(null);
 
 		var user =
 			await _usersService.GetById(Guid.Parse(userId));
+
+		if (user.IsFailure)
+			return Ok(null);
 
 		return Ok(user.Value);
 	}
@@ -237,15 +252,7 @@ public class UsersController : ControllerBase
 		if (user.IsFailure)
 			return NotFound(user.Error);
 
-		var response = new GetWorkerResponse(
-			user.Value.FirstName,
-			user.Value.LastName,
-			user.Value.Patronymic,
-			user.Value.Address,
-			user.Value.Phone
-		);
-
-		return Ok(response);
+		return Ok(user.Value);
 	}
 
 	[Authorize(Roles = "1")]
@@ -270,6 +277,7 @@ public class UsersController : ControllerBase
 	}
 
 	[HttpDelete("delete/dismiss/{id}")]
+	[Authorize(Roles = "1")]
 	public async Task<IActionResult> DismissAsync(Guid id)
 	{
 		await _usersService.Update(id, roleId: 3);

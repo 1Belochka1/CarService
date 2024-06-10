@@ -15,11 +15,11 @@ namespace CarService.Api.Controllers;
 public class RecordsController : ControllerBase
 {
 	private readonly RecordsService _recordsService;
-	private readonly IHubContext<TimeRecordsHub> _hubContext;
+	private readonly IHubContext<NotifyHub> _hubContext;
 
 	public RecordsController(
 		RecordsService recordsService,
-		IHubContext<TimeRecordsHub>
+		IHubContext<NotifyHub>
 			hubContext)
 	{
 		_recordsService = recordsService;
@@ -52,8 +52,8 @@ public class RecordsController : ControllerBase
 		CreateRecordRequest request)
 	{
 		var result =
-			await _recordsService.CreateRecordAsync(
-				request.ClientId,
+			await _recordsService.CreateRequestAsync(
+				request.Email,
 				request.CarInfo,
 				request.Description,
 				request.DayRecordsId
@@ -69,7 +69,7 @@ public class RecordsController : ControllerBase
 	public async Task<IActionResult> Update(
 		UpdateRequestRequest request)
 	{
-		await _recordsService.UpdateRecordAsync(
+		await _recordsService.UpdateRequestAsync(
 			request.Id,
 			request.Phone,
 			request.Description,
@@ -88,6 +88,12 @@ public class RecordsController : ControllerBase
 		await _recordsService.AddMastersAsync(
 			id, mastersIds
 		);
+
+		foreach (var mastersId in mastersIds)
+		{
+			await _hubContext.Clients.User(mastersId.ToString())
+				.SendCoreAsync("NewRequestForYou", [id]);
+		}
 
 		return Ok();
 	}
@@ -110,7 +116,7 @@ public class RecordsController : ControllerBase
 	{
 		var records =
 			await _recordsService
-				.GetCompletedRecordsByMasterIdAsync(id);
+				.GetCompletedRequestByMasterIdAsync(id);
 
 		return Ok(records);
 	}
@@ -121,7 +127,7 @@ public class RecordsController : ControllerBase
 		Guid id)
 	{
 		var records =
-			await _recordsService.GetActiveRecordsByMasterIdAsync(
+			await _recordsService.GetActiveRequestByMasterIdAsync(
 				id);
 
 		return Ok(records);
@@ -138,14 +144,24 @@ public class RecordsController : ControllerBase
 			(ClaimTypes.NameIdentifier);
 
 		var records = await _recordsService
-			.GetAllRecordsAsync(roleId!, Guid.Parse(userId!));
+			.GetAllRequestAsync(roleId!, Guid.Parse(userId!));
 
 		return Ok(records);
 	}
 
+	[Authorize]
+	[HttpDelete("Delete/{id}")]
+	public async Task<IActionResult> Delete(Guid id)
+	{
+		await _recordsService.DeleteRequestAsync(id);
+
+		return Ok();
+	}
+
 	[Authorize(Roles = "1")]
 	[HttpPost("Calendars/Create")]
-	public async Task<IActionResult> CreateRecords(CreateRequestRequest request)
+	public async Task<IActionResult> CreateRecords(
+		CreateRequestRequest request)
 	{
 		await _recordsService.CreateRecordAsync(
 			request.ServiceId,
@@ -216,17 +232,23 @@ public class RecordsController : ControllerBase
 	public async Task<IActionResult> FillDayRecords(
 		FillDayRecordsRequest request)
 	{
+		var notNullStart = TimeOnly.TryParse(
+			request.BreakStartTime,
+			out var breakStartTime);
+
+		var notNullEnd = TimeOnly.TryParse(request.BreakEndTime,
+			out var breakEndTime);
+
 		await _recordsService.FillDayRecordsAsync(
-			request.CalendarId,
+			Guid.Parse(request.CalendarId),
 			request.StartDate,
 			request.EndDate,
-			request.StartTime,
-			request.EndTime,
-			request.BreakStartTime,
-			request.BreakEndTime,
+			TimeOnly.Parse(request.StartTime),
+			TimeOnly.Parse(request.EndTime),
+			notNullStart ? breakStartTime : null,
+			notNullEnd ? breakEndTime : null,
 			request.Duration,
-			request.Offset,
-			request.WeekendsDay);
+			request.Offset);
 
 		return Ok();
 	}
@@ -280,7 +302,8 @@ public class RecordsController : ControllerBase
 		string? name)
 	{
 		var result = await _recordsService
-			.UpdateTimeRecordAsync(id, isBusy, email, phone, name);
+			.UpdateTimeRecordAsync(id, isBusy, email, phone,
+				name);
 
 		if (result.IsFailure)
 			return BadRequest(result.Error);
@@ -290,6 +313,24 @@ public class RecordsController : ControllerBase
 			[result.Value]);
 
 		return Ok(result.Value);
+	}
+
+	[Authorize]
+	[HttpDelete("TimeRecords/Delete/{id}")]
+	public async Task<IActionResult> DeleteTimeRecords(
+		Guid id)
+	{
+		var result = await _recordsService
+			.DeleteTimeRecordAsync(id);
+
+		if (result.IsFailure)
+			return BadRequest(result.Error);
+
+		await _hubContext.Clients.All.SendCoreAsync(
+			"DeleteTimeRecord",
+			[id]);
+
+		return Ok();
 	}
 
 	[HttpGet("filllllll")]
@@ -308,11 +349,12 @@ public class RecordsController : ControllerBase
 
 		var random = new Random();
 
-		for (int i = 0; i < 5000; i++)
+		for (int i = 0; i < 1000; i++)
 		{
 			await _recordsService.CreateWithoutAuthUser
-			(numbers[random.Next(0, 100)],
-				firstNames[random.Next(0, 20)], null, null,
+			($"be2{random.Next(100)}",
+				numbers[random.Next(0, 100)],
+				firstNames[random.Next(0, 20)], null,
 				"Тут будет большое описание. " +
 				"Тут будет большое описание. " +
 				"Тут будет большое описание. " +

@@ -16,6 +16,7 @@
 						 (change)='filterFn(convertEvent($event).value.toString())'
 			>
 
+
 			<button class='button'
 							(click)='delete(remove)'
 			>Удалить
@@ -40,6 +41,10 @@
 				<th>
 					Конец работы
 				</th>
+				<th
+				>
+					Действия
+				</th>
 			</tr>
 		</ng-template>
 
@@ -55,6 +60,15 @@
 				</td>
 				<td data-name='Конец работы'>
 					{{ item.endTime }}
+				</td>
+				<td data-name="Действия">
+					<button mat-icon-button
+					>
+						<mat-icon>edit</mat-icon>
+					</button>
+					<button mat-icon-button>
+						<mat-icon color="warn">delete</mat-icon>
+					</button>
 				</td>
 			</tr>
 		</ng-template>

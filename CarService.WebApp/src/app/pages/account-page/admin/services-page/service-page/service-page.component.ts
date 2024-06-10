@@ -15,6 +15,8 @@ import {
 	ReactiveFormsModule,
 	Validators
 } from '@angular/forms'
+import {MatFormField} from '@angular/material/form-field'
+import {MatInput} from '@angular/material/input'
 
 @Component({
 	selector: 'app-service-page',
@@ -23,7 +25,9 @@ import {
 		NgIf,
 		AsyncPipe,
 		SrcImagePipe,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		MatFormField,
+		MatInput
 	],
 	templateUrl: './service-page.component.html',
 	styleUrl: './service-page.component.scss',

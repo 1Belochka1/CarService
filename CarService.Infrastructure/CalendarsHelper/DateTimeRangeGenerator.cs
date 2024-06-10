@@ -2,7 +2,7 @@ using CarService.App.Interfaces.CalendarsHelper;
 
 namespace CarService.Infrastructure.CalendarsHelper;
 
-public class CalendarHelper : ICalendarHelper
+public class DateTimeRangeGenerator : IDateTimeRangeGenerator
 {
 	public List<DateTime> GenerateDays(DateTime start,
 		DateTime end)

@@ -1,71 +1,68 @@
 <div class="wrapper">
-	<section id='header'
-					 class="section-header"
-	>
-		<div class="section-header__wrapper">
+    <section id='header'
+             class="section-header"
+    >
+        <div class="section-header__wrapper">
 
-			<app-header-lending></app-header-lending>
+            <app-header-lending></app-header-lending>
 
-			<div class="content">
-				<h1>Автомастерская Автодоктор</h1>
+            <div class="content">
+                <h1>Автомастерская Автодоктор</h1>
 
-				<p class="description"> Lorem ipsum dolor sit amet,
-					consectetur adipisicing elit. Aut corporis culpa,
-					hic
-					iste nobis officiis optio ratione totam voluptate
-					voluptates. Amet aspernatur dolores eum omnis
-					praesentium quae quisquam similique sit.
-				</p>
-			</div>
-		</div>
-	</section>
+                <p class="description"> Добро пожаловать в нашу автомастерскую! Мы предлагаем полный спектр услуг по
+                    ремонту и обслуживанию автомобилей. Наши опытные специалисты готовы решить любую проблему с вашим
+                    авто, от мелкого ремонта до капитального обслуживания. Доверяйте свой автомобиль профессионалам!
+                </p>
+            </div>
+        </div>
+    </section>
 
-	<section class="section-record">
+    <section class="section-record">
 
-		<h2 id='record'>Записаться</h2>
+        <h2 id='record'>Записаться</h2>
 
-		<app-stepper-lending-record>
+        <app-stepper-lending-record>
 
-			<cdk-step>
-				<div
-					class='record__new'
-				>
-					<app-form-add-record
-					></app-form-add-record>
-				</div>
-			</cdk-step>
+            <cdk-step>
+                <div
+                        class='record__new'
+                >
+                    <app-form-add-record
+                    ></app-form-add-record>
+                </div>
+            </cdk-step>
 
-			<ng-container *ngFor='let item of calendars'>
-				<cdk-step>
-					<app-card-booking
-						[title]='item.name'
-						[description]='item.description'
-						[image]='item.service.imageId | srcImage'
-						[link]='["/day-record-lending", item.id]'
-					>
-					</app-card-booking>
-				</cdk-step>
-			</ng-container>
+            <ng-container *ngFor='let item of calendars'>
+                <cdk-step>
+                    <app-card-booking
+                            [title]='item.name'
+                            [description]='item.description'
+                            [image]='item.service.imageId | srcImage'
+                            [link]='["/day-record-lending", item.id]'
+                    >
+                    </app-card-booking>
+                </cdk-step>
+            </ng-container>
 
-		</app-stepper-lending-record>
+        </app-stepper-lending-record>
 
-	</section>
+    </section>
 
-	<section id='services'
-					 class="section-services"
-	>
-		<h2>Предоставляемые услуги</h2>
-		<div class="section-services__list">
-			<app-card-lending
-				*ngFor="let item of services"
-				[image]='item.imageId ? apiUrls.images.getById +
+    <section id='services'
+             class="section-services"
+    >
+        <h2>Предоставляемые услуги</h2>
+        <div class="section-services__list">
+            <app-card-lending
+                    *ngFor="let item of services"
+                    [image]='item.imageId ? apiUrls.images.getById +
 				item.imageId : undefined'
-				[description]='item.description'
-				[title]='item.name'
-				[class.image]='item.imageId'
-			>
-			</app-card-lending>
-		</div>
-	</section>
+                    [description]='item.description'
+                    [title]='item.name'
+                    [class.image]='item.imageId'
+            >
+            </app-card-lending>
+        </div>
+    </section>
 
 </div>

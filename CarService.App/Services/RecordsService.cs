@@ -22,7 +22,7 @@ public class RecordsService
 	private readonly ITimeRecordsRepository
 		_timeRecordsRepository;
 
-	private readonly ICalendarHelper _calendarHelper;
+	private readonly IDateTimeRangeGenerator _dateTimeRangeGenerator;
 	private readonly IEmailService _emailService;
 
 	public RecordsService(
@@ -30,7 +30,7 @@ public class RecordsService
 		IUserInfoRepository userInfoRepository,
 		IUserAuthRepository userAuthRepository,
 		IRecordsRepository recordsRepository,
-		ICalendarHelper calendarHelper,
+		IDateTimeRangeGenerator dateTimeRangeGenerator,
 		IDayRecordsRepository dayRecordsRepository,
 		ITimeRecordsRepository timeRecordsRepository,
 		IEmailService emailService)
@@ -39,7 +39,7 @@ public class RecordsService
 		_userInfoRepository = userInfoRepository;
 		_userAuthRepository = userAuthRepository;
 		_recordsRepository = recordsRepository;
-		_calendarHelper = calendarHelper;
+		_dateTimeRangeGenerator = dateTimeRangeGenerator;
 		_dayRecordsRepository = dayRecordsRepository;
 		_timeRecordsRepository = timeRecordsRepository;
 		_emailService = emailService;
@@ -292,7 +292,7 @@ public class RecordsService
 		var startDateUTC = startDate.ToUniversalTime();
 		var endDateUTC = endDate.ToUniversalTime();
 		var daysDateTime =
-			_calendarHelper.GenerateDays(startDateUTC,
+			_dateTimeRangeGenerator.GenerateDays(startDateUTC,
 				endDateUTC);
 		var daysRecords = new List<DayRecord>();
 

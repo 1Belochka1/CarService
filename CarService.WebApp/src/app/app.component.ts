@@ -1,5 +1,6 @@
 import {Component} from '@angular/core'
 import {RouterOutlet} from '@angular/router'
+import {firstValueFrom} from "rxjs";
 import {AuthService} from './services/auth.service'
 import {
 	HeaderLendingComponent
@@ -16,6 +17,7 @@ import {NotifyService} from './services/notify.service'
 })
 export class AppComponent {
 	constructor(private _authService: AuthService, private _notifyService: NotifyService) {
+		firstValueFrom(this._authService.getByCookie()).then().catch()
 		this._notifyService.createHub()
 		this._notifyService.startConnection()
 	}

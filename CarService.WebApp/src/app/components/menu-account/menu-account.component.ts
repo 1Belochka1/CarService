@@ -2,11 +2,11 @@ import {AfterContentInit, Component, inject} from '@angular/core'
 import {menuItems} from './menu.data'
 import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common'
 import {SvgIconComponent} from 'angular-svg-icon'
-import {RouterLink} from '@angular/router'
+import {Router, RouterLink} from '@angular/router'
 import {TitleService} from '../../services/title.service'
 import {AuthService} from '../../services/auth.service'
 import {MatIcon} from '@angular/material/icon'
-import {Observable} from 'rxjs'
+import {firstValueFrom, Observable} from 'rxjs'
 
 @Component({
 	selector: 'app-menu-account',
@@ -33,7 +33,7 @@ export class MenuAccountComponent implements AfterContentInit {
 
 	protected readonly menuItems = menuItems
 
-	constructor(private _authService: AuthService) {
+	constructor(private _authService: AuthService, private _router: Router) {
 
 	}
 
@@ -52,8 +52,9 @@ export class MenuAccountComponent implements AfterContentInit {
 	}
 
 	logout() {
-		this._authService.logout().subscribe((d) => {
-			console.log(d)
+		firstValueFrom(this._authService.logout()).then
+		(() => {
+			this._router.navigate(['/lending'])
 		})
 	}
 }

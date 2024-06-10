@@ -1,3 +1,3 @@
 export const environment = {
-	api: 'https://belka.local.com/api/'
+	api: 'http://localhost:5053/api/'
 };

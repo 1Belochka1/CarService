@@ -43,7 +43,7 @@ public static class DependencyInjection
 
 
 		services
-			.AddSingleton<ICalendarHelper, CalendarHelper>();
+			.AddSingleton<IDateTimeRangeGenerator, DateTimeRangeGenerator>();
 
 		services.AddDbContext<CarServiceDbContext>(options =>
 		{

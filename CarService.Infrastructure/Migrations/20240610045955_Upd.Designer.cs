@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarService.Infrastructure.Migrations
 {
     [DbContext(typeof(CarServiceDbContext))]
-    [Migration("20240609095516_UpdateUser1")]
-    partial class UpdateUser1
+    [Migration("20240610045955_Upd")]
+    partial class Upd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -398,7 +398,7 @@ namespace CarService.Infrastructure.Migrations
                     b.HasOne("CarService.Core.Users.UserInfo", "Client")
                         .WithMany("Requests")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("CarService.Core.Requests.TimeRecord", "TimeRecord")
                         .WithMany()

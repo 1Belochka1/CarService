@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core'
-import {HubConnection, HubConnectionBuilder, LogLevel} from '@microsoft/signalr'
-import {apiHubUrls} from './apiUrl'
+import {HttpTransportType, HubConnection, HubConnectionBuilder, LogLevel} from '@microsoft/signalr'
 import {ToastrService} from 'ngx-toastr'
 import {firstValueFrom} from 'rxjs'
+import {apiHubUrls} from './apiUrl'
 import {AuthService} from './auth.service'
 
 @Injectable({
@@ -18,14 +18,16 @@ export class NotifyService {
 	createHub() {
 		this._hubConnection =
 			new HubConnectionBuilder()
-			.withUrl(apiHubUrls.notify, {
-				withCredentials: true
-			})
-			.withAutomaticReconnect()
-			.withServerTimeout(60000)
-			.withKeepAliveInterval(60000)
-			.configureLogging(LogLevel.Debug)
-			.build()
+				.withUrl(apiHubUrls.notify, {
+					withCredentials: true,
+					transport: HttpTransportType.WebSockets
+				})
+				.withStatefulReconnect()
+				.withAutomaticReconnect()
+				.withServerTimeout(60000)
+				.withKeepAliveInterval(60000)
+				.configureLogging(LogLevel.Debug)
+				.build()
 
 		this._hubConnection.on('SuccessRequest', (message: string) => {
 			this._toastr.success(message)
@@ -34,12 +36,12 @@ export class NotifyService {
 
 	startConnection() {
 		this._hubConnection.start()
-				.then(() => firstValueFrom(this._authService.getByCookie()).then(user => {
-					if (user?.userAuth.roleId == 2) {
-						this.onNewRequestForYou()
-					}
-				}))
-				.catch(e => console.error(e))
+			.then(() => firstValueFrom(this._authService.getByCookie()).then(user => {
+				if (user?.userAuth.roleId == 2) {
+					this.onNewRequestForYou()
+				}
+			}))
+			.catch(e => console.error(e))
 	}
 
 	accessDenied() {

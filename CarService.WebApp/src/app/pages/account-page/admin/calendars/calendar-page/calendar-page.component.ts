@@ -105,18 +105,18 @@ export class CalendarPageComponent {
 			title: 'Вы дейстивтельно хотите' +
 				' удалить расписание?'
 		})
-				?.subscribe(
-					isConfirm => {
-						if (isConfirm) {
-							firstValueFrom(this._calendarRecordService.delete(this._id)).then(() => this._location.back())
-						}
+			?.subscribe(
+				isConfirm => {
+					if (isConfirm) {
+						firstValueFrom(this._calendarRecordService.delete(this._id)).then(() => this._location.back())
 					}
-				)
+				}
+			)
 	}
 
 	fill(templateRef: TemplateRef<any>) {
 		this._modalService.open(templateRef, {
-			title: ''
+			title: '', actionVisible: false
 		})?.subscribe()
 	}
 

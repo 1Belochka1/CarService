@@ -352,7 +352,7 @@ public class RecordsController : ControllerBase
 		for (int i = 0; i < 1000; i++)
 		{
 			await _recordsService.CreateWithoutAuthUser
-			($"be2{random.Next(100)}",
+			($"beld{random.Next(100)}@gmail.com",
 				numbers[random.Next(0, 100)],
 				firstNames[random.Next(0, 20)], null,
 				"Тут будет большое описание. " +
@@ -380,7 +380,7 @@ public class RecordsController : ControllerBase
 
 	private static string GeneratePhoneNumber(Random random)
 	{
-		var number = "8900"; // Начало номера
+		var number = "8990"; // Начало номера
 
 		// Генерация оставшихся 7 цифр
 		for (int i = 0; i < 7; i++)

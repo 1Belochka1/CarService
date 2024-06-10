@@ -1,5 +1,5 @@
 :host {
-	@apply flex flex-wrap overflow-y-auto max-h-full;
+	@apply flex flex-col overflow-y-auto max-h-full;
 	::ng-deep {
 		--mdc-filled-text-field-input-text-color: #fff;
 		--mdc-filled-text-field-container-color: rgb(var(--color-input-background));
@@ -12,7 +12,8 @@
 }
 
 .form {
-	@apply w-full max-w-lg mx-auto p-4 bg-surface shadow-md rounded-md;
+	@apply w-full max-w-lg mx-auto p-4 bg-surface shadow-md;
+	border-radius: 0.625rem;
 }
 
 .form__title {

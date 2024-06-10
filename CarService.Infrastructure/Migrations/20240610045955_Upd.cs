@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CarService.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateUser : Migration
+    public partial class Upd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -137,7 +137,7 @@ namespace CarService.Infrastructure.Migrations
                         column: x => x.ClientId,
                         principalTable: "UserInfos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,6 +196,7 @@ namespace CarService.Infrastructure.Migrations
                     PasswordHash = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     RoleId = table.Column<int>(type: "integer", nullable: false, defaultValue: 1),
+                    UsesInfoId = table.Column<Guid>(type: "uuid", nullable: false),
                     ServiceId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -213,8 +214,8 @@ namespace CarService.Infrastructure.Migrations
                         principalTable: "Services",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UserAuths_UserInfos_Id",
-                        column: x => x.Id,
+                        name: "FK_UserAuths_UserInfos_UsesInfoId",
+                        column: x => x.UsesInfoId,
                         principalTable: "UserInfos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -334,6 +335,12 @@ namespace CarService.Infrastructure.Migrations
                 name: "IX_UserAuths_ServiceId",
                 table: "UserAuths",
                 column: "ServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAuths_UsesInfoId",
+                table: "UserAuths",
+                column: "UsesInfoId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserInfos_Phone",

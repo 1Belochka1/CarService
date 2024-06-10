@@ -1,133 +1,134 @@
 :host {
-	@apply relative min-h-screen block text-on-surface;
+  @apply relative min-h-screen block text-on-surface;
 }
 
 .wrapper {
 
-	section {
-		@apply max-w-[1440px];
+  section {
+    @apply max-w-[1440px];
 
-		margin: 0 auto;
+    margin: 0 auto;
 
-		@apply p-5;
+    @apply p-5;
 
-		&:not(:last-child) {
-			//border-bottom: 1px solid white;
-		}
+    &:not(:last-child) {
+      //border-bottom: 1px solid white;
+    }
 
-		h2 {
-			@apply mb-5;
-			@apply text-surface;
-			font-size: 2rem;
-		}
+    h2 {
+      @apply mb-5;
+      @apply text-surface;
+      font-size: 2rem;
+    }
 
-		h3 {
-			//@apply text-surface;
-			font-size: 1.55rem;
-		}
-	}
+    h3 {
+      //@apply text-surface;
+      font-size: 1.55rem;
+    }
+  }
 
-	.section-header {
-		@apply h-screen relative text-white max-w-full;
+  .section-header {
+    @apply h-screen relative text-white max-w-full;
 
-		//height: calc(100vh - 4.25rem);
+    //height: calc(100vh - 4.25rem);
 
-		background-image: url("/assets/lending-back.jpg");
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-position: center;
+    background-image: url("/assets/lending-back.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 
-		//background: linear-gradient(90deg, #ffcccc, white, #ccccff);
+    //background: linear-gradient(90deg, #ffcccc, white, #ccccff);
 
-		//background: linear-gradient(90deg, black, #151533, black);
+    //background: linear-gradient(90deg, black, #151533, black);
 
-		@media (max-width: 768px) {
-			height: 100svh;
-		}
+    @media (max-width: 768px) {
+      height: 100svh;
+    }
 
-		&:before {
-			@apply absolute top-0 bottom-0 left-0 right-0 z-0;
-			content: '';
-			backdrop-filter: brightness(20%) blur(2px);
-		}
+    &:before {
+      @apply absolute top-0 bottom-0 left-0 right-0 z-0;
+      content: '';
+      backdrop-filter: brightness(20%) blur(2px);
+    }
 
-		&__wrapper {
-			@apply relative flex flex-col flex-1 h-full z-10;
-
-
-			.content {
-				@apply h-full flex flex-col items-center justify-center gap-5 p-5;
+    &__wrapper {
+      @apply relative flex flex-col flex-1 h-full z-10;
 
 
-				@media (max-width: 768px) {
-					//backdrop-filter: brightness(70%) blur(1px);
-				}
-
-				h1 {
-					@apply text-center;
-
-					color: rgba(var(--color-header));
-
-					font-size: 3.5rem;
-
-					@media (max-width: 768px) {
-						font-size: 2rem;
-					}
-				}
-
-				p {
-					max-width: 30rem;
-				}
-			}
-		}
-	}
-
-	.section-record {
-		.record__new {
-			@apply flex gap-5 p-6 bg-surface;
-
-			border-radius: 0.625rem;
-
-			&:before {
-				border-radius: 0.625rem;
-				flex: 1;
-				display: block;
-				content: '';
-				background-image: url("/assets/lending-1.jpg");
-				background-repeat: no-repeat;
-				background-size: cover;
-				background-position: center;
-			}
-
-			@media (max-width: 768px) {
-				@apply flex-col;
-			}
-		}
-
-	}
-
-	.section-services {
-
-		@apply min-h-screen;
-
-		&__list {
-			@apply grid gap-5 justify-items-center;
-
-			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		}
+      .content {
+        @apply h-full flex flex-col items-center justify-center gap-5 p-5;
 
 
-		&__item {
-			@apply bg-surface text-center p-2;
+        @media (max-width: 768px) {
+          //backdrop-filter: brightness(70%) blur(1px);
+        }
 
-			border-radius: 0.625rem;
+        h1 {
+          @apply text-center;
 
-			h3 {
-				@apply font-bold text-on-surface;
+          color: rgba(var(--color-header));
 
-				font-size: 1.25rem;
-			}
-		}
-	}
+          font-size: 3.5rem;
+
+          @media (max-width: 768px) {
+            font-size: 2rem;
+          }
+        }
+
+        p {
+          max-width: 40rem;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .section-record {
+    .record__new {
+      @apply flex gap-5 p-6 bg-surface;
+
+      border-radius: 0.625rem;
+
+      &:before {
+        border-radius: 0.625rem;
+        flex: 1;
+        display: block;
+        content: '';
+        background-image: url("/assets/lending-1.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+      }
+
+      @media (max-width: 768px) {
+        @apply flex-col;
+      }
+    }
+
+  }
+
+  .section-services {
+
+    @apply min-h-screen;
+
+    &__list {
+      @apply grid gap-5 justify-items-center;
+
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+
+    &__item {
+      @apply bg-surface text-center p-2;
+
+      border-radius: 0.625rem;
+
+      h3 {
+        @apply font-bold text-on-surface;
+
+        font-size: 1.25rem;
+      }
+    }
+  }
 
 }

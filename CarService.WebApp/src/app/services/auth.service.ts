@@ -8,7 +8,7 @@ import {UserInfo} from '../models/user-info.type'
 	providedIn: 'root'
 })
 export class AuthService {
-	private _roleId: Subject<number> = new BehaviorSubject(0)
+	private _roleId: Subject<number> = new Subject()
 
 	constructor(private http: HttpClient) {
 		console.log(document.cookie)

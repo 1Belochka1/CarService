@@ -1,17 +1,15 @@
-<form class="form"
-			[formGroup]="requestForm"
-			(ngSubmit)="onSubmit()"
->
-	<h1>Регистрация</h1>
+<form class="form" [formGroup]="requestForm" (ngSubmit)="addWorker()">
+	<h1>{{ title }}</h1>
 	<div class="form__group">
 		<mat-form-field appearance="fill">
 			<mat-label>Почта</mat-label>
-			<input matInput
-						 id="email"
-						 type="text"
-						 formControlName="email"
-						 placeholder="Введите номер телефона"
-			>
+			<input
+				matInput
+				id="email"
+				type="text"
+				formControlName="email"
+				placeholder="Введите номер телефона"
+			/>
 			<mat-error *ngIf="requestForm.get('email')?.hasError('required')">
 				Почта обязательна
 			</mat-error>
@@ -24,12 +22,13 @@
 	<div class="form__group">
 		<mat-form-field appearance="fill">
 			<mat-label>Номер телефона</mat-label>
-			<input matInput
-						 id="phone"
-						 type="text"
-						 formControlName="phone"
-						 placeholder="Введите номер телефона"
-			>
+			<input
+				matInput
+				id="phone"
+				type="text"
+				formControlName="phone"
+				placeholder="Введите номер телефона"
+			/>
 			<mat-error *ngIf="requestForm.get('phone')?.hasError('required')">
 				Номер телефона обязателен
 			</mat-error>
@@ -42,12 +41,13 @@
 	<div class="form__group">
 		<mat-form-field appearance="fill">
 			<mat-label>Имя</mat-label>
-			<input matInput
-						 id="firstName"
-						 type="text"
-						 formControlName="firstName"
-						 placeholder="Введите ваше имя"
-			>
+			<input
+				matInput
+				id="firstName"
+				type="text"
+				formControlName="firstName"
+				placeholder="Введите ваше имя"
+			/>
 			<mat-error *ngIf="requestForm.get('firstName')?.hasError('required')">
 				Имя обязательно
 			</mat-error>
@@ -60,12 +60,13 @@
 	<div class="form__group">
 		<mat-form-field appearance="fill">
 			<mat-label>Фамилия</mat-label>
-			<input matInput
-						 id="lastName"
-						 type="text"
-						 formControlName="lastName"
-						 placeholder="Введите вашу фамилию"
-			>
+			<input
+				matInput
+				id="lastName"
+				type="text"
+				formControlName="lastName"
+				placeholder="Введите вашу фамилию"
+			/>
 			<mat-error *ngIf="requestForm.get('lastName')?.hasError('required')">
 				Фамилия обязательна
 			</mat-error>
@@ -78,36 +79,39 @@
 	<div class="form__group">
 		<mat-form-field appearance="fill">
 			<mat-label>Отчество</mat-label>
-			<input matInput
-						 id="middleName"
-						 type="text"
-						 formControlName="patronymic"
-						 placeholder="Введите ваше отчество"
-			>
+			<input
+				matInput
+				id="middleName"
+				type="text"
+				formControlName="patronymic"
+				placeholder="Введите ваше отчество"
+			/>
 		</mat-form-field>
 	</div>
 
 	<div class="form__group">
 		<mat-form-field appearance="fill">
 			<mat-label>Адрес</mat-label>
-			<input matInput
-						 id="address"
-						 type="text"
-						 formControlName="address"
-						 placeholder="Введите ваш адрес"
-			>
+			<input
+				matInput
+				id="address"
+				type="text"
+				formControlName="address"
+				placeholder="Введите ваш адрес"
+			/>
 		</mat-form-field>
 	</div>
 
 	<div class="form__group">
 		<mat-form-field appearance="fill">
 			<mat-label>Пароль</mat-label>
-			<input matInput
-						 id="password"
-						 type="password"
-						 formControlName="password"
-						 placeholder="Введите пароль"
-			>
+			<input
+				matInput
+				id="password"
+				type="password"
+				formControlName="password"
+				placeholder="Введите пароль"
+			/>
 			<mat-error *ngIf="requestForm.get('password')?.hasError('required')">
 				Пароль обязателен
 			</mat-error>
@@ -120,26 +124,27 @@
 	<div class="form__group">
 		<mat-form-field appearance="fill">
 			<mat-label>Подтверждение пароля</mat-label>
-			<input matInput
-						 id="confirmPassword"
-						 type="password"
-						 formControlName="confirmPassword"
-						 placeholder="Подтвердите пароль"
+			<input
+				matInput
+				id="confirmPassword"
+				type="password"
+				formControlName="confirmPassword"
+				placeholder="Подтвердите пароль"
+			/>
+			<mat-error
+				*ngIf="requestForm.get('confirmPassword')?.hasError('required')"
 			>
-			<mat-error *ngIf="requestForm.get('confirmPassword')?.hasError('required')">
 				Подтверждение пароля обязательно
 			</mat-error>
-			<mat-error *ngIf="requestForm.get('confirmPassword')?.hasError('mismatch')">
+			<mat-error
+				*ngIf="requestForm.get('confirmPassword')?.hasError('mismatch')"
+			>
 				Пароли не совпадают
 			</mat-error>
 		</mat-form-field>
 
-		<button mat-flat-button
-						type="submit"
-						class='form__button '
-		>Отправить
+		<button mat-flat-button type="submit" class="form__button">
+			Отправить
 		</button>
 	</div>
-
-
 </form>

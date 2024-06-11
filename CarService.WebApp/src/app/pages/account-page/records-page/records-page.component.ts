@@ -51,22 +51,14 @@ export class RecordsPageComponent {
 		this.items = this._recordService.getAll()
 	}
 
-	navigateRecord(id: string) {
-		this._router.navigate(['account', 'record', id]).then(
-			() => console.log('navigateRecord success')
-		)
-	}
-
-	addRecord() {
-
-	}
-
 	openModalAddRecord(templateRef: TemplateRef<any>) {
-		this._modalService.open(templateRef, {actionVisible: false})?.subscribe()
+		this._modalService.open(templateRef, {actionVisible: false})?.subscribe((isConfirm) => {
+			if (isConfirm)
+				this.setItems()
+		})
 	}
 
 	submit() {
 		this._modalService.closeModal(true)
-		this.setItems()
 	}
 }

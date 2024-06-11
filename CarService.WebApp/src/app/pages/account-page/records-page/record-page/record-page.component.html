@@ -56,15 +56,18 @@
 			Изменить
 			статус
 		</button>
-		<button *ngIf='(roleId$ | async) == 1'
-						(click)='dialogAddMasterOpen(modalAddMasters)'
-		>Добавить
-			мастера
-		</button>
-		<button *ngIf='(roleId$ | async) == 1'
-						(click)='dialogDeleteConfirmOpen(remove)'
-		>Удалить
-		</button>
+        <ng-container *ngIf='(roleId$ | async) as roleId'>
+            <button *ngIf='roleId == 1'
+                    (click)='dialogAddMasterOpen(modalAddMasters)'
+            >Добавить
+                мастера
+            </button>
+            <button *ngIf='roleId == 1'
+                    (click)='dialogDeleteConfirmOpen(remove)'
+            >Удалить
+            </button>
+        </ng-container>
+
 	</div>
 
 	<div class="masters text-surface">

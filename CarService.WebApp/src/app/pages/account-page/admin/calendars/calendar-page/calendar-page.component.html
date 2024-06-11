@@ -1,83 +1,85 @@
 <ng-container *ngIf='calendar$ | async as calendar'>
-	<b-table [items]='calendar.daysRecords'
-					 selectSortColumn='date'
-					 [sortDescending]='true'
-					 [searchVisible]='false'
-	>
+    <b-table [items]='calendar.daysRecords'
+             selectSortColumn='date'
+             [sortDescending]='true'
+             [searchVisible]='false'
+    >
 
-		<ng-template bTemplate='toolbox'
-								 let-filterFn='filterData'
-		>
+        <ng-template bTemplate='toolbox'
+                     let-filterFn='filterData'
+        >
 
-			<input type='date'
-						 name=''
-						 id=''
-						 class='p-2 bg-surface rounded-[0.625rem]'
-						 (change)='filterFn(convertEvent($event).value.toString())'
-			>
+            <input type='date'
+                   name=''
+                   id=''
+                   class='p-2 bg-surface rounded-[0.625rem]'
+                   (change)='filterFn(convertEvent($event).value.toString())'
+            >
 
 
-			<button class='button'
-							(click)='delete(remove)'
-			>Удалить
-			</button>
+            <button class='button'
+                    (click)='delete(remove)'
+            >Удалить
+            </button>
 
-			<button class='button'
-							(click)='fill(fillT)'
-			>Заполнить расписание
-			</button>
+            <button class='button'
+                    (click)='fill(fillT)'
+            >Заполнить расписание
+            </button>
 
-		</ng-template>
+        </ng-template>
 
-		<ng-template bTemplate='head'
-		>
-			<tr>
-				<th>
-					Дата
-				</th>
-				<th>
-					Начало работы
-				</th>
-				<th>
-					Конец работы
-				</th>
-				<th
-				>
-					Действия
-				</th>
-			</tr>
-		</ng-template>
+        <ng-template bTemplate='head'
+        >
+            <tr>
+                <th>
+                    Дата
+                </th>
+                <th>
+                    Начало работы
+                </th>
+                <th>
+                    Конец работы
+                </th>
+                <th
+                >
+                    Действия
+                </th>
+            </tr>
+        </ng-template>
 
-		<ng-template bTemplate='body'
-								 let-item
-		>
-			<tr (click)='navigate(item.id)'>
-				<td data-name='Дата'>
-					{{ item.date | date: "dd.MM.YYYY" }}
-				</td>
-				<td data-name='Начало работы'>
-					{{ item.startTime }}
-				</td>
-				<td data-name='Конец работы'>
-					{{ item.endTime }}
-				</td>
-				<td data-name="Действия">
-					<button mat-icon-button
-					>
-						<mat-icon>edit</mat-icon>
-					</button>
-					<button mat-icon-button>
-						<mat-icon color="warn">delete</mat-icon>
-					</button>
-				</td>
-			</tr>
-		</ng-template>
-	</b-table>
+        <ng-template bTemplate='body'
+                     let-item
+        >
+            <tr (click)='navigate(item.id)'>
+                <td data-name='Дата'>
+                    {{ item.date | date: "dd.MM.YYYY" }}
+                </td>
+                <td data-name='Начало работы'>
+                    {{ item.startTime }}
+                </td>
+                <td data-name='Конец работы'>
+                    {{ item.endTime }}
+                </td>
+                <td data-name="Действия">
+                    <div>
+                        <button mat-icon-button
+                        >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button>
+                            <mat-icon color="warn">delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </b-table>
 </ng-container>
 
 <ng-template #remove></ng-template>
 <ng-template #fillT>
-	<app-date-picker
-		(subFill)='submitFill($event)'
-	></app-date-picker>
+    <app-date-picker
+            (subFill)='submitFill($event)'
+    ></app-date-picker>
 </ng-template>

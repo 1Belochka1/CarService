@@ -1,19 +1,17 @@
-<app-header-lending class='text-black'></app-header-lending>
-<div class='wrapper'>
-	<div class='days'
-	*ngIf='(days|async) as daysRecord; else notFound'>
-		<div class='day'
-				 *ngFor='let day of daysRecord'
-		>
-			<div class='day__date'>
-				{{ day.date | date: "dd.MM" }}
+<app-header-lending class="text-black"></app-header-lending>
+<div class="wrapper">
+	<div class="days" *ngIf="days | async as daysRecord; else notFound">
+		<div class="day" *ngFor="let day of daysRecord">
+			<div class="day__date">
+				{{ day.date | date : 'dd.MM' }}
 			</div>
 
-			<div class='times'>
-				<div class='time text-center'
-						 *ngFor='let time of day.timeRecords'
-						 (click)='openModal(record,time.id)'
-						 [ngClass]='{"busy": time.isBusy}'
+			<div class="times">
+				<div
+					class="time text-center"
+					*ngFor="let time of day.timeRecords"
+					(click)="openModal(record, time.id)"
+					[ngClass]="{ busy: time.isBusy }"
 				>
 					<div>{{ time.startTime }}</div>
 					<div>{{ time.endTime }}</div>
@@ -22,16 +20,13 @@
 		</div>
 	</div>
 	<ng-template #notFound>
-		<div class='not-found'>
-			К сожалению в данный момент на данную услугу онлайн
-			записи
-			нет. Приносим клубочайшие извинения.
+		<div class="not-found">
+			К сожалению в данный момент на данную услугу онлайн записи нет. Приносим
+			глубочайшие извинения.
 		</div>
 	</ng-template>
 </div>
 
 <ng-template #record>
-	<app-form-time-record
-		(submit)='submit($event)'
-	></app-form-time-record>
+	<app-form-time-record (submit)="submit($event)"></app-form-time-record>
 </ng-template>

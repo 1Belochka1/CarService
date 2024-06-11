@@ -1,7 +1,11 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core'
+import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core'
+import {ToastrService} from "ngx-toastr";
+import {firstValueFrom} from "rxjs";
 import {Priority} from '../../enums/priority.enum'
 import {Status} from '../../enums/status.enum'
 import {AsyncPipe, DatePipe} from '@angular/common'
+import {ModalService} from "../../services/modal.service";
+import {RecordsService} from "../../services/records/records.service";
 import {BTableComponent} from '../b-table/b-table.component'
 import {BTemplateDirective} from '../../direcrives/b-template.directive'
 import {
@@ -13,8 +17,8 @@ import {MatIcon} from '@angular/material/icon'
 import {MatIconButton} from '@angular/material/button'
 
 @Component({
-  selector: 'app-table-records',
-  standalone: true,
+	selector: 'app-table-records',
+	standalone: true,
 	imports: [
 		AsyncPipe,
 		BTableComponent,
@@ -25,8 +29,8 @@ import {MatIconButton} from '@angular/material/button'
 		MatIcon,
 		MatIconButton
 	],
-  templateUrl: './table-records.component.html',
-  styleUrl: './table-records.component.scss'
+	templateUrl: './table-records.component.html',
+	styleUrl: './table-records.component.scss'
 })
 export class TableRecordsComponent {
 
@@ -40,7 +44,9 @@ export class TableRecordsComponent {
 
 	@Output() addClick: EventEmitter<any> = new EventEmitter<any>()
 
-	constructor(private _router: Router) {
+	@Output() update: EventEmitter<any> = new EventEmitter<any>()
+
+	constructor(private _router: Router, private _recordService: RecordsService, private _modalService: ModalService, private _toast: ToastrService) {
 	}
 
 	navigateRecord(id: string) {
@@ -50,5 +56,19 @@ export class TableRecordsComponent {
 
 	onAddClick() {
 		this.addClick.emit()
+	}
+
+	onRemoveClick(temlate: TemplateRef<any>, id: string) {
+		this._modalService.open(temlate, {title: "Вы дейстивтельно хотите удалить заявку?"})
+			?.subscribe((isConfirm) => {
+				if (isConfirm)
+					firstValueFrom(this._recordService.delete(id))
+						.then(() => {
+								this._toast.success("Заявка удалена")
+								this.update.emit()
+							}
+						)
+			})
+
 	}
 }

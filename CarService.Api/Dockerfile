@@ -10,7 +10,7 @@ WORKDIR /src
 COPY ["CarService.Api/CarService.Api.csproj", "CarService.Api/"]
 COPY ["CarService.App/CarService.App.csproj", "CarService.App/"]
 COPY ["CarService.Core/CarService.Core.csproj", "CarService.Core/"]
-COPY ["CarService.Persitence/CarService.Persitence.csproj", "CarService.Persitence/"]
+COPY ["CarService.Infrastructure/CarService.Infrastructure.csproj", "CarService.Infrastructure/"]
 RUN dotnet restore "CarService.Api/CarService.Api.csproj"
 COPY . .
 WORKDIR "/src/CarService.Api"

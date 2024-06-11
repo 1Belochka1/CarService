@@ -1,18 +1,11 @@
-<div class='menu'
-		 [class.minimize]='isMinimize'
->
-	<hr class="line">
+<div class="menu" [class.minimize]="isMinimize">
+	<hr class="line" />
 	<nav class="nav__wrapper">
-		<ul class="nav__list" *ngIf='(roleId$ | async) as
-		roleId'>
+		<ul class="nav__list" *ngIf="roleId$ | async as roleId">
 			<ng-container *ngFor="let item of menuItems">
-				<li *ngIf='roleId <= item.access'
-						(click)="closeMenu()"
-				>
-					<a [routerLink]="item.routerLink"
-						 class="nav__item"
-					>
-						<mat-icon class='nav__icon'>{{ item.icon }}</mat-icon>
+				<li *ngIf="roleId <= item.access" (click)="closeMenu()">
+					<a [routerLink]="item.routerLink" class="nav__item">
+						<mat-icon class="nav__icon">{{ item.icon }}</mat-icon>
 						<div class="nav__title">
 							{{ item.title }}
 						</div>
@@ -20,27 +13,17 @@
 				</li>
 			</ng-container>
 
-			<li (click)="toggleMenu()"
-					class="nav__item"
-			>
-				<mat-icon [class.minimize__icon]='!isMinimize'
-									class='nav__icon'
-				>
+			<li (click)="toggleMenu()" class="nav__item">
+				<mat-icon [class.minimize__icon]="!isMinimize" class="nav__icon">
 					keyboard_arrow_right
 				</mat-icon>
-				<div class="nav__title">
-					Свернуть
-				</div>
+				<div class="nav__title">Свернуть</div>
 			</li>
-			<li class='nav__item'>
-				<button (click)='logout()'>
-					<mat-icon class='nav__icon'>
-						logout
-					</mat-icon>
+			<li class="nav__item">
+				<button (click)="logout()">
+					<mat-icon class="nav__icon"> logout </mat-icon>
 				</button>
-				<div class="nav__title">
-					Выйти
-				</div>
+				<div class="nav__title">Выйти</div>
 			</li>
 		</ul>
 	</nav>

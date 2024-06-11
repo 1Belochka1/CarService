@@ -1,17 +1,22 @@
-import {inject, Injectable, OnDestroy} from '@angular/core'
 import {HttpClient} from '@angular/common/http'
+import {inject, Injectable, OnDestroy} from '@angular/core'
+import {
+	HubConnection,
+	HubConnectionBuilder,
+	LogLevel,
+} from '@microsoft/signalr'
 import {BehaviorSubject, firstValueFrom} from 'rxjs'
 import {DayRecord} from '../../models/DayRecord.type'
-import {apiHubUrls, apiUrls} from '../apiUrl'
-import {HubConnection, HubConnectionBuilder, LogLevel} from '@microsoft/signalr'
 import {TimeRecord} from '../../models/TimeRecord.type'
+import {apiHubUrls, apiUrls} from '../apiUrl'
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class DayRecordService implements OnDestroy {
-
-	private _dayRecords: BehaviorSubject<DayRecord[]> = new BehaviorSubject<DayRecord[]>([])
+	private _dayRecords: BehaviorSubject<DayRecord[]> = new BehaviorSubject<
+		DayRecord[]
+	>([])
 
 	private _http = inject(HttpClient)
 
@@ -23,16 +28,16 @@ export class DayRecordService implements OnDestroy {
 	}
 
 	createHub() {
-		this._hubConnection =
-			new HubConnectionBuilder()
+		this._hubConnection = new HubConnectionBuilder()
 			.withUrl(apiHubUrls.timeRecords, {
-				withCredentials: true
+				withCredentials: true,
 			})
 			.withAutomaticReconnect()
-			.withServerTimeout(60000)
-			.withKeepAliveInterval(60000)
 			.configureLogging(LogLevel.Debug)
 			.build()
+
+		this._hubConnection.keepAliveIntervalInMilliseconds = 60000
+		this._hubConnection.serverTimeoutInMilliseconds = 60000
 	}
 
 	startConnection() {
@@ -40,19 +45,16 @@ export class DayRecordService implements OnDestroy {
 	}
 
 	updateRecord(id: string, phone: string, name: string) {
-		this._hubConnection.send('RecordTimeRecord',
-			id,
-			true,
-			phone,
-			name
-		).catch(err => console.error(err))
+		this._hubConnection
+			.send('RecordTimeRecord', id, true, phone, name)
+			.catch(err => console.error(err))
 	}
 
 	listenUpdateRecord() {
 		this._hubConnection.on('UpdateTimeRecord', (data: TimeRecord) => {
 			console.log(data)
-			this._dayRecords.value.forEach((day) => {
-				day.timeRecords.forEach((time) => {
+			this._dayRecords.value.forEach(day => {
+				day.timeRecords.forEach(time => {
 					if (time.id === data.id) {
 						time.isBusy = data.isBusy
 					}
@@ -70,7 +72,9 @@ export class DayRecordService implements OnDestroy {
 
 		this._selectTimeId = timeRecordId
 
-		this._hubConnection.invoke('BookTimeRecord', timeRecordId).catch(err => console.error(err))
+		this._hubConnection
+			.invoke('BookTimeRecord', timeRecordId)
+			.catch(err => console.error(err))
 	}
 
 	cancelBooking() {
@@ -78,8 +82,11 @@ export class DayRecordService implements OnDestroy {
 	}
 
 	getDayRecordLending(calendarId: string): void {
-		firstValueFrom(this._http.get<DayRecord[]>(apiUrls.dayRecords.getByCalendarId + calendarId))
-		.then(dayRecords => {
+		firstValueFrom(
+			this._http.get<DayRecord[]>(
+				apiUrls.dayRecords.getByCalendarId + calendarId
+			)
+		).then(dayRecords => {
 			this._dayRecords.next(dayRecords)
 		})
 	}
@@ -88,9 +95,34 @@ export class DayRecordService implements OnDestroy {
 		return this._dayRecords.asObservable()
 	}
 
+	getDayRecord(id: string) {
+		return this._http.get<DayRecord>(apiUrls.dayRecords.getById + id, {withCredentials: true})
+	}
+
 	getTimeRecord(id: string) {
-		return this._http.get<TimeRecord[]>(apiUrls.timeRecords.getAllByDayRecordId + id, {
+		return this._http.get<TimeRecord[]>(
+			apiUrls.timeRecords.getAllByDayRecordId + id,
+			{
+				withCredentials: true,
+			}
+		)
+	}
+
+	deleteDayRecord(id: string) {
+		return this._http.delete(apiUrls.dayRecords.delete + id, {
 			withCredentials: true
+		})
+	}
+
+	deleteTimeRecord(id: string) {
+		return this._http.delete(apiUrls.timeRecords.delete + id, {
+			withCredentials: true
+		})
+	}
+
+	onDeleteTimeRecord() {
+		this._hubConnection.on("deletetimerecord", () => {
+			console.log("delete")
 		})
 	}
 
@@ -105,22 +137,25 @@ export class DayRecordService implements OnDestroy {
 		duration: number
 	) {
 		console.log(id)
-		return this._http.post(apiUrls.dayRecords.fill, {
-			CalendarId: id,
-			StartDate: startDate,
-			EndDate: endDate,
-			StartTime: timeStart,
-			EndTime: timeEnd,
-			BreakStartTime: breakStartTime,
-			BreakEndTime: breakEndTime,
-			Duration: duration,
-			Offset: 0
-		}, {withCredentials: true})
+		return this._http.post(
+			apiUrls.dayRecords.fill,
+			{
+				CalendarId: id,
+				StartDate: startDate,
+				EndDate: endDate,
+				StartTime: timeStart,
+				EndTime: timeEnd,
+				BreakStartTime: breakStartTime,
+				BreakEndTime: breakEndTime,
+				Duration: duration,
+				Offset: 0,
+			},
+			{withCredentials: true}
+		)
 	}
 
 	ngOnDestroy(): void {
 		if (this._hubConnection)
 			this._hubConnection.stop().catch(e => console.error(e))
 	}
-
 }

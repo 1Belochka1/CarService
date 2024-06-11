@@ -1,13 +1,12 @@
 <app-table-workers
-	[items]='items$ | async'
-	[addButton]='true'
-	(addClick)='openModalAddWorker(addWorkerTemplate)'
+	[items]="items$ | async"
+	[addButton]="true"
+	(addClick)="openModalAddWorker(addWorkerTemplate)"
 ></app-table-workers>
 
 <ng-template #addWorkerTemplate>
-
 	<app-form-register
-		(submit)='addWorker($event)'
+		title="Зарегистрировать сотрудника"
+		(submit)="addWorker()"
 	></app-form-register>
-
 </ng-template>

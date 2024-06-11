@@ -1,64 +1,65 @@
 <b-table [items]="items$ | async"
-				 [addButton]='true'
-				 (addButtonClick)='addClick(addService)'
+         [addButton]='true'
+         (addButtonClick)='addClick(addService)'
 >
-	<ng-template bTemplate="head"
-							 let-sortFn="sortFn"
-							 let-sortProp="sortProp"
-							 let-sortDirection='sortDirection'
-	>
-		<tr>
-			<th appTableSortHeaderIcon
-					[isActive]='sortProp == "name"'
-					[sortDirection]='sortDirection ? "desc" : "asc"'
-					(click)='sortFn("name")'
-			>
-				Название
-			</th>
-			<th appTableSortHeaderIcon
-					[isActive]='sortProp == "description"'
-					[sortDirection]='sortDirection ? "desc" : "asc"'
-					(click)='sortFn("description")'
-			>
-				Описание
-			</th>
-			<th
-			>
-				Действия
-			</th>
-		</tr>
-	</ng-template>
-	<ng-template bTemplate="body"
-							 let-item
-	>
-		<tr>
-			<td data-name="Название"
-					(click)='navigate(item.id)'
-			>
-				{{ item.name }}
-			</td>
-			<td data-name="Описание"
-					(click)='navigate(item.id)'
-			>
-				{{ item.description }}
-			</td>
-			<td data-name="Действия">
-				<button mat-icon-button
-								(click)='navigate(item.id)'
-				>
-					<mat-icon>edit</mat-icon>
-				</button>
-				<button mat-icon-button >
-					<mat-icon color="warn">delete</mat-icon>
-				</button>
-
-			</td>
-		</tr>
-	</ng-template>
+    <ng-template bTemplate="head"
+                 let-sortFn="sortFn"
+                 let-sortProp="sortProp"
+                 let-sortDirection='sortDirection'
+    >
+        <tr>
+            <th appTableSortHeaderIcon
+                [isActive]='sortProp == "name"'
+                [sortDirection]='sortDirection ? "desc" : "asc"'
+                (click)='sortFn("name")'
+            >
+                Название
+            </th>
+            <th appTableSortHeaderIcon
+                [isActive]='sortProp == "description"'
+                [sortDirection]='sortDirection ? "desc" : "asc"'
+                (click)='sortFn("description")'
+            >
+                Описание
+            </th>
+            <th
+            >
+                Действия
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template bTemplate="body"
+                 let-item
+    >
+        <tr>
+            <td data-name="Название"
+                (click)='navigate(item.id)'
+            >
+                {{ item.name }}
+            </td>
+            <td data-name="Описание"
+                (click)='navigate(item.id)'
+            >
+                {{ item.description }}
+            </td>
+            <td data-name="Действия">
+                <div>
+                    <button mat-icon-button
+                            (click)='navigate(item.id)'
+                    >
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon color="warn">delete</mat-icon>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
 </b-table>
 
 <ng-template #addService>
-	<app-form-add-service
-		(submit)='addSubmit($event)'
-	></app-form-add-service>
+    <app-form-add-service
+            (submit)='addSubmit($event)'
+    ></app-form-add-service>
 </ng-template>

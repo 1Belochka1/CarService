@@ -1,64 +1,66 @@
 <div class="contents">
-	<b-table
-		[items]="items$ | async"
-	>
-		<!-- TODO: добавить сортировку -->
-		<ng-template bTemplate="head">
-			<tr>
-				<th>ФИО</th>
-				<th>Почта</th>
-				<th>Номер</th>
-				<th>Адрес</th>
-				<th>Последняя заявка (Дата)</th>
-				<th>Зарегистрирован</th>
-				<th>Действия</th>
-			</tr>
-		</ng-template>
-		<ng-template bTemplate="body"
-								 let-item
-		>
-			<tr>
-				<td data-name="ФИО">
-					{{ item.fullname }}
-				</td>
-				<td
-					data-name="Почта"
-				>
-					{{ item.email }}
-				</td>
-				<td class="tablet:max-w-full max-w-32"
-						data-name="Номер"
-				>
-					{{ item.phone }}
-				</td>
-				<td class="break-all"
-						data-name="Адрес"
-				>
-					{{ item.address | notSpecified }}
-				</td>
-				<td data-name="Последняя заявка (Дата)">
-					{{
-						item.lastRecordTime
-							? (item.lastRecordTime | date)
-							: "Заявки отсутствуют"
-					}}
-				</td>
-				<td data-name="Зарегистрирован">
-					{{
-						item.isAuth ? "Да" : "Нет"
-					}}
-				</td>
-				<td data-name="Действия">
-					<button mat-icon-button
+    <b-table
+            [items]="items$ | async"
+    >
+        <!-- TODO: добавить сортировку -->
+        <ng-template bTemplate="head">
+            <tr>
+                <th>ФИО</th>
+                <th>Почта</th>
+                <th>Номер</th>
+                <th>Адрес</th>
+                <th>Последняя заявка (Дата)</th>
+                <th>Зарегистрирован</th>
+                <th>Действия</th>
+            </tr>
+        </ng-template>
+        <ng-template bTemplate="body"
+                     let-item
+        >
+            <tr>
+                <td data-name="ФИО">
+                    {{ item.fullname }}
+                </td>
+                <td
+                        data-name="Почта"
+                >
+                    {{ item.email }}
+                </td>
+                <td class="tablet:max-w-full max-w-32"
+                    data-name="Номер"
+                >
+                    {{ item.phone }}
+                </td>
+                <td class="break-all"
+                    data-name="Адрес"
+                >
+                    {{ item.address | notSpecified }}
+                </td>
+                <td data-name="Последняя заявка (Дата)">
+                    {{
+                        item.lastRecordTime
+                            ? (item.lastRecordTime | date)
+                            : "Заявки отсутствуют"
+                    }}
+                </td>
+                <td data-name="Зарегистрирован">
+                    {{
+                        item.isAuth ? "Да" : "Нет"
+                    }}
+                </td>
+                <td data-name="Действия">
+                    <div>
+                        <button mat-icon-button
 
-					>
-						<mat-icon>edit</mat-icon>
-					</button>
-					<button mat-icon-button>
-						<mat-icon color="warn">delete</mat-icon>
-					</button>
-				</td>
-			</tr>
-		</ng-template>
-	</b-table>
+                        >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button>
+                            <mat-icon color="warn">delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </b-table>
 </div>

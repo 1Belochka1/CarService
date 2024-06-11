@@ -33,21 +33,32 @@ export class RecordsService {
 		name?: string,
 		phone?: string,
 	) {
-		const req = {
-			email,
-			phone,
-			firstName: name,
-			carInfo,
-			description,
+		if (name && phone) {
+			const req = {
+				email,
+				phone,
+				firstName: name,
+				carInfo,
+				description
+			}
+			return this.httpClient.post(apiUrls.records.createWithOutAuth, req)
+
+		} else {
+			const req = {
+				email,
+				carInfo,
+				description
+			}
+			return this.httpClient.post(apiUrls.records.create, req)
 		}
 
-		return this.httpClient.post(apiUrls.records.createWithOutAuth, req)
+
 	}
 
 	addMaster(id: string, masterId: string) {
 		return this.httpClient
-							 .post(apiUrls.records.addMaster + id, [masterId],
-								 {withCredentials: true})
+			.post(apiUrls.records.addMaster + id, [masterId],
+				{withCredentials: true})
 	}
 
 	getCompletedByMasterId(masterId: string) {
@@ -71,4 +82,6 @@ export class RecordsService {
 	delete(id: string) {
 		return this.httpClient.delete(apiUrls.records.delete + id, {withCredentials: true})
 	}
+
+
 }

@@ -2,6 +2,7 @@
 	[addButton]='true'
 	[items]='items | async'
 	(addClick)='openModalAddRecord(addRecord)'
+    (update)="setItems()"
 ></app-table-records>
 
 <ng-template #addRecord>

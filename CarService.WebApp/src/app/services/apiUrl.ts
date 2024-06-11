@@ -1,4 +1,4 @@
-import {environment} from '../../environments/environment'
+import { environment } from '../../environments/environment'
 
 const API_URL = environment.api
 
@@ -16,7 +16,7 @@ export const apiUrls = {
 		register: `${USER_URL}/register`,
 		registerMaster: `${USER_URL}/register/master`,
 		getByCookie: `${USER_URL}/get/ByCookie`,
-		getIsAuth: `${USER_URL}/get/isAuth`,
+		getRoleId: `${USER_URL}/get/roleid`,
 		getClients: `${USER_URL}/get/clients`,
 		getWorkers: `${USER_URL}/get/workers`,
 		getWorkersAutocomplete: `${USER_URL}/get/workers/autocomplete`,
@@ -34,8 +34,8 @@ export const apiUrls = {
 		getAll: `${RECORD_URL}/get/All`,
 		getCompletedByMasterId: `${RECORD_URL}/get/CompletedByMasterId/`,
 		getActiveByMasterId: `${RECORD_URL}/get/ActiveByMasterId/`,
-		addMaster:  `${RECORD_URL}/update/addmaster/`,
-		delete:  `${RECORD_URL}/delete/`,
+		addMaster: `${RECORD_URL}/update/addmaster/`,
+		delete: `${RECORD_URL}/delete/`,
 	},
 	calendars: {
 		create: `${CALENDAR_URL}/create`,
@@ -47,12 +47,14 @@ export const apiUrls = {
 	dayRecords: {
 		fill: `${DAYRECORD_URL}/Fill`,
 		getByCalendarId: `${DAYRECORD_URL}/Get/ByCalendarId/`,
-		// getById: `${DAYRECORD_URL}/get/`,
+		getById: `${DAYRECORD_URL}/get/`,
 		// update: `${DAYRECORD_URL}/update`,
-		// delete: `${DAYRECORD_URL}/delete/`,
+		delete: `${DAYRECORD_URL}/delete/`,
 	},
 	timeRecords: {
 		getAllByDayRecordId: `${TIMERECORD_URL}/Get/ByRecordId/`,
+		delete: `${TIMERECORD_URL}/delete/`,
+
 	},
 	services: {
 		getAll: `${SERVICE_URL}/get/all`,
@@ -67,12 +69,12 @@ export const apiUrls = {
 		getById: `${API_URL}images/get/`,
 		upload: `${API_URL}images/upload`,
 		update: `${API_URL}images/update`,
-		delete: `${API_URL}images/delete`
-	}
+		delete: `${API_URL}images/delete`,
+	},
 }
 
 export const apiHubUrls = {
 	dayRecords: API_URL + 'hubs' + '/dayrecords',
 	timeRecords: API_URL + 'hubs' + '/timerecords',
-	notify: API_URL + 'hubs' + '/notify'
+	notify: API_URL + 'hubs' + '/notify',
 }

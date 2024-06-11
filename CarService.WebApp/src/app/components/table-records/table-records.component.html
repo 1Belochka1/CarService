@@ -52,7 +52,7 @@
 	<ng-template bTemplate="body"
 							 let-item
 	>
-		<tr (click)="navigateRecord(item.id)">
+		<tr >
 			<td data-name="Описание">
 				{{
 					item.description
@@ -86,15 +86,19 @@
 				</span>
 			</td>
 			<td data-name="Действия">
-				<button mat-icon-button
-				>
-					<mat-icon>edit</mat-icon>
-				</button>
-				<button mat-icon-button >
-					<mat-icon color="warn">delete</mat-icon>
-				</button>
-
+                <div>
+                    <button mat-icon-button
+                            (click)="navigateRecord(item.id)"
+                    >
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="onRemoveClick(remove, item.id)">
+                        <mat-icon color="warn">delete</mat-icon>
+                    </button>
+                </div>
 			</td>
 		</tr>
 	</ng-template>
 </b-table>
+<ng-template #remove>
+</ng-template>

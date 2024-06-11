@@ -1,12 +1,17 @@
-import {AfterContentInit, Component, inject} from '@angular/core'
-import {menuItems} from './menu.data'
-import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common'
-import {SvgIconComponent} from 'angular-svg-icon'
-import {Router, RouterLink} from '@angular/router'
-import {TitleService} from '../../services/title.service'
-import {AuthService} from '../../services/auth.service'
-import {MatIcon} from '@angular/material/icon'
-import {firstValueFrom, Observable} from 'rxjs'
+import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common'
+import {
+	AfterContentInit,
+	ChangeDetectorRef,
+	Component,
+	inject,
+} from '@angular/core'
+import { MatIcon } from '@angular/material/icon'
+import { Router, RouterLink } from '@angular/router'
+import { SvgIconComponent } from 'angular-svg-icon'
+import { Observable, firstValueFrom, tap } from 'rxjs'
+import { AuthService } from '../../services/auth.service'
+import { TitleService } from '../../services/title.service'
+import { menuItems } from './menu.data'
 
 @Component({
 	selector: 'app-menu-account',
@@ -18,13 +23,12 @@ import {firstValueFrom, Observable} from 'rxjs'
 		NgClass,
 		NgIf,
 		MatIcon,
-		AsyncPipe
+		AsyncPipe,
 	],
 	templateUrl: './menu-account.component.html',
-	styleUrl: './menu-account.component.scss'
+	styleUrl: './menu-account.component.scss',
 })
 export class MenuAccountComponent implements AfterContentInit {
-
 	roleId$: Observable<number>
 
 	title = inject(TitleService).getTitle()
@@ -33,13 +37,20 @@ export class MenuAccountComponent implements AfterContentInit {
 
 	protected readonly menuItems = menuItems
 
-	constructor(private _authService: AuthService, private _router: Router) {
-
+	constructor(
+		private _authService: AuthService,
+		private _router: Router,
+		private _cd: ChangeDetectorRef
+	) {
+		this.roleId$ = this._authService.getRoleId().pipe(
+			tap(id => {
+				this._cd.detectChanges()
+				console.log(id)
+			})
+		)
 	}
 
-	ngAfterContentInit(): void {
-		this.roleId$ = this._authService.getRoleId()
-	}
+	ngAfterContentInit(): void {}
 
 	toggleMenu() {
 		this.isMinimize = !this.isMinimize
@@ -52,8 +63,7 @@ export class MenuAccountComponent implements AfterContentInit {
 	}
 
 	logout() {
-		firstValueFrom(this._authService.logout()).then
-		(() => {
+		firstValueFrom(this._authService.logout()).then(() => {
 			this._router.navigate(['/lending'])
 		})
 	}

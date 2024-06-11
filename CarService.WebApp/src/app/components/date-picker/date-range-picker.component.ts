@@ -77,9 +77,8 @@ export class DateRangePickerComponent {
 			const startDate = control.get('startDate')?.value
 			const endDate = control.get('endDate')?.value
 			const today = new Date()
-			const tomorrow = new Date(today.setDate(today.getDate() + 1))
 
-			if (startDate && new Date(startDate) < tomorrow) {
+			if (startDate && new Date(startDate) < today) {
 				return {startDateInvalid: true}
 			}
 

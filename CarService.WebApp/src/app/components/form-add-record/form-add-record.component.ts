@@ -1,19 +1,20 @@
-import {Component, EventEmitter, ViewEncapsulation} from '@angular/core'
+import { NgForOf, NgIf } from '@angular/common'
+import {Component, EventEmitter, Output} from '@angular/core'
 import {
 	FormBuilder,
 	FormGroup,
 	ReactiveFormsModule,
-	Validators
+	Validators,
 } from '@angular/forms'
-import {NgForOf, NgIf} from '@angular/common'
-import {IItem, SelectComponent} from '../select/select.component'
-import {Priority} from '../../enums/priority.enum'
-import {RecordsService} from '../../services/records/records.service'
-import {firstValueFrom} from 'rxjs'
-import {AuthService} from '../../services/auth.service'
-import {ToastrService} from 'ngx-toastr'
-import {MatError, MatFormField, MatLabel} from '@angular/material/form-field'
-import {MatInput} from '@angular/material/input'
+import {MatButton} from "@angular/material/button";
+import { MatError, MatFormField, MatLabel } from '@angular/material/form-field'
+import { MatInput } from '@angular/material/input'
+import { ToastrService } from 'ngx-toastr'
+import { firstValueFrom } from 'rxjs'
+import { Priority } from '../../enums/priority.enum'
+import { AuthService } from '../../services/auth.service'
+import { RecordsService } from '../../services/records/records.service'
+import { IItem, SelectComponent } from '../select/select.component'
 
 @Component({
 	selector: 'app-form-add-record',
@@ -26,15 +27,14 @@ import {MatInput} from '@angular/material/input'
 		MatError,
 		MatLabel,
 		MatFormField,
-		MatInput
+		MatInput,
+		MatButton,
 	],
 	templateUrl: './form-add-record.component.html',
 	styleUrl: './form-add-record.component.scss',
-	encapsulation: ViewEncapsulation.None
 })
 export class FormAddRecordComponent {
-
-	submit: EventEmitter<any> = new EventEmitter<any>()
+	@Output() submit: EventEmitter<any> = new EventEmitter<any>()
 
 	requestForm: FormGroup
 
@@ -43,31 +43,32 @@ export class FormAddRecordComponent {
 	priorities: IItem<Priority>[] = [
 		{
 			value: Priority.Низкий,
-			name: Priority[Priority.Низкий]
+			name: Priority[Priority.Низкий],
 		},
 		{
 			value: Priority.Средний,
-			name: Priority[Priority.Средний]
+			name: Priority[Priority.Средний],
 		},
 		{
 			value: Priority.Высокий,
-			name: Priority[Priority.Высокий]
+			name: Priority[Priority.Высокий],
 		},
 		{
 			value: Priority['Очень высокий'],
-			name: Priority[Priority['Очень высокий']]
+			name: Priority[Priority['Очень высокий']],
 		},
 	]
 
-	constructor(private fb: FormBuilder,
-							private _recordService: RecordsService,
-							private _authService: AuthService,
-							private _toastr: ToastrService
+	constructor(
+		private fb: FormBuilder,
+		private _recordService: RecordsService,
+		private _authService: AuthService,
+		private _toastr: ToastrService
 	) {
-		firstValueFrom(_authService.getByCookie()).then((user) => {
+		firstValueFrom(_authService.getByCookie()).then(user => {
 			if (user) {
 				console.log(user)
-				if (user.userAuth.roleId == 1) {
+				if (user.userAuth.roleId != 3) {
 					this.isAuth = false
 					this.setForUnAuth()
 				} else {
@@ -79,7 +80,6 @@ export class FormAddRecordComponent {
 			}
 		})
 
-
 		console.log(this.priorities)
 	}
 
@@ -90,7 +90,7 @@ export class FormAddRecordComponent {
 			carDescription: ['', [Validators.minLength(5)]],
 		})
 
-		this.requestForm.patchValue({email: email})
+		this.requestForm.patchValue({ email: email })
 	}
 
 	setForUnAuth() {
@@ -105,18 +105,18 @@ export class FormAddRecordComponent {
 
 	onSubmit() {
 		if (this.requestForm.valid) {
-			firstValueFrom(this._recordService.create(
-				this.requestForm.get('email')?.value,
-				this.requestForm.get('problemDescription')?.value,
-				this.requestForm.get('carDescription')?.value,
-				this.requestForm.get('name')?.value,
-				this.requestForm.get('phone')?.value,
-			)).then(() => {
+			firstValueFrom(
+				this._recordService.create(
+					this.requestForm.get('email')?.value,
+					this.requestForm.get('problemDescription')?.value,
+					this.requestForm.get('carDescription')?.value,
+					this.requestForm.get('name')?.value,
+					this.requestForm.get('phone')?.value
+				)
+			).then(() => {
 				this.submit.emit()
 				this._toastr.success('Заявка успешно создана')
 			})
 		}
 	}
-
-
 }

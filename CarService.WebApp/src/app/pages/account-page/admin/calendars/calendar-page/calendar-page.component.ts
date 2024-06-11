@@ -88,8 +88,11 @@ export class CalendarPageComponent {
 
 		this._id = id
 
-		this.calendar$ = this._calendarRecordService.getDayRecordsByCalendarId(id)
+		this.setItem()
+	}
 
+	setItem() {
+		this.calendar$ = this._calendarRecordService.getDayRecordsByCalendarId(this._id)
 	}
 
 	navigate(id: string) {
@@ -132,7 +135,8 @@ export class CalendarPageComponent {
 			event.breakEndTime,
 			event.duration
 		)).then(x => {
-			console.log(x)
+			this._modalService.closeModal(true)
+			this
 		})
 	}
 }

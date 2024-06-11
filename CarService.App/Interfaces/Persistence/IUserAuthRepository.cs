@@ -17,4 +17,7 @@ public interface IUserAuthRepository
 		ICollection<Guid> ids);
 
 	Task<UserAuth?> GetByEmailAsync(string email);
+
+	Task<int> GetRoleIdAsync(Guid userId);
+	Task UpdateAsync(UserAuth userAuth);
 }

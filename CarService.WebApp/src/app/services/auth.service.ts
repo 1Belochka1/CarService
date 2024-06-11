@@ -1,8 +1,8 @@
-import {HttpClient} from '@angular/common/http'
-import {Injectable} from '@angular/core'
-import {BehaviorSubject, catchError, firstValueFrom, map, of, Subject, tap} from 'rxjs'
-import {UserInfo} from '../models/user-info.type'
-import {apiUrls} from './apiUrl'
+import { HttpClient } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { BehaviorSubject, catchError, firstValueFrom, map, of, tap } from 'rxjs'
+import { UserInfo } from '../models/user-info.type'
+import { apiUrls } from './apiUrl'
 
 @Injectable({
 	providedIn: 'root',
@@ -21,7 +21,7 @@ export class AuthService {
 				email,
 				password,
 			},
-			{withCredentials: true}
+			{ withCredentials: true }
 		)
 	}
 
@@ -47,9 +47,17 @@ export class AuthService {
 
 		return this.http.post(
 			isMaster ? apiUrls.users.registerMaster : apiUrls.users.register,
-			req,
 			{
-				withCredentials: true
+				Email: email,
+				LastName: lastName,
+				FirstName: firstName,
+				Patronymic: patronymic,
+				Address: address,
+				Phone: phone,
+				Password: password,
+			},
+			{
+				withCredentials: true,
 			}
 		)
 	}
@@ -62,18 +70,20 @@ export class AuthService {
 
 	public logout() {
 		return this.http
-			.get(apiUrls.users.logout, {withCredentials: true})
+			.get(apiUrls.users.logout, { withCredentials: true })
 			.pipe(catchError(() => of(false)))
 	}
 
 	public getRoleId() {
 		return this.http
-			.get<number>(apiUrls.users.getRoleId, {withCredentials: true})
+			.get<number>(apiUrls.users.getRoleId, { withCredentials: true })
 			.pipe(map(roleId => (roleId == 0 ? 1 : roleId)))
 			.pipe(tap(roleId => this._roleId.next(roleId)))
 	}
 
 	public getRoleId$() {
-		return this._roleId.asObservable().pipe(map(roleId => (roleId == 0 ? 1 : roleId)))
+		return this._roleId
+			.asObservable()
+			.pipe(map(roleId => (roleId == 0 ? 1 : roleId)))
 	}
 }

@@ -3,8 +3,10 @@ using CarService.Api;
 using CarService.Api.Hubs;
 using CarService.App;
 using CarService.Infrastructure;
+using CarService.Infrastructure.Persistence;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,14 +23,16 @@ builder.Services.AddControllers()
 				ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(o =>
-{
-	o.AddSignalRSwaggerGen();
-});
+builder.Services.AddSwaggerGen(o => { o.AddSignalRSwaggerGen(); });
 
 builder.Services.AddCors();
 
 var app = builder.Build();
+
+// var bd = app.Services
+// 	.GetRequiredService<CarServiceDbContext>();
+
+// await bd.Database.MigrateAsync();
 
 if (app.Environment.IsDevelopment())
 {

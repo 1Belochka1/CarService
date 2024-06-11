@@ -15,15 +15,15 @@ namespace CarService.Api.Controllers;
 public class RecordsController : ControllerBase
 {
 	private readonly RecordsService _recordsService;
-	private readonly IHubContext<NotifyHub> _hubContext;
+	private readonly IHubContext<NotifyHub> _hubNotifyContext;
 
 	public RecordsController(
 		RecordsService recordsService,
 		IHubContext<NotifyHub>
-			hubContext)
+			hubNotifyContext)
 	{
 		_recordsService = recordsService;
-		_hubContext = hubContext;
+		_hubNotifyContext = hubNotifyContext;
 	}
 
 	[HttpPost("Create/WithoutUserAuth")]
@@ -44,6 +44,9 @@ public class RecordsController : ControllerBase
 		if (result.IsFailure)
 			return BadRequest(result.Error);
 
+		await _hubNotifyContext.Clients.Group("admin")
+			.SendAsync("NewRequest", "Пришла новая заявка");
+
 		return Ok(result.Value);
 	}
 
@@ -55,12 +58,14 @@ public class RecordsController : ControllerBase
 			await _recordsService.CreateRequestAsync(
 				request.Email,
 				request.CarInfo,
-				request.Description,
-				request.DayRecordsId
+				request.Description, null
 			);
 
 		if (result.IsFailure)
 			return BadRequest(result.Error);
+
+		await _hubNotifyContext.Clients.Group("admin")
+			.SendAsync("NewRequest", "Пришла новая заявка");
 
 		return Ok(result.Value);
 	}
@@ -91,7 +96,7 @@ public class RecordsController : ControllerBase
 
 		foreach (var mastersId in mastersIds)
 		{
-			await _hubContext.Clients.User(mastersId.ToString())
+			await _hubNotifyContext.Clients.User(mastersId.ToString())
 				.SendCoreAsync("NewRequestForYou", [id]);
 		}
 
@@ -281,6 +286,28 @@ public class RecordsController : ControllerBase
 		return Ok(result);
 	}
 
+	[HttpGet(
+		"DayRecords/Get/{id}")]
+	public async Task<IActionResult>
+		GetById(Guid id)
+	{
+		var result = await _recordsService
+			.GetByIdAsync(id);
+
+		return Ok(result);
+	}
+	
+	[HttpGet(
+		"DayRecords/Delete/{id}")]
+	public async Task<IActionResult>
+		DeleteDayRecord(Guid id)
+	{
+		await _recordsService
+			.DeleteDayRecord(id);
+
+		return Ok();
+	}
+
 	[Authorize]
 	[HttpGet("TimeRecords/Get/ByRecordId/{id}")]
 	public async Task<IActionResult> GetTimeRecordsByRecordId(
@@ -308,7 +335,7 @@ public class RecordsController : ControllerBase
 		if (result.IsFailure)
 			return BadRequest(result.Error);
 
-		await _hubContext.Clients.All.SendCoreAsync(
+		await _hubNotifyContext.Clients.All.SendCoreAsync(
 			"UpdateTimeRecord",
 			[result.Value]);
 
@@ -326,7 +353,7 @@ public class RecordsController : ControllerBase
 		if (result.IsFailure)
 			return BadRequest(result.Error);
 
-		await _hubContext.Clients.All.SendCoreAsync(
+		await _hubNotifyContext.Clients.All.SendCoreAsync(
 			"DeleteTimeRecord",
 			[id]);
 

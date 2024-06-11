@@ -127,6 +127,7 @@ public class RecordsService
 		var recordId = await _requestRepository.CreateAsync(
 			record.Value);
 
+
 		// await _emailService.SendEmail(new EmailDto()
 		// {
 		// 	To = user.Email,
@@ -206,7 +207,6 @@ public class RecordsService
 
 		await _requestRepository.AddMasters(recordId, masters);
 	}
-
 
 	public async Task DeleteRequestAsync(Guid id)
 	{
@@ -378,8 +378,12 @@ public class RecordsService
 	}
 
 	public async Task<Result<TimeRecord>>
-		UpdateTimeRecordAsync(Guid id, bool isBusy,
-			string? email, string? phone, string? name)
+		UpdateTimeRecordAsync(
+			Guid id,
+			bool isBusy,
+			string? email,
+			string? phone,
+			string? name)
 	{
 		var timeRecord = await _timeRecordsRepository
 			.GetById(id);
@@ -433,8 +437,21 @@ public class RecordsService
 		if (timeRecord == null)
 			return Result.Failure("Запись не найдена");
 
+
 		await _timeRecordsRepository.Delete(timeRecord.Id);
 
 		return Result.Success();
+	}
+
+	public async Task DeleteDayRecord(Guid id)
+	{
+		await _dayRecordsRepository
+			.Delete(id);
+	}
+
+	public async Task<DayRecord?> GetByIdAsync(Guid id)
+	{
+		return await _dayRecordsRepository
+			.GetById(id);
 	}
 }

@@ -76,4 +76,11 @@ public class DayRecordsRepository : IDayRecordsRepository
 
 		return days;
 	}
+
+	public async Task Delete(Guid id)
+	{
+		await _context.DaysRecords
+			.Where(x => x.Id == id)
+			.ExecuteDeleteAsync();
+	}
 }

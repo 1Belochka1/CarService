@@ -35,7 +35,7 @@ public class TimeRecordsRepository : ITimeRecordsRepository
 
 	public async Task<TimeRecord?> GetById(Guid id)
 	{
-		return await _context.TimesRecords.FirstOrDefaultAsync(
+		return await _context.TimesRecords.Include(x => x.Client).FirstOrDefaultAsync(
 			x => x.Id == id);
 	}
 

@@ -11,8 +11,13 @@ public class UserAuth
 	{
 	}
 
-	private UserAuth(Guid id, Guid usesInfoId, string emial,
-		string passwordHash, DateTime createDate, int roleId)
+	private UserAuth(
+		Guid id,
+		Guid usesInfoId,
+		string emial,
+		string passwordHash,
+		DateTime createDate,
+		int roleId)
 	{
 		Id = id;
 		UsesInfoId = usesInfoId;
@@ -26,8 +31,7 @@ public class UserAuth
 
 	public string Email { get; private set; }
 
-	[JsonIgnore]
-	public string PasswordHash { get; private set; }
+	[JsonIgnore] public string PasswordHash { get; private set; }
 
 	public DateTime CreateDate { get; private set; }
 
@@ -48,9 +52,12 @@ public class UserAuth
 		RoleId = roleId;
 	}
 
-	public static Result<UserAuth> Create(Guid id,
+	public static Result<UserAuth> Create(
+		Guid id,
 		Guid userInfoId,
-		string email, string passwordHash, DateTime createDate,
+		string email,
+		string passwordHash,
+		DateTime createDate,
 		int roleId)
 	{
 		if (id == Guid.Empty)
@@ -73,5 +80,10 @@ public class UserAuth
 			createDate, roleId);
 
 		return Result.Success(user);
+	}
+
+	public void UpdatePassword(string passwordHash)
+	{
+		PasswordHash = passwordHash;
 	}
 }

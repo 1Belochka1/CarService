@@ -8,5 +8,6 @@ public record UpdateUserRequest(
 	string? Patronymic,
 	string? Address,
 	string? Phone,
+	string? Password,
 	int? RoleId
 );

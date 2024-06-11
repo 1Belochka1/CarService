@@ -19,4 +19,5 @@ public interface IDayRecordsRepository
 		int? year);
 
 	Task<List<DayRecord>> GetByCalendarId(Guid calendarId);
+	Task Delete(Guid id);
 }

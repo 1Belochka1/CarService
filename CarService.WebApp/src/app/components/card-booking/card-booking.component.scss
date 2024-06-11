@@ -1,7 +1,10 @@
+:host {
+	@apply block grid justify-center;
+}
 .booking-card {
-	@apply flex items-center bg-surface text-on-surface rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105;
+	@apply flex flex-col items-center bg-surface text-on-surface rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105;
 
-	max-width: 100%;
+	max-width: 300px;
 
 	@media (max-width: 768px) {
 		@apply flex-col;

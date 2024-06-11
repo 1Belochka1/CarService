@@ -1,5 +1,6 @@
 using CarService.Core.Images;
 using CarService.Core.Users;
+using CarService.Infrastructure.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -48,5 +49,6 @@ public class
 		builder.HasOne(x => x.Image)
 			.WithOne(x => x.UserInfo)
 			.HasForeignKey<Image>(x => x.UserInfoId);
+		
 	}
 }

@@ -21,7 +21,8 @@ public class UsersService
 		IUserAuthRepository userAuthRepository,
 		IUserInfoRepository userInfoRepository,
 		IPasswordHasher passwordHasher,
-		IJwtProvider jwtProvider, IEmailService emailService)
+		IJwtProvider jwtProvider,
+		IEmailService emailService)
 	{
 		_userAuthRepository = userAuthRepository;
 		_userInfoRepository = userInfoRepository;
@@ -75,6 +76,10 @@ public class UsersService
 		    null)
 			return Result.Failure(
 				"Пользователь с таким email уже существует");
+
+		if (await _userInfoRepository.GetByPhone(phone) != null)
+			return Result.Failure(
+				"Пользователь с таким номером уже существует");
 
 		var user =
 			await _userInfoRepository.GetByPhone(
@@ -186,6 +191,10 @@ public class UsersService
 		return Result.Success(user);
 	}
 
+	public async Task<int> GetRoleIdByUserId(Guid userId)
+	{
+		return await _userAuthRepository.GetRoleIdAsync(userId);
+	}
 
 	public async Task<Result> Update(
 		Guid id,
@@ -219,5 +228,23 @@ public class UsersService
 	public async Task DeleteAsync(Guid id)
 	{
 		await _userInfoRepository.Delete(id);
+	}
+
+	public async Task<Result> UpdatePasswordAsync(Guid requestId, string? requestPassword)
+	{
+		var userAuth = await _userAuthRepository
+			.GetByIdAsync(requestId);
+
+		if (userAuth == null)
+			return Result.Failure("Пользователь не найден");
+		
+		var passwordHash = _passwordHasher.Generate(requestPassword);
+
+		userAuth.UpdatePassword(passwordHash);
+
+		await _userAuthRepository
+			.UpdateAsync(userAuth);
+
+		return Result.Success();
 	}
 }

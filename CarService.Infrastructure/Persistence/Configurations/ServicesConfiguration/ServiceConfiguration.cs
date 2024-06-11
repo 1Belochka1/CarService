@@ -30,7 +30,8 @@ public class
 		builder.HasOne(x =>
 				x.Record)
 			.WithOne(x => x.Service)
-			.HasForeignKey<Record>(x => x.ServiceId);
+			.HasForeignKey<Record>(x => x.ServiceId)
+			.OnDelete(DeleteBehavior.Cascade);
 
 		builder.HasOne(x => x.Image)
 			.WithOne(x => x.Service)

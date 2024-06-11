@@ -1,4 +1,5 @@
 using CarService.Core.Users;
+using CarService.Infrastructure.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -36,5 +37,7 @@ public class
 			.WithMany(x => x.Users)
 			.HasForeignKey(x => x.RoleId)
 			.OnDelete(DeleteBehavior.Restrict);
+
+
 	}
 }

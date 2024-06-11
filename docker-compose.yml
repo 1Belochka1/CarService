@@ -6,8 +6,10 @@
 
 volumes:
   pg_car_service:
+    
 services:
-  pg_db:
+  car_service_pg_db:
+    container_name: car_service_pg_db
     image: postgres
     restart: always
     environment:
@@ -18,14 +20,38 @@ services:
       - pg_car_service:/var/lib/postgresql/data
     ports:
       - 5432:5432
-      
+  
   pgadmin:
-     container_name: pgadmin_container
-     image: dpage/pgadmin4
-     environment:
-       PGADMIN_DEFAULT_EMAIL: "root@root.ru"
-       PGADMIN_DEFAULT_PASSWORD: "root"
-     ports:
-        - "5050:80"
-     depends_on:
-        - pg_db 
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "root@root.ru"
+      PGADMIN_DEFAULT_PASSWORD: "root"
+    ports:
+      - "5050:80"
+    depends_on:
+      - car_service_pg_db
+      
+  car_service_web:
+    container_name: car_service_web
+    image: car_service_web
+    ports:
+      - 4200:4200
+    build:
+      context: .
+      dockerfile: CarService.WebApp/Dockerfile
+      
+  car_service_api:
+    container_name: car_service_api
+    image: car_service_api
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - car_service_pg_db
+    build:
+      context: .
+      dockerfile: CarService.Api/Dockerfile
+

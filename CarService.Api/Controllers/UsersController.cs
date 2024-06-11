@@ -17,18 +17,25 @@ public class UsersController : ControllerBase
 	private readonly UsersService _usersService;
 	private readonly IHubContext<NotifyHub> _notifyHubContext;
 
-	public UsersController(UsersService usersService,
+	public UsersController(
+		UsersService usersService,
 		IHubContext<NotifyHub> notifyHubContext)
 	{
 		_usersService = usersService;
 		_notifyHubContext = notifyHubContext;
 	}
 
-	[HttpGet("get/isAuth")]
-	[Authorize]
+	[HttpGet("get/roleId")]
 	public async Task<IActionResult> GetIsAuthAsync()
 	{
-		return Ok(true);
+		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+		if (string.IsNullOrEmpty(userId))
+			return Ok(-1);
+
+		var roleId = await _usersService.GetRoleIdByUserId(Guid.Parse(userId));
+
+		return Ok(roleId);
 	}
 
 	[HttpPost("Register")]
@@ -57,6 +64,25 @@ public class UsersController : ControllerBase
 			request.LastName, request.FirstName,
 			request.Patronymic, request.Address, request.Phone,
 			request.Password, 2);
+
+		if (result.IsFailure)
+			return BadRequest(result.Error);
+
+		return Ok();
+	}
+
+	[HttpPost("update/password")]
+	public async Task<IActionResult> UpdatePassword(
+		UpdateUserRequest request
+	)
+	{
+		var user = await _usersService.GetById(request.Id);
+
+		if (user.IsFailure)
+			return BadRequest(user.Error);
+
+		var result = await _usersService
+			.UpdatePasswordAsync(request.Id, request.Password);
 
 		if (result.IsFailure)
 			return BadRequest(result.Error);

@@ -31,13 +31,11 @@ public class UserAuthRepository : IUserAuthRepository
 				x.Id == id);
 	}
 
-
 	public async Task<UserAuth?> GetByEmailAsync(string email)
 	{
 		return await _context.UserAuths.FirstOrDefaultAsync(x =>
 			x.Email == email);
 	}
-
 
 	public async Task<ICollection<UserAuth>> GetWorkersByIds(
 		ICollection<Guid> ids)
@@ -64,5 +62,20 @@ public class UserAuthRepository : IUserAuthRepository
 			.Include(u => u.UserInfo)
 			.Include(u => u.Works)
 			.FirstOrDefaultAsync(x => x.Id == userId);
+	}
+
+	public async Task<int> GetRoleIdAsync(Guid userId)
+	{
+		return await _context.UserAuths
+			.Where(x => x.Id == userId)
+			.Select(x => x.RoleId)
+			.FirstOrDefaultAsync();
+	}
+
+	public async Task UpdateAsync(UserAuth userAuth)
+	{
+		_context.UserAuths.Update(userAuth);
+		
+		await _context.SaveChangesAsync();
 	}
 }

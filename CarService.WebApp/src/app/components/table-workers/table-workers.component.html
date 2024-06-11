@@ -3,12 +3,14 @@
 	[addButton]="addButton"
 	(addButtonClick)="onAddClick()"
 >
+	<!-- Шаблон для заголовка таблицы с возможностью сортировки -->
 	<ng-template
 		bTemplate="head"
 		let-sortFn="sortFn"
 		let-sortProp="sortProp"
 		let-sortDirection="sortDirection"
 	>
+		<!-- Строка заголовка таблицы -->
 		<tr>
 			<th
 				appTableSortHeaderIcon
@@ -46,6 +48,7 @@
 		</tr>
 	</ng-template>
 
+	<!-- Шаблон для теля таблицы с столбцом действий -->
 	<ng-template bTemplate="body" let-item>
 		<tr>
 			<td data-name="Фио">
@@ -61,15 +64,15 @@
 				{{ item.address | notSpecified }}
 			</td>
 			<td data-name="Действия">
-                <div>
-                    <button mat-icon-button (click)="goToWorker(item.id)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                        <mat-icon color="warn">delete</mat-icon>
-                    </button>
-                </div>
-
+				<div>
+					<!-- Иконочные кнопки действий  -->
+					<button mat-icon-button (click)="goToWorker(item.id)">
+						<mat-icon>edit</mat-icon>
+					</button>
+					<button mat-icon-button>
+						<mat-icon color="warn">delete</mat-icon>
+					</button>
+				</div>
 			</td>
 		</tr>
 	</ng-template>

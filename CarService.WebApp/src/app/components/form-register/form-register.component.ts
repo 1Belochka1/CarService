@@ -86,11 +86,11 @@ export class FormRegisterComponent {
 		firstValueFrom(
 			this.authService.register(
 				this.requestForm.get('email')?.value!,
-				this.requestForm.get('phone')?.value!,
 				this.requestForm.get('firstName')?.value!,
 				this.requestForm.get('lastName')?.value!,
 				this.requestForm.get('patronymic')?.value!,
 				this.requestForm.get('address')?.value!,
+				this.requestForm.get('phone')?.value!,
 				this.requestForm.get('password')?.value!,
 				this.isAddWorker
 			)

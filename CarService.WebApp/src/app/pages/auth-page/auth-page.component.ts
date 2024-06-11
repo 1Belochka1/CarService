@@ -7,6 +7,7 @@ import {
 	Validators
 } from '@angular/forms'
 import {firstValueFrom} from 'rxjs'
+import {register} from "swiper/element";
 import {AuthService} from '../../services/auth.service'
 import {Router} from '@angular/router'
 import {
@@ -67,29 +68,7 @@ export class AuthPageComponent {
 
 	}
 
-	register($event: {
-		email: string,
-		phone: string,
-		firstName: string,
-		lastName: string,
-		patronymic: string,
-		address: string,
-		password: string
-	}) {
-		firstValueFrom(
-			this._authService
-					.register(
-						$event.email,
-						$event.lastName,
-						$event.firstName,
-						$event.patronymic,
-						$event.address,
-						$event.phone,
-						$event.password
-					)
-		).then(() => {
-				console.log('succ')
-			}
-		)
+	registerSub() {
+		this._toastr.success("Аккаунт зарегистрирован")
 	}
 }

@@ -1,8 +1,19 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { BehaviorSubject, catchError, firstValueFrom, map, of, tap } from 'rxjs'
-import { UserInfo } from '../models/user-info.type'
-import { apiUrls } from './apiUrl'
+import {HttpClient} from '@angular/common/http'
+import {Injectable} from '@angular/core'
+import {BehaviorSubject, catchError, firstValueFrom, map, of, tap} from 'rxjs'
+import {UserInfo} from '../models/user-info.type'
+import {apiUrls} from './apiUrl'
+
+interface IRegister {
+	Email: string,
+	LastName: string,
+	FirstName: string,
+	Patronymic: string,
+	Address: string,
+	Phone: string,
+	Password: string
+}
+
 
 @Injectable({
 	providedIn: 'root',
@@ -21,7 +32,7 @@ export class AuthService {
 				email,
 				password,
 			},
-			{ withCredentials: true }
+			{withCredentials: true}
 		)
 	}
 
@@ -35,7 +46,7 @@ export class AuthService {
 		password: string,
 		isMaster: boolean = false
 	) {
-		const req = {
+		const req: IRegister = {
 			Email: email,
 			LastName: lastName,
 			FirstName: firstName,
@@ -47,41 +58,35 @@ export class AuthService {
 
 		return this.http.post(
 			isMaster ? apiUrls.users.registerMaster : apiUrls.users.register,
-			{
-				Email: email,
-				LastName: lastName,
-				FirstName: firstName,
-				Patronymic: patronymic,
-				Address: address,
-				Phone: phone,
-				Password: password,
-			},
-			{
-				withCredentials: true,
-			}
+			req,
+			{withCredentials: true, }
 		)
 	}
 
-	public getByCookie() {
+
+	getByCookie() {
 		return this.http.get<UserInfo | null>(apiUrls.users.getByCookie, {
 			withCredentials: true,
 		})
 	}
 
-	public logout() {
+
+	logout() {
 		return this.http
-			.get(apiUrls.users.logout, { withCredentials: true })
+			.get(apiUrls.users.logout, {withCredentials: true})
 			.pipe(catchError(() => of(false)))
 	}
 
-	public getRoleId() {
+
+	getRoleId() {
 		return this.http
-			.get<number>(apiUrls.users.getRoleId, { withCredentials: true })
+			.get<number>(apiUrls.users.getRoleId, {withCredentials: true})
 			.pipe(map(roleId => (roleId == 0 ? 1 : roleId)))
 			.pipe(tap(roleId => this._roleId.next(roleId)))
 	}
 
-	public getRoleId$() {
+
+	getRoleId$() {
 		return this._roleId
 			.asObservable()
 			.pipe(map(roleId => (roleId == 0 ? 1 : roleId)))

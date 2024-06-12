@@ -29,10 +29,10 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 
-// var bd = app.Services
-// 	.GetRequiredService<CarServiceDbContext>();
+var bd = app.Services
+	.GetRequiredService<CarServiceDbContext>();
 
-// await bd.Database.MigrateAsync();
+await bd.Database.MigrateAsync();
 
 if (app.Environment.IsDevelopment())
 {
@@ -65,12 +65,7 @@ app.MapHub<TimeRecordsHub>("/api/hubs/timerecords", o =>
 	o.TransportMaxBufferSize = long.MaxValue;
 });
 
-app.UseCors(
-	x => x
-		.AllowAnyMethod()
-		.AllowAnyHeader()
-		.SetIsOriginAllowed(_ => true)
-		.AllowCredentials());
+app.UseCors("CORS");
 
 app.MapControllers();
 

@@ -1,7 +1,7 @@
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http'
-import { inject } from '@angular/core'
-import { ToastrService } from 'ngx-toastr'
-import { catchError, throwError } from 'rxjs'
+import {HttpErrorResponse, HttpInterceptorFn} from '@angular/common/http'
+import {inject} from '@angular/core'
+import {ToastrService} from 'ngx-toastr'
+import {catchError, throwError} from 'rxjs'
 
 export const serverErrorInterceptor: HttpInterceptorFn = (req, next) => {
 	const toastr = inject(ToastrService)
@@ -17,6 +17,12 @@ export const serverErrorInterceptor: HttpInterceptorFn = (req, next) => {
 			) {
 				toastr.error(
 					'На сервере произошла ошибка, просим прощения за неудобства',
+					'Ошибка'
+				)
+			}
+			if (error.status === 400) {
+				toastr.error(
+					error.error,
 					'Ошибка'
 				)
 			}

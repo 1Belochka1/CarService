@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarService.Api.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class DayRecordsController : ControllerBase
+public class DayRecordsController : ApiController
 {
 	private readonly IDayRecordsRepository
 		_dayRecordsRepository;

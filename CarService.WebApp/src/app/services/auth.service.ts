@@ -8,8 +8,8 @@ interface IRegister {
 	Email: string,
 	LastName: string,
 	FirstName: string,
-	Patronymic: string,
-	Address: string,
+	Patronymic?: string,
+	Address?: string,
 	Phone: string,
 	Password: string
 }
@@ -58,8 +58,16 @@ export class AuthService {
 
 		return this.http.post(
 			isMaster ? apiUrls.users.registerMaster : apiUrls.users.register,
-			req,
-			{withCredentials: true, }
+			{
+				email,
+				lastName,
+				firstName,
+				patronymic,
+				address,
+				phone,
+				password,
+			},
+			{withCredentials: true}
 		)
 	}
 

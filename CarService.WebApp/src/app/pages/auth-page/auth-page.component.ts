@@ -62,13 +62,10 @@ export class AuthPageComponent {
 				this._router.navigate(['account'])
 			}
 		)
-		.catch((err) => {
-			this._toastr.error(err.error)
-		})
 
 	}
 
 	registerSub() {
-		this._toastr.success("Аккаунт зарегистрирован")
+		this.activePage = 1
 	}
 }

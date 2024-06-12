@@ -29,8 +29,6 @@ export class NotifyService {
 			.configureLogging(LogLevel.Debug)
 			.build()
 
-		this._hubConnection.keepAliveIntervalInMilliseconds = 60000
-		this._hubConnection.serverTimeoutInMilliseconds = 60000
 
 		this._hubConnection.on('SuccessRequest', (message: string) => {
 			this._toastr.success(message)

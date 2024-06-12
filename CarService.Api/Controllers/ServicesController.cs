@@ -6,9 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarService.Api.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class ServicesController : ControllerBase
+
+public class ServicesController : ApiController
 {
 	private readonly ServicesService _servicesService;
 	private readonly ImageService _imageService;

@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarService.Api.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class ImagesController : ControllerBase
+
+public class ImagesController : ApiController
 {
 	private readonly ImageService _imageService;
 

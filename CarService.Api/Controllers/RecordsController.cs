@@ -10,9 +10,7 @@ namespace CarService.Api.Controllers;
 
 // TODO: https://localhost:7298/api/Services?Filters[0].Value=True&Filters[0].Name=IsShowLending
 
-[ApiController]
-[Route("api/[controller]")]
-public class RecordsController : ControllerBase
+public class RecordsController : ApiController
 {
 	private readonly RecordsService _recordsService;
 	private readonly IHubContext<NotifyHub> _hubNotifyContext;

@@ -10,31 +10,33 @@ public static class DependencyInjection
 		this IServiceCollection services
 	)
 	{
-		services.AddSignalR(
-			hubOptionsDefault =>
+		services.AddSignalR()
+			.AddJsonProtocol(options =>
 			{
-				hubOptionsDefault.EnableDetailedErrors =
-					true;
-				hubOptionsDefault.KeepAliveInterval =
-					TimeSpan.FromMinutes(30);
-				hubOptionsDefault.HandshakeTimeout =
-					TimeSpan.FromMinutes(30);
-				hubOptionsDefault
-						.MaximumParallelInvocationsPerClient =
-					100;
-				hubOptionsDefault.ClientTimeoutInterval =
-					TimeSpan.FromMinutes(30);
-				hubOptionsDefault.StreamBufferCapacity =
-					int.MaxValue;
-				hubOptionsDefault
-						.MaximumReceiveMessageSize =
-					long.MaxValue;
-			}).AddJsonProtocol(options =>
-		{
-			options.PayloadSerializerOptions.ReferenceHandler =
-				ReferenceHandler.Preserve;
-		});
+				options.PayloadSerializerOptions.ReferenceHandler =
+					ReferenceHandler.Preserve;
+			});
 
+		return services;
+	}
+
+	public static IServiceCollection AddMyCors(
+		this IServiceCollection services
+	)
+	{
+		services.AddCors(option => option.AddPolicy("CORS", policy =>
+		{
+			policy
+				.WithMethods(
+					HttpMethods.Get,
+					HttpMethods.Post,
+					HttpMethods.Delete)
+				.AllowAnyHeader()
+				.AllowCredentials()
+				.SetIsOriginAllowed(_ => true)
+				.WithExposedHeaders("content-disposition");
+		}));
+		
 		return services;
 	}
 }

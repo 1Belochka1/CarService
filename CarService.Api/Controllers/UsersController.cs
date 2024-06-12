@@ -10,9 +10,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace CarService.Api.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class UsersController : ControllerBase
+public class UsersController : ApiController
 {
 	private readonly UsersService _usersService;
 	private readonly IHubContext<NotifyHub> _notifyHubContext;
@@ -53,8 +51,9 @@ public class UsersController : ControllerBase
 			request.Password);
 
 		if (result.IsFailure)
+		{
 			return BadRequest(result.Error);
-
+		}
 		return Ok();
 	}
 

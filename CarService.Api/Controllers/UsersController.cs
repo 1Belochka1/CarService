@@ -40,12 +40,16 @@ public class UsersController : ControllerBase
 
 	[HttpPost("Register")]
 	public async Task<IActionResult> Register(
-		RegisterUserRequest request
+		[FromBody] RegisterUserRequest request
 	)
 	{
-		var result = await _usersService.Register(request.Email,
-			request.LastName, request.FirstName,
-			request.Patronymic, request.Address, request.Phone,
+		var result = await _usersService.Register(
+			request.Email,
+			request.LastName,
+			request.FirstName,
+			request.Patronymic,
+			request.Address,
+			request.Phone,
 			request.Password);
 
 		if (result.IsFailure)
@@ -57,7 +61,7 @@ public class UsersController : ControllerBase
 	[Authorize(Roles = "1")]
 	[HttpPost("Register/Master")]
 	public async Task<IActionResult> RegisterMaster(
-		RegisterUserRequest request
+		[FromBody] RegisterUserRequest request
 	)
 	{
 		var result = await _usersService.Register(request.Email,
@@ -73,7 +77,7 @@ public class UsersController : ControllerBase
 
 	[HttpPost("update/password")]
 	public async Task<IActionResult> UpdatePassword(
-		UpdateUserRequest request
+		[FromBody] UpdateUserRequest request
 	)
 	{
 		var user = await _usersService.GetById(request.Id);

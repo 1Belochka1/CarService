@@ -12,6 +12,8 @@ public class ValidationUnitTest
 	[InlineData("6FDA7242-F164-42B2-814C-DEFE58331C58", "Service Four", "Description Four", false)]
 	[InlineData("7C861902-946D-4B8B-9901-90EF81ADA963", "Service Five", "Description Five", true)]
 	[InlineData("D0E4A34E-D2A4-43B2-A72C-C496F8BA949A", "Service Six", "Description Six", false)]
+	[InlineData("D0E4A34E-D2A4-12B2-A72C-C496F8BA949A", "Service Six", "Description 3", false)]
+	[InlineData("D0E4A34E-D2A4-12B2-A72C-C496F8BA943A", "Service Six", "Description f", false)]
 	public void ValidationCreateService_ResultSuccess(
 		Guid id,
 		string name, string description,
@@ -23,4 +25,5 @@ public class ValidationUnitTest
 		// Assert
 		Assert.True(service.IsSuccess);
 	}
+
 }

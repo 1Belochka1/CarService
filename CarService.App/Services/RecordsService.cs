@@ -394,7 +394,7 @@ public class RecordsService
 		if (phone != null && name != null && email != null)
 		{
 			user =
-				await _userInfoRepository.GetByEmail(phone);
+				await _userInfoRepository.GetByEmail(email);
 
 			if (user == null)
 			{

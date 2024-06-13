@@ -27,7 +27,7 @@
 	}
 
 	.card-text {
-		@apply bg-surface text-white p-4 z-10;
+		@apply bg-surface overflow-y-auto text-white p-4 z-10;
 
 		h3 {
 			font-weight: 600;

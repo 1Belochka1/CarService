@@ -78,12 +78,7 @@ export class DayRecordLendingComponent {
 		this._modalService.open(template, {actionVisible: false})?.subscribe(
 			(isConfirm) => {
 				if (isConfirm) {
-					firstValueFrom(this._dayRecordLendingService.updateRecord(id, this.email, this.phone, this.name))
-						.then(
-							() => {
-								this._toastr.success("Вы записаны")
-							}
-						)
+					this._dayRecordLendingService.updateRecord(id, this.email, this.phone, this.name)
 				} else {
 					this._dayRecordLendingService.cancelBooking()
 				}

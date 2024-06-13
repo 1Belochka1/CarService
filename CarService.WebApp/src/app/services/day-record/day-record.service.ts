@@ -5,6 +5,7 @@ import {
 	HubConnectionBuilder,
 	LogLevel,
 } from '@microsoft/signalr'
+import {ToastrService} from "ngx-toastr";
 import {BehaviorSubject, firstValueFrom} from 'rxjs'
 import {DayRecord} from '../../models/DayRecord.type'
 import {TimeRecord} from '../../models/TimeRecord.type'
@@ -24,7 +25,7 @@ export class DayRecordService implements OnDestroy {
 
 	private _selectTimeId: string
 
-	constructor() {
+	constructor(private _toastr: ToastrService) {
 	}
 
 	createHub() {
@@ -43,9 +44,13 @@ export class DayRecordService implements OnDestroy {
 	}
 
 	updateRecord(id: string, email: string, phone: string, name: string) {
-		return this._http.post(apiUrls.timeRecords.update, {
-			id, email, phone, name
-		})
+		this._hubConnection.send("RecordTimeRecord", [id, email, phone, name])
+			.then(() => {
+				this._toastr.success("Вы записаны")
+			})
+		// return this._http.post(apiUrls.timeRecords.update, {
+		// 	id, email, phone, name
+		// })
 	}
 
 	listenUpdateRecord() {

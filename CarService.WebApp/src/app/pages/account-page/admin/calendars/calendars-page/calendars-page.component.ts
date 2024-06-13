@@ -121,12 +121,17 @@ export class CalendarsPageComponent {
 		}
 	}
 
-	onUpdate(temp: TemplateRef<any>, id: string) {
+	onUpdate(temp: TemplateRef<any>, calendar: any) {
+		this.updateRequestForm.patchValue({
+			updateName: calendar.name,
+			updateDescription: calendar.description
+		})
+
 		this._modalService.open(temp, {title: "Обновление расписания"})
 			?.subscribe((isConfirm) => {
 				if (isConfirm)
 					firstValueFrom(this._calendarRecordService.updateCalendar(
-						id,
+						calendar.id,
 						this.updateRequestForm.get("updateName")?.value,
 						this.updateRequestForm.get("updateDescription")?.value,
 					)).then(() => {

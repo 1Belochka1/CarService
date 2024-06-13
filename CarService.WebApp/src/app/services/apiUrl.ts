@@ -60,7 +60,7 @@ export const apiUrls = {
 	timeRecords: {
 		getAllByDayRecordId: `${TIMERECORD_URL}/Get/ByRecordId/`,
 		delete: `${TIMERECORD_URL}/delete/`,
-
+		update: `${TIMERECORD_URL}/update/`,
 	},
 	services: {
 		getAll: `${SERVICE_URL}/get/all`,

@@ -9,6 +9,8 @@ import {NgIf} from '@angular/common'
 import {MatButton} from "@angular/material/button";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
+import {firstValueFrom} from "rxjs";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
 	selector: 'app-form-time-record',
@@ -34,7 +36,13 @@ export class FormTimeRecordComponent {
 
 	requestForm: FormGroup
 
-	constructor(private fb: FormBuilder) {
+	constructor(private fb: FormBuilder, private _authService: AuthService) {
+		firstValueFrom(this._authService.getByCookie())
+			.then((user) => {
+				if (user != null)
+					this.requestForm.patchValue({name: user?.firstName, email: user?.email, phone: user?.phone})
+			})
+
 		this.requestForm = this.fb.group({
 			name: ['', [Validators.required, Validators.minLength(3)]],
 			email: ['', [Validators.required, Validators.email]],

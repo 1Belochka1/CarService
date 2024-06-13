@@ -43,9 +43,9 @@ export class DayRecordService implements OnDestroy {
 	}
 
 	updateRecord(id: string, email: string, phone: string, name: string) {
-		this._hubConnection
-			.send('RecordTimeRecord', id, true, email, phone, name)
-			.catch(err => console.error(err))
+		return this._http.post(apiUrls.timeRecords.update, {
+			id, email, phone, name
+		})
 	}
 
 	listenUpdateRecord() {

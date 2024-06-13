@@ -16,18 +16,18 @@
         </mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill">
-        <mat-label>Номер телефона</mat-label>
+        <mat-label>Почта</mat-label>
         <input
                 matInput
                 id="email"
                 type="text"
                 formControlName="email"
-                placeholder="Введите номер телефона"
+                placeholder="Введите почту"
         />
         <mat-error *ngIf="requestForm.get('email')?.touched && requestForm.get('email')?.hasError('required')">
-            Номер телефона обязателен
+            Почта обязательна
         </mat-error>
-        <mat-error *ngIf="requestForm.get('email')?.touched && requestForm.get('email')?.hasError('pattern')">
+        <mat-error *ngIf="requestForm.get('email')?.touched && requestForm.get('email')?.hasError('email')">
             Неверный формат номера
         </mat-error>
     </mat-form-field>
@@ -48,7 +48,7 @@
         </mat-error>
     </mat-form-field>
 
-    <button mat-flat-button color="primary" type="submit" [disabled]="requestForm.invalid">
+    <button mat-flat-button color="primary" type="submit">
         Отправить
     </button>
 </form>

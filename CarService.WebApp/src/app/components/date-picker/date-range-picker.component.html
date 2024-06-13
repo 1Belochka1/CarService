@@ -1,6 +1,6 @@
 <form [formGroup]="dateTimeRangeForm" (ngSubmit)="onSubmit()" class="form">
     <mat-form-field appearance="fill">
-        <mat-label>Дата начала*</mat-label>
+        <mat-label>Дата начала</mat-label>
         <input matInput [matDatepicker]="startPicker" formControlName="startDate" placeholder="Введите дату начала"/>
         <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
         <mat-datepicker #startPicker></mat-datepicker>
@@ -11,7 +11,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-        <mat-label>Дата конца*</mat-label>
+        <mat-label>Дата конца</mat-label>
         <input matInput [matDatepicker]="endPicker" formControlName="endDate" placeholder="Введите дату конца"/>
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker #endPicker></mat-datepicker>
@@ -22,7 +22,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-        <mat-label>Время начала дня*</mat-label>
+        <mat-label>Время начала дня</mat-label>
         <input matInput type="time" formControlName="startTime" placeholder="Введите время начала дня"/>
         <mat-error *ngIf="dateTimeRangeForm.get('startTime')?.hasError('required')">
             Время начала дня обязательно
@@ -30,7 +30,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-        <mat-label>Время конца дня*</mat-label>
+        <mat-label>Время конца дня</mat-label>
         <input matInput type="time" formControlName="endTime" placeholder="Введите время конца дня"/>
         <mat-error *ngIf="dateTimeRangeForm.get('endTime')?.hasError('required')">
             Время конца дня обязательно

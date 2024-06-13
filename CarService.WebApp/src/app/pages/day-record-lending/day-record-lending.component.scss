@@ -1,40 +1,40 @@
 :host {
-	@apply flex flex-col gap-5 max-w-[1440px] p-5 text-surface;
+  @apply flex flex-col gap-5 max-w-[1440px] p-5 text-surface;
 
-	margin: 0 auto;
+  margin: 0 auto;
 }
 
 .wrapper {
-	.days {
-		@apply flex flex-col gap-5 ;
-		.day {
-			@apply flex gap-3 p-2 items-center  border border-solid border-surface;
+  .days {
+    @apply flex flex-col gap-5 ;
+    .day {
+      @apply flex gap-3 p-2 items-center  border border-solid border-surface;
 
-			border-radius: 0.625rem;
+      border-radius: 0.625rem;
 
-			&__date {
-				text-align: justify;
-			}
+      &__date {
+        text-align: justify;
+      }
 
-			.times {
-				@apply flex flex-wrap gap-3 text-on-surface;
+      .times {
+        @apply flex flex-wrap gap-3 text-on-surface;
 
-				.time {
-					@apply p-2 bg-surface;
-					flex: 0 0 50px;
-					border-radius: 0.625rem;
-				}
+        .time {
+          @apply p-2 bg-surface hover:bg-opacity-85 cursor-pointer;
+          flex: 0 0 50px;
+          border-radius: 0.625rem;
+        }
 
-				.busy {
-					@apply bg-red-800;
-				}
-			}
-		}
-	}
+        .busy {
+          @apply bg-red-800;
+        }
+      }
+    }
+  }
 
-	.not-found {
-		@apply text-on-surface bg-surface p-5;
+  .not-found {
+    @apply text-on-surface bg-surface p-5;
 
-		border-radius: 0.625rem;
-	}
+    border-radius: 0.625rem;
+  }
 }

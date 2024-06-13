@@ -335,18 +335,13 @@ public class RecordsController : ApiController
 		return Ok(result);
 	}
 
-	[Authorize]
 	[HttpGet("TimeRecords/Update")]
 	public async Task<IActionResult> UpdateTimeRecords(
-		Guid id,
-		bool isBusy,
-		string? email,
-		string? phone,
-		string? name)
+	UpdateTimeRecords request)
 	{
 		var result = await _recordsService
-			.UpdateTimeRecordAsync(id, isBusy, email, phone,
-				name);
+			.UpdateTimeRecordAsync(request.Id, request.IsBusy, request.Email, request.Phone,
+				request.Name);
 
 		if (result.IsFailure)
 			return BadRequest(JsonSerializerHelp.Serialize(result.Error));

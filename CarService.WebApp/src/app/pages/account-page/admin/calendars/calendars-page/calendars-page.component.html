@@ -26,9 +26,6 @@
             </td>
             <td data-name="Действия">
                 <div>
-                    <button mat-icon-button (click)="openUpdate(update, item.id)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
                     <button mat-icon-button (click)="navigate(['/account','calendar',item.id])">
                         <mat-icon>open_in_new</mat-icon>
                     </button>
@@ -44,7 +41,6 @@
           [formGroup]="requestForm"
           (ngSubmit)="onSubmit()"
     >
-
         <mat-form-field>
             <mat-label>Услуга</mat-label>
             <input type="text"
@@ -78,42 +74,6 @@
                 Описание услуги обязательно
             </mat-error>
             <mat-error *ngIf="requestForm.get('description')?.hasError('minlength')">
-                Описание услуги должно содержать минимум 5 символов
-            </mat-error>
-        </mat-form-field>
-
-        <button
-                mat-flat-button
-                class="form__button"
-                type="submit"
-        >Отправить
-        </button>
-    </form>
-</ng-template>
-
-<ng-template #update>
-    <form class="form"
-          [formGroup]="updateRequestForm"
-          (ngSubmit)="onUpdate()"
-    >
-                <mat-form-field appearance="fill">
-            <mat-label>Название</mat-label>
-            <input matInput id="udpdateName" type="text" formControlName="udpdateName" placeholder="Введите название услуги">
-            <mat-error *ngIf="requestForm.get('updateName')?.touched && requestForm.get('updateName')?.hasError('required')">
-                Название обязательно
-            </mat-error>
-            <mat-error *ngIf="requestForm.get('updateName')?.touched && requestForm.get('updateName')?.hasError('minlength')">
-                Название должно содержать минимум 3 символа
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Описание услуги</mat-label>
-            <textarea matInput id="updateDescription" formControlName="updateDescription" placeholder="Опишите услугу"></textarea>
-            <mat-error *ngIf="requestForm.get('updateDescription')?.hasError('required')">
-                Описание услуги обязательно
-            </mat-error>
-            <mat-error *ngIf="requestForm.get('updateDescription')?.hasError('minlength')">
                 Описание услуги должно содержать минимум 5 символов
             </mat-error>
         </mat-form-field>

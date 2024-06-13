@@ -72,6 +72,7 @@ export class CalendarsPageComponent {
 		private _toastr: ToastrService
 	) {
 		this.setItems()
+
 		this.services$ = this._servicesService.getForAutocomplete().pipe(
 			map(x =>
 				x.map(v => {
@@ -120,30 +121,6 @@ export class CalendarsPageComponent {
 				this.setItems()
 			})
 		}
-	}
-
-	onUpdate() {
-		firstValueFrom(this._calendarRecordService.updateCalendar(
-			this.updateCalendar.id,
-			this.updateRequestForm.get("updateName")?.value,
-			this.updateRequestForm.get("updateDescription")?.value,
-		)).then(() => {
-			this.setItems()
-			this._toastr.success("Расписание обновлено")
-		})
-
-		this._modalService.closeModal(true)
-	}
-
-	openUpdate(temp: TemplateRef<any>, calendar: any) {
-		this.updateCalendar = calendar
-		this.updateRequestForm.patchValue({
-			updateName: calendar.name,
-			updateDescription: calendar.description
-		})
-		this._modalService.open(temp, {title: "Обновление расписания"})
-			?.subscribe((isConfirm) => {
-			})
 	}
 
 	displayFn(item: { n: string, v: string }): string {

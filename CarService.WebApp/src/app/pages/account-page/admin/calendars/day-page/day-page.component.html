@@ -22,7 +22,7 @@
         <ng-template bTemplate='body'
                      let-time
         >
-            <tr [class.isBusy]='time.isBusy'>
+            <tr [ngClass]='{"opacity-70": time.isBusy}'>
                 <td data-name='Начало'>{{ time.startTime }}</td>
                 <td data-name='Конец'>{{ time.endTime }}</td>
                 <td data-name="Имя клиента">{{ time.client?.firstName | notSpecified }}</td>

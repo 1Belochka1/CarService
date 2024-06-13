@@ -1,4 +1,4 @@
-import {AsyncPipe, DatePipe, JsonPipe, NgForOf, NgIf} from '@angular/common'
+import {AsyncPipe, DatePipe, JsonPipe, NgClass, NgForOf, NgIf} from '@angular/common'
 import {Component, TemplateRef} from '@angular/core'
 import {MatIconButton} from '@angular/material/button'
 import {MatIcon} from '@angular/material/icon'
@@ -28,6 +28,7 @@ import {ModalService} from '../../../../../services/modal.service'
 		NgIf,
 		DatePipe,
 		NotSpecifiedPipe,
+		NgClass,
 	],
 	templateUrl: './day-page.component.html',
 	styleUrl: './day-page.component.scss',

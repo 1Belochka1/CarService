@@ -1,11 +1,9 @@
-using System.Reflection.Metadata;
-using CarService.App.Common.Email;
 using CarService.App.Common.Users;
 using CarService.App.Interfaces.Auth;
 using CarService.App.Interfaces.Email;
 using CarService.App.Interfaces.Persistence;
 using CarService.Core.Users;
-using CSharpFunctionalExtensions;
+using CSharpFunctionalExtensions;	
 
 namespace CarService.App.Services;
 

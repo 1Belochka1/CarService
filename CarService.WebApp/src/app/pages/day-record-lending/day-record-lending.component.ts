@@ -1,5 +1,6 @@
 import {Component, forwardRef, TemplateRef} from '@angular/core'
 import {AsyncPipe, DatePipe, NgClass, NgForOf, NgIf} from '@angular/common'
+import {ToastrService} from "ngx-toastr";
 import {
 	HeaderLendingComponent
 } from '../../components/header-lending/header-lending.component'
@@ -47,7 +48,8 @@ export class DayRecordLendingComponent {
 		private _dayRecordLendingService: DayRecordService,
 		private _authService: AuthService,
 		private _router: ActivatedRoute,
-		private _modalService: ModalService
+		private _modalService: ModalService,
+		private _toastr: ToastrService
 	) {
 		const id = this._router.snapshot.paramMap.get('calendarId')
 
@@ -73,11 +75,15 @@ export class DayRecordLendingComponent {
 
 	public openModal(template: TemplateRef<any>, id: string) {
 		this._dayRecordLendingService.bookTimeRecord(id)
-
 		this._modalService.open(template, {actionVisible: false})?.subscribe(
 			(isConfirm) => {
 				if (isConfirm) {
-					this._dayRecordLendingService.updateRecord(id, this.email, this.phone, this.name)
+					firstValueFrom(this._dayRecordLendingService.updateRecord(id, this.email, this.phone, this.name))
+						.then(
+							() => {
+								this._toastr.success("Вы записаны")
+							}
+						)
 				} else {
 					this._dayRecordLendingService.cancelBooking()
 				}

@@ -1,4 +1,6 @@
 import {ChangeDetectorRef, Component, TemplateRef} from '@angular/core'
+import {MatButton} from "@angular/material/button";
+import {MatCheckbox} from "@angular/material/checkbox";
 import {
 	ServicesService
 } from '../../../../../services/services/services.service'
@@ -15,7 +17,7 @@ import {
 	ReactiveFormsModule,
 	Validators
 } from '@angular/forms'
-import {MatFormField} from '@angular/material/form-field'
+import {MatError, MatFormField, MatLabel} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
 
 @Component({
@@ -27,7 +29,11 @@ import {MatInput} from '@angular/material/input'
 		SrcImagePipe,
 		ReactiveFormsModule,
 		MatFormField,
-		MatInput
+		MatInput,
+		MatButton,
+		MatCheckbox,
+		MatError,
+		MatLabel
 	],
 	templateUrl: './service-page.component.html',
 	styleUrl: './service-page.component.scss',

@@ -63,8 +63,8 @@ export class UsersService {
 		return this.http.get<any>(apiUrls.users.getClient + id, {withCredentials: true})
 	}
 
-	updateByPhone(phone: string) {
-		return this.http.post(apiUrls.users.updateByPhone, {phone}, {withCredentials: true})
+	updateToMasterById(id: string) {
+		return this.http.post(apiUrls.users.updateToMasterById, {id}, {withCredentials: true})
 	}
 
 	dismissById(id: string) {

@@ -1,110 +1,82 @@
 <div class='service'
-		 *ngIf='service | async as service'
+     *ngIf='service | async as service'
 >
-	<div class='service__image'
-			 *ngIf='service.imageId'
-	>
-		<img [src]='imageId | async | srcImage'
-				 [alt]='service.name'
-		>
-	</div>
-	<div class='service__text'>
-		<h3>{{ service.name }}</h3>
-		<p>{{ service.description }}</p>
-		<p class='font-bold'>{{ service.isShowLending ?
-			"Показывается на лендинге" : "Не показывается на лендинге" }}
-		</p>
-	</div>
-	<div class='service__action'>
-		<button class='service__button button'
-						(click)='openModal(uploadTemplate)'
-		>Загрузить
-			фото
-		</button>
-		<button class='service__button button'
-						(click)='openModal(updateTemplate, { actionVisible:
+    <div class='service__image'
+         *ngIf='service.imageId'
+    >
+        <img [src]='imageId | async | srcImage'
+             [alt]='service.name'
+        >
+    </div>
+    <div class='service__text'>
+        <h3>{{ service.name }}</h3>
+        <p>{{ service.description }}</p>
+        <p class='font-bold'>{{
+                service.isShowLending ?
+                    "Показывается на лендинге" : "Не показывается на лендинге"
+            }}
+        </p>
+    </div>
+    <div class='service__action'>
+        <button class='service__button button'
+                (click)='openModal(uploadTemplate)'
+        >Загрузить
+            фото
+        </button>
+        <button class='service__button button'
+                (click)='openModal(updateTemplate, { actionVisible:
 						false})'
-		>Изменить
-		</button>
-		<button class='service__button button'
-						(click)='openDeleteModal(deleteTemplate)'
-		>Удалить
-		</button>
-	</div>
+        >Изменить
+        </button>
+        <button class='service__button button'
+                (click)='openDeleteModal(deleteTemplate)'
+        >Удалить
+        </button>
+    </div>
 </div>
 
 <ng-template #uploadTemplate>
-	<input
-		type='file'
-		class='form__input'
-		(change)='onFileChange($event)'
-	>
+    <input
+            type='file'
+            class='form__input'
+            (change)='onFileChange($event)'
+    >
 
 </ng-template>
 
 <ng-template #updateTemplate>
-	<form class="form"
-				[formGroup]="updateForm"
-				(ngSubmit)="updateSubmit()"
-	>
-		<div class="form__group">
-			<label class="form__label"
-						 for="name"
-			>Название</label>
-			<input class="form__input"
-						 id="name"
-						 type="text"
-						 formControlName="name"
-						 placeholder="Введите название услуги"
-			/>
-			<div class="form__error"
-					 *ngIf="updateForm.get('name')?.hasError('required')"
-			>Название обязательно
-			</div>
-			<div class="form__error"
-					 *ngIf="updateForm.get('name')?.hasError('minlength')"
-			>Название должно содержать минимум 3 символа
-			</div>
-		</div>
+    <form class="form" [formGroup]="updateForm" (ngSubmit)="updateSubmit()">
+        <mat-form-field appearance="fill">
+            <mat-label>Название</mat-label>
+            <input matInput id="name" type="text" formControlName="name" placeholder="Введите название услуги">
+            <mat-error *ngIf="updateForm.get('name')?.hasError('required')">
+                Название обязательно
+            </mat-error>
+            <mat-error *ngIf="updateForm.get('name')?.hasError('minlength')">
+                Название должно содержать минимум 3 символа
+            </mat-error>
+        </mat-form-field>
 
-		<div class="form__group">
-			<label class="form__label"
-						 for="description"
-			>Описание</label>
-			<textarea class="form__textarea"
-								id="description"
-								formControlName="description"
-								placeholder="Введите описание услуги"
-			></textarea>
-			<div class="form__error"
-					 *ngIf="updateForm.get('description')?.hasError('required')"
-			>Описание обязательно
-			</div>
-			<div class="form__error"
-					 *ngIf="updateForm.get('description')?.hasError('minlength')"
-			>Описание должно содержать минимум 10 символов
-			</div>
-		</div>
+        <mat-form-field appearance="fill">
+            <mat-label>Описание</mat-label>
+            <textarea matInput id="description" formControlName="description"
+                      placeholder="Введите описание услуги"></textarea>
+            <mat-error *ngIf="updateForm.get('description')?.hasError('required')">
+                Описание обязательно
+            </mat-error>
+            <mat-error *ngIf="updateForm.get('description')?.hasError('minlength')">
+                Описание должно содержать минимум 10 символов
+            </mat-error>
+        </mat-form-field>
 
-		<div class="form__group">
+        <mat-checkbox id="isShowLending" formControlName="isShowLending">
+            Показать на лендинге
+        </mat-checkbox>
 
-			<input type="checkbox"
-						 id="isShowLending"
-						 formControlName="isShowLending"
-						 class="form__checkbox"
-			>
-			<label class="form__label"
-						 for="isShowLending"
-			>Показать на лендинге</label>
-
-		</div>
-
-		<button class="form__button"
-						type="submit"
-						[disabled]="updateForm.invalid"
-		>Обновить
-		</button>
-	</form>
+        <button mat-flat-button color="primary" class="form__button" type="submit">
+            Обновить
+        </button>
+    </form>
 </ng-template>
 
 <ng-template #deleteTemplate>

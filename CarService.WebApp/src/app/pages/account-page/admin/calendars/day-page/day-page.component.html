@@ -3,11 +3,15 @@
 
     <b-table [items]='times$ | async'
              [headerTitle]="'Дата: ' + (day.date | date: 'dd.MM.YYYY')"
+             [pageSize]="10"
     >
         <ng-template bTemplate='head'>
             <tr>
                 <th>Начало</th>
                 <th>Конец</th>
+                <th>Имя клиента</th>
+                <th>Номер клиента</th>
+                <th>Почта клиента</th>
                 <th
                         *ngIf="(roleId$ | async) == 1 "
                 >
@@ -21,12 +25,11 @@
             <tr [class.isBusy]='time.isBusy'>
                 <td data-name='Начало'>{{ time.startTime }}</td>
                 <td data-name='Конец'>{{ time.endTime }}</td>
+                <td data-name="Имя клиента">{{ time.client?.firstName | notSpecified }}</td>
+                <td data-name="Номер клиента">{{ time.client?.phone | notSpecified }}</td>
+                <td data-name="Почта клиента">{{ time.client?.email | notSpecified }}</td>
                 <td data-name="Действия" *ngIf="(roleId$ | async) == 1 ">
                     <div>
-                        <button mat-icon-button
-                        >
-                            <mat-icon>edit</mat-icon>
-                        </button>
                         <button mat-icon-button (click)="onRemoveClick(remove, time.id)">
                             <mat-icon color="warn">delete</mat-icon>
                         </button>

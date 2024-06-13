@@ -50,6 +50,13 @@ export class MenuAccountComponent implements AfterContentInit {
 		)
 	}
 
+
+	isShowMenu: boolean = false
+
+	toggleShowMenu() {
+		this.isShowMenu = !this.isShowMenu
+	}
+
 	ngAfterContentInit(): void {}
 
 	toggleMenu() {

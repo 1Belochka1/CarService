@@ -20,20 +20,14 @@
 
         <tr>
             <td data-name='Название расписания'
-                (click)="navigate(['/account','calendar',item.id])"
+
             >
-                <a [routerLink]="['/account', 'calendar', item.id]">
-                    {{ item.name }}
-                </a>
+                {{ item.name }}
             </td>
             <td data-name="Действия">
                 <div>
-                    <button mat-icon-button
-                    >
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                        <mat-icon color="warn">open_in_new</mat-icon>
+                    <button mat-icon-button (click)="navigate(['/account','calendar',item.id])">
+                        <mat-icon>open_in_new</mat-icon>
                     </button>
                 </div>
             </td>

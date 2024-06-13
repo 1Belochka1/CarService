@@ -394,7 +394,7 @@ public class RecordsService
 		if (phone != null && name != null && email != null)
 		{
 			user =
-				await _userInfoRepository.GetByPhone(phone);
+				await _userInfoRepository.GetByEmail(phone);
 
 			if (user == null)
 			{
@@ -421,6 +421,9 @@ public class RecordsService
 		timeRecord.Update(isBusy, user?.Id);
 
 		await _timeRecordsRepository.Update(timeRecord);
+
+		if (user != null)
+			await _emailService.RecordOnTimeMessageAsync(user, timeRecord.DayRecord.Date, timeRecord.StartTime);
 
 		return Result.Success(timeRecord);
 	}

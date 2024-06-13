@@ -18,7 +18,6 @@
                     (click)='fill(fillT)'
             >Заполнить расписание
             </button>
-
         </ng-template>
 
         <ng-template bTemplate='head'
@@ -33,7 +32,7 @@
                 <th>
                     Конец работы
                 </th>
-                <th *ngIf="(roleId$ | async) == 1 "
+                <th
                 >
                     Действия
                 </th>
@@ -53,13 +52,14 @@
                 <td data-name='Конец работы'>
                     {{ item.endTime }}
                 </td>
-                <td data-name="Действия" *ngIf="(roleId$ | async) == 1 ">
+                <td data-name="Действия">
                     <div>
                         <button mat-icon-button (click)='navigate(item.id)'
                         >
                             <mat-icon>open_in_new</mat-icon>
                         </button>
-                        <button mat-icon-button (click)="deleteDay(remove,item.id ,dateN)">
+                        <button mat-icon-button *ngIf="(roleId$ | async) == 1 "
+                                (click)="deleteDay(remove,item.id ,dateN)">
                             <mat-icon color="warn">delete</mat-icon>
                         </button>
                     </div>

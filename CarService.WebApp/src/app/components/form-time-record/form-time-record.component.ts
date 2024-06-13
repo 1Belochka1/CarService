@@ -18,8 +18,9 @@ import {NgIf} from '@angular/common'
 })
 export class FormTimeRecordComponent {
 	@Output()
-	submit: EventEmitter<{ name: string, phone: string }> = new EventEmitter<{
+	submit = new EventEmitter<{
 		name: string,
+		email: string,
 		phone: string
 	}>()
 
@@ -28,7 +29,8 @@ export class FormTimeRecordComponent {
 	constructor(private fb: FormBuilder) {
 		this.requestForm = this.fb.group({
 			name: ['', [Validators.required, Validators.minLength(3)]],
-			phone: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]]
+			email: ['', [Validators.required, Validators.email]],
+			phone: ['', [Validators.required, Validators.pattern('^8\\d{10}$')]],
 		})
 	}
 
@@ -36,6 +38,7 @@ export class FormTimeRecordComponent {
 		if (this.requestForm.valid) {
 			this.submit.emit({
 				name: this.requestForm.get('name')?.value!,
+				email: this.requestForm.get('email')?.value!,
 				phone: this.requestForm.get('phone')?.value!
 			})
 		}

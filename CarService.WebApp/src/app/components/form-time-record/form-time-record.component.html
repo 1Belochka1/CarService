@@ -24,6 +24,28 @@
 		</div>
 	</div>
 
+    <div class="form__group">
+        <label class="form__label"
+               for="email"
+        >Номер телефона</label>
+        <input class="form__input"
+               id="email"
+               type="text"
+               formControlName="email"
+               placeholder="Введите номер телефона"
+        />
+        <div class="form__error"
+             *ngIf="requestForm.get('email')?.touched &&
+				 requestForm.get('email')?.hasError('required')"
+        >Номер телефона обязателен
+        </div>
+        <div class="form__error"
+             *ngIf="requestForm.get('email')?.touched &&
+				 requestForm.get('email')?.hasError('pattern')"
+        >Неверный формат номера
+        </div>
+    </div>
+
 	<div class="form__group">
 		<label class="form__label"
 					 for="phone"

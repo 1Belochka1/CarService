@@ -177,12 +177,12 @@ public class UsersController : ApiController
 		return Ok();
 	}
 
-	[HttpPost("Update/byPhone")]
+	[HttpPost("Update/toMaster")]
 	[Authorize(Roles = "1")]
-	public async Task<IActionResult> UpdateByPhone(
-		string phone)
+	public async Task<IActionResult> UpdateToMaster(
+		Guid id)
 	{
-		var user = await _usersService.GetByPhone(phone);
+		var user = await _usersService.GetById(id);
 
 		if (user.IsFailure)
 			return BadRequest(JsonSerializerHelp.Serialize(user.Error));

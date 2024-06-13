@@ -36,72 +36,95 @@ export const routes: Routes = [
 		path: 'account',
 		component: AccountPageComponent,
 		canActivate: [authGuard],
-		data: { role: [1, 2, 3] },
+		data: {role: [1, 2, 3]},
 		children: [
 			{
 				path: 'profile',
 				component: ProfilePageComponent,
 				title: 'Профиль',
+				canActivate: [authGuard],
+
 			},
 			{
 				path: 'workers',
 				component: WorkersPageComponent,
 				title: 'Сотрудники',
-				data: { role: [1] },
+				data: {role: [1]},
+				canActivate: [authGuard],
+
 			},
 			{
 				path: 'services',
 				component: ServicesPageComponent,
 				title: 'Услуги',
-				data: { role: [1] },
+				data: {role: [1]},
+				canActivate: [authGuard],
+
 			},
 			{
 				path: 'services/:serviceId',
 				component: ServicePageComponent,
 				title: 'Услуга',
-				data: { role: [1] },
+				data: {role: [1]},
+				canActivate: [authGuard],
+
 			},
 			{
 				path: 'calendars',
 				component: CalendarsPageComponent,
 				title: 'Расписание',
-				data: { role: [1, 2] },
+				data: {role: [1, 2]},
+				canActivate: [authGuard],
+
 			},
 			{
 				path: 'calendar/:calendarId',
 				component: CalendarPageComponent,
 				title: 'Расписание',
-				data: { role: [1, 2] },
+				data: {role: [1, 2]},
+				canActivate: [authGuard],
+
 			},
 			{
 				path: 'calendar/:calendarId/:dayId',
 				component: DayPageComponent,
 				title: 'Расписание',
-				data: { role: [1, 2] },
+				data: {role: [1, 2]},
+				canActivate: [authGuard],
+
 			},
 			{
 				path: 'worker/:id',
 				component: WorkerPageComponent,
 				title: 'Работник',
-				data: { role: [1, 2] },
+				data: {role: [1]},
+				canActivate: [authGuard],
+
 			},
 			{
 				path: 'clients',
 				component: ClientsPageComponent,
 				title: 'Клиенты',
-				data: { role: [1] },
+				canActivate: [authGuard],
+				data: {role: [1]},
 			},
 			{
 				path: 'records',
 				component: RecordsPageComponent,
 				title: 'Заявки',
-				data: { role: [1, 2, 3] },
+				canActivate: [authGuard],
+				data: {role: [1, 2, 3]},
 			},
 			{
 				path: 'record/:id',
 				component: RecordPageComponent,
 				title: 'Заявка',
-				data: { role: [1, 2, 3] },
+				canActivate: [authGuard],
+				data: {role: [1, 2, 3]},
+			}, {
+				path: '',
+				pathMatch: 'full',
+				redirectTo: 'profile',
 			},
 		],
 	},

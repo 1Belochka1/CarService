@@ -50,9 +50,20 @@ export class ClientsPageComponent {
 					firstValueFrom(this._userService.delete(id))
 						.then(() => {
 							this.setItems()
-							this._toastr.success('Операция прошла успешно')
+							this._toastr.success('Данные клиента удалены')
 						})
 			})
 	}
 
+	updateClientToMaster(temp: TemplateRef<any>, id: string) {
+		this._modalService.open(temp, {title: "Назначить сотрудником?"})
+			?.subscribe((isConfirm) => {
+				if (isConfirm)
+					firstValueFrom(this._userService.updateToMasterById(id))
+						.then(() => {
+							this.setItems()
+							this._toastr.success('Сотрудник назначен')
+						})
+			})
+	}
 }

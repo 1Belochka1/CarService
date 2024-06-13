@@ -35,8 +35,11 @@ public class TimeRecordsRepository : ITimeRecordsRepository
 
 	public async Task<TimeRecord?> GetById(Guid id)
 	{
-		return await _context.TimesRecords.Include(x => x.Client).FirstOrDefaultAsync(
-			x => x.Id == id);
+		return await _context.TimesRecords
+			.Include(x => x.Client)
+			.Include(x => x.DayRecord)
+			.FirstOrDefaultAsync(
+				x => x.Id == id);
 	}
 
 	public async Task<List<TimeRecord>> GetAll()
@@ -48,6 +51,7 @@ public class TimeRecordsRepository : ITimeRecordsRepository
 		GetTimeRecordsByRecordIdAsync(Guid id)
 	{
 		return await _context.TimesRecords
+			.Include(x => x.Client)
 			.OrderBy(x => x.StartTime)
 			.Where(t => t.DayRecordId == id).ToListAsync();
 	}

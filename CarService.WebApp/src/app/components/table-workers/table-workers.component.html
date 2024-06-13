@@ -2,7 +2,7 @@
         [items]="items"
         [addButton]="addButton"
         (addButtonClick)="onAddClick()"
-        headerTitle="Сотрудники"
+        [headerTitle]="headerTitle"
 >
     <!-- Шаблон для заголовка таблицы с возможностью сортировки -->
     <ng-template
@@ -64,7 +64,7 @@
             <td class="break-all" data-name="Адрес">
                 {{ item.address | notSpecified }}
             </td>
-            <td data-name="Действия">
+            <td data-name="Действия" *ngIf="(roleId$ | async) == 1 ">
                 <div>
                     <!-- Иконочные кнопки действий  -->
                     <button mat-icon-button (click)="goToWorker(item.id)">

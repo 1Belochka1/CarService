@@ -1,82 +1,92 @@
 :host-context(.text-black) {
-	header {
-		@apply text-surface;
-	}
+  header {
+    @apply text-surface;
+  }
 }
 
 .header {
-	@apply flex items-center gap-4 py-2 px-5 h-12;
+  @apply flex items-center gap-4 py-2 px-5 h-12;
 
-	@apply max-w-[1440px];
+  @apply max-w-[1440px];
 
-	margin: 0 auto;
+  margin: 0 auto;
 
-	@media (max-width: 786px) {
-		justify-content: space-between;
-	}
+  @media (max-width: 786px) {
+    justify-content: space-between;
+  }
 
-	&__logo {
-		@apply h-full;
-		aspect-ratio: 1;
-	}
+  &__logo {
+    @apply h-full;
+    aspect-ratio: 1;
+  }
 
-	&__title {
-		color: rgba(var(--color-header));
-	}
+  &__title {
+    color: rgba(var(--color-header));
+  }
 
-	&__navigation {
-		flex: 1;
-		display: flex;
-		align-items: center;
+  &__navigation {
+    flex: 1;
+    display: flex;
+    align-items: center;
 
-		@media (max-width: 768px) {
-			display: none;
+    @media (max-width: 768px) {
+      display: none;
 
-			&.showMenu {
-				@apply absolute top-0 bottom-0 left-0 right-0 flex flex-col;
-			}
-		}
-	}
+      &.showMenu {
+        @apply fixed top-0 bottom-0 left-0 right-0 flex flex-col p-5 gap-5;
+        @apply bg-surface bg-opacity-50;
+        backdrop-filter: blur(5px);
+      }
+    }
+  }
 
-	&__burger {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		height: 100%;
-		width: 30px;
-		z-index: 10;
+  &__burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    width: 30px;
+    z-index: 10;
 
-		> span {
-			display: block;
-			background: white;
-			height: 2px;
-			width: 100%;
-		}
+    > span {
+      display: block;
+      background: white;
+      height: 2px;
+      width: 100%;
+    }
 
-		@media (min-width: 768px) {
-			display: none;
-		}
-	}
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
 
-	&__lending {
-		flex: 1;
+  &__lending {
+    flex: 1;
+    @media (max-width: 768px) {
+      flex: 0;
+    }
 
-		ul {
-			@apply flex gap-2;
+    ul {
+      @apply flex gap-2;
 
-			li {
-				//@apply ;
-			}
-		}
-	}
+      @media (max-width: 768px) {
+        @apply flex-col gap-5 items-center;
 
-	&__link {
-		ul {
-			@apply flex gap-2;
+      }
 
-			li {
-				//@apply ;
-			}
-		}
-	}
+      li {
+        //@apply ;
+      }
+    }
+  }
+
+  &__link {
+    ul {
+      @apply flex gap-2;
+
+      li {
+        //@apply ;
+      }
+    }
+  }
 }

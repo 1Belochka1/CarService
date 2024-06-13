@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core'
 import {ToastrService} from "ngx-toastr";
-import {firstValueFrom} from "rxjs";
+import {firstValueFrom, Observable} from "rxjs";
 import {Priority} from '../../enums/priority.enum'
 import {Status} from '../../enums/status.enum'
-import {AsyncPipe, DatePipe} from '@angular/common'
+import {AsyncPipe, DatePipe, NgIf} from '@angular/common'
+import {AuthService} from "../../services/auth.service";
 import {ModalService} from "../../services/modal.service";
 import {RecordsService} from "../../services/records/records.service";
 import {BTableComponent} from '../b-table/b-table.component'
@@ -27,7 +28,8 @@ import {MatIconButton} from '@angular/material/button'
 		TableSortHeaderIconDirective,
 		NotSpecifiedPipe,
 		MatIcon,
-		MatIconButton
+		MatIconButton,
+		NgIf
 	],
 	templateUrl: './table-records.component.html',
 	styleUrl: './table-records.component.scss'
@@ -47,12 +49,16 @@ export class TableRecordsComponent {
 	@Output() update: EventEmitter<any> = new EventEmitter<any>()
 	@Input() headerTitle: string | null;
 
+	roleId$: Observable<number>
+
 	constructor(
 		private _router: Router,
 		private _recordService: RecordsService,
 		private _modalService: ModalService,
+		private _authService: AuthService,
 		private _toast: ToastrService
 	) {
+		this.roleId$ = this._authService.getRoleId$()
 
 	}
 

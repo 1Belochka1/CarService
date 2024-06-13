@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http'
+import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {BehaviorSubject, catchError, firstValueFrom, map, of, tap} from 'rxjs'
 import {UserInfo} from '../models/user-info.type'
@@ -26,13 +26,14 @@ export class AuthService {
 	}
 
 	public login(email: string, password: string) {
+		const header = new HttpHeaders({"Access-Control-Allow-Origin": "*"});
 		return this.http.post(
 			apiUrls.users.login,
 			{
 				email,
 				password,
 			},
-			{withCredentials: true}
+			{withCredentials: true, headers: header}
 		)
 	}
 

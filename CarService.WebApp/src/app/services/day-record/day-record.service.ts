@@ -42,9 +42,9 @@ export class DayRecordService implements OnDestroy {
 		this._hubConnection.start().catch(e => console.error(e))
 	}
 
-	updateRecord(id: string, phone: string, name: string) {
+	updateRecord(id: string, email: string, phone: string, name: string) {
 		this._hubConnection
-			.send('RecordTimeRecord', id, true, phone, name)
+			.send('RecordTimeRecord', id, true, email, phone, name)
 			.catch(err => console.error(err))
 	}
 

@@ -33,14 +33,10 @@
                  let-item
     >
         <tr>
-            <td data-name="Название"
-                (click)='navigate(item.id)'
-            >
+            <td data-name="Название">
                 {{ item.name }}
             </td>
-            <td data-name="Описание"
-                (click)='navigate(item.id)'
-            >
+            <td data-name="Описание">
                 {{ item.description }}
             </td>
             <td data-name="Действия">
@@ -49,9 +45,6 @@
                             (click)='navigate(item.id)'
                     >
                         <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                        <mat-icon color="warn">delete</mat-icon>
                     </button>
                 </div>
             </td>

@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core'
-import {AsyncPipe} from '@angular/common'
-import {firstValueFrom} from "rxjs";
+import {AsyncPipe, NgIf} from '@angular/common'
+import {firstValueFrom, Observable} from "rxjs";
+import {AuthService} from "../../services/auth.service";
 import {ModalService} from "../../services/modal.service";
 import {BTableComponent} from '../b-table/b-table.component'
 import {BTemplateDirective} from '../../direcrives/b-template.directive'
@@ -22,7 +23,8 @@ import {MatIconButton} from '@angular/material/button'
 		NotSpecifiedPipe,
 		TableSortHeaderIconDirective,
 		MatIcon,
-		MatIconButton
+		MatIconButton,
+		NgIf
 	],
 	templateUrl: './table-workers.component.html',
 	styleUrl: './table-workers.component.scss',
@@ -35,11 +37,19 @@ export class TableWorkersComponent {
 
 	@Input() addButton: boolean = false
 
+	@Input() headerTitle: string | null
+
 	@Output() addClick: EventEmitter<any> = new EventEmitter<any>()
 	@Output() remove: EventEmitter<any> = new EventEmitter<any>()
 	@Input() deleteTitle: string;
 
-	constructor(private _router: Router, private _modalService: ModalService) {
+	roleId$: Observable<number>
+
+	constructor(private _router: Router,
+	            private _modalService: ModalService,
+	            private _authService: AuthService
+	) {
+		this.roleId$ = this._authService.getRoleId$()
 	}
 
 	goToWorker(id: string) {

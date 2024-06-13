@@ -36,7 +36,7 @@ public static class DependencyInjection
 				.SetIsOriginAllowed(_ => true)
 				.WithExposedHeaders("content-disposition");
 		}));
-		
+
 		return services;
 	}
 }

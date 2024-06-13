@@ -1,9 +1,13 @@
 :host {
-  @apply flex h-dvh;
+  @apply flex min-h-dvh;
 }
 
 .wrapper {
   @apply flex w-full;
+
+  @media (max-width: 768px) {
+    @apply flex-col;
+  }
 
   .content {
     @apply p-5 h-full w-full;

@@ -9,6 +9,7 @@ import {BTableComponent} from '../../../../../components/b-table/b-table.compone
 import {BTemplateDirective} from '../../../../../direcrives/b-template.directive'
 import {DayRecord} from '../../../../../models/DayRecord.type'
 import {TimeRecord} from '../../../../../models/TimeRecord.type'
+import {NotSpecifiedPipe} from "../../../../../pipe/not-specified.pipe";
 import {AuthService} from "../../../../../services/auth.service";
 import {DayRecordService} from '../../../../../services/day-record/day-record.service'
 import {ModalService} from '../../../../../services/modal.service'
@@ -26,6 +27,7 @@ import {ModalService} from '../../../../../services/modal.service'
 		MatIconButton,
 		NgIf,
 		DatePipe,
+		NotSpecifiedPipe,
 	],
 	templateUrl: './day-page.component.html',
 	styleUrl: './day-page.component.scss',

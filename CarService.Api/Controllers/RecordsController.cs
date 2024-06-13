@@ -272,6 +272,7 @@ public class RecordsController : ApiController
 		return Ok();
 	}
 
+	[Authorize]
 	[HttpGet(
 		"DayRecords/Get/byCalendarId/{id}&{month}&{year}")]
 	public async Task<IActionResult>
@@ -287,6 +288,7 @@ public class RecordsController : ApiController
 		return Ok(result);
 	}
 
+	
 	[HttpGet(
 		"DayRecords/Get/byCalendarId/{id}")]
 	public async Task<IActionResult>

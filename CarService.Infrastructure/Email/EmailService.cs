@@ -35,6 +35,23 @@ public class EmailService : IEmailService
 		});
 	}
 
+	public async Task RecordOnTimeMessageAsync(UserInfo user, DateTime date, TimeOnly time)
+	{
+		await SendEmail(new EmailDto
+		{
+			To = user.Email,
+			Subject = "Запись на время",
+			Body =
+				"<i>Вам записан на время</i>" +
+				"<br>" +
+				"<b>Дата:</b>" +
+				$"{date.ToString("dd.MM.yyyy")}" +
+				"<br>" +
+				"<b>Время:</b>" +
+				$"{time.ToString("hh:mm")}"
+		});
+	}
+
 	public async Task CreateRequestMessageAsync(UserInfo user)
 	{
 		await SendEmail(new EmailDto()

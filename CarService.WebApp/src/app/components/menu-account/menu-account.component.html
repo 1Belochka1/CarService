@@ -1,4 +1,11 @@
 <div class="menu" [class.minimize]="isMinimize">
+    <div class="menu__burger"
+         (click)='toggleMenu()'
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
 	<hr class="line" />
 	<nav class="nav__wrapper">
 		<ul class="nav__list" *ngIf="roleId$ | async as roleId">
@@ -13,7 +20,7 @@
 				</li>
 			</ng-container>
 
-			<li (click)="toggleMenu()" class="nav__item">
+			<li (click)="toggleMenu()" class="nav__item minimize__hidden">
 				<mat-icon [class.minimize__icon]="!isMinimize" class="nav__icon">
 					keyboard_arrow_right
 				</mat-icon>

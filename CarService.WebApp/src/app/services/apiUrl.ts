@@ -27,6 +27,8 @@ export const apiUrls = {
 		updatePassword: `${USER_URL}/update/password`,
 		dismissById: `${USER_URL}/delete/dismiss/`,
 		delete: `${USER_URL}/delete/`,
+		updateToMasterById: `${USER_URL}/update/toMaster`,
+
 	},
 	records: {
 		create: `${RECORD_URL}/create`,

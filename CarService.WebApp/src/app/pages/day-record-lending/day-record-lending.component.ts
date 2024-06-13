@@ -39,9 +39,9 @@ export class DayRecordLendingComponent {
 
 	isAuth: boolean
 
-	name: string
-
-	phone: string
+	private name: string
+	private phone: string
+	private email: string;
 
 	constructor(
 		private _dayRecordLendingService: DayRecordService,
@@ -56,8 +56,8 @@ export class DayRecordLendingComponent {
 		}
 
 		firstValueFrom(this._authService.getByCookie())
-		.then(response => this.isAuth = response !== undefined)
-		.catch(() => this.isAuth = false)
+			.then(response => this.isAuth = response !== undefined)
+			.catch(() => this.isAuth = false)
 
 		this._dayRecordLendingService.createHub()
 
@@ -77,7 +77,7 @@ export class DayRecordLendingComponent {
 		this._modalService.open(template, {actionVisible: false})?.subscribe(
 			(isConfirm) => {
 				if (isConfirm) {
-					this._dayRecordLendingService.updateRecord(id, this.phone, this.name)
+					this._dayRecordLendingService.updateRecord(id, this.email, this.phone, this.name)
 				} else {
 					this._dayRecordLendingService.cancelBooking()
 				}
@@ -85,9 +85,10 @@ export class DayRecordLendingComponent {
 		)
 	}
 
-	public submit(event: { name: string, phone: string }) {
+	public submit(event: any) {
 		this.name = event.name
 		this.phone = event.phone
+		this.email = event.email
 		this._modalService.closeModal(true)
 	}
 

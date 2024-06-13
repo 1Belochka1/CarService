@@ -93,7 +93,7 @@
                     >
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button (click)="onRemoveClick(remove, item.id)">
+                    <button *ngIf="(roleId$ | async) == 1 " mat-icon-button (click)="onRemoveClick(remove, item.id)">
                         <mat-icon color="warn">delete</mat-icon>
                     </button>
                 </div>

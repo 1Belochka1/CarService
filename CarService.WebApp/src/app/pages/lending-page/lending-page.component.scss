@@ -85,24 +85,16 @@
 
   .section-record {
     .record__new {
-      @apply flex gap-5 p-6 bg-surface;
+      @apply grid justify-items-center;
+      .new {
+        @apply p-6 bg-surface;
 
-      border-radius: 0.625rem;
-
-      &:before {
         border-radius: 0.625rem;
-        flex: 1;
-        display: block;
-        content: '';
-        background-image: url("/assets/lending-1.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
+
+        width: 300px;
       }
 
-      @media (max-width: 768px) {
-        @apply flex-col;
-      }
+
     }
 
   }

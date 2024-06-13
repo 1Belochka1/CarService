@@ -86,6 +86,7 @@ export class DayRecordLendingComponent {
 	}
 
 	public submit(event: any) {
+		console.log(event)
 		this.name = event.name
 		this.phone = event.phone
 		this.email = event.email

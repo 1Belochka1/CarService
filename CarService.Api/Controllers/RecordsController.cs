@@ -113,7 +113,7 @@ public class RecordsController : ApiController
 
 		if (result.IsFailure)
 			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
-		
+
 		return Ok();
 	}
 
@@ -288,7 +288,6 @@ public class RecordsController : ApiController
 		return Ok(result);
 	}
 
-	
 	[HttpGet(
 		"DayRecords/Get/byCalendarId/{id}")]
 	public async Task<IActionResult>
@@ -335,9 +334,9 @@ public class RecordsController : ApiController
 		return Ok(result);
 	}
 
-	[HttpGet("TimeRecords/Update")]
+	[HttpPost("TimeRecords/Update")]
 	public async Task<IActionResult> UpdateTimeRecords(
-	UpdateTimeRecords request)
+		[FromBody] UpdateTimeRecords request)
 	{
 		var result = await _recordsService
 			.UpdateTimeRecordAsync(request.Id, request.IsBusy, request.Email, request.Phone,

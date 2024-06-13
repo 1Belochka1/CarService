@@ -28,7 +28,7 @@ import {AuthService} from "../../services/auth.service";
 })
 export class FormTimeRecordComponent {
 	@Output()
-	submit = new EventEmitter<{
+	submitUpdate = new EventEmitter<{
 		name: string,
 		email: string,
 		phone: string
@@ -37,22 +37,22 @@ export class FormTimeRecordComponent {
 	requestForm: FormGroup
 
 	constructor(private fb: FormBuilder, private _authService: AuthService) {
-		firstValueFrom(this._authService.getByCookie())
-			.then((user) => {
-				if (user != null)
-					this.requestForm.patchValue({name: user?.firstName, email: user?.email, phone: user?.phone})
-			})
-
 		this.requestForm = this.fb.group({
 			name: ['', [Validators.required, Validators.minLength(3)]],
 			email: ['', [Validators.required, Validators.email]],
 			phone: ['', [Validators.required, Validators.pattern('^8\\d{10}$')]],
 		})
+
+		firstValueFrom(this._authService.getByCookie())
+			.then((user) => {
+				if (user != null)
+					this.requestForm.patchValue({name: user?.firstName, email: user?.email, phone: user?.phone})
+			})
 	}
 
 	onSubmit() {
 		if (this.requestForm.valid) {
-			this.submit.emit({
+			this.submitUpdate.emit({
 				name: this.requestForm.get('name')?.value!,
 				email: this.requestForm.get('email')?.value!,
 				phone: this.requestForm.get('phone')?.value!

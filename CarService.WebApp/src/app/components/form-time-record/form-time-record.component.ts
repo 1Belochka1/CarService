@@ -6,13 +6,21 @@ import {
 	Validators
 } from '@angular/forms'
 import {NgIf} from '@angular/common'
+import {MatButton} from "@angular/material/button";
+import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
 
 @Component({
 	selector: 'app-form-time-record',
 	standalone: true,
 	imports: [
 		NgIf,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		MatButton,
+		MatError,
+		MatInput,
+		MatLabel,
+		MatFormField
 	],
 	templateUrl: './form-time-record.component.html',
 })

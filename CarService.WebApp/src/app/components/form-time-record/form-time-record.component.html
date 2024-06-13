@@ -1,76 +1,54 @@
-<form class="form"
-			[formGroup]="requestForm"
-			(ngSubmit)="onSubmit()"
->
-	<div class="form__group">
-		<label class="form__label"
-					 for="name"
-		>Имя</label>
-		<input class="form__input"
-					 id="name"
-					 type="text"
-					 formControlName="name"
-					 placeholder="Введите ваше имя"
-		/>
-		<div class="form__error"
-				 *ngIf="requestForm.get('name')?.touched &&
-				 requestForm.get('name')?.hasError('required')"
-		>Имя обязательно
-		</div>
-		<div class="form__error"
-				 *ngIf="requestForm.get('name')?.touched &&
-				 requestForm.get('name')?.hasError('minlength')"
-		>Имя должно содержать минимум 3 символа
-		</div>
-	</div>
-
-    <div class="form__group">
-        <label class="form__label"
-               for="email"
-        >Номер телефона</label>
-        <input class="form__input"
-               id="email"
-               type="text"
-               formControlName="email"
-               placeholder="Введите номер телефона"
+<form class="form" [formGroup]="requestForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+        <mat-label>Имя</mat-label>
+        <input
+                matInput
+                id="name"
+                type="text"
+                formControlName="name"
+                placeholder="Введите ваше имя"
         />
-        <div class="form__error"
-             *ngIf="requestForm.get('email')?.touched &&
-				 requestForm.get('email')?.hasError('required')"
-        >Номер телефона обязателен
-        </div>
-        <div class="form__error"
-             *ngIf="requestForm.get('email')?.touched &&
-				 requestForm.get('email')?.hasError('pattern')"
-        >Неверный формат номера
-        </div>
-    </div>
+        <mat-error *ngIf="requestForm.get('name')?.touched && requestForm.get('name')?.hasError('required')">
+            Имя обязательно
+        </mat-error>
+        <mat-error *ngIf="requestForm.get('name')?.touched && requestForm.get('name')?.hasError('minlength')">
+            Имя должно содержать минимум 3 символа
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Номер телефона</mat-label>
+        <input
+                matInput
+                id="email"
+                type="text"
+                formControlName="email"
+                placeholder="Введите номер телефона"
+        />
+        <mat-error *ngIf="requestForm.get('email')?.touched && requestForm.get('email')?.hasError('required')">
+            Номер телефона обязателен
+        </mat-error>
+        <mat-error *ngIf="requestForm.get('email')?.touched && requestForm.get('email')?.hasError('pattern')">
+            Неверный формат номера
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Номер телефона</mat-label>
+        <input
+                matInput
+                id="phone"
+                type="text"
+                formControlName="phone"
+                placeholder="Введите номер телефона"
+        />
+        <mat-error *ngIf="requestForm.get('phone')?.touched && requestForm.get('phone')?.hasError('required')">
+            Номер телефона обязателен
+        </mat-error>
+        <mat-error *ngIf="requestForm.get('phone')?.touched && requestForm.get('phone')?.hasError('pattern')">
+            Неверный формат номера
+        </mat-error>
+    </mat-form-field>
 
-	<div class="form__group">
-		<label class="form__label"
-					 for="phone"
-		>Номер телефона</label>
-		<input class="form__input"
-					 id="phone"
-					 type="text"
-					 formControlName="phone"
-					 placeholder="Введите номер телефона"
-		/>
-		<div class="form__error"
-				 *ngIf="requestForm.get('phone')?.touched &&
-				 requestForm.get('phone')?.hasError('required')"
-		>Номер телефона обязателен
-		</div>
-		<div class="form__error"
-				 *ngIf="requestForm.get('phone')?.touched &&
-				 requestForm.get('phone')?.hasError('pattern')"
-		>Неверный формат номера
-		</div>
-	</div>
-
-	<button class="form__button"
-					type="submit"
-
-	>Отправить
-	</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="requestForm.invalid">
+        Отправить
+    </button>
 </form>

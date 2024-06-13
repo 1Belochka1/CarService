@@ -60,6 +60,7 @@ export class CalendarsPageComponent {
 
 	roleId$: Observable<number>
 	updateRequestForm: FormGroup;
+	updateCalendar: any
 
 	constructor(
 		private _fb: FormBuilder,
@@ -121,23 +122,27 @@ export class CalendarsPageComponent {
 		}
 	}
 
-	onUpdate(temp: TemplateRef<any>, calendar: any) {
+	onUpdate() {
+		firstValueFrom(this._calendarRecordService.updateCalendar(
+			this.updateCalendar.id,
+			this.updateRequestForm.get("updateName")?.value,
+			this.updateRequestForm.get("updateDescription")?.value,
+		)).then(() => {
+			this.setItems()
+			this._toastr.success("Расписание обновлено")
+		})
+
+		this._modalService.closeModal(true)
+	}
+
+	openUpdate(temp: TemplateRef<any>, calendar: any) {
+		this.updateCalendar = calendar
 		this.updateRequestForm.patchValue({
 			updateName: calendar.name,
 			updateDescription: calendar.description
 		})
-
 		this._modalService.open(temp, {title: "Обновление расписания"})
 			?.subscribe((isConfirm) => {
-				if (isConfirm)
-					firstValueFrom(this._calendarRecordService.updateCalendar(
-						calendar.id,
-						this.updateRequestForm.get("updateName")?.value,
-						this.updateRequestForm.get("updateDescription")?.value,
-					)).then(() => {
-						this.setItems()
-						this._toastr.success("Расписание обновлено")
-					})
 			})
 	}
 

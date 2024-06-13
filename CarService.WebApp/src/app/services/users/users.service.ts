@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core'
 import {HttpClient} from '@angular/common/http'
 import {BehaviorSubject, Observable} from 'rxjs'
 import {apiUrls} from '../apiUrl'
-import {GetListWithPageRequest} from '../Requests/GetWorkersParamsRequest'
 
 export interface IWorker {
 	id: string
@@ -64,14 +63,20 @@ export class UsersService {
 	}
 
 	updateToMasterById(id: string) {
-		return this.http.post(apiUrls.users.updateToMasterById, {id}, {withCredentials: true})
+		return this.http.post(apiUrls.users.updateToMasterById, {
+			id,
+			roleId: 2
+		}, {withCredentials: true})
 	}
 
 	dismissById(id: string) {
 		return this.http.delete(apiUrls.users.dismissById + id, {withCredentials: true})
 	}
 
-	delete(id: string) {
+	delete(id
+					 :
+					 string
+	) {
 		return this.http.delete(apiUrls.users.delete + id, {withCredentials: true})
 	}
 

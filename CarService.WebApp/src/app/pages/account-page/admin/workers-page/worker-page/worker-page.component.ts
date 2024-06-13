@@ -100,7 +100,7 @@ export class WorkerPageComponent {
 				firstValueFrom(this._usersService.dismissById(this.workerId))
 				.then(() => {
 					this._location.back()
-					this._toastr.success('Операция прошла успешно', 'Успешно', {progressBar: true})
+					this._toastr.success('Роль изменена')
 				})
 			}
 		})
@@ -115,7 +115,7 @@ export class WorkerPageComponent {
 				firstValueFrom(this._usersService.delete(this.workerId))
 				.then(() => {
 					this._location.back()
-					this._toastr.success('Операция прошла успешно', 'Успешно', {progressBar: true})
+					this._toastr.success('Данные сотрудника удалены')
 				})
 			}
 		})

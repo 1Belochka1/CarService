@@ -26,12 +26,15 @@ public class UsersController : ApiController
 	[HttpGet("get/roleId")]
 	public async Task<IActionResult> GetIsAuthAsync()
 	{
-		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+		var userId =
+			User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 		if (string.IsNullOrEmpty(userId))
 			return Ok(-1);
 
-		var roleId = await _usersService.GetRoleIdByUserId(Guid.Parse(userId));
+		var roleId =
+			await _usersService.GetRoleIdByUserId(
+				Guid.Parse(userId));
 
 		return Ok(roleId);
 	}
@@ -52,7 +55,8 @@ public class UsersController : ApiController
 
 		if (result.IsFailure)
 		{
-			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
+			return BadRequest(
+				JsonSerializerHelp.Serialize(result.Error));
 		}
 
 		return Ok();
@@ -70,7 +74,8 @@ public class UsersController : ApiController
 			request.Password, 2);
 
 		if (result.IsFailure)
-			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
+			return BadRequest(
+				JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok();
 	}
@@ -83,13 +88,16 @@ public class UsersController : ApiController
 		var user = await _usersService.GetById(request.Id);
 
 		if (user.IsFailure)
-			return BadRequest(JsonSerializerHelp.Serialize(user.Error));
+			return BadRequest(
+				JsonSerializerHelp.Serialize(user.Error));
 
 		var result = await _usersService
-			.UpdatePasswordAsync(user.Value.UserAuth.Id, request.NewPassword, request.OldPassword);
+			.UpdatePasswordAsync(user.Value.UserAuth.Id,
+				request.NewPassword, request.OldPassword);
 
 		if (result.IsFailure)
-			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
+			return BadRequest(
+				JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok();
 	}
@@ -104,7 +112,8 @@ public class UsersController : ApiController
 				request.Password);
 
 		if (token.IsFailure)
-			return BadRequest(JsonSerializerHelp.Serialize(token.Error));
+			return BadRequest(
+				JsonSerializerHelp.Serialize(token.Error));
 
 		HttpContext.Response.Cookies.Append("cookies--service",
 			token.Value, new CookieOptions
@@ -144,7 +153,8 @@ public class UsersController : ApiController
 			);
 
 		if (userInfo.IsFailure)
-			return BadRequest(JsonSerializerHelp.Serialize(userInfo.Error));
+			return BadRequest(
+				JsonSerializerHelp.Serialize(userInfo.Error));
 
 		return Ok();
 	}
@@ -172,7 +182,8 @@ public class UsersController : ApiController
 		);
 
 		if (result.IsFailure)
-			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
+			return BadRequest(
+				JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok();
 	}
@@ -180,20 +191,16 @@ public class UsersController : ApiController
 	[HttpPost("Update/toMaster")]
 	[Authorize(Roles = "1")]
 	public async Task<IActionResult> UpdateToMaster(
-		Guid id)
+		[FromBody] UpdateUserRequest request)
 	{
-		var user = await _usersService.GetById(id);
-
-		if (user.IsFailure)
-			return BadRequest(JsonSerializerHelp.Serialize(user.Error));
-
 		var result = await _usersService.Update(
-			user.Value.Id,
-			roleId: 2
+			request.Id,
+			roleId: request.RoleId
 		);
 
 		if (result.IsFailure)
-			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
+			return BadRequest(
+				JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok();
 	}

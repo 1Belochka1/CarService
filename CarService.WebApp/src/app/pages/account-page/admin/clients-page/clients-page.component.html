@@ -1,97 +1,106 @@
 <div class="contents">
-    <b-table
-            [items]="items$ | async"
-            headerTitle="Клиенты"
-    >
-        <ng-template
-                bTemplate="head"
-                let-sortFn="sortFn"
-                let-sortProp="sortProp"
-                let-sortDirection="sortDirection">
-            <tr>
-                <th appTableSortHeaderIcon
-                    [isActive]="sortProp == 'fullname'"
-                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
-                    (click)="sortFn('fullname')">ФИО
-                </th>
-                <th appTableSortHeaderIcon
-                    [isActive]="sortProp == 'email'"
-                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
-                    (click)="sortFn('email')">Почта
-                </th>
-                <th appTableSortHeaderIcon
-                    [isActive]="sortProp == 'phone'"
-                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
-                    (click)="sortFn('phone')">Номер
-                </th>
-                <th appTableSortHeaderIcon
-                    [isActive]="sortProp == 'address'"
-                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
-                    (click)="sortFn('address')">Адрес
-                </th>
-                <th appTableSortHeaderIcon
-                    [isActive]="sortProp == 'lastRecordTime'"
-                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
-                    (click)="sortFn('lastRecordTime')">Последняя заявка (Дата)
-                </th>
-                <th appTableSortHeaderIcon
-                    [isActive]="sortProp == 'isAuth'"
-                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
-                    (click)="sortFn('isAuth')">Зарегистрирован
-                </th>
-                <th>Действия</th>
-            </tr>
-        </ng-template>
-        <ng-template bTemplate="body"
-                     let-item
-        >
-            <tr>
-                <td data-name="ФИО">
-                    {{ item.fullname }}
-                </td>
-                <td
-                        data-name="Почта"
-                >
-                    {{ item.email }}
-                </td>
-                <td class="tablet:max-w-full max-w-32"
-                    data-name="Номер"
-                >
-                    {{ item.phone }}
-                </td>
-                <td class="break-all"
-                    data-name="Адрес"
-                >
-                    {{ item.address | notSpecified }}
-                </td>
-                <td data-name="Последняя заявка (Дата)">
-                    {{
-                        item.lastRecordTime
-                            ? (item.lastRecordTime | date)
-                            : "Заявки отсутствуют"
-                    }}
-                </td>
-                <td data-name="Зарегистрирован">
-                    {{
-                        item.isAuth ? "Да" : "Нет"
-                    }}
-                </td>
-                <td data-name="Действия">
-                    <div>
-                        <button mat-icon-button
-                                *ngIf="item.isAuth"
-                                (click)="updateClientToMaster(updateClient, item.id)"
-                        >
-                            <mat-icon>edit</mat-icon>
-                        </button>
-                        <button mat-icon-button (click)="onRemoveClick(remove, item.id)">
-                            <mat-icon color="warn">delete</mat-icon>
-                        </button>
-                        <ng-template #remove></ng-template>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
-    </b-table>
+	<b-table
+		[items]="items$ | async"
+		headerTitle="Клиенты"
+	>
+		<ng-template
+			bTemplate="head"
+			let-sortFn="sortFn"
+			let-sortProp="sortProp"
+			let-sortDirection="sortDirection"
+		>
+			<tr>
+				<th appTableSortHeaderIcon
+						[isActive]="sortProp == 'fullname'"
+						[sortDirection]="sortDirection ? 'desc' : 'asc'"
+						(click)="sortFn('fullname')"
+				>ФИО
+				</th>
+				<th appTableSortHeaderIcon
+						[isActive]="sortProp == 'email'"
+						[sortDirection]="sortDirection ? 'desc' : 'asc'"
+						(click)="sortFn('email')"
+				>Почта
+				</th>
+				<th appTableSortHeaderIcon
+						[isActive]="sortProp == 'phone'"
+						[sortDirection]="sortDirection ? 'desc' : 'asc'"
+						(click)="sortFn('phone')"
+				>Номер
+				</th>
+				<th appTableSortHeaderIcon
+						[isActive]="sortProp == 'address'"
+						[sortDirection]="sortDirection ? 'desc' : 'asc'"
+						(click)="sortFn('address')"
+				>Адрес
+				</th>
+				<th appTableSortHeaderIcon
+						[isActive]="sortProp == 'lastRecordTime'"
+						[sortDirection]="sortDirection ? 'desc' : 'asc'"
+						(click)="sortFn('lastRecordTime')"
+				>Последняя заявка (Дата)
+				</th>
+				<th appTableSortHeaderIcon
+						[isActive]="sortProp == 'isAuth'"
+						[sortDirection]="sortDirection ? 'desc' : 'asc'"
+						(click)="sortFn('isAuth')"
+				>Зарегистрирован
+				</th>
+				<th>Действия</th>
+			</tr>
+		</ng-template>
+		<ng-template bTemplate="body"
+								 let-item
+		>
+			<tr>
+				<td data-name="ФИО">
+					{{ item.fullname }}
+				</td>
+				<td class="tablet:max-w-full max-w-36 break-all"
+						data-name="Почта"
+				>
+					{{ item.email }}
+				</td>
+				<td class="tablet:max-w-full max-w-32"
+						data-name="Номер"
+				>
+					{{ item.phone }}
+				</td>
+				<td class="break-all"
+						data-name="Адрес"
+				>
+					{{ item.address | notSpecified }}
+				</td>
+				<td data-name="Последняя заявка (Дата)">
+					{{
+						item.lastRecordTime
+							? (item.lastRecordTime | date)
+							: "Заявки отсутствуют"
+					}}
+				</td>
+				<td data-name="Зарегистрирован">
+					{{
+						item.isAuth ? "Да" : "Нет"
+					}}
+				</td>
+				<td data-name="Действия">
+					<div>
+						<button mat-icon-button
+										*ngIf="item.isAuth"
+										(click)="updateClientToMaster(updateClient, item.id)"
+						>
+							<mat-icon>edit</mat-icon>
+						</button>
+						<button mat-icon-button
+										(click)="onRemoveClick(remove, item.id)"
+						>
+							<mat-icon color="warn">delete</mat-icon>
+						</button>
+						<ng-template #remove></ng-template>
+					</div>
+				</td>
+			</tr>
+		</ng-template>
+	</b-table>
 </div>
 <ng-template #updateClient></ng-template>

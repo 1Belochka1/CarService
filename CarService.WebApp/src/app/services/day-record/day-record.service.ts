@@ -44,7 +44,7 @@ export class DayRecordService implements OnDestroy {
 	}
 
 	updateRecord(id: string, email: string, phone: string, name: string) {
-		this._hubConnection.send("RecordTimeRecord", [id, email, phone, name])
+		this._hubConnection.invoke("RecordTimeRecord", [id, email, phone, name])
 			.then(() => {
 				this._toastr.success("Вы записаны")
 			})

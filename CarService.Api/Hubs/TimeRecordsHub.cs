@@ -18,14 +18,20 @@ public class TimeRecordsHub : Hub
 	}
 
 	public async Task RecordTimeRecord(
-		Guid id,
+		string id,
 		bool isBusy,
 		string? email,
 		string? phone,
 		string? name)
 	{
 		var result = await _recordsService
-			.UpdateTimeRecordAsync(id, isBusy, email, phone, name);
+			.UpdateTimeRecordAsync(Guid.Parse(id), isBusy, email,
+				phone,
+				name);
+
+		Console.BackgroundColor = ConsoleColor.White;
+		Console.WriteLine("Мы зашли");
+		Console.BackgroundColor = ConsoleColor.Black;
 
 		if (_clientBookings.ContainsKey(Context.ConnectionId))
 		{
@@ -53,7 +59,8 @@ public class TimeRecordsHub : Hub
 			    out var timeRecordId))
 		{
 			var result = await _recordsService
-				.UpdateTimeRecordAsync(timeRecordId, false, null, null,
+				.UpdateTimeRecordAsync(timeRecordId, false, null,
+					null,
 					null);
 
 			_clientBookings.Remove(Context.ConnectionId);

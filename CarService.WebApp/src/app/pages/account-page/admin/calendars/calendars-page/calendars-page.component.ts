@@ -1,3 +1,4 @@
+import {validateWorkspace} from "@angular/cli/src/utilities/config";
 import {AsyncPipe, NgForOf, NgIf} from '@angular/common'
 import {Component, TemplateRef} from '@angular/core'
 import {
@@ -12,6 +13,7 @@ import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatIcon} from '@angular/material/icon'
 import {MatInput} from "@angular/material/input";
 import {Router, RouterLink} from '@angular/router'
+import {ToastrService} from "ngx-toastr";
 import {Observable, firstValueFrom, map} from 'rxjs'
 import {AutocompleteComponent} from '../../../../../components/autocomplete/autocomplete.component'
 import {BTableComponent} from '../../../../../components/b-table/b-table.component'
@@ -57,6 +59,7 @@ export class CalendarsPageComponent {
 	services$: Observable<any>
 
 	roleId$: Observable<number>
+	updateRequestForm: FormGroup;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -64,7 +67,8 @@ export class CalendarsPageComponent {
 		private _router: Router,
 		private _modalService: ModalService,
 		private _servicesService: ServicesService,
-		private _authService: AuthService
+		private _authService: AuthService,
+		private _toastr: ToastrService
 	) {
 		this.setItems()
 		this.services$ = this._servicesService.getForAutocomplete().pipe(
@@ -76,13 +80,17 @@ export class CalendarsPageComponent {
 		)
 
 		this.requestForm = this._fb.group({
-			name: ['', Validators.required],
-			description: ['', Validators.required],
+			name: ['', Validators.required, Validators.minLength(3)],
+			description: ['', Validators.required, Validators.minLength(5)],
 			service: [{n: 0, v: 0}, Validators.required],
 		})
 
-		this.roleId$ = this._authService.getRoleId$()
+		this.updateRequestForm = this._fb.group({
+			updateName: ['', Validators.required, Validators.minLength(3)],
+			updateDescription: ['', Validators.required, Validators.minLength(5)],
+		})
 
+		this.roleId$ = this._authService.getRoleId$()
 	}
 
 	setItems() {
@@ -113,6 +121,20 @@ export class CalendarsPageComponent {
 		}
 	}
 
+	onUpdate(temp: TemplateRef<any>, id: string) {
+		this._modalService.open(temp, {title: "Обновление расписания"})
+			?.subscribe((isConfirm) => {
+				if (isConfirm)
+					firstValueFrom(this._calendarRecordService.updateCalendar(
+						id,
+						this.updateRequestForm.get("updateName")?.value,
+						this.updateRequestForm.get("updateDescription")?.value,
+					)).then(() => {
+						this.setItems()
+						this._toastr.success("Расписание обновлено")
+					})
+			})
+	}
 
 	displayFn(item: { n: string, v: string }): string {
 		return item && item.n ? item.n : '';

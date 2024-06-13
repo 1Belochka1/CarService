@@ -29,4 +29,10 @@ export class CalendarRecordService {
 	delete(id: string) {
 		return this._http.delete(apiUrls.calendars.delete + id, {withCredentials: true})
 	}
+
+	updateCalendar(id: string, name: string, description: string) {
+		return this._http.post(apiUrls.calendars.update, {
+			id, name, description
+		})
+	}
 }

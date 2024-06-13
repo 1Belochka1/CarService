@@ -1,133 +1,127 @@
 <form class="form" [formGroup]="requestForm" (ngSubmit)="addWorker()">
-    <h1>{{ headerText }}</h1>
-    <mat-form-field appearance="fill">
-        <mat-label>Почта</mat-label>
-        <input
-                matInput
-                id="email"
-                type="text"
-                formControlName="email"
-                placeholder="Введите номер телефона"
-        />
-        <mat-error *ngIf="requestForm.get('email')?.hasError('required')">
-            Почта обязательна
-        </mat-error>
-        <mat-error *ngIf="requestForm.get('email')?.hasError('email')">
-            Неверный формат
-        </mat-error>
-    </mat-form-field>
+	<h1>{{ headerText }}</h1>
+	<mat-form-field appearance="fill">
+		<mat-label>Почта</mat-label>
+		<input
+			matInput
+			id="email"
+			type="text"
+			formControlName="email"
+			placeholder="Введите почту"
+		/>
+		<mat-error *ngIf="requestForm.get('email')?.hasError('required')">
+			Почта обязательна
+		</mat-error>
+		<mat-error *ngIf="requestForm.get('email')?.hasError('email')">
+			Неверный формат
+		</mat-error>
+	</mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Номер телефона</mat-label>
-        <input
-                matInput
-                id="phone"
-                type="text"
-                formControlName="phone"
-                placeholder="Введите номер телефона"
-        />
-        <mat-error *ngIf="requestForm.get('phone')?.hasError('required')">
-            Номер телефона обязателен
-        </mat-error>
-        <mat-error *ngIf="requestForm.get('phone')?.hasError('pattern')">
-            Неверный формат номера
-        </mat-error>
-    </mat-form-field>
+	<mat-form-field appearance="fill">
+		<mat-label>Номер телефона</mat-label>
+		<input
+			matInput
+			id="phone"
+			type="text"
+			formControlName="phone"
+			placeholder="Введите номер телефона"
+		/>
+		<mat-error *ngIf="requestForm.get('phone')?.hasError('required')">
+			Номер телефона обязателен
+		</mat-error>
+		<mat-error *ngIf="requestForm.get('phone')?.hasError('pattern')">
+			Неверный формат номера
+		</mat-error>
+	</mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Имя</mat-label>
-        <input
-                matInput
-                id="firstName"
-                type="text"
-                formControlName="firstName"
-                placeholder="Введите ваше имя"
-        />
-        <mat-error *ngIf="requestForm.get('firstName')?.hasError('required')">
-            Имя обязательно
-        </mat-error>
-        <mat-error *ngIf="requestForm.get('firstName')?.hasError('minlength')">
-            Имя должно содержать минимум 2 символа
-        </mat-error>
-    </mat-form-field>
+	<mat-form-field appearance="fill">
+		<mat-label>Имя</mat-label>
+		<input
+			matInput
+			id="firstName"
+			type="text"
+			formControlName="firstName"
+			placeholder="Введите ваше имя"
+		/>
+		<mat-error *ngIf="requestForm.get('firstName')?.hasError('required')">
+			Имя обязательно
+		</mat-error>
+		<mat-error *ngIf="requestForm.get('firstName')?.hasError('minlength')">
+			Имя должно содержать минимум 2 символа
+		</mat-error>
+	</mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Фамилия</mat-label>
-        <input
-                matInput
-                id="lastName"
-                type="text"
-                formControlName="lastName"
-                placeholder="Введите вашу фамилию"
-        />
-        <mat-error *ngIf="requestForm.get('lastName')?.hasError('required')">
-            Фамилия обязательна
-        </mat-error>
-        <mat-error *ngIf="requestForm.get('lastName')?.hasError('minlength')">
-            Фамилия должна содержать минимум 2 символа
-        </mat-error>
-    </mat-form-field>
+	<mat-form-field appearance="fill">
+		<mat-label>Фамилия</mat-label>
+		<input
+			matInput
+			id="lastName"
+			type="text"
+			formControlName="lastName"
+			placeholder="Введите вашу фамилию"
+		/>
+		<mat-error *ngIf="requestForm.get('lastName')?.hasError('required')">
+			Фамилия обязательна
+		</mat-error>
+		<mat-error *ngIf="requestForm.get('lastName')?.hasError('minlength')">
+			Фамилия должна содержать минимум 2 символа
+		</mat-error>
+	</mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Отчество</mat-label>
-        <input
-                matInput
-                id="middleName"
-                type="text"
-                formControlName="patronymic"
-                placeholder="Введите ваше отчество"
-        />
-    </mat-form-field>
+	<mat-form-field appearance="fill">
+		<mat-label>Отчество</mat-label>
+		<input
+			matInput
+			id="middleName"
+			type="text"
+			formControlName="patronymic"
+			placeholder="Введите ваше отчество"
+		/>
+	</mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Адрес</mat-label>
-        <input
-                matInput
-                id="address"
-                type="text"
-                formControlName="address"
-                placeholder="Введите ваш адрес"
-        />
-    </mat-form-field>
+	<mat-form-field appearance="fill">
+		<mat-label>Адрес</mat-label>
+		<input
+			matInput
+			id="address"
+			type="text"
+			formControlName="address"
+			placeholder="Введите ваш адрес"
+		/>
+	</mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Пароль</mat-label>
-        <input
-                matInput
-                id="password"
-                type="password"
-                formControlName="password"
-                placeholder="Введите пароль"
-        />
-        <mat-error *ngIf="requestForm.get('password')?.hasError('required')">
-            Пароль обязателен
-        </mat-error>
-        <mat-error *ngIf="requestForm.get('password')?.hasError('minlength')">
-            Пароль должен содержать минимум 6 символов
-        </mat-error>
-    </mat-form-field>
+	<mat-form-field appearance="fill">
+		<mat-label>Пароль</mat-label>
+		<input
+			matInput
+			id="password"
+			type="password"
+			formControlName="password"
+			placeholder="Введите пароль"
+		/>
+		<mat-error *ngIf="requestForm.get('password')?.hasError('required')">
+			Пароль обязателен
+		</mat-error>
+		<mat-error *ngIf="requestForm.get('password')?.hasError('minlength')">
+			Пароль должен содержать минимум 6 символов
+		</mat-error>
+	</mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Подтверждение пароля</mat-label>
-        <input
-                matInput
-                id="confirmPassword"
-                type="password"
-                formControlName="confirmPassword"
-                placeholder="Подтвердите пароль"
-        />
-        <mat-error
-                *ngIf="requestForm.get('confirmPassword')?.hasError('required')"
-        >
-            Подтверждение пароля обязательно
-        </mat-error>
-        <mat-error
-                *ngIf="requestForm.get('confirmPassword')?.hasError('mismatch')"
-        >
-            Пароли не совпадают
-        </mat-error>
-    </mat-form-field>
-    <button mat-flat-button type="submit">
-        Отправить
-    </button>
+	<mat-form-field appearance="fill">
+		<mat-label>Подтверждение пароля</mat-label>
+		<input
+			matInput
+			id="confirmPassword"
+			type="password"
+			formControlName="confirmPassword"
+			placeholder="Подтвердите пароль"
+		/>
+		<mat-error *ngIf="requestForm.get('confirmPassword')?.hasError('required')">
+			Подтверждение пароля обязательно
+		</mat-error>
+		<mat-error *ngIf="requestForm.get('confirmPassword')?.hasError('mismatch')">
+			Пароли не совпадают
+		</mat-error>
+	</mat-form-field>
+	<button mat-flat-button type="submit">Отправить</button>
 </form>

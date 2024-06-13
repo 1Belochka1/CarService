@@ -76,11 +76,7 @@ public class UsersService
 		    null)
 			return Result.Failure(
 				"Пользователь с таким email уже существует");
-
-		if (await _userInfoRepository.GetByPhone(phone) != null)
-			return Result.Failure(
-				"Пользователь с таким номером уже существует");
-
+		
 		var user =
 			await _userInfoRepository.GetByPhone(
 				phone);

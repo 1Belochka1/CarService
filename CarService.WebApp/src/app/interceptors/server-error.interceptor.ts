@@ -8,18 +8,18 @@ export const serverErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
 	return next(req).pipe(
 		catchError((error: HttpErrorResponse) => {
-			if (
-				error.status === 500 ||
-				error.status === 504 ||
-				error.status === 501 ||
-				error.status === 502 ||
-				error.status === 503
-			) {
-				toastr.error(
-					'На сервере произошла ошибка, просим прощения за неудобства',
-					'Ошибка'
-				)
-			}
+			// if (
+			// 	error.status === 500 ||
+			// 	error.status === 504 ||
+			// 	error.status === 501 ||
+			// 	error.status === 502 ||
+			// 	error.status === 503
+			// ) {
+			// 	toastr.error(
+			// 		'На сервере произошла ошибка, просим прощения за неудобства',
+			// 		'Ошибка'
+			// 	)
+			// }
 			if (error.status === 400) {
 				toastr.error(
 					error.error,

@@ -59,8 +59,6 @@ export class CalendarsPageComponent {
 	services$: Observable<any>
 
 	roleId$: Observable<number>
-	updateRequestForm: FormGroup;
-	updateCalendar: any
 
 	constructor(
 		private _fb: FormBuilder,
@@ -82,14 +80,9 @@ export class CalendarsPageComponent {
 		)
 
 		this.requestForm = this._fb.group({
-			name: ['', Validators.required, Validators.minLength(3)],
-			description: ['', Validators.required, Validators.minLength(5)],
+			name: ['', [Validators.required, Validators.minLength(3)]],
+			description: ['', [Validators.required, Validators.minLength(5)]],
 			service: [{n: 0, v: 0}, Validators.required],
-		})
-
-		this.updateRequestForm = this._fb.group({
-			updateName: ['', Validators.required, Validators.minLength(3)],
-			updateDescription: ['', Validators.required, Validators.minLength(5)],
 		})
 
 		this.roleId$ = this._authService.getRoleId$()
@@ -101,6 +94,7 @@ export class CalendarsPageComponent {
 
 	onAdd(templateRef: TemplateRef<any>) {
 		this._modalService.open(templateRef, {actionVisible: false})
+			?.subscribe()
 	}
 
 	navigate(param: (string | any)[]) {
@@ -109,7 +103,6 @@ export class CalendarsPageComponent {
 
 	onSubmit() {
 		if (this.requestForm.valid) {
-			console.log(this.requestForm)
 			firstValueFrom(
 				this._calendarRecordService.create(
 					this.requestForm.get('name')?.value,

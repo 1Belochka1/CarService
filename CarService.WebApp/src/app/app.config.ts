@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common'
-import { provideHttpClient, withInterceptors } from '@angular/common/http'
+import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http'
 import localeRu from '@angular/common/locales/ru'
 import { ApplicationConfig, LOCALE_ID } from '@angular/core'
 import { provideNativeDateAdapter } from '@angular/material/core'
@@ -33,6 +33,7 @@ export const appConfig: ApplicationConfig = {
 		provideNativeDateAdapter(),
 		provideToastr(),
 		provideHttpClient(
+withFetch(),
 			withInterceptors([accessDeniedInterceptor, serverErrorInterceptor])
 		),
 		{

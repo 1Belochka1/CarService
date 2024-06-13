@@ -45,8 +45,15 @@ export class TableRecordsComponent {
 	@Output() addClick: EventEmitter<any> = new EventEmitter<any>()
 
 	@Output() update: EventEmitter<any> = new EventEmitter<any>()
+	@Input() headerTitle: string | null;
 
-	constructor(private _router: Router, private _recordService: RecordsService, private _modalService: ModalService, private _toast: ToastrService) {
+	constructor(
+		private _router: Router,
+		private _recordService: RecordsService,
+		private _modalService: ModalService,
+		private _toast: ToastrService
+	) {
+
 	}
 
 	navigateRecord(id: string) {

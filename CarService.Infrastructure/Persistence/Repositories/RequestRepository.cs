@@ -48,7 +48,6 @@ public class RequestRepository : IRequestRepository
 		await _context.SaveChangesAsync();
 	}
 
-
 	public async Task DeleteAsync(Guid id)
 	{
 		await _context.Request
@@ -56,8 +55,10 @@ public class RequestRepository : IRequestRepository
 			.ExecuteDeleteAsync();
 	}
 
-	public async Task<List<Request>> GetAllAsync(string
-		roleId, Guid? userId)
+	public async Task<List<Request>> GetAllAsync(
+		string
+			roleId,
+		Guid? userId)
 	{
 		var query = await _context.Request
 			.Include(x => x.Masters)
@@ -123,13 +124,34 @@ public class RequestRepository : IRequestRepository
 		return query;
 	}
 
-	public async Task AddMasters(Guid recordId,
+	public async Task AddMasters(
+		Guid recordId,
 		ICollection<UserAuth> masters)
 	{
 		var record = await _context.Request
 			.Include(r => r.Masters)
 			.FirstAsync(r => r.Id == recordId);
 		record.AddMasters(masters);
+
+		await _context.SaveChangesAsync();
+	}
+
+	public async Task DeleteMasters(
+		Guid recordId,
+		Guid masterId)
+	{
+		var record = await _context.Request
+			.Include(r => r.Masters)
+			.FirstAsync(r => r.Id == recordId);
+
+		
+		var masters = record.Masters
+			.FirstOrDefault(x => x.Id == masterId);
+
+		if (masters == null)
+			return;
+
+		record.DeleteMaster(masters);
 
 		await _context.SaveChangesAsync();
 	}

@@ -1,5 +1,7 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core'
+import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core'
 import {AsyncPipe} from '@angular/common'
+import {firstValueFrom} from "rxjs";
+import {ModalService} from "../../services/modal.service";
 import {BTableComponent} from '../b-table/b-table.component'
 import {BTemplateDirective} from '../../direcrives/b-template.directive'
 import {NotSpecifiedPipe} from '../../pipe/not-specified.pipe'
@@ -23,7 +25,8 @@ import {MatIconButton} from '@angular/material/button'
 		MatIconButton
 	],
 	templateUrl: './table-workers.component.html',
-	styleUrl: './table-workers.component.scss'
+	styleUrl: './table-workers.component.scss',
+	providers: [ModalService]
 })
 export class TableWorkersComponent {
 
@@ -33,8 +36,10 @@ export class TableWorkersComponent {
 	@Input() addButton: boolean = false
 
 	@Output() addClick: EventEmitter<any> = new EventEmitter<any>()
+	@Output() remove: EventEmitter<any> = new EventEmitter<any>()
+	@Input() deleteTitle: string;
 
-	constructor(private _router: Router) {
+	constructor(private _router: Router, private _modalService: ModalService) {
 	}
 
 	goToWorker(id: string) {
@@ -44,5 +49,15 @@ export class TableWorkersComponent {
 
 	onAddClick() {
 		this.addClick.emit()
+	}
+
+
+	onRemoveClick(temlate: TemplateRef<any>, id: string) {
+		this._modalService.open(temlate, {title: this.deleteTitle})
+			?.subscribe((isConfirm) => {
+				if (isConfirm)
+					this.remove.emit(id)
+			})
+
 	}
 }

@@ -31,7 +31,7 @@ public class ImageService
 		var filename = id + $"_{fileName}";
 
 		var path = Path.Combine(Directory.GetCurrentDirectory(),
-			"../Images", filename);
+			"Images", filename);
 
 		Directory.CreateDirectory(Path.GetDirectoryName(path));
 
@@ -82,15 +82,12 @@ public class ImageService
 		// Поднимаемся на несколько уровней вверх до папки решения
 		string solutionDirectory =
 			Path.GetFullPath(
-				Path.Combine(currentDirectory, "../"));
-
-		// Указываем относительный путь к файлу относительно папки решения
-		string relativeFilePath =
-			Path.Combine(solutionDirectory, "Images",
-				image.FileName);
+				Path.Combine(currentDirectory, "Images",
+					image.FileName));
+		
 
 		// Создаем объект FileInfo для указанного файла
-		var fileInfo = new FileInfo(relativeFilePath);
+		var fileInfo = new FileInfo(solutionDirectory);
 
 		// Проверяем, существует ли файл
 		if (!fileInfo.Exists)
@@ -118,7 +115,7 @@ public class ImageService
 		{
 			var newFilename = imageId + $"_{oldFileName}";
 			var newPath = Path.Combine(
-				Directory.GetCurrentDirectory(), "../Images",
+				Directory.GetCurrentDirectory(), "Images",
 				newFilename);
 
 			Directory.CreateDirectory(
@@ -132,7 +129,7 @@ public class ImageService
 
 			// Optionally delete the old file if necessary
 			var oldPath = Path.Combine(
-				Directory.GetCurrentDirectory(), "../Images",
+				Directory.GetCurrentDirectory(), "Images",
 				image.FileName);
 			if (File.Exists(oldPath))
 			{
@@ -161,7 +158,7 @@ public class ImageService
 
 		// Удалить файл с диска
 		var path = Path.Combine(Directory.GetCurrentDirectory(),
-			"../Images", image.FileName);
+			"Images", image.FileName);
 		if (File.Exists(path))
 		{
 			File.Delete(path);

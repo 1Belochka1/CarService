@@ -6,6 +6,10 @@ import {
 	ReactiveFormsModule,
 	Validators
 } from '@angular/forms'
+import {MatButton} from "@angular/material/button";
+import {MatCheckbox} from "@angular/material/checkbox";
+import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
 import {ServicesService} from '../../services/services/services.service'
 
 @Component({
@@ -13,21 +17,29 @@ import {ServicesService} from '../../services/services/services.service'
 	standalone: true,
 	imports: [
 		NgIf,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		MatCheckbox,
+		MatError,
+		MatLabel,
+		MatFormField,
+		MatInput,
+		MatButton
 	],
 	templateUrl: './form-add-service.component.html',
 	styleUrl: './form-add-service.component.scss'
 })
 export class FormAddServiceComponent {
 	@Output()
-	submit = new EventEmitter<boolean>()
+	onAddSubmit = new EventEmitter<boolean>()
 
 	requestForm: FormGroup
 
 	private _file?: File
 
+	btnText: string = 'Изображение';
+
 	constructor(private _fb: FormBuilder,
-							private _servicesService: ServicesService
+	            private _servicesService: ServicesService
 	) {
 		this.requestForm = this._fb.group({
 			name: ['', Validators.required],
@@ -48,15 +60,15 @@ export class FormAddServiceComponent {
 				formData.append('File', this._file)
 
 			this._servicesService.create(formData)
-					.subscribe({
-						next: (response) => {
-							console.log(response)
-							this.submit.emit(true)
-						},
-						error: err => {
-							this.submit.emit(false)
-						}
-					})
+				.subscribe({
+					next: (response) => {
+						console.log(response)
+						this.onAddSubmit.emit(true)
+					},
+					error: err => {
+						this.onAddSubmit.emit(false)
+					}
+				})
 		}
 
 	}
@@ -69,6 +81,7 @@ export class FormAddServiceComponent {
 
 			this._file = files[0]
 			this.requestForm.patchValue({image: true})
+			this.btnText = this._file.name
 		}
 	}
 }

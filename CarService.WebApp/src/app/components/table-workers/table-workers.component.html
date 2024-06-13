@@ -1,79 +1,81 @@
 <b-table
-	[items]="items"
-	[addButton]="addButton"
-	(addButtonClick)="onAddClick()"
+        [items]="items"
+        [addButton]="addButton"
+        (addButtonClick)="onAddClick()"
+        headerTitle="Сотрудники"
 >
-	<!-- Шаблон для заголовка таблицы с возможностью сортировки -->
-	<ng-template
-		bTemplate="head"
-		let-sortFn="sortFn"
-		let-sortProp="sortProp"
-		let-sortDirection="sortDirection"
-	>
-		<!-- Строка заголовка таблицы -->
-		<tr>
-			<th
-				appTableSortHeaderIcon
-				[isActive]="sortProp == 'fullname'"
-				[sortDirection]="sortDirection ? 'desc' : 'asc'"
-				(click)="sortFn('fullname')"
-			>
-				ФИО
-			</th>
-			<th
-				appTableSortHeaderIcon
-				[isActive]="sortProp == 'email'"
-				[sortDirection]="sortDirection ? 'desc' : 'asc'"
-				(click)="sortFn('email')"
-			>
-				Почта
-			</th>
-			<th
-				appTableSortHeaderIcon
-				[isActive]="sortProp == 'phone'"
-				[sortDirection]="sortDirection ? 'desc' : 'asc'"
-				(click)="sortFn('phone')"
-			>
-				Номер
-			</th>
-			<th
-				appTableSortHeaderIcon
-				[isActive]="sortProp == 'address'"
-				[sortDirection]="sortDirection ? 'desc' : 'asc'"
-				(click)="sortFn('address')"
-			>
-				Адрес
-			</th>
-			<th>Действия</th>
-		</tr>
-	</ng-template>
+    <!-- Шаблон для заголовка таблицы с возможностью сортировки -->
+    <ng-template
+            bTemplate="head"
+            let-sortFn="sortFn"
+            let-sortProp="sortProp"
+            let-sortDirection="sortDirection"
+    >
+        <!-- Строка заголовка таблицы -->
+        <tr>
+            <th
+                    appTableSortHeaderIcon
+                    [isActive]="sortProp == 'fullname'"
+                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
+                    (click)="sortFn('fullname')"
+            >
+                ФИО
+            </th>
+            <th
+                    appTableSortHeaderIcon
+                    [isActive]="sortProp == 'email'"
+                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
+                    (click)="sortFn('email')"
+            >
+                Почта
+            </th>
+            <th
+                    appTableSortHeaderIcon
+                    [isActive]="sortProp == 'phone'"
+                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
+                    (click)="sortFn('phone')"
+            >
+                Номер
+            </th>
+            <th
+                    appTableSortHeaderIcon
+                    [isActive]="sortProp == 'address'"
+                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
+                    (click)="sortFn('address')"
+            >
+                Адрес
+            </th>
+            <th>Действия</th>
+        </tr>
+    </ng-template>
 
-	<!-- Шаблон для теля таблицы с столбцом действий -->
-	<ng-template bTemplate="body" let-item>
-		<tr>
-			<td data-name="Фио">
-				{{ item.fullname }}
-			</td>
-			<td class="tablet:max-w-full max-w-36 break-all" data-name="Почта">
-				{{ item.email }}
-			</td>
-			<td class="tablet:max-w-full max-w-36" data-name="Номер">
-				{{ item.phone }}
-			</td>
-			<td class="break-all" data-name="Адрес">
-				{{ item.address | notSpecified }}
-			</td>
-			<td data-name="Действия">
-				<div>
-					<!-- Иконочные кнопки действий  -->
-					<button mat-icon-button (click)="goToWorker(item.id)">
-						<mat-icon>edit</mat-icon>
-					</button>
-					<button mat-icon-button>
-						<mat-icon color="warn">delete</mat-icon>
-					</button>
-				</div>
-			</td>
-		</tr>
-	</ng-template>
+    <!-- Шаблон для теля таблицы с столбцом действий -->
+    <ng-template bTemplate="body" let-item>
+        <tr>
+            <td data-name="Фио">
+                {{ item.fullname }}
+            </td>
+            <td class="tablet:max-w-full max-w-36 break-all" data-name="Почта">
+                {{ item.email }}
+            </td>
+            <td class="tablet:max-w-full max-w-36" data-name="Номер">
+                {{ item.phone }}
+            </td>
+            <td class="break-all" data-name="Адрес">
+                {{ item.address | notSpecified }}
+            </td>
+            <td data-name="Действия">
+                <div>
+                    <!-- Иконочные кнопки действий  -->
+                    <button mat-icon-button (click)="goToWorker(item.id)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="onRemoveClick(remove,item.id)">
+                        <mat-icon color="warn">delete</mat-icon>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
 </b-table>
+<ng-template #remove></ng-template>

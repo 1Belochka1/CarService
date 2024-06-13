@@ -21,9 +21,13 @@ export interface IClient {
 	id: string
 	email: string
 	fullName: string
+	lastName: string
+	firstName: string
+	patronymic: string
 	address: string
 	phone: string
 	lastRecord: Date
+	isAuth: boolean
 }
 
 @Injectable({
@@ -39,7 +43,7 @@ export class UsersService {
 
 
 	getClients(): Observable<IClient[]> {
-		return this.http.get<any>(apiUrls.users.getClients, {
+		return this.http.get<IClient[]>(apiUrls.users.getClients, {
 			withCredentials: true
 		})
 	}

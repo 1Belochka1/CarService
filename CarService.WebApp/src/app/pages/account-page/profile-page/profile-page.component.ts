@@ -2,13 +2,16 @@ import {Component} from '@angular/core'
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
 import {
+	AbstractControl,
 	FormBuilder,
 	FormGroup,
-	ReactiveFormsModule,
+	ReactiveFormsModule, ValidationErrors, ValidatorFn,
 	Validators
 } from '@angular/forms'
 import {NgIf} from '@angular/common'
 import {MatButton} from '@angular/material/button'
+import {ToastrService} from "ngx-toastr";
+import {firstValueFrom} from "rxjs";
 import {AuthService} from '../../../services/auth.service'
 
 @Component({
@@ -30,7 +33,10 @@ export class ProfilePageComponent {
 	profileForm: FormGroup
 	passwordForm: FormGroup
 
-	constructor(private fb: FormBuilder, private _authService: AuthService) {
+	private _id?: string
+
+	constructor(private fb: FormBuilder, private _authService: AuthService, private _toastr: ToastrService) {
+
 	}
 
 	ngOnInit() {
@@ -39,7 +45,7 @@ export class ProfilePageComponent {
 			lastName: ['', Validators.required],
 			middleName: [''],
 			email: ['', [Validators.required, Validators.email]],
-			phone: ['', [Validators.required, Validators.pattern('^\\d{10,12}$')]],
+			phone: ['', [Validators.required,  Validators.pattern('^8\\d{10}$')]],
 			address: ['']
 		})
 
@@ -47,9 +53,12 @@ export class ProfilePageComponent {
 			oldPassword: ['', Validators.required],
 			newPassword: ['', [Validators.required, Validators.minLength(6)]],
 			confirmPassword: ['', Validators.required]
-		}, {validator: this.checkPasswords})
+		}, {validators: [this.checkPasswords]})
 
 		this._authService.getByCookie().subscribe((user) => {
+
+			this._id = user?.id
+
 			this.profileForm.patchValue({
 				firstName: user?.firstName,
 				lastName: user?.lastName,
@@ -64,18 +73,36 @@ export class ProfilePageComponent {
 	onSubmit() {
 		if (this.profileForm.valid) {
 			console.log(this.profileForm.value)
-			// Отправка данных профиля на сервер
+			firstValueFrom(this._authService.updateUser(
+				this._id!,
+				this.profileForm.get("email")?.value,
+				this.profileForm.get("lastName")?.value,
+				this.profileForm.get("firstName")?.value,
+				this.profileForm.get("middleName")?.value,
+				this.profileForm.get("address")?.value,
+				this.profileForm.get("phone")?.value,
+			)).then(() => {
+				this._toastr.success("Профиль изменен")
+			})
 		}
 	}
 
 	onChangePassword() {
 		if (this.passwordForm.valid) {
 			console.log(this.passwordForm.value)
-			// Отправка нового пароля на сервер
+			firstValueFrom(this._authService.updatePassword(
+				this._id!,
+				this.passwordForm.get("newPassword")?.value,
+				this.passwordForm.get("oldPassword")?.value,
+			)).then(() => {
+				this._toastr.success("Пароль изменен")
+			})
 		}
 	}
 
-	checkPasswords(group: FormGroup) {
+	checkPasswords: ValidatorFn = (
+		group: AbstractControl
+	): ValidationErrors | null => {
 		const newPassword = group.get('newPassword')?.value
 		const confirmPassword = group.get('confirmPassword')?.value
 		return newPassword === confirmPassword ? null : {passwordMismatch: true}

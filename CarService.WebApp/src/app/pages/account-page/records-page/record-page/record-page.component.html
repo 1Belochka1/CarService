@@ -1,61 +1,58 @@
 <div class="wrapper"
-		 *ngIf="record"
+     *ngIf="record"
 >
-	<app-about
-		[header]='"Заявка от " + (record.createTime |
+    <app-about
+            [header]='"Заявка от " + (record.createTime |
 		date:"dd MMMM hh:mm")'
-		[item]='record'
-	>
-		<ng-template bTemplate="about-content"
-								 let-item
-		>
-			<h3>Фио</h3>
-			<p data-name="Полное имя">
-				{{ item.client | fullName }}
-			</p>
-			<h3>Номер телефона</h3>
-			<p>
-				{{ item.client.phone }}
-			</p>
-			<h3>Описание</h3>
-			<p>{{ item.description }}</p>
-			<ng-container *ngIf="item.carInfo">
-				<h3>Автомобиль</h3>
-				<p>{{ item.carInfo }}</p>
-			</ng-container>
-			<h3>Приоритет</h3>
-			<p>
+            [item]='record'
+    >
+        <ng-template bTemplate="about-content"
+                     let-item
+        >
+            <h3>Фио</h3>
+            <p data-name="Полное имя">
+                {{ item.client | fullName }}
+            </p>
+            <h3>Номер телефона</h3>
+            <p>
+                {{ item.client.phone }}
+            </p>
+            <h3>Описание</h3>
+            <p>{{ item.description }}</p>
+            <ng-container *ngIf="item.carInfo">
+                <h3>Автомобиль</h3>
+                <p>{{ item.carInfo }}</p>
+            </ng-container>
+            <h3>Приоритет</h3>
+            <p>
 				<span class="priority"
-							[attr.data-priority]="item.priority"
-				>
+                      [attr.data-priority]="item.priority"
+                >
 								{{ priority[item.priority] }}
 				</span>
-			</p>
-			<h3>Статус</h3>
-			<p>
+            </p>
+            <h3>Статус</h3>
+            <p>
 				<span class="status"
-							[attr.data-status]="	record.status"
-				>
+                      [attr.data-status]="	record.status"
+                >
 								{{ status[record.status] }}
 				</span>
-			</p>
-		</ng-template>
-	</app-about>
+            </p>
+        </ng-template>
+    </app-about>
 
-	<div class="action">
-		<button (click)="dialogOpen(modalPriority,
-		{selectItems: priorityItems, priority:
-		record.priority}, 'Изменение приоритета')"
-		>
-			Изменить приоритет
-		</button>
-		<button (click)="dialogOpen(modalStatus,
-		{selectItems: statusItems, status: record.status},
+    <div class="action">
+        <button (click)="dialogPriorityOpen(modalPriority, 'Изменение приоритета')"
+        >
+            Изменить приоритет
+        </button>
+        <button (click)="dialogStatusOpen(modalStatus,
 		'Изменение статуса')"
-		>
-			Изменить
-			статус
-		</button>
+        >
+            Изменить
+            статус
+        </button>
         <ng-container *ngIf='(roleId$ | async) as roleId'>
             <button *ngIf='roleId == 1'
                     (click)='dialogAddMasterOpen(modalAddMasters)'
@@ -68,44 +65,61 @@
             </button>
         </ng-container>
 
-	</div>
+    </div>
 
-	<div class="masters text-surface">
-		<app-table-workers
-			[items]='record.masters'
-		>
-		</app-table-workers>
-	</div>
+    <div class="masters text-surface">
+        <app-table-workers
+                (remove)="removeWorker($event)"
+                [items]='record.masters'
+                deleteTitle="Вы дейстивтельно хотите открепить мастера?"
+        >
+        </app-table-workers>
+    </div>
 </div>
 
 <ng-template #modalPriority
-						 let-item
+
 >
-	<app-select
-		[items]="item.selectItems"
-		[selectedIndex]="item.priority"
-		(selectionChange)="priorityUpdate($event)"
-		class="full-w primary"
-	></app-select>
+    <div class="form">
+        <mat-form-field>
+            <mat-label>Приоритет</mat-label>
+            <mat-select [(value)]="prioritySelect">
+                <mat-option *ngFor="let priority of priorityItems" [value]="priority.value">{{ priority.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
 </ng-template>
 
 <ng-template #modalStatus
-						 let-item
 >
-	<app-select
-		[items]="item.selectItems"
-		[selectedIndex]="item.status"
-		(selectionChange)="statusUpdate($event)"
-		class="full-w primary"
-	></app-select>
+    <div class="form">
+        <mat-form-field>
+            <mat-label>Статус</mat-label>
+            <mat-select [(value)]="statusSelect">
+                <mat-option *ngFor="let status of statusItems" [value]="status.value">{{ status.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
 </ng-template>
 
 <ng-template #modalAddMasters>
-
-	<app-autocomplete
-		[suggestions]='optionsMaster'
-		(selectSuggestion)='onAddMasterSubmit($event)'
-	></app-autocomplete>
-
+    <div class="form">
+        <mat-form-field>
+            <mat-label>Мастер</mat-label>
+            <input type="text"
+                   placeholder="Введите имя мастера"
+                   matInput
+                   [matAutocomplete]="auto"
+                   [(ngModel)]="master"
+            >
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let opt of optionsMaster" [value]="opt">
+                    {{ opt.n }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
 </ng-template>
 <ng-template #remove></ng-template>

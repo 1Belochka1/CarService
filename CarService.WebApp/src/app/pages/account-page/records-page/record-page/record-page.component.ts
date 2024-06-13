@@ -1,30 +1,35 @@
-import { AsyncPipe, DatePipe, JsonPipe, Location, NgIf } from '@angular/common'
-import { Component, TemplateRef } from '@angular/core'
+import {AsyncPipe, DatePipe, JsonPipe, Location, NgForOf, NgIf} from '@angular/common'
+import {Component, TemplateRef} from '@angular/core'
 import {
 	FormBuilder,
-	FormGroup,
+	FormGroup, FormsModule,
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms'
-import { ActivatedRoute } from '@angular/router'
-import { ToastrService } from 'ngx-toastr'
-import { Observable, firstValueFrom } from 'rxjs'
-import { AboutComponent } from '../../../../components/about/about.component'
-import { AutocompleteComponent } from '../../../../components/autocomplete/autocomplete.component'
+import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {MatSelect} from "@angular/material/select";
+import {ActivatedRoute} from '@angular/router'
+import {ToastrService} from 'ngx-toastr'
+import {Observable, firstValueFrom} from 'rxjs'
+import {AboutComponent} from '../../../../components/about/about.component'
+import {AutocompleteComponent} from '../../../../components/autocomplete/autocomplete.component'
 import {
 	IItem,
 	SelectComponent,
 } from '../../../../components/select/select.component'
-import { TableWorkersComponent } from '../../../../components/table-workers/table-workers.component'
-import { BTemplateDirective } from '../../../../direcrives/b-template.directive'
-import { Priority } from '../../../../enums/priority.enum'
-import { Status } from '../../../../enums/status.enum'
-import { RecordType } from '../../../../models/record.type'
-import { FullNamePipe } from '../../../../pipe/full-name.pipe'
-import { AuthService } from '../../../../services/auth.service'
-import { ModalService } from '../../../../services/modal.service'
-import { RecordsService } from '../../../../services/records/records.service'
-import { UsersService } from '../../../../services/users/users.service'
+import {TableWorkersComponent} from '../../../../components/table-workers/table-workers.component'
+import {BTemplateDirective} from '../../../../direcrives/b-template.directive'
+import {Priority} from '../../../../enums/priority.enum'
+import {Status} from '../../../../enums/status.enum'
+import {RecordType} from '../../../../models/record.type'
+import {UserInfo} from "../../../../models/user-info.type";
+import {FullNamePipe} from '../../../../pipe/full-name.pipe'
+import {AuthService} from '../../../../services/auth.service'
+import {ModalService} from '../../../../services/modal.service'
+import {RecordsService} from '../../../../services/records/records.service'
+import {UsersService} from '../../../../services/users/users.service'
 
 @Component({
 	selector: 'app-day-record-lending-page',
@@ -41,6 +46,15 @@ import { UsersService } from '../../../../services/users/users.service'
 		AutocompleteComponent,
 		TableWorkersComponent,
 		AsyncPipe,
+		MatFormField,
+		MatLabel,
+		MatOption,
+		MatSelect,
+		NgForOf,
+		MatAutocomplete,
+		MatAutocompleteTrigger,
+		MatInput,
+		FormsModule,
 	],
 	templateUrl: './record-page.component.html',
 	styleUrl: './record-page.component.scss',
@@ -50,21 +64,22 @@ export class RecordPageComponent {
 	roleId$: Observable<number>
 
 	priorityItems: IItem<Priority>[] = [
-		{ value: Priority['Низкий'], name: 'Низкий' },
-		{ value: Priority['Средний'], name: 'Средний' },
-		{ value: Priority['Высокий'], name: 'Высокий' },
+		{value: Priority['Низкий'], name: 'Низкий'},
+		{value: Priority['Средний'], name: 'Средний'},
+		{value: Priority['Высокий'], name: 'Высокий'},
 		{
 			value: Priority['Очень высокий'],
 			name: 'Очень высокий',
 		},
 	]
 	statusItems: IItem<Status>[] = [
-		{ value: Status['Новая'], name: 'Новая' },
-		{ value: Status['В обработке'], name: 'В обработке' },
-		{ value: Status['В ожидании'], name: 'В ожидании' },
-		{ value: Status['В работе'], name: 'В работе' },
-		{ value: Status['Выполнена'], name: 'Выполнена' },
+		{value: Status['Новая'], name: 'Новая'},
+		{value: Status['В обработке'], name: 'В обработке'},
+		{value: Status['В ожидании'], name: 'В ожидании'},
+		{value: Status['В работе'], name: 'В работе'},
+		{value: Status['Выполнена'], name: 'Выполнена'},
 	]
+
 	record: RecordType
 	requestForm: FormGroup
 	prioritySelect?: number
@@ -73,7 +88,8 @@ export class RecordPageComponent {
 	protected readonly status = Status
 	protected readonly priority = Priority
 
-	private idMaster: string
+	master: any
+	private id: string
 
 	constructor(
 		private _router: ActivatedRoute,
@@ -91,7 +107,9 @@ export class RecordPageComponent {
 			return
 		}
 
-		this.getRecord(id)
+		this.id = id
+
+		this.getRecord(this.id)
 
 		this.requestForm = this.fb.group({
 			phone: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]],
@@ -109,49 +127,42 @@ export class RecordPageComponent {
 		})
 	}
 
-	dialogOpen(template: TemplateRef<any>, context: any, title: string) {
-		this.modalService
-			.open(template, {
-				title: title,
-				context: context,
-			})
-			?.subscribe(result => {
-				if (result) {
-					firstValueFrom(
-						this.recordsService.update(
-							this.record.id,
-							this.prioritySelect,
-							this.statusSelect
-						)
-					).then(() => {
-						console.log(this.record, this.prioritySelect, this.statusSelect)
-
-						if (this.prioritySelect != undefined) {
-							console.log('зашел')
-							this.record.priority = this.prioritySelect
-						}
-
-						if (this.statusSelect != undefined) {
-							console.log('зашел')
-							this.record.status = this.statusSelect
-						}
-
-						console.log(this.record, this.prioritySelect, this.statusSelect)
-					})
-				}
-				if (!result) {
-					console.log('cancel')
-					this.prioritySelect = undefined
-					this.statusSelect = undefined
-				}
-			})
+	dialogStatusOpen(template: TemplateRef<any>, title: string) {
+		this.modalService.open(template, {
+			title: title,
+		})?.subscribe((isConfirm) => {
+			if (isConfirm)
+				firstValueFrom(this.recordsService.update(
+					this.record.id,
+					this.record.priority,
+					this.statusSelect
+				)).then(() => {
+					this.getRecord(this.id)
+				})
+		})
 	}
+
+	dialogPriorityOpen(template: TemplateRef<any>, title: string) {
+		this.modalService.open(template, {
+			title: title,
+		})?.subscribe((isConfirm) => {
+			if (isConfirm)
+				firstValueFrom(this.recordsService.update(
+					this.record.id,
+					this.prioritySelect,
+					this.record.status
+				)).then(() => {
+					this.getRecord(this.id)
+				})
+		})
+	}
+
 
 	dialogAddMasterOpen(template: TemplateRef<any>) {
 		firstValueFrom(this._userService.getMasterAutocomplete()).then(
 			(x: any[]) => {
 				this.optionsMaster = x.map(item => {
-					return { n: item.item2, v: item.item1 }
+					return {n: item.item2, v: item.item1}
 				})
 			}
 		)
@@ -161,9 +172,9 @@ export class RecordPageComponent {
 				title: 'Добавление мастера',
 			})
 			?.subscribe(isConfirm => {
-				if (isConfirm && this.idMaster) {
+				if (isConfirm && this.master) {
 					firstValueFrom(
-						this.recordsService.addMaster(this.record.id, this.idMaster)
+						this.recordsService.addMaster(this.record.id, this.master.v)
 					).then(() => {
 						this.getRecord(this.record.id)
 						this.toastr.success('Мастер добавлен')
@@ -191,15 +202,16 @@ export class RecordPageComponent {
 			})
 	}
 
-	priorityUpdate(priority: number) {
-		this.prioritySelect = priority
+
+	displayFn(item: { n: string, v: string }): string {
+		return item && item.n ? item.n : '';
 	}
 
-	statusUpdate(status: number) {
-		this.statusSelect = status
-	}
-
-	onAddMasterSubmit(event: { v: string; n: string }) {
-		this.idMaster = event.v
+	removeWorker(masterId: string) {
+		firstValueFrom(this.recordsService.deleteMaster(this.id, masterId))
+			.then(() => {
+				this.getRecord(this.id)
+				this.toastr.success("Мастер удален")
+			})
 	}
 }

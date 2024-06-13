@@ -1,4 +1,4 @@
-import { CdkStep, CdkStepLabel } from '@angular/cdk/stepper'
+import {CdkStep, CdkStepLabel} from '@angular/cdk/stepper'
 import {
 	AsyncPipe,
 	NgClass,
@@ -6,7 +6,7 @@ import {
 	NgIf,
 	NgTemplateOutlet,
 } from '@angular/common'
-import { Component, TemplateRef } from '@angular/core'
+import {Component, TemplateRef} from '@angular/core'
 import {
 	FormBuilder,
 	FormGroup,
@@ -14,25 +14,26 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms'
-import { Router, RouterLink } from '@angular/router'
-import { SvgIconComponent } from 'angular-svg-icon'
-import { Observable } from 'rxjs'
-import { AboutComponent } from '../../../../components/about/about.component'
-import { BTableComponent } from '../../../../components/b-table/b-table.component'
-import { FormRegisterComponent } from '../../../../components/form-register/form-register.component'
-import { PaginationComponent } from '../../../../components/pagination/pagination.component'
-import { SearchComponent } from '../../../../components/search/search.component'
-import { SelectComponent } from '../../../../components/select/select.component'
-import { StepperComponent } from '../../../../components/stepper/stepper.component'
-import { TableWorkersComponent } from '../../../../components/table-workers/table-workers.component'
-import { BTableSortDirective } from '../../../../direcrives/b-table-sort.directive'
-import { BTemplateDirective } from '../../../../direcrives/b-template.directive'
-import { TableSortHeaderIconDirective } from '../../../../direcrives/table-sort-header-icon.directive'
-import { FullNamePipe } from '../../../../pipe/full-name.pipe'
-import { NotSpecifiedPipe } from '../../../../pipe/not-specified.pipe'
-import { AuthService } from '../../../../services/auth.service'
-import { ModalService } from '../../../../services/modal.service'
-import { UsersService } from '../../../../services/users/users.service'
+import {Router, RouterLink} from '@angular/router'
+import {SvgIconComponent} from 'angular-svg-icon'
+import {ToastrService} from "ngx-toastr";
+import {firstValueFrom, Observable} from 'rxjs'
+import {AboutComponent} from '../../../../components/about/about.component'
+import {BTableComponent} from '../../../../components/b-table/b-table.component'
+import {FormRegisterComponent} from '../../../../components/form-register/form-register.component'
+import {PaginationComponent} from '../../../../components/pagination/pagination.component'
+import {SearchComponent} from '../../../../components/search/search.component'
+import {SelectComponent} from '../../../../components/select/select.component'
+import {StepperComponent} from '../../../../components/stepper/stepper.component'
+import {TableWorkersComponent} from '../../../../components/table-workers/table-workers.component'
+import {BTableSortDirective} from '../../../../direcrives/b-table-sort.directive'
+import {BTemplateDirective} from '../../../../direcrives/b-template.directive'
+import {TableSortHeaderIconDirective} from '../../../../direcrives/table-sort-header-icon.directive'
+import {FullNamePipe} from '../../../../pipe/full-name.pipe'
+import {NotSpecifiedPipe} from '../../../../pipe/not-specified.pipe'
+import {AuthService} from '../../../../services/auth.service'
+import {ModalService} from '../../../../services/modal.service'
+import {UsersService} from '../../../../services/users/users.service'
 
 @Component({
 	selector: 'app-workers-page',
@@ -78,6 +79,7 @@ export class WorkersPageComponent {
 		private _router: Router,
 		private _modalService: ModalService,
 		private _authService: AuthService,
+		private _toastr: ToastrService,
 		private fb: FormBuilder
 	) {
 		this.setItems()
@@ -92,12 +94,13 @@ export class WorkersPageComponent {
 	}
 
 	goToWorker(id: string) {
-		this._router.navigate(['account', 'worker', id]).then(() => {})
+		this._router.navigate(['account', 'worker', id]).then(() => {
+		})
 	}
 
 	openModalAddWorker(addWorkerTemplate: TemplateRef<any>) {
 		this._modalService
-			.open(addWorkerTemplate, { actionVisible: false })
+			.open(addWorkerTemplate, {actionVisible: false})
 			?.subscribe(() => {
 				this.selectedIndexAddWorker = 0
 			})
@@ -106,5 +109,13 @@ export class WorkersPageComponent {
 	addWorker() {
 		this.setItems()
 		this._modalService.closeModal(true)
+	}
+
+	onDeleteMaster(masterId: string) {
+		firstValueFrom(this._userService.delete(masterId))
+			.then(() => {
+				this.setItems()
+				this._toastr.success('Операция прошла успешно')
+			})
 	}
 }

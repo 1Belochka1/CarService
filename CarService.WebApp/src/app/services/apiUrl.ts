@@ -23,6 +23,8 @@ export const apiUrls = {
 		getWorker: `${USER_URL}/get/worker/`,
 		getClient: `${USER_URL}/get/client/`,
 		updateByPhone: `${USER_URL}/update/byPhone`,
+		update: `${USER_URL}/update`,
+		updatePassword: `${USER_URL}/update/password`,
 		dismissById: `${USER_URL}/delete/dismiss/`,
 		delete: `${USER_URL}/delete/`,
 	},
@@ -36,6 +38,8 @@ export const apiUrls = {
 		getActiveByMasterId: `${RECORD_URL}/get/ActiveByMasterId/`,
 		addMaster: `${RECORD_URL}/update/addmaster/`,
 		delete: `${RECORD_URL}/delete/`,
+		deleteMaster:`${RECORD_URL}/Update/DeleteMaster/`,
+
 	},
 	calendars: {
 		create: `${CALENDAR_URL}/create`,

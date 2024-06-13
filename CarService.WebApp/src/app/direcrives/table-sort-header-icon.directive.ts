@@ -32,6 +32,7 @@ export class TableSortHeaderIconDirective implements OnInit, OnChanges {
 		this.renderer2.addClass(this.div, 'flex')
 		this.renderer2.addClass(this.div, 'gap-2')
 		this.renderer2.addClass(this.div, 'justify-center')
+		this.renderer2.addClass(this.div, 'items-center')
 
 		const textElement = this.renderer2.createText(innerText)
 		this.renderer2.appendChild(this.div, textElement)

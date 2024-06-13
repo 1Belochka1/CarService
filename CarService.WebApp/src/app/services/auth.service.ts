@@ -71,6 +71,42 @@ export class AuthService {
 		)
 	}
 
+	updateUser(
+		id: string,
+		email: string,
+		lastName: string,
+		firstName: string,
+		patronymic: string,
+		address: string,
+		phone: string
+	) {
+		console.log(id,
+			email,
+			lastName,
+			firstName,
+			patronymic,
+			address,
+			phone)
+		return this.http.post(apiUrls.users.update, {
+			id,
+			email,
+			firstName,
+			LastName: lastName,
+			patronymic,
+			address,
+			phone
+		}, {
+			withCredentials: true
+		})
+	}
+
+	updatePassword(id: string, newPassword: string, oldPassword: string) {
+		return this.http.post(apiUrls.users.updatePassword, {
+			id, oldPassword, newPassword
+		}, {
+			withCredentials: true
+		})
+	}
 
 	getByCookie() {
 		return this.http.get<UserInfo | null>(apiUrls.users.getByCookie, {

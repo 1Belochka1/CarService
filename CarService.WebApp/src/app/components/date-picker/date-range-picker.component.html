@@ -1,141 +1,70 @@
-<form class="form"
-			[formGroup]="dateTimeRangeForm"
-			(ngSubmit)="onSubmit()"
->
-	<div class="form__group">
-		<label class="form__label"
-					 for="startDate"
-		>Дата начала*</label>
-		<input
-			class="form__input"
-			id="startDate"
-			type="date"
-			formControlName="startDate"
-			placeholder="Введтите дату начала"
-		/>
-		<div class="form__error"
-				 *ngIf="dateTimeRangeForm.get('startDate')?.hasError('required')"
-		>
-			Дата начала обязательна
-		</div>
-	</div>
+<form [formGroup]="dateTimeRangeForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-form-field appearance="fill">
+        <mat-label>Дата начала*</mat-label>
+        <input matInput [matDatepicker]="startPicker" formControlName="startDate" placeholder="Введите дату начала"/>
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+        <mat-error *ngIf="dateTimeRangeForm.get('startDate')?.hasError('required')">
+            Дата начала обязательна
+        </mat-error>
 
-	<div class="form__group">
-		<label class="form__label"
-					 for="endDate"
-		>Дата конца*</label>
-		<input
-			class="form__input"
-			id="endDate"
-			type="date"
-			formControlName="endDate"
-			placeholder="Введите дату конца"
-		/>
-		<div class="form__error"
-				 *ngIf="dateTimeRangeForm.get('endDate')?.hasError('required')"
-		>
-			Дата конца обязательна
-		</div>
-		<div class="form__error"
-				 *ngIf="dateTimeRangeForm.hasError('startDateInvalid')"
-		>
-			Дата начала не может быть ранее завтрашнего дня
-		</div>
-		<div class="form__error"
-				 *ngIf="dateTimeRangeForm.hasError('dateRangeInvalid')"
-		>
-			Дата начала не может быть позже даты окончания
-		</div>
-	</div>
+    </mat-form-field>
 
-	<div class="form__group">
-		<label class="form__label"
-					 for="startTime"
-		>Время начала дня*</label>
-		<input
-			class="form__input"
-			id="startTime"
-			step='10'
-			type="time"
-			formControlName="startTime"
-			placeholder="Введите время начала дня"
-		/>
-		<div class="form__error"
-				 *ngIf="dateTimeRangeForm.get('startTime')?.hasError('required')"
-		>
-			Время начала дня обязательно
-		</div>
+    <mat-form-field appearance="fill">
+        <mat-label>Дата конца*</mat-label>
+        <input matInput [matDatepicker]="endPicker" formControlName="endDate" placeholder="Введите дату конца"/>
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+        <mat-error *ngIf="dateTimeRangeForm.get('endDate')?.hasError('required')">
+            Дата конца обязательна
+        </mat-error>
 
-	</div>
+    </mat-form-field>
 
-	<div class="form__group">
-		<label class="form__label"
-					 for="endTime"
-		>Время конца дня*</label>
-		<input
-			class="form__input"
-			id="endTime"
-			type="time"
-			step='10'
-			formControlName="endTime"
-			placeholder="Введите время конца дня"
-		/>
-		<div class="form__error"
-				 *ngIf="dateTimeRangeForm.get('endTime')?.hasError('required')"
-		>
-			Время конца дня обязательно
-		</div>
-		<div class="form__error"
-				 *ngIf="dateTimeRangeForm.hasError('timeRangeInvalid')"
-		>
-			Время начала не может быть позже времени окончания
-		</div>
-	</div>
+    <mat-form-field appearance="fill">
+        <mat-label>Время начала дня*</mat-label>
+        <input matInput type="time" formControlName="startTime" placeholder="Введите время начала дня"/>
+        <mat-error *ngIf="dateTimeRangeForm.get('startTime')?.hasError('required')">
+            Время начала дня обязательно
+        </mat-error>
+    </mat-form-field>
 
-	<div class="form__group">
-		<label class="form__label"
-					 for="breakStartTime"
-		>Время начала обеда</label>
-		<input
-			class="form__input"
-			id="breakStartTime"
-			type="time"
-			step='10'
-			formControlName="breakStartTime"
-			placeholder="Введите время начало обеда"
-		/>
-	</div>
+    <mat-form-field appearance="fill">
+        <mat-label>Время конца дня*</mat-label>
+        <input matInput type="time" formControlName="endTime" placeholder="Введите время конца дня"/>
+        <mat-error *ngIf="dateTimeRangeForm.get('endTime')?.hasError('required')">
+            Время конца дня обязательно
+        </mat-error>
 
-	<div class="form__group">
-		<label class="form__label"
-					 for="breakEndTime"
-		>Время конца обеда</label>
-		<input
-			class="form__input"
-			id="breakEndTime"
-			type="time"
-			step='10'
-			formControlName="breakEndTime"
-			placeholder="Введите время конца обеда"
-		/>
-	</div>
-	<div class="form__group">
-		<label class="form__label"
-					 for="duration"
-		>Продолжительность</label>
-		<input
-			class="form__input"
-			id="duration"
-			type="number"
-			formControlName="duration"
-			placeholder="Введите продолжительность"
-		/>
-	</div>
+    </mat-form-field>
 
-	<button class="form__button"
-					type="submit"
-					[disabled]="dateTimeRangeForm.invalid"
-	>
-		Заполнить
-	</button>
+    <mat-form-field appearance="fill">
+        <mat-label>Время начала обеда</mat-label>
+        <input matInput type="time" formControlName="breakStartTime" placeholder="Введите время начала обеда"/>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Время конца обеда</mat-label>
+        <input matInput type="time" formControlName="breakEndTime" placeholder="Введите время конца обеда"/>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Продолжительность (минуты)</mat-label>
+        <input matInput type="number" formControlName="duration" placeholder="Введите продолжительность"/>
+        <mat-error *ngIf="dateTimeRangeForm.get('duration')?.hasError('min')">
+            Продолжительность должна быть не менее 10 минут
+        </mat-error>
+    </mat-form-field>
+    <mat-error *ngIf="dateTimeRangeForm.hasError('startDateInvalid')">
+        Дата начала не может быть ранее завтрашнего дня
+    </mat-error>
+    <mat-error *ngIf="dateTimeRangeForm.hasError('timeRangeInvalid')">
+        Время начала дня не может быть позже времени окончания дня
+    </mat-error>
+    <mat-error *ngIf="dateTimeRangeForm.hasError('dateRangeInvalid')">
+        Дата начала не может быть позже даты конца
+    </mat-error>
+    <button mat-flat-button color="primary" type="submit">
+        Заполнить
+    </button>
 </form>

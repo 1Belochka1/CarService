@@ -99,6 +99,11 @@ public class Request
 		foreach (var master in masters) Masters.Add(master);
 	}
 
+	public void DeleteMaster(UserAuth master)
+	{
+		Masters.Remove(master);
+	}
+
 	public void SetTimeComplete(DateTime completeTime)
 	{
 		CompleteTime = completeTime;

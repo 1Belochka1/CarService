@@ -6,7 +6,8 @@
 
 volumes:
   pg_car_service:
-    
+  images:
+        
 services:
   car_service_pg_db:
     container_name: car_service_pg_db
@@ -54,4 +55,6 @@ services:
     build:
       context: .
       dockerfile: CarService.Api/Dockerfile
+    volumes:
+      - images:/app/Images
 

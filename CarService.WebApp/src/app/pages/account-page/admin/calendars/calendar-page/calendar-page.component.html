@@ -3,20 +3,12 @@
              selectSortColumn='date'
              [sortDescending]='true'
              [searchVisible]='false'
+             [headerTitle]="calendar.name"
     >
 
         <ng-template bTemplate='toolbox'
-                     let-filterFn='filterData'
+                     *ngIf="(roleId$ | async) == 1 "
         >
-
-            <input type='date'
-                   name=''
-                   id=''
-                   class='p-2 bg-surface rounded-[0.625rem]'
-                   (change)='filterFn(convertEvent($event).value.toString())'
-            >
-
-
             <button class='button'
                     (click)='delete(remove)'
             >Удалить
@@ -41,7 +33,7 @@
                 <th>
                     Конец работы
                 </th>
-                <th
+                <th *ngIf="(roleId$ | async) == 1 "
                 >
                     Действия
                 </th>
@@ -51,9 +43,9 @@
         <ng-template bTemplate='body'
                      let-item
         >
-            <tr (click)='navigate(item.id)'>
+            <tr *ngIf="(item.date | date: 'dd.MM.YYYY') as dateN">
                 <td data-name='Дата'>
-                    {{ item.date | date: "dd.MM.YYYY" }}
+                    {{ dateN }}
                 </td>
                 <td data-name='Начало работы'>
                     {{ item.startTime }}
@@ -61,13 +53,13 @@
                 <td data-name='Конец работы'>
                     {{ item.endTime }}
                 </td>
-                <td data-name="Действия">
+                <td data-name="Действия" *ngIf="(roleId$ | async) == 1 ">
                     <div>
-                        <button mat-icon-button
+                        <button mat-icon-button (click)='navigate(item.id)'
                         >
-                            <mat-icon>edit</mat-icon>
+                            <mat-icon>open_in_new</mat-icon>
                         </button>
-                        <button mat-icon-button>
+                        <button mat-icon-button (click)="deleteDay(remove,item.id ,dateN)">
                             <mat-icon color="warn">delete</mat-icon>
                         </button>
                     </div>
@@ -76,7 +68,6 @@
         </ng-template>
     </b-table>
 </ng-container>
-
 <ng-template #remove></ng-template>
 <ng-template #fillT>
     <app-date-picker

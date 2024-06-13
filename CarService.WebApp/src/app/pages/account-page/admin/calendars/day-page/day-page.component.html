@@ -1,11 +1,15 @@
 <ng-container *ngIf="day$ | async as day">
-    <h1 class="mb-5 bg-surface text-on-surface p-3 rounded-[0.625rem]">Дата: {{day.date | date: "dd.MM.YYYY"}}</h1>
-    <b-table [items]='times$ | async'>
+
+
+    <b-table [items]='times$ | async'
+             [headerTitle]="'Дата: ' + (day.date | date: 'dd.MM.YYYY')"
+    >
         <ng-template bTemplate='head'>
             <tr>
                 <th>Начало</th>
                 <th>Конец</th>
                 <th
+                        *ngIf="(roleId$ | async) == 1 "
                 >
                     Действия
                 </th>
@@ -17,7 +21,7 @@
             <tr [class.isBusy]='time.isBusy'>
                 <td data-name='Начало'>{{ time.startTime }}</td>
                 <td data-name='Конец'>{{ time.endTime }}</td>
-                <td data-name="Действия">
+                <td data-name="Действия" *ngIf="(roleId$ | async) == 1 ">
                     <div>
                         <button mat-icon-button
                         >
@@ -31,6 +35,7 @@
             </tr>
         </ng-template>
     </b-table>
+
 </ng-container>
 <ng-template #remove>
 </ng-template>

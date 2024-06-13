@@ -98,7 +98,7 @@ export class ServicePageComponent {
 						formData.append('imageId', this.imageId.value)
 						formData.append('serviceId', this._id)
 
-						if (this.imageId && this.imageId.value != '') {
+						if (this.imageId && this.imageId.value != '' && this.imageId.value != null) {
 							formData.append('newFile', this._file)
 							firstValueFrom(this._imageService.update(formData))
 							.then((v) => {

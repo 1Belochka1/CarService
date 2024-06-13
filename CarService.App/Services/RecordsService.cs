@@ -61,7 +61,7 @@ public class RecordsService
 			if (phone == null || firstName == null)
 			{
 				return Result.Failure<Guid>(
-					"Пользователь не найден");
+					"Необходимо указать номер телефона и имя пользователя");
 			}
 
 			var newUser = UserInfo.Create(
@@ -90,14 +90,7 @@ public class RecordsService
 			await _requestRepository.CreateAsync(
 				request.Value);
 
-		// await _emailService.SendEmail(new EmailDto()
-		// {
-		// 	To = user.Email,
-		// 	Subject = "Заявка на ремонт",
-		// 	Body = $"Здравствуйте, {user.FirstName}. " +
-		// 	       $"Ваша заявка принята. " +
-		// 	       $"В ближайшее время с вами свяжется наш администратор."
-		// });
+		await _emailService.CreateRequestMessageAsync(user);
 
 		return Result.Success(recordId);
 	}
@@ -127,15 +120,7 @@ public class RecordsService
 		var recordId = await _requestRepository.CreateAsync(
 			record.Value);
 
-
-		// await _emailService.SendEmail(new EmailDto()
-		// {
-		// 	To = user.Email,
-		// 	Subject = "Заявка на ремонт",
-		// 	Body = $"Здравствуйте, {user.FirstName}. " +
-		// 	       $"Ваша заявка принята. " +
-		// 	       $"В ближайшее время с вами свяжется наш администратор."
-		// });
+		await _emailService.CreateRequestMessageAsync(user);
 
 		return Result.Success(recordId);
 	}
@@ -191,21 +176,33 @@ public class RecordsService
 		Guid recordId,
 		List<Guid> masterIds)
 	{
+		var record = await _requestRepository
+			.GetByIdAsync(recordId);
+
+		if (record == null)
+			return;
+
 		var masters =
 			await _userAuthRepository.GetWorkersByIds(masterIds);
 
-
 		await _requestRepository.AddMasters(recordId, masters);
+
+		await _emailService
+			.NewMasterForRequestAsync(masters.First(), record.Description, record.CarInfo);
 	}
 
-	public async Task DeleteMastersAsync(
+	public async Task<Result> DeleteMasterAsync(
 		Guid recordId,
-		List<Guid> masterIds)
+		Guid masterId)
 	{
-		var masters =
-			await _userAuthRepository.GetWorkersByIds(masterIds);
+		var master = await _userInfoRepository.GetByIdAsync(masterId);
 
-		await _requestRepository.AddMasters(recordId, masters);
+		if (master == null)
+			return Result.Failure("Мастер не найден");
+
+		await _requestRepository.DeleteMasters(recordId, master.UserAuth.Id);
+
+		return Result.Success();
 	}
 
 	public async Task DeleteRequestAsync(Guid id)

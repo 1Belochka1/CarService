@@ -1,107 +1,95 @@
-<b-table [addButton]='true'
-				 (addButtonClick)='onAdd(addTemplate)'
-				 [items]='calendars | async'
-				 [searchVisible]='false'
+<b-table [addButton]='(roleId$ | async) == 1'
+         (addButtonClick)='onAdd(addTemplate)'
+         [items]='calendars | async'
+         [searchVisible]='false'
+         headerTitle="Расписание"
 >
-	<ng-template bTemplate='head'>
-		<tr>
-			<th>Название услуги</th>
-			<th
-			>
-				Действия
-			</th>
-		</tr>
+    <ng-template bTemplate='head'>
+        <tr>
+            <th>Название расписания</th>
+            <th
+            >
+                Действия
+            </th>
+        </tr>
 
-	</ng-template>
-	<ng-template bTemplate='body'
-							 let-item
-	>
+    </ng-template>
+    <ng-template bTemplate='body'
+                 let-item
+    >
 
-		<tr>
-			<td data-name='Название услуги'
-					(click)="navigate(['/account',
-			'calendar',
-			item.id])"
-			>
-				<a [routerLink]="['/account', 'calendar', item.id]">
-					{{ item.service.name }}
-				</a>
-			</td>
-			<td data-name="Действия">
+        <tr>
+            <td data-name='Название расписания'
+                (click)="navigate(['/account','calendar',item.id])"
+            >
+                <a [routerLink]="['/account', 'calendar', item.id]">
+                    {{ item.name }}
+                </a>
+            </td>
+            <td data-name="Действия">
                 <div>
                     <button mat-icon-button
                     >
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button>
-                        <mat-icon color="warn">delete</mat-icon>
+                        <mat-icon color="warn">open_in_new</mat-icon>
                     </button>
                 </div>
-			</td>
-		</tr>
-	</ng-template>
+            </td>
+        </tr>
+    </ng-template>
 </b-table>
 
 
 <ng-template #addTemplate>
-	<form class="form"
-				[formGroup]="requestForm"
-				(ngSubmit)="onSubmit()"
-	>
-		<div class="form__group">
-			<label class="form__label"
-						 for="service"
-			>Услуга</label>
-			<app-autocomplete id='service'
-												[suggestions]='services$ | async'
-												(selectSuggestion)='serviceSelect($event)'
-			>
-			</app-autocomplete>
-		</div>
-		<div class="form__group">
-			<label class="form__label"
-						 for="name"
-			>Название</label>
-			<input class="form__input"
-						 id="name"
-						 type="text"
-						 formControlName="name"
-						 placeholder="Введите название услуги"
-			/>
-			<div class="form__error"
-					 *ngIf="requestForm.get('name')?.touched &&
-				 requestForm.get('name')?.hasError('required')"
-			>Название обязательно
-			</div>
-			<div class="form__error"
-					 *ngIf="requestForm.get('name')?.touched &&
-				 requestForm.get('name')?.hasError('minlength')"
-			>
-				Название должно содержать минимум 3 символа
-			</div>
-		</div>
+    <form class="form"
+          [formGroup]="requestForm"
+          (ngSubmit)="onSubmit()"
+    >
 
+        <mat-form-field>
+            <mat-label>Услуга</mat-label>
+            <input type="text"
+                   placeholder="Введите название услуги"
+                   matInput
+                   formControlName="service"
+                   [matAutocomplete]="auto"
+            >
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let opt of services$ | async" [value]="opt">
+                    {{ opt.n }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
 
-		<div class="form__group">
-			<label class="form__label"
-						 for="description"
-			>Описание услуги</label>
-			<textarea class="form__textarea"
-								id="description"
-								formControlName="description"
-								placeholder="Опишите услугу"
-			></textarea>
-			<div class="form__error"
-					 *ngIf="requestForm.get('description')?.hasError('minlength')"
-			>Описание услуги должно содержать минимум 5 символов
-			</div>
-		</div>
+        <mat-form-field appearance="fill">
+            <mat-label>Название</mat-label>
+            <input matInput id="name" type="text" formControlName="name" placeholder="Введите название услуги">
+            <mat-error *ngIf="requestForm.get('name')?.touched && requestForm.get('name')?.hasError('required')">
+                Название обязательно
+            </mat-error>
+            <mat-error *ngIf="requestForm.get('name')?.touched && requestForm.get('name')?.hasError('minlength')">
+                Название должно содержать минимум 3 символа
+            </mat-error>
+        </mat-form-field>
 
+        <mat-form-field appearance="fill">
+            <mat-label>Описание услуги</mat-label>
+            <textarea matInput id="description" formControlName="description" placeholder="Опишите услугу"></textarea>
+            <mat-error *ngIf="requestForm.get('description')?.hasError('required')">
+                Описание услуги обязательно
+            </mat-error>
+            <mat-error *ngIf="requestForm.get('description')?.hasError('minlength')">
+                Описание услуги должно содержать минимум 5 символов
+            </mat-error>
+        </mat-form-field>
 
-		<button class="form__button"
-						type="submit"
-						[disabled]="requestForm.invalid"
-		>Отправить
-		</button>
-	</form>
+        <button
+                mat-flat-button
+                class="form__button"
+                type="submit"
+        >Отправить
+        </button>
+    </form>
 </ng-template>

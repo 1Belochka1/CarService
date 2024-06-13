@@ -14,6 +14,7 @@ builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddHubsSignalR();
+builder.Services.AddMyCors();
 
 builder.Services.AddControllers()
 	.AddJsonOptions(
@@ -29,10 +30,10 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 
-var bd = app.Services
-	.GetRequiredService<CarServiceDbContext>();
-
-await bd.Database.MigrateAsync();
+// var bd = app.Services
+// 	.GetRequiredService<CarServiceDbContext>();
+//
+// await bd.Database.MigrateAsync();
 
 if (app.Environment.IsDevelopment())
 {

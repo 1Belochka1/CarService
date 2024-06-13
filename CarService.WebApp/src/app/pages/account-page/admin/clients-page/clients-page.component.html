@@ -1,16 +1,44 @@
 <div class="contents">
     <b-table
             [items]="items$ | async"
+            headerTitle="Клиенты"
     >
-        <!-- TODO: добавить сортировку -->
-        <ng-template bTemplate="head">
+        <ng-template
+                bTemplate="head"
+                let-sortFn="sortFn"
+                let-sortProp="sortProp"
+                let-sortDirection="sortDirection">
             <tr>
-                <th>ФИО</th>
-                <th>Почта</th>
-                <th>Номер</th>
-                <th>Адрес</th>
-                <th>Последняя заявка (Дата)</th>
-                <th>Зарегистрирован</th>
+                <th appTableSortHeaderIcon
+                    [isActive]="sortProp == 'fullname'"
+                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
+                    (click)="sortFn('fullname')">ФИО
+                </th>
+                <th appTableSortHeaderIcon
+                    [isActive]="sortProp == 'email'"
+                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
+                    (click)="sortFn('email')">Почта
+                </th>
+                <th appTableSortHeaderIcon
+                    [isActive]="sortProp == 'phone'"
+                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
+                    (click)="sortFn('phone')">Номер
+                </th>
+                <th appTableSortHeaderIcon
+                    [isActive]="sortProp == 'address'"
+                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
+                    (click)="sortFn('address')">Адрес
+                </th>
+                <th appTableSortHeaderIcon
+                    [isActive]="sortProp == 'lastRecordTime'"
+                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
+                    (click)="sortFn('lastRecordTime')">Последняя заявка (Дата)
+                </th>
+                <th appTableSortHeaderIcon
+                    [isActive]="sortProp == 'isAuth'"
+                    [sortDirection]="sortDirection ? 'desc' : 'asc'"
+                    (click)="sortFn('isAuth')">Зарегистрирован
+                </th>
                 <th>Действия</th>
             </tr>
         </ng-template>
@@ -55,9 +83,10 @@
                         >
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-icon-button>
+                        <button mat-icon-button (click)="onRemoveClick(remove, item.id)">
                             <mat-icon color="warn">delete</mat-icon>
                         </button>
+                        <ng-template #remove></ng-template>
                     </div>
                 </td>
             </tr>

@@ -1,76 +1,36 @@
-<form class="form"
-			[formGroup]="requestForm"
-			(ngSubmit)="onSubmit()"
->
-	<div class="form__group">
-		<label class="form__label"
-					 for="name"
-		>Название</label>
-		<input class="form__input"
-					 id="name"
-					 type="text"
-					 formControlName="name"
-					 placeholder="Введите название услуги"
-		/>
-		<div class="form__error"
-				 *ngIf="requestForm.get('name')?.touched &&
-				 requestForm.get('name')?.hasError('required')"
-		>Название обязательно
-		</div>
-		<div class="form__error"
-				 *ngIf="requestForm.get('name')?.touched &&
-				 requestForm.get('name')?.hasError('minlength')"
-		>
-			Название должно содержать минимум 3 символа
-		</div>
-	</div>
+<form class="form" [formGroup]="requestForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>Название</mat-label>
+        <input matInput id="name" type="text" formControlName="name" placeholder="Введите название услуги">
+        <mat-error *ngIf="requestForm.get('name')?.touched && requestForm.get('name')?.hasError('required')">
+            Название обязательно
+        </mat-error>
+        <mat-error *ngIf="requestForm.get('name')?.touched && requestForm.get('name')?.hasError('minlength')">
+            Название должно содержать минимум 3 символа
+        </mat-error>
+    </mat-form-field>
 
+    <mat-form-field>
+        <mat-label>Описание услуги</mat-label>
+        <textarea matInput id="description" formControlName="description" placeholder="Опишите услугу"></textarea>
+        <mat-error
+                *ngIf="requestForm.get('description')?.touched && requestForm.get('description')?.hasError('required')">
+            Описание услуги обязательно
+        </mat-error>
+        <mat-error
+                *ngIf="requestForm.get('description')?.touched && requestForm.get('description')?.hasError('minlength')">
+            Описание услуги должно содержать минимум 5 символов
+        </mat-error>
+    </mat-form-field>
 
-	<div class="form__group">
-		<label class="form__label"
-					 for="description"
-		>Описание услуги</label>
-		<textarea class="form__textarea"
-							id="description"
-							formControlName="description"
-							placeholder="Опишите услугу"
-		></textarea>
-		<div class="form__error"
-				 *ngIf="requestForm.get('description')?.hasError('required')"
-		>Описание услуги обязательно
-		</div>
-		<div class="form__error"
-				 *ngIf="requestForm.get('description')?.hasError('minlength')"
-		>Описание услуги должно содержать минимум 5 символов
-		</div>
-	</div>
+    <label class="form__file">
+        <span class="form__file-btn">{{ btnText }}</span>
+        <input type="file" id="image" class="form__file-input"
+               (change)="fileUpload($event)">
+    </label>
 
-	<div class="form__group">
-		<label class="form__label"
-					 for="image"
-		>Изображение</label>
-		<input type='file'
-					 class="form__input "
-					 id="image"
-					 placeholder="Выберите изображение"
-					 (change)='fileUpload($event)'
-		>
-	</div>
+    <mat-checkbox id="isShowLending" formControlName="isShowLanding">Отображать на лендинге?
+    </mat-checkbox>
 
-	<div class="form__group">
-		<input type='checkbox'
-					 class="form__checkbox"
-					 id="isShowLending"
-					 formControlName="isShowLanding"
-		>
-		<label class="form__label"
-					 for="isShowLending"
-		>Отображать на лендинге?</label>
-	</div>
-
-	<button class="form__button"
-					type="submit"
-					[disabled]="requestForm.invalid"
-	>Отправить
-	</button>
+    <button mat-flat-button color="primary" type="submit">Отправить</button>
 </form>

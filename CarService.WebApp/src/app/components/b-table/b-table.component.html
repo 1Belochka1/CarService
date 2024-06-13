@@ -1,67 +1,70 @@
+<h1 *ngIf="headerTitle" class="bg-surface text-center font-semibold text-on-surface p-3 rounded-[0.625rem]">
+    {{ headerTitle }}</h1>
+
 <div class="table__toolbox"
 >
-	<ng-container *ngIf='toolboxTemplate'
-								[ngTemplateOutlet]='toolboxTemplate'
-								[ngTemplateOutletContext]='{filterData:
+    <ng-container *ngIf='toolboxTemplate'
+                  [ngTemplateOutlet]='toolboxTemplate'
+                  [ngTemplateOutletContext]='{filterData:
 								onSearchChange.bind(this)}'
-	></ng-container>
+    ></ng-container>
 
-	<app-search
-		*ngIf='searchVisible'
-		(searchChangedEvent)="onSearchChange($event)"
-	/>
+    <app-search
+            *ngIf='searchVisible'
+            (searchChangedEvent)="onSearchChange($event)"
+    />
 
-	<button *ngIf='addButton'
-					(click)='addClick()'
-					class='button'
-	>Добавить
-	</button>
+    <button *ngIf='addButton'
+            (click)='addClick()'
+            class='button'
+    >Добавить
+    </button>
 
 </div>
 
 <div class="table__wrapper">
-	<table>
-		<thead>
-			<ng-container *ngIf="headTemplate"
-										[ngTemplateOutlet]="headTemplate"
-										[ngTemplateOutletContext]='{
+    <table>
+        <thead>
+        <ng-container *ngIf="headTemplate"
+                      [ngTemplateOutlet]="headTemplate"
+                      [ngTemplateOutletContext]='{
 											sortFn:sortChange.bind(this),
 											sortProp: selectSortColumn,
 											sortDirection: sortDescending
 										}'
-			/>
-		</thead>
-		<tbody>
-			<tr *ngIf="isLoading">
-				<td class="message"
-						colspan="1000"
-				>Загрузка...
-				</td>
-			</tr>
-			<tr *ngIf="notFound">
-				<td class="message"
-						colspan="1000"
-				>Данных нет
-				</td>
-			</tr>
-			<ng-container *ngIf="bodyTemplate">
+        />
+        </thead>
+        <tbody>
+        <tr *ngIf="isLoading">
+            <td class="message"
+                colspan="1000"
+            >Загрузка...
+            </td>
+        </tr>
+        <tr *ngIf="notFound">
+            <td class="message"
+                colspan="1000"
+            >Данных нет
+            </td>
+        </tr>
+        <ng-container *ngIf="bodyTemplate">
 
-				<ng-container>
-					<ng-container *ngFor="let item of filteredItems |
+            <ng-container>
+                <ng-container *ngFor="let item of filteredItems |
             sorting: selectSortColumn : sortDescending |
            pagination: currentPage : pageSize : update"
-												[ngTemplateOutlet]="bodyTemplate"
-												[ngTemplateOutletContext]="{$implicit:
+                              [ngTemplateOutlet]="bodyTemplate"
+                              [ngTemplateOutletContext]="{$implicit:
                   item}"
-					/>
-				</ng-container>
-			</ng-container>
-		</tbody>
-	</table>
+                />
+            </ng-container>
+        </ng-container>
+        </tbody>
+    </table>
 </div>
 
 <app-pagination *ngIf="totalPages > 1"
-								[currentPage]="currentPage"
-								[totalPages]="totalPages"
-								(changePage)="currentPageChanged($event)"
+                [currentPage]="currentPage"
+                [totalPages]="totalPages"
+                (changePage)="currentPageChanged($event)"
 />

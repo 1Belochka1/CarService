@@ -70,7 +70,7 @@ public class DayRecordsRepository : IDayRecordsRepository
 				x.TimeRecords.OrderBy(x => x.StartTime))
 			.Where(x => x.CalendarId == calendarId)
 			.Where(x => x.IsWeekend == false)
-			.Where(x => x.Date > now)
+			.Where(x => x.Date >= now)
 			.OrderBy(x => x.Date)
 			.ToListAsync();
 

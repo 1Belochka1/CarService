@@ -84,4 +84,7 @@ export class RecordsService {
 	}
 
 
+	deleteMaster(id: string, masterId: string) {
+		return this.httpClient.delete(apiUrls.records.deleteMaster + id + "/" + masterId, {withCredentials: true});
+	}
 }

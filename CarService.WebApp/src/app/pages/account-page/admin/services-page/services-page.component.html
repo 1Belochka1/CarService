@@ -1,6 +1,7 @@
 <b-table [items]="items$ | async"
          [addButton]='true'
          (addButtonClick)='addClick(addService)'
+         headerTitle="Услуги"
 >
     <ng-template bTemplate="head"
                  let-sortFn="sortFn"
@@ -60,6 +61,6 @@
 
 <ng-template #addService>
     <app-form-add-service
-            (submit)='addSubmit($event)'
+            (onAddSubmit)='addSubmit($event)'
     ></app-form-add-service>
 </ng-template>

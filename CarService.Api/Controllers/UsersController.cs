@@ -52,8 +52,9 @@ public class UsersController : ApiController
 
 		if (result.IsFailure)
 		{
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 		}
+
 		return Ok();
 	}
 
@@ -69,26 +70,26 @@ public class UsersController : ApiController
 			request.Password, 2);
 
 		if (result.IsFailure)
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok();
 	}
 
 	[HttpPost("update/password")]
 	public async Task<IActionResult> UpdatePassword(
-		[FromBody] UpdateUserRequest request
+		[FromBody] UpdateUserPasswordRequest request
 	)
 	{
 		var user = await _usersService.GetById(request.Id);
 
 		if (user.IsFailure)
-			return BadRequest(user.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(user.Error));
 
 		var result = await _usersService
-			.UpdatePasswordAsync(request.Id, request.Password);
+			.UpdatePasswordAsync(user.Value.UserAuth.Id, request.NewPassword, request.OldPassword);
 
 		if (result.IsFailure)
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok();
 	}
@@ -103,7 +104,7 @@ public class UsersController : ApiController
 				request.Password);
 
 		if (token.IsFailure)
-			return BadRequest(token.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(token.Error));
 
 		HttpContext.Response.Cookies.Append("cookies--service",
 			token.Value, new CookieOptions
@@ -143,7 +144,7 @@ public class UsersController : ApiController
 			);
 
 		if (userInfo.IsFailure)
-			return BadRequest(userInfo.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(userInfo.Error));
 
 		return Ok();
 	}
@@ -154,11 +155,10 @@ public class UsersController : ApiController
 	//
 	//
 
-	// Todo: Ограничить только для админа
 	[HttpPost("Update")]
-	[Authorize(Roles = "1")]
+	[Authorize()]
 	public async Task<IActionResult> Update(
-		UpdateUserRequest request)
+		[FromBody] UpdateUserRequest request)
 	{
 		var result = await _usersService.Update(
 			request.Id,
@@ -172,10 +172,7 @@ public class UsersController : ApiController
 		);
 
 		if (result.IsFailure)
-			return BadRequest(result.Error);
-
-		await HttpContext.SendNotify(_notifyHubContext,
-			"SuccessRequest", "Обновление выполнено");
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok();
 	}
@@ -188,7 +185,7 @@ public class UsersController : ApiController
 		var user = await _usersService.GetByPhone(phone);
 
 		if (user.IsFailure)
-			return BadRequest(user.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(user.Error));
 
 		var result = await _usersService.Update(
 			user.Value.Id,
@@ -196,10 +193,7 @@ public class UsersController : ApiController
 		);
 
 		if (result.IsFailure)
-			return BadRequest(result.Error);
-
-		await HttpContext.SendNotify(_notifyHubContext,
-			"SuccessRequest", "Обновление выполнено");
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok();
 	}

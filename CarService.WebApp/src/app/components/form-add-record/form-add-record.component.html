@@ -1,106 +1,107 @@
 <form
-	class="form"
-	*ngIf="requestForm"
-	[formGroup]="requestForm"
-	(ngSubmit)="onSubmit()"
+        class="form"
+        *ngIf="requestForm"
+        [formGroup]="requestForm"
+        (ngSubmit)="onSubmit()"
 >
-	<ng-container *ngIf="!isAuth">
-		<div class="form__group">
-			<mat-form-field>
-				<mat-label>Имя</mat-label>
-				<input
-					matInput
-					id="name"
-					type="text"
-					formControlName="name"
-					placeholder="Введите имя"
-				/>
-				<mat-error *ngIf="requestForm.get('name')?.hasError('required')"
-					>Имя обязательно</mat-error
-				>
-				<mat-error *ngIf="requestForm.get('name')?.hasError('minlength')"
-					>Имя должно содержать минимум 3 символа</mat-error
-				>
-			</mat-form-field>
-		</div>
+    <h1>Создание заявки</h1>
+    <ng-container *ngIf="!isAuth">
+        <mat-form-field>
+            <mat-label>Имя</mat-label>
+            <input
+                    matInput
+                    id="name"
+                    type="text"
+                    formControlName="name"
+                    placeholder="Введите имя"
+            />
+            <mat-error *ngIf="requestForm.get('name')?.hasError('required')"
+            >Имя обязательно
+            </mat-error
+            >
+            <mat-error *ngIf="requestForm.get('name')?.hasError('minlength')"
+            >Имя должно содержать минимум 3 символа
+            </mat-error
+            >
+        </mat-form-field>
 
-		<div class="form__group">
-			<mat-form-field appearance="fill">
-				<mat-label>Почта</mat-label>
-				<input
-					matInput
-					id="email"
-					type="text"
-					formControlName="email"
-					placeholder="Введите почту"
-				/>
-				<mat-error *ngIf="requestForm.get('email')?.hasError('required')"
-					>Почта обязательна</mat-error
-				>
-				<mat-error *ngIf="requestForm.get('email')?.hasError('email')"
-					>Неверный формат почты</mat-error
-				>
-			</mat-form-field>
-		</div>
+        <mat-form-field appearance="fill">
+            <mat-label>Почта</mat-label>
+            <input
+                    matInput
+                    id="email"
+                    type="text"
+                    formControlName="email"
+                    placeholder="Введите почту"
+            />
+            <mat-error *ngIf="requestForm.get('email')?.hasError('required')"
+            >Почта обязательна
+            </mat-error
+            >
+            <mat-error *ngIf="requestForm.get('email')?.hasError('email')"
+            >Неверный формат почты
+            </mat-error
+            >
+        </mat-form-field>
 
-		<div class="form__group">
-			<mat-form-field appearance="fill">
-				<mat-label>Номер телефона</mat-label>
-				<input
-					matInput
-					id="phone"
-					type="text"
-					formControlName="phone"
-					placeholder="Введите номер телефона"
-				/>
-				<mat-error *ngIf="requestForm.get('phone')?.hasError('required')"
-					>Номер телефона обязателен</mat-error
-				>
-				<mat-error *ngIf="requestForm.get('phone')?.hasError('pattern')"
-					>Неверный формат номера</mat-error
-				>
-			</mat-form-field>
-		</div>
-	</ng-container>
+        <mat-form-field appearance="fill">
+            <mat-label>Номер телефона</mat-label>
+            <input
+                    matInput
+                    id="phone"
+                    type="text"
+                    formControlName="phone"
+                    placeholder="Введите номер телефона"
+            />
+            <mat-error *ngIf="requestForm.get('phone')?.hasError('required')"
+            >Номер телефона обязателен
+            </mat-error
+            >
+            <mat-error *ngIf="requestForm.get('phone')?.hasError('pattern')"
+            >Неверный формат номера
+            </mat-error
+            >
+        </mat-form-field>
+    </ng-container>
 
-	<div class="form__group">
-		<mat-form-field appearance="fill">
-			<mat-label>Описание проблемы</mat-label>
-			<textarea
-				matInput
-				id="problemDescription"
-				formControlName="problemDescription"
-				placeholder="Опишите проблему"
-			></textarea>
-			<mat-error
-				*ngIf="requestForm.get('problemDescription')?.hasError('required')"
-				>Описание проблемы обязательно</mat-error
-			>
-			<mat-error
-				*ngIf="requestForm.get('problemDescription')?.hasError('minlength')"
-				>Описание проблемы должно содержать минимум 10 символов</mat-error
-			>
-		</mat-form-field>
-	</div>
+    <mat-form-field appearance="fill">
+        <mat-label>Описание проблемы</mat-label>
+        <textarea
+                matInput
+                id="problemDescription"
+                formControlName="problemDescription"
+                placeholder="Опишите проблему"
+        ></textarea>
+        <mat-error
+                *ngIf="requestForm.get('problemDescription')?.hasError('required')"
+        >Описание проблемы обязательно
+        </mat-error
+        >
+        <mat-error
+                *ngIf="requestForm.get('problemDescription')?.hasError('minlength')"
+        >Описание проблемы должно содержать минимум 5 символов
+        </mat-error
+        >
+    </mat-form-field>
 
-	<div class="form__group">
-		<mat-form-field appearance="fill">
-			<mat-label>Описание автомобиля</mat-label>
-			<textarea
-				matInput
-				id="carDescription"
-				formControlName="carDescription"
-				placeholder="Опишите автомобиль"
-			></textarea>
-			<mat-error *ngIf="requestForm.get('carDescription')?.hasError('required')"
-				>Описание автомобиля обязательно</mat-error
-			>
-			<mat-error
-				*ngIf="requestForm.get('carDescription')?.hasError('minlength')"
-				>Описание автомобиля должно содержать минимум 5 символов</mat-error
-			>
-		</mat-form-field>
-	</div>
+    <mat-form-field appearance="fill">
+        <mat-label>Описание автомобиля</mat-label>
+        <textarea
+                matInput
+                id="carDescription"
+                formControlName="carDescription"
+                placeholder="Опишите автомобиль"
+        ></textarea>
+        <mat-error *ngIf="requestForm.get('carDescription')?.hasError('required')"
+        >Описание автомобиля обязательно
+        </mat-error
+        >
+        <mat-error
+                *ngIf="requestForm.get('carDescription')?.hasError('minlength')"
+        >Описание автомобиля должно содержать минимум 5 символов
+        </mat-error
+        >
+    </mat-form-field>
 
-	<button mat-flat-button type="submit">Отправить</button>
+    <button mat-flat-button type="submit">Отправить</button>
 </form>

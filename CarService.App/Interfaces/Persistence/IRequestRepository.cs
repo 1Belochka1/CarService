@@ -35,5 +35,9 @@ public interface IRequestRepository
 	Task AddMasters(Guid recordId,
 		ICollection<UserAuth> masters);
 
+	Task DeleteMasters(
+		Guid recordId,
+		Guid masterId);
+
 	Task Complete(Guid recordId);
 }

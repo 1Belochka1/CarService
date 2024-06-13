@@ -4,6 +4,8 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
+RUN mkdir -p /app/Images && chmod -R 777 /app/Images
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
@@ -23,4 +25,5 @@ RUN dotnet publish "CarService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publi
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "CarService.Api.dll"]

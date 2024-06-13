@@ -21,7 +21,6 @@ public class ServicesController : ApiController
 	}
 
 	[HttpPost("create")]
-	[Consumes("multipart/form-data")]
 	public async Task<IActionResult> CreateServiceAsync([FromForm] CreateServiceRequest request)
 	{
 		var serviceResult = await _servicesService.CreateAsync(
@@ -29,7 +28,7 @@ public class ServicesController : ApiController
 			, request.IsShowLanding);
 
 		if (serviceResult.IsFailure)
-			return BadRequest(serviceResult.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(serviceResult.Error));
 
 		if (request.File != null)
 		{
@@ -47,8 +46,8 @@ public class ServicesController : ApiController
 
 			if (fileResult.IsFailure)
 			{
-				return BadRequest(
-					$"Ошибка при загрузке файла: ${fileResult.Error}");
+				return BadRequest(JsonSerializerHelp.Serialize(
+					$"Ошибка при загрузке файла: ${fileResult.Error}"));
 			}
 		}
 
@@ -81,7 +80,7 @@ public class ServicesController : ApiController
 		var service = await _servicesService.GetById(id);
 
 		if (service.IsFailure)
-			return BadRequest(service.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(service.Error));
 
 		return Ok(service.Value);
 	}
@@ -97,7 +96,7 @@ public class ServicesController : ApiController
 		);
 
 		if (serviceResult.IsFailure)
-			return BadRequest(serviceResult.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(serviceResult.Error));
 
 		return Ok();
 	}
@@ -111,7 +110,7 @@ public class ServicesController : ApiController
 		}
 		catch (Exception e)
 		{
-			return BadRequest("На сервере прозошла ошибка");
+			return BadRequest(JsonSerializerHelp.Serialize("На сервере прозошла ошибка"));
 		}
 
 		return Ok();

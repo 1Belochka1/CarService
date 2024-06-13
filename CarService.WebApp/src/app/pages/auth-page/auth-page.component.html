@@ -1,69 +1,76 @@
 <div class="wrapper">
 
-	<form action=""
-				[formGroup]="formLogin"
-	>
+    <form action=""
+          [formGroup]="formLogin"
+          class="form"
+    >
 
-		@switch (activePage) {
-			@case (1) {
-				<h1>Авторизация</h1>
+        @switch (activePage) {
+            @case (1) {
+                <h1>Авторизация</h1>
 
-				<mat-form-field>
-					<mat-label>Почта</mat-label>
-					<input
-						matInput
-						[formControl]="formLogin.controls.email"
-						type="email"
-						placeholder="Введите почту"
-						title="Введите почту"
-					/>
-					<mat-error
-						*ngIf='formLogin.controls.email?.hasError("email")'
-					>
-						Неверный формат
-					</mat-error>
-				</mat-form-field>
+                <mat-form-field>
+                    <mat-label>Почта</mat-label>
+                    <input
+                            matInput
+                            [formControl]="formLogin.controls.email"
+                            type="email"
+                            placeholder="Введите почту"
+                            title="Введите почту"
+                    />
+                    <mat-error
+                            *ngIf='formLogin.get("email")?.hasError("required")'
+                    >
+                        Почта обязателена
+                    </mat-error>
+                    <mat-error
+                            *ngIf='formLogin.controls.email?.hasError("email")'
+                    >
+                        Неверный формат
+                    </mat-error>
+                </mat-form-field>
 
-				<mat-form-field>
-					<mat-label>Пароль</mat-label>
-					<input
-						matInput
-						[formControl]="formLogin.controls.password"
-						type="password"
-						placeholder="Введите пароль"
-						title="Введите пароль"
-					/>
-					<mat-error
-						*ngIf='formLogin.get("password")?.hasError("required")'
-					>
-						Пароль обязателен
-					</mat-error>
-				</mat-form-field>
+                <mat-form-field>
+                    <mat-label>Пароль</mat-label>
+                    <input
+                            matInput
+                            [formControl]="formLogin.controls.password"
+                            type="password"
+                            placeholder="Введите пароль"
+                            title="Введите пароль"
+                    />
+                    <mat-error
+                            *ngIf='formLogin.get("password")?.hasError("required")'
+                    >
+                        Пароль обязателен
+                    </mat-error>
+                </mat-form-field>
 
-				<button mat-flat-button
-								(click)='login()'
-				>Вход
-				</button>
-			}
-			@case (2) {
-				<app-form-register
-                         (register)="registerSub()"
-				></app-form-register>
-			}
-		}
-	</form>
+                <button mat-flat-button
+                        (click)='login()'
+                >Вход
+                </button>
+            }
+            @case (2) {
+                <app-form-register
+                        headerText="Регистрация"
+                        (register)="registerSub()"
+                ></app-form-register>
+            }
+        }
+    </form>
 
-	<div class="switch-page">
-		<button *ngIf="activePage == 1"
-						(click)="activePage = 2"
-		>Регистрация
-		</button>
-		<button *ngIf="activePage == 2"
-						(click)="activePage = 1"
-		>
-			Авторизация
-		</button>
-	</div>
+    <div class="switch-page">
+        <button *ngIf="activePage == 1"
+                (click)="activePage = 2"
+        >Регистрация
+        </button>
+        <button *ngIf="activePage == 2"
+                (click)="activePage = 1"
+        >
+            Авторизация
+        </button>
+    </div>
 
 
 </div>

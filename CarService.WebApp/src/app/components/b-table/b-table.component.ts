@@ -58,6 +58,7 @@ export class BTableComponent implements OnInit, OnChanges, AfterContentInit {
 	@Input() bodyTemplate?: TemplateRef<any>
 
 	@Input() toolboxTemplate?: TemplateRef<any>
+	@Input() headerTitle: string | null
 
 	@Output() addButtonClick: EventEmitter<any> = new EventEmitter<any>()
 	@Output() deleteButtonClick: EventEmitter<any> = new EventEmitter<any>()

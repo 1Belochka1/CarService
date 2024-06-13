@@ -1,21 +1,6 @@
 :host {
 	@apply relative grid items-center justify-center min-h-screen w-full p-5;
 
-	//background-image: url("/assets/lending-1.jpg");
-	//background-position: center;
-	//background-repeat: no-repeat;
-	//background-size: cover;
-
-	//background: linear-gradient(to right bottom, rgb(var(--color-surface)), rgb(var(--color-primary)));
-	::ng-deep {
-		--mdc-filled-text-field-input-text-color: #fff;
-		--mdc-filled-text-field-container-color: rgb(var(--color-input-background));
-
-		.mdc-text-field--filled:not(.mdc-text-field--disabled) {
-			@apply border-primary border border-solid;
-			border-radius: 0.625rem 0.625rem 0 0 ;
-		}
-	}
 }
 
 .wrapper {
@@ -34,25 +19,6 @@
 
 	input[type=radio] {
 		display: none;
-	}
-
-	form {
-		@apply flex flex-col gap-3 flex-1;
-
-		h1 {
-			font-size: 1.5rem;
-			text-align: center;
-		}
-
-		button {
-			transition: background .3s ease-in-out;
-
-			border-radius: 0.625rem;
-
-			&:hover {
-				@apply bg-surface;
-			}
-		}
 	}
 
 	.switch-page {

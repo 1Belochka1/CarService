@@ -110,13 +110,7 @@ public class UsersService
 
 		await _userAuthRepository.CreateAsync(userAuth);
 
-		// await _emailService.SendEmail(new EmailDto
-		// {
-		// 	To = email,
-		// 	Subject = "Регистрация в автосервисе",
-		// 	Body =
-		// 		"<i>Вы успешно зарегистрировались в сервисе</i>"
-		// });
+		await _emailService.RegisterMessageAsync(user);
 
 		return Result.Success();
 	}
@@ -230,15 +224,18 @@ public class UsersService
 		await _userInfoRepository.Delete(id);
 	}
 
-	public async Task<Result> UpdatePasswordAsync(Guid requestId, string? requestPassword)
+	public async Task<Result> UpdatePasswordAsync(Guid id, string newPassword, string oldPassword)
 	{
 		var userAuth = await _userAuthRepository
-			.GetByIdAsync(requestId);
+			.GetByIdAsync(id);
 
 		if (userAuth == null)
 			return Result.Failure("Пользователь не найден");
+
+		if (!_passwordHasher.Validate(oldPassword, userAuth.PasswordHash))
+			return Result.Failure("Неверный пароль");
 		
-		var passwordHash = _passwordHasher.Generate(requestPassword);
+		var passwordHash = _passwordHasher.Generate(newPassword);
 
 		userAuth.UpdatePassword(passwordHash);
 

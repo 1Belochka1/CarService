@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core'
-import {HttpClient} from '@angular/common/http'
+import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {apiUrls} from './apiUrl'
 
 @Injectable({
@@ -14,7 +14,7 @@ export class ImageService {
 		return this.httpClient.post<string>(apiUrls.images.upload, formData, {withCredentials: true})
 	}
 
-	public update(formData: FormData){
+	public update(formData: FormData) {
 		return this.httpClient.post<string>(apiUrls.images.update, formData, {withCredentials: true})
 	}
 

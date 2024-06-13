@@ -1,40 +1,27 @@
-import {Component, TemplateRef} from '@angular/core'
-import {ActivatedRoute, Router, RouterLink} from '@angular/router'
-import {firstValueFrom, Observable} from 'rxjs'
 import {AsyncPipe, DatePipe, Location, NgForOf, NgIf} from '@angular/common'
-import {
-	CalendarRecordService
-} from '../../../../../services/calendars/calendar-record.service'
-import {
-	BTableComponent
-} from '../../../../../components/b-table/b-table.component'
-import {
-	BTemplateDirective
-} from '../../../../../direcrives/b-template.directive'
-import {
-	BTableSortDirective
-} from '../../../../../direcrives/b-table-sort.directive'
-import {ModalService} from '../../../../../services/modal.service'
+import {Component, TemplateRef} from '@angular/core'
 import {FormGroup, ReactiveFormsModule} from '@angular/forms'
-import {
-	DateRangePickerComponent
-} from '../../../../../components/date-picker/date-range-picker.component'
-import {
-	DayRecordService
-} from '../../../../../services/day-record/day-record.service'
-import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server'
-import {
-	MatDatepickerToggle, MatDateRangeInput,
-	MatDateRangePicker, MatEndDate, MatStartDate
-} from '@angular/material/datepicker'
-import {
-	MatFormField,
-	MatHint,
-	MatLabel,
-	MatSuffix
-} from '@angular/material/form-field'
-import {MatIcon} from '@angular/material/icon'
 import {MatIconButton} from '@angular/material/button'
+import {
+	MatDatepickerToggle,
+	MatDateRangeInput,
+	MatDateRangePicker,
+	MatEndDate,
+	MatStartDate
+} from '@angular/material/datepicker'
+import {MatFormField, MatHint, MatLabel, MatSuffix} from '@angular/material/form-field'
+import {MatIcon} from '@angular/material/icon'
+import {ActivatedRoute, Router, RouterLink} from '@angular/router'
+import {ToastrService} from "ngx-toastr";
+import {firstValueFrom, Observable} from 'rxjs'
+import {BTableComponent} from '../../../../../components/b-table/b-table.component'
+import {DateRangePickerComponent} from '../../../../../components/date-picker/date-range-picker.component'
+import {BTableSortDirective} from '../../../../../direcrives/b-table-sort.directive'
+import {BTemplateDirective} from '../../../../../direcrives/b-template.directive'
+import {AuthService} from "../../../../../services/auth.service";
+import {CalendarRecordService} from '../../../../../services/calendars/calendar-record.service'
+import {DayRecordService} from '../../../../../services/day-record/day-record.service'
+import {ModalService} from '../../../../../services/modal.service'
 
 @Component({
 	selector: 'app-calendar-page',
@@ -69,7 +56,9 @@ import {MatIconButton} from '@angular/material/button'
 export class CalendarPageComponent {
 
 	calendar$: Observable<any>
-	HtmlInputElement = HTMLInputElement
+
+	roleId$: Observable<number>
+
 	filter: FormGroup
 	private readonly _id: string
 
@@ -78,7 +67,10 @@ export class CalendarPageComponent {
 		private _route: ActivatedRoute,
 		private _router: Router,
 		private _location: Location,
-		private _modalService: ModalService, private _dayRecord: DayRecordService
+		private _modalService: ModalService,
+		private _dayRecord: DayRecordService,
+		private _authService: AuthService,
+		private _toastr: ToastrService
 	) {
 		const id = this._route.snapshot.paramMap.get('calendarId')
 
@@ -87,6 +79,8 @@ export class CalendarPageComponent {
 		}
 
 		this._id = id
+
+		this.roleId$ = this._authService.getRoleId$()
 
 		this.setItem()
 	}
@@ -99,10 +93,6 @@ export class CalendarPageComponent {
 		this._router.navigate([id], {relativeTo: this._route})
 	}
 
-	convertEvent(event: Event) {
-		return event.target as HTMLInputElement
-	}
-
 	delete(templateRef: TemplateRef<any>) {
 		this._modalService.open(templateRef, {
 			title: 'Вы дейстивтельно хотите' +
@@ -112,6 +102,24 @@ export class CalendarPageComponent {
 				isConfirm => {
 					if (isConfirm) {
 						firstValueFrom(this._calendarRecordService.delete(this._id)).then(() => this._location.back())
+					}
+				}
+			)
+	}
+
+	deleteDay(templateRef: TemplateRef<any>, id: string, date: string | null) {
+		this._modalService.open(templateRef, {
+			title: 'Вы дейстивтельно хотите' +
+				` удалить записи на ${date} ?`
+		})
+			?.subscribe(
+				isConfirm => {
+					if (isConfirm) {
+						firstValueFrom(this._dayRecord.deleteDayRecord(id))
+							.then(() => {
+								this._toastr.success("Данные для запись на день удалена")
+								this.setItem()
+							})
 					}
 				}
 			)
@@ -136,7 +144,8 @@ export class CalendarPageComponent {
 			event.duration
 		)).then(x => {
 			this._modalService.closeModal(true)
-			this
+			this.setItem()
 		})
 	}
+
 }

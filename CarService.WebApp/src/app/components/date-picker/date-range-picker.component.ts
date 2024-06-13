@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core'
+import {ChangeDetectorRef, Component, EventEmitter, Output} from '@angular/core'
 import {
 	AbstractControl,
 	FormBuilder,
@@ -9,55 +9,65 @@ import {
 	Validators
 } from '@angular/forms'
 import {NgIf} from '@angular/common'
+import {MatButton} from "@angular/material/button";
+import {
+	MatDatepicker,
+	MatDatepickerInput,
+	MatDatepickerToggle,
+	MatDateRangeInput,
+	MatDateRangePicker
+} from "@angular/material/datepicker";
+import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
 
 @Component({
 	selector: 'app-date-picker',
 	standalone: true,
 	imports: [
 		ReactiveFormsModule,
-		NgIf
+		NgIf,
+		MatInput,
+		MatError,
+		MatFormField,
+		MatLabel,
+		MatButton,
+		MatDateRangePicker,
+		MatDatepickerToggle,
+		MatDateRangeInput,
+		MatSuffix,
+		MatDatepickerInput,
+		MatDatepicker
 	],
 	templateUrl: './date-range-picker.component.html',
 	styleUrl: './date-range-picker.component.scss'
 })
 export class DateRangePickerComponent {
-	dateTimeRangeForm: FormGroup
+	dateTimeRangeForm: FormGroup;
 
-	@Output() subFill = new EventEmitter<any>
+	@Output() subFill = new EventEmitter<any>();
 
-	constructor(private fb: FormBuilder) {
+	constructor(private fb: FormBuilder, private cd: ChangeDetectorRef) {
 	}
 
 	ngOnInit() {
-		this.dateTimeRangeForm = this.fb.group(
-			{
+		this.dateTimeRangeForm = this.fb.group({
 				startDate: ['', Validators.required],
 				endDate: ['', Validators.required],
-				startTime: ['00:00:00', Validators.required],
-				endTime: ['00:00:00', Validators.required],
-				breakStartTime: [null],
-				breakEndTime: [null],
-				duration: [1, Validators.min(10)]
+				startTime: ['00:00', Validators.required],
+				endTime: ['00:00', Validators.required],
+				breakStartTime: [''],
+				breakEndTime: [''],
+				duration: [10, [Validators.required, Validators.min(10)]]
 			},
 			{
 				validators: [this.dateRangeValidator(), this.timeRangeValidator()],
-			}
-		)
+				updateOn: "blur"
+			});
 	}
 
 	onSubmit() {
 		if (this.dateTimeRangeForm.valid) {
-			this.subFill.emit(
-				{
-					startDate: this.dateTimeRangeForm.get('startDate')?.value,
-					endDate: this.dateTimeRangeForm.get('endDate')?.value,
-					startTime: this.dateTimeRangeForm.get('startTime')?.value,
-					endTime: this.dateTimeRangeForm.get('endTime')?.value,
-					breakStartTime: this.dateTimeRangeForm.get('breakStartTime')?.value,
-					breakEndTime: this.dateTimeRangeForm.get('breakEndTime')?.value,
-					duration: this.dateTimeRangeForm.get('duration')?.value,
-				}
-			)
+			this.subFill.emit(this.dateTimeRangeForm.value);
 		}
 	}
 
@@ -66,7 +76,9 @@ export class DateRangePickerComponent {
 			const startTime = control.get('startTime')?.value
 			const endTime = control.get('endTime')?.value
 			if (startTime && endTime && startTime > endTime) {
-				return {timeRangeInvalid: true}
+				const error = {timeRangeInvalid: true}
+				control.get('endTime')?.setErrors(error)
+				return error
 			}
 			return null
 		}
@@ -78,15 +90,18 @@ export class DateRangePickerComponent {
 			const endDate = control.get('endDate')?.value
 			const today = new Date()
 
-			if (startDate && new Date(startDate) < today) {
-				return {startDateInvalid: true}
+			if (startDate && new Date(startDate) <= today) {
+				const error = {startDateInvalid: true}
+				control.get('startDate')?.setErrors(error)
+				return error
 			}
 
 			if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
-				return {dateRangeInvalid: true}
+				const error = {dateRangeInvalid: true}
+				control.get('endDate')?.setErrors(error)
+				return error
 			}
 			return null
 		}
 	}
-
 }

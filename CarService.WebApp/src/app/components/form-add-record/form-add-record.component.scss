@@ -1,14 +1,3 @@
 :host {
-	::ng-deep {
-		--mdc-filled-text-field-input-text-color: #fff;
-		--mdc-filled-text-field-container-color: rgb(var(--color-input-background));
 
-		.mdc-text-field--filled:not(.mdc-text-field--disabled) {
-			@apply border-primary border border-solid;
-			border-radius: 0.625rem 0.625rem 0 0;
-		}
-	}
-}
-mat-form-field {
-	width: 100%;
 }

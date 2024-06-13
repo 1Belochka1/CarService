@@ -1,16 +1,17 @@
-import { AsyncPipe, DatePipe, JsonPipe, NgForOf, NgIf } from '@angular/common'
-import { Component, TemplateRef } from '@angular/core'
-import { MatIconButton } from '@angular/material/button'
-import { MatIcon } from '@angular/material/icon'
-import { ActivatedRoute } from '@angular/router'
-import { ToastrService } from 'ngx-toastr'
-import { Observable, firstValueFrom } from 'rxjs'
-import { BTableComponent } from '../../../../../components/b-table/b-table.component'
-import { BTemplateDirective } from '../../../../../direcrives/b-template.directive'
-import { DayRecord } from '../../../../../models/DayRecord.type'
-import { TimeRecord } from '../../../../../models/TimeRecord.type'
-import { DayRecordService } from '../../../../../services/day-record/day-record.service'
-import { ModalService } from '../../../../../services/modal.service'
+import {AsyncPipe, DatePipe, JsonPipe, NgForOf, NgIf} from '@angular/common'
+import {Component, TemplateRef} from '@angular/core'
+import {MatIconButton} from '@angular/material/button'
+import {MatIcon} from '@angular/material/icon'
+import {ActivatedRoute} from '@angular/router'
+import {ToastrService} from 'ngx-toastr'
+import {Observable, firstValueFrom} from 'rxjs'
+import {BTableComponent} from '../../../../../components/b-table/b-table.component'
+import {BTemplateDirective} from '../../../../../direcrives/b-template.directive'
+import {DayRecord} from '../../../../../models/DayRecord.type'
+import {TimeRecord} from '../../../../../models/TimeRecord.type'
+import {AuthService} from "../../../../../services/auth.service";
+import {DayRecordService} from '../../../../../services/day-record/day-record.service'
+import {ModalService} from '../../../../../services/modal.service'
 
 @Component({
 	selector: 'app-day-page',
@@ -36,11 +37,14 @@ export class DayPageComponent {
 
 	private readonly _id: string
 
+	roleId$: Observable<number>;
+
 	constructor(
 		private _dayRecordService: DayRecordService,
 		private _router: ActivatedRoute,
 		private _modalService: ModalService,
-		private _toast: ToastrService
+		private _toast: ToastrService,
+		private _authService: AuthService
 	) {
 		const id = this._router.snapshot.paramMap.get('dayId')
 
@@ -49,6 +53,9 @@ export class DayPageComponent {
 		}
 
 		this._id = id
+
+		this.roleId$ = this._authService.getRoleId$()
+
 
 		this.setItems()
 	}
@@ -61,7 +68,7 @@ export class DayPageComponent {
 
 	onRemoveClick(temlate: TemplateRef<any>, id: string) {
 		this._modalService
-			.open(temlate, { title: 'Вы действительно хотите удалить время?' })
+			.open(temlate, {title: 'Вы действительно хотите удалить время?'})
 			?.subscribe(isConfirm => {
 				console.log(isConfirm)
 				if (isConfirm)

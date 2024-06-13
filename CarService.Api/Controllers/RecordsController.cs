@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using CarService.Api.Contracts.Records;
+using CarService.Api.Helper.Json;
 using CarService.Api.Hubs;
 using CarService.App.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -40,7 +41,7 @@ public class RecordsController : ApiController
 			);
 
 		if (result.IsFailure)
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		await _hubNotifyContext.Clients.Group("admin")
 			.SendAsync("NewRequest", "Пришла новая заявка");
@@ -60,7 +61,7 @@ public class RecordsController : ApiController
 			);
 
 		if (result.IsFailure)
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		await _hubNotifyContext.Clients.Group("admin")
 			.SendAsync("NewRequest", "Пришла новая заявка");
@@ -101,13 +102,28 @@ public class RecordsController : ApiController
 		return Ok();
 	}
 
+	[HttpDelete("Update/DeleteMaster/{id}/{mastersId}")]
+	public async Task<IActionResult> DeleteMasters(
+		Guid id,
+		Guid mastersId)
+	{
+		var result = await _recordsService.DeleteMasterAsync(
+			id, mastersId
+		);
+
+		if (result.IsFailure)
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
+		
+		return Ok();
+	}
+
 	[HttpGet("Get/{id}")]
 	public async Task<IActionResult> GetById(string id)
 	{
 		var result = await _recordsService.GetRecordByIdAsync
 			(Guid.Parse(id));
 		if (result.IsFailure)
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok(result.Value);
 	}
@@ -194,7 +210,7 @@ public class RecordsController : ApiController
 			.GetRecordsAsync(id);
 
 		if (result.IsFailure)
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok(result.Value);
 	}
@@ -212,7 +228,7 @@ public class RecordsController : ApiController
 			);
 
 		if (result.IsFailure)
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok();
 	}
@@ -225,7 +241,7 @@ public class RecordsController : ApiController
 			await _recordsService.DeleteRecordsAsync(id);
 
 		if (result.IsFailure)
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		return Ok();
 	}
@@ -294,8 +310,8 @@ public class RecordsController : ApiController
 
 		return Ok(result);
 	}
-	
-	[HttpGet(
+
+	[HttpDelete(
 		"DayRecords/Delete/{id}")]
 	public async Task<IActionResult>
 		DeleteDayRecord(Guid id)
@@ -331,7 +347,7 @@ public class RecordsController : ApiController
 				name);
 
 		if (result.IsFailure)
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		await _hubNotifyContext.Clients.All.SendCoreAsync(
 			"UpdateTimeRecord",
@@ -349,7 +365,7 @@ public class RecordsController : ApiController
 			.DeleteTimeRecordAsync(id);
 
 		if (result.IsFailure)
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 
 		await _hubNotifyContext.Clients.All.SendCoreAsync(
 			"DeleteTimeRecord",

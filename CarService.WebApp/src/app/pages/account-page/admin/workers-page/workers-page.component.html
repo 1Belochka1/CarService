@@ -1,12 +1,15 @@
 <app-table-workers
-	[items]="items$ | async"
-	[addButton]="true"
-	(addClick)="openModalAddWorker(addWorkerTemplate)"
+        [items]="items$ | async"
+        [addButton]="true"
+        (addClick)="openModalAddWorker(addWorkerTemplate)"
+        deleteTitle="Вы действительно хотите удалить данные мастера"
+        (remove)="onDeleteMaster($event)"
 ></app-table-workers>
 
 <ng-template #addWorkerTemplate>
-	<app-form-register
-		title="Зарегистрировать сотрудника"
-		(register)="addWorker()"
-	></app-form-register>
+    <app-form-register
+            headerText="Зарегистрировать сотрудника"
+            (register)="addWorker()"
+            [isAddWorker]="true"
+    ></app-form-register>
 </ng-template>

@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using CarService.Api.Contracts.Images;
+using CarService.Api.Helper.Json;
 using CarService.App.Interfaces.Persistence;
 using CarService.App.Services;
 using CarService.Core.Images;
@@ -24,7 +25,6 @@ public class ImagesController : ApiController
 	}
 
 	[HttpPost("upload")]
-	[Consumes("multipart/form-data")]
 	public async Task<IActionResult> UploadImageAsync(
 		[FromForm] UploadImagesRequest request)
 	{
@@ -43,20 +43,19 @@ public class ImagesController : ApiController
 
 		if (result.IsFailure)
 		{
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 		}
 
 		return Ok(result.Value);
 	}
 
 	[HttpPost("update")]
-	[Consumes("multipart/form-data")]
 	public async Task<IActionResult> UpdateImageAsync(
 		[FromForm] UpdateImagesRequest request)
 	{
 		byte[]? fileBytes;
 		if (request.NewFile == null)
-			return BadRequest("Ошибка при обновлении");
+			return BadRequest(JsonSerializerHelp.Serialize("Ошибка при обновлении"));
 		using (var memoryStream = new MemoryStream())
 		{
 			await request.NewFile.CopyToAsync(memoryStream);
@@ -73,7 +72,7 @@ public class ImagesController : ApiController
 
 		if (result.IsFailure)
 		{
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 		}
 
 		return Ok(request.ImageId);
@@ -104,7 +103,7 @@ public class ImagesController : ApiController
 
 		if (result.IsFailure)
 		{
-			return BadRequest(result.Error);
+			return BadRequest(JsonSerializerHelp.Serialize(result.Error));
 		}
 
 		return Ok();

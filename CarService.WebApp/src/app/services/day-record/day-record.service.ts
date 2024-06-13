@@ -5,7 +5,7 @@ import {
 	HubConnectionBuilder,
 	LogLevel,
 } from '@microsoft/signalr'
-import {ToastrService} from "ngx-toastr";
+import {ToastrService} from 'ngx-toastr'
 import {BehaviorSubject, firstValueFrom} from 'rxjs'
 import {DayRecord} from '../../models/DayRecord.type'
 import {TimeRecord} from '../../models/TimeRecord.type'
@@ -30,12 +30,12 @@ export class DayRecordService implements OnDestroy {
 
 	createHub() {
 		this._hubConnection = new HubConnectionBuilder()
-			.withUrl(apiHubUrls.timeRecords, {
-				withCredentials: true,
-			})
-			.withAutomaticReconnect()
-			.configureLogging(LogLevel.Debug)
-			.build()
+		.withUrl(apiHubUrls.timeRecords, {
+			withCredentials: true,
+		})
+		.withAutomaticReconnect()
+		.configureLogging(LogLevel.Debug)
+		.build()
 
 	}
 
@@ -44,10 +44,10 @@ export class DayRecordService implements OnDestroy {
 	}
 
 	updateRecord(id: string, email: string, phone: string, name: string) {
-		this._hubConnection.invoke("RecordTimeRecord", [id, email, phone, name])
-			.then(() => {
-				this._toastr.success("Вы записаны")
-			})
+		this._hubConnection.invoke('RecordTimeRecord', [id, true, email, phone, name])
+				.then(() => {
+					this._toastr.success('Вы записаны')
+				})
 		// return this._http.post(apiUrls.timeRecords.update, {
 		// 	id, email, phone, name
 		// })
@@ -76,8 +76,8 @@ export class DayRecordService implements OnDestroy {
 		this._selectTimeId = timeRecordId
 
 		this._hubConnection
-			.invoke('BookTimeRecord', timeRecordId)
-			.catch(err => console.error(err))
+				.invoke('BookTimeRecord', timeRecordId)
+				.catch(err => console.error(err))
 	}
 
 	cancelBooking() {
@@ -124,8 +124,8 @@ export class DayRecordService implements OnDestroy {
 	}
 
 	onDeleteTimeRecord() {
-		this._hubConnection.on("deletetimerecord", () => {
-			console.log("delete")
+		this._hubConnection.on('deletetimerecord', () => {
+			console.log('delete')
 		})
 	}
 

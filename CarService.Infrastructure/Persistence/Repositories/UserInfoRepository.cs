@@ -30,6 +30,7 @@ public class UserInfoRepository : IUserInfoRepository
 		return await this._context.UserInfos.Include(x => x
 				.UserAuth)
 			.Where(x => x.UserAuth.RoleId == 2)
+			.AsNoTracking()
 			.Select(x => new Tuple<Guid, string>(x.Id,
 				x.LastName + " " + x.FirstName + " " +
 				x.Patronymic).ToValueTuple()).ToListAsync();
@@ -56,6 +57,7 @@ public class UserInfoRepository : IUserInfoRepository
 			.Include(u => u.Works)
 			.Include(u => u.UserInfo)
 			.Include(u => u.Role)
+			.AsNoTracking()
 			.ToListAsync();
 
 		query = query.Where(x => x.RoleId == 2).ToList();
@@ -69,6 +71,7 @@ public class UserInfoRepository : IUserInfoRepository
 		var query = await _context.UserInfos
 			.Include(u => u.UserAuth)
 			.Include(x => x.Requests)
+			.AsNoTracking()
 			.ToListAsync();
 
 		query = query.Where(x => x.UserAuth == null ||
@@ -83,6 +86,7 @@ public class UserInfoRepository : IUserInfoRepository
 	{
 		return await _context.UserInfos
 			.Include(x => x.UserAuth)
+			
 			.FirstOrDefaultAsync(x =>
 				x.Phone == phone);
 	}
@@ -100,6 +104,7 @@ public class UserInfoRepository : IUserInfoRepository
 	{
 		return await _context.UserInfos
 			.Include(x => x.UserAuth)
+			.AsNoTracking()
 			.FirstOrDefaultAsync(x =>
 				x.Id == id);
 	}

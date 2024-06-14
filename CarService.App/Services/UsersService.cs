@@ -76,8 +76,8 @@ public class UsersService
 				"Пользователь с таким email уже существует");
 		
 		var user =
-			await _userInfoRepository.GetByPhone(
-				phone);
+			await _userInfoRepository.GetByEmail(
+				email);
 
 		var id = user?.Id ?? Guid.NewGuid();
 

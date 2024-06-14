@@ -34,7 +34,7 @@
 
       &.showMenu {
         @apply fixed top-0 bottom-0 left-0 right-0 flex flex-col p-5 gap-5;
-        @apply bg-surface bg-opacity-50 text-on-surface;
+        @apply bg-surface bg-opacity-70 text-on-surface;
         backdrop-filter: blur(5px);
       }
     }

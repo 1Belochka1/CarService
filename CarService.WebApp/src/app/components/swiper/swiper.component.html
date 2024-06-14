@@ -1,0 +1,16 @@
+<swiper-container #swiper
+									navigation="true"
+									pagination="true"
+									init='false'
+>
+
+	<swiper-slide *ngFor='let item of calendars'>
+		<app-card-booking
+			[title]='item.name'
+			[description]='item.description'
+			[image]='item.service.imageId | srcImage'
+			[link]='["/day-record-lending", item.id]'
+		>
+		</app-card-booking>
+	</swiper-slide>
+</swiper-container>

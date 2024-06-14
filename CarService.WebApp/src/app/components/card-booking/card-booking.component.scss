@@ -1,46 +1,46 @@
 :host {
-  @apply grid justify-center;
+	@apply grid justify-center p-9;
 }
 
 .booking-card {
-  @apply flex flex-col items-center bg-surface text-on-surface rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105;
+	@apply flex flex-col items-center bg-surface text-on-surface rounded-lg shadow-lg overflow-hidden transition-transform transform;
 
-  max-width: 600px;
+	max-width: 600px;
 
-  @media (max-width: 768px) {
-    @apply flex-col;
-    max-width: 300px;
-  }
+	@media (max-width: 768px) {
+		@apply flex-col;
+		max-width: 300px;
+	}
 }
 
 .booking-card-image {
-  @apply w-1/3 h-full object-cover;
+	@apply h-full object-cover aspect-square;
 
-  @media (max-width: 768px) {
-    @apply w-full;
-  }
+	@media (max-width: 768px) {
+		@apply w-full;
+	}
 }
 
 .booking-card-content {
-  @apply p-6 flex flex-col justify-between;
+	@apply p-6 flex flex-col justify-between;
 
-  @media (max-width: 768px) {
-    @apply w-full;
-  }
+	@media (max-width: 768px) {
+		@apply w-full;
+	}
 }
 
 .booking-card-title {
-  @apply text-xl font-bold mb-2;
+	@apply text-xl font-bold mb-2;
 }
 
 .booking-card-description {
-  @apply text-sm mb-4;
+	@apply text-sm mb-4;
 }
 
 .booking-card-button {
-  @apply inline-block px-4 py-2 mt-auto bg-primary text-white text-center rounded-md hover:bg-opacity-90;
+	@apply inline-block px-4 py-2 mt-auto bg-primary text-white text-center rounded-md hover:bg-opacity-90;
 
-  @media (max-width: 768px) {
-    @apply mt-4;
-  }
+	@media (max-width: 768px) {
+		@apply mt-4;
+	}
 }

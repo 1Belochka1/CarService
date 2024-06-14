@@ -1,126 +1,163 @@
 :host {
-  @apply relative min-h-screen block text-on-surface;
+	@apply relative min-h-screen block text-on-surface;
 }
 
 .wrapper {
 
-  section {
-    @apply max-w-[1440px];
+	section {
+		@apply max-w-[1440px];
 
-    margin: 0 auto;
+		margin: 0 auto;
 
-    @apply p-5;
+		@apply p-5;
 
-    &:not(:last-child) {
-      //border-bottom: 1px solid white;
-    }
+		&:not(:last-child) {
+			//border-bottom: 1px solid white;
+		}
 
-    h2 {
-      @apply mb-5;
-      @apply text-surface;
-      font-size: 2rem;
-    }
+		h2 {
+			@apply mb-5;
+			@apply text-surface;
+			font-size: 2rem;
+		}
 
-    h3 {
-      //@apply text-surface;
-      font-size: 1.55rem;
-    }
-  }
+		h3 {
+			//@apply text-surface;
+			font-size: 1.55rem;
+		}
+	}
 
-  .section-header {
-    @apply h-screen relative text-white max-w-full;
+	.section-header {
+		@apply h-screen relative text-white max-w-full;
 
-    //height: calc(100vh - 4.25rem);
+		//height: calc(100vh - 4.25rem);
 
-    background-image: url("/assets/lending-back.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+		background-image: url("/assets/lending-back.jpg");
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
 
-    //background: linear-gradient(90deg, #ffcccc, white, #ccccff);
+		//background: linear-gradient(90deg, #ffcccc, white, #ccccff);
 
-    //background: linear-gradient(90deg, black, #151533, black);
+		//background: linear-gradient(90deg, black, #151533, black);
 
-    @media (max-width: 768px) {
-      height: 100svh;
-    }
+		@media (max-width: 768px) {
+			height: 100svh;
+		}
 
-    &:before {
-      @apply absolute top-0 bottom-0 left-0 right-0 z-0;
-      content: '';
-      backdrop-filter: brightness(20%) blur(2px);
-    }
+		&:before {
+			@apply absolute top-0 bottom-0 left-0 right-0 z-0;
+			content: '';
+			backdrop-filter: brightness(20%) blur(2px);
+		}
 
-    &__wrapper {
-      @apply relative flex flex-col flex-1 h-full z-10;
-
-
-      .content {
-        @apply h-full flex flex-col items-center justify-center gap-5 p-5;
+		&__wrapper {
+			@apply relative flex flex-col flex-1 h-full z-10;
 
 
-        @media (max-width: 768px) {
-          //backdrop-filter: brightness(70%) blur(1px);
-        }
-
-        h1 {
-          @apply text-center;
-
-          color: rgba(var(--color-header));
-
-          font-size: 3.5rem;
-
-          @media (max-width: 768px) {
-            font-size: 2rem;
-          }
-        }
-
-        p {
-          max-width: 40rem;
-          text-align: center;
-        }
-      }
-    }
-  }
-
-  .section-record {
-    .record__new {
-      @apply grid justify-items-center;
-      .new {
-        @apply p-6 bg-surface;
-
-        border-radius: 0.625rem;
-
-        width: 300px;
-      }
+			.content {
+				@apply h-full flex flex-col items-center justify-center gap-5 p-5;
 
 
-    }
+				@media (max-width: 768px) {
+					//backdrop-filter: brightness(70%) blur(1px);
+				}
 
-  }
+				h1 {
+					@apply text-center;
 
-  .section-services {
+					color: rgba(var(--color-header));
 
-    @apply min-h-screen;
+					font-size: 3.5rem;
 
-    &__list {
-      @apply grid gap-5 justify-items-center;
+					@media (max-width: 768px) {
+						font-size: 2rem;
+					}
+				}
 
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    }
+				p {
+					max-width: 40rem;
+					text-align: center;
+				}
+			}
+		}
+	}
+
+	.section-record {
+		h2 {
+		}
+
+		.content {
+			@apply flex items-stretch gap-5 justify-between flex-col;
+		}
+
+		.new {
+			@apply flex p-5 gap-5 bg-surface justify-between items-stretch tablet:flex-col;
+
+			&__title {
+				@apply relative ;
+				@apply grid items-center min-h-full flex-1 text-center;
+
+				img {
+					@apply absolute z-0 opacity-40 object-cover blur-sm;
+					border-radius: 0.625rem;
+				}
+
+				h3 {
+					@apply z-20;
+					font-size: 2.5rem;
+				}
+			}
+
+			border-radius: 0.625rem;
+
+			app-form-add-record {
+				flex: 1;
+				max-width: 730px;
+				min-width: 300px;
+			}
+		}
 
 
-    &__item {
-      @apply bg-surface text-center p-2;
+		.slider {
+			@apply flex flex-col items-center bg-surface;
+			border-radius: 0.625rem;
 
-      border-radius: 0.625rem;
+			app-swiper {
+				@apply w-[500px] tablet:w-[400px] mobile:w-[300px];
+			}
 
-      h3 {
-        @apply font-bold text-on-surface;
+			.slider-title {
+				@apply bg-surface p-2;
+				text-align: center;
+				border-radius: 0.625rem;
+			}
+		}
 
-        font-size: 1.25rem;
-      }
-    }
-  }
+	}
+
+	.section-services {
+
+		@apply min-h-screen;
+
+		&__list {
+			@apply grid gap-5 justify-items-center;
+
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		}
+
+
+		&__item {
+			@apply bg-surface text-center p-2;
+
+			border-radius: 0.625rem;
+
+			h3 {
+				@apply font-bold text-on-surface;
+
+				font-size: 1.25rem;
+			}
+		}
+	}
 
 }

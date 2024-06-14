@@ -8,6 +8,12 @@ import {
 import {NgIf, NgTemplateOutlet} from '@angular/common'
 import {RouterLink} from '@angular/router'
 import {BTemplateDirective} from '../../direcrives/b-template.directive'
+import {
+	MatCard,
+	MatCardActions,
+	MatCardContent, MatCardHeader,
+	MatCardTitle
+} from '@angular/material/card'
 
 @Component({
 	selector: 'app-card-booking',
@@ -16,7 +22,12 @@ import {BTemplateDirective} from '../../direcrives/b-template.directive'
 		NgIf,
 		RouterLink,
 		NgTemplateOutlet,
-		BTemplateDirective
+		BTemplateDirective,
+		MatCardActions,
+		MatCardContent,
+		MatCardTitle,
+		MatCardHeader,
+		MatCard
 	],
 	templateUrl: './card-booking.component.html',
 	styleUrl: './card-booking.component.scss'

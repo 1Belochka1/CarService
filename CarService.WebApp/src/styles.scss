@@ -2,299 +2,299 @@
 @tailwind components;
 @tailwind utilities;
 @import 'ngx-toastr/toastr';
-
+@import "swiper/swiper-vars";
 :root {
-  --color-background: 10, 25, 80;
-  --color-surface: 1, 22, 39;
-  --color-on-surface: 228, 228, 228;
+	--color-background: 10, 25, 80;
+	--color-surface: 1, 22, 39;
+	--color-on-surface: 228, 228, 228;
 
-  --color-primary: 255, 138, 99;
-  --color-secondary: 228, 228, 231;
+	--color-primary: 255, 138, 99;
+	--color-secondary: 228, 228, 231;
 
-  --color-header: 39, 74, 182;
+	--color-header: 39, 74, 182;
 
-  --width-menu: 16.875rem;
+	--width-menu: 16.875rem;
 
-  --color-input-border: rgb(var(--color-primary));
-  --color-input-text: inherit;
-  --color-input-background: 1, 22, 39;
+	--color-input-border: rgb(var(--color-primary));
+	--color-input-text: inherit;
+	--color-input-background: 1, 22, 39;
 
-  --border-radius-form: 0.625rem;
+	--border-radius-form: 0.625rem;
 
-  @media (max-width: 1280px) {
-    font-size: 14px;
-  }
+	@media (max-width: 1280px) {
+		font-size: 14px;
+	}
 }
 
 /* W3C standard
    сейчас только для Firefox */
 * {
-  scrollbar-width: thin;
-  scrollbar-color: rgb(var(--color-on-surface)) rgb(var(--color-surface));
+	scrollbar-width: thin;
+	scrollbar-color: rgb(var(--color-on-surface)) rgb(var(--color-surface));
 }
 
 /* для Chrome/Edge/Safari */
 *::-webkit-scrollbar {
-  width: 6px;
+	width: 6px;
 }
 
 *::-webkit-scrollbar-track {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  @apply bg-surface;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	@apply bg-surface;
 }
 
 *::-webkit-scrollbar-thumb {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
 
-  //@apply bg-surface border-surface border-2 border-solid;
+	//@apply bg-surface border-surface border-2 border-solid;
 }
 
 * {
-  box-sizing: border-box;
-  @apply font-montserrat;
+	box-sizing: border-box;
+	@apply font-montserrat;
 }
 
 html {
-  @apply min-h-screen min-h-svh scroll-smooth;
+	@apply min-h-screen min-h-svh scroll-smooth;
 }
 
 body {
-  background: -webkit-linear-gradient(145deg, #dcdcdc, #b4bbdb, #8b8bb5);
-  background: linear-gradient(145deg, #dcdcdc, #b4bbdb, #8b8bb5);
-  background-repeat: no-repeat;
+	background: -webkit-linear-gradient(145deg, #dcdcdc, #b4bbdb, #8b8bb5);
+	background: linear-gradient(145deg, #dcdcdc, #b4bbdb, #8b8bb5);
+	background-repeat: no-repeat;
 }
 
 input,
 textarea {
-  @apply border-none appearance-none;
-  background: none;
-  outline: none;
+	@apply border-none appearance-none;
+	background: none;
+	outline: none;
 }
 
 img {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 .svg-nav {
-  height: 1.875rem;
-  width: 1.875rem;
-  @apply fill-primary stroke-white;
+	height: 1.875rem;
+	width: 1.875rem;
+	@apply fill-primary stroke-white;
 }
 
 .svg-table {
-  height: 1.875rem;
-  width: 1.875rem;
-  @apply stroke-white;
+	height: 1.875rem;
+	width: 1.875rem;
+	@apply stroke-white;
 }
 
 .priority {
-  @apply inline-block text-center p-1 text-nowrap;
+	@apply inline-block text-center p-1 text-nowrap;
 
-  border-radius: 0.625rem;
+	border-radius: 0.625rem;
 
-  &[data-priority='0'] {
-    @apply bg-gray-400/50 border-gray-400 border-solid border;
-    backdrop-filter: blur(10px);
-  }
+	&[data-priority='0'] {
+		@apply bg-gray-400/50 border-gray-400 border-solid border;
+		backdrop-filter: blur(10px);
+	}
 
-  &[data-priority='1'] {
-    @apply bg-green-400/20 border-green-400 border-solid border;
-  }
+	&[data-priority='1'] {
+		@apply bg-green-400/20 border-green-400 border-solid border;
+	}
 
-  &[data-priority='2'] {
-    @apply bg-red-400/20 border-red-400 border-solid border;
-  }
+	&[data-priority='2'] {
+		@apply bg-red-400/20 border-red-400 border-solid border;
+	}
 
-  &[data-priority='3'] {
-    @apply bg-red-800/20 border-red-800 border-solid border;
-  }
+	&[data-priority='3'] {
+		@apply bg-red-800/20 border-red-800 border-solid border;
+	}
 }
 
 .status {
-  @apply inline-block text-center p-1 text-nowrap;
+	@apply inline-block text-center p-1 text-nowrap;
 
-  border-radius: 0.625rem;
+	border-radius: 0.625rem;
 
-  &[data-status='0'] {
-    @apply bg-red-500/20 border-red-500 border-solid border;
-  }
+	&[data-status='0'] {
+		@apply bg-red-500/20 border-red-500 border-solid border;
+	}
 
-  &[data-status='1'] {
-    @apply bg-orange-400/20 border-orange-400 border-solid border;
-  }
+	&[data-status='1'] {
+		@apply bg-orange-400/20 border-orange-400 border-solid border;
+	}
 
-  &[data-status='2'] {
-    @apply bg-sky-400/20 border-sky-400 border-solid border;
-  }
+	&[data-status='2'] {
+		@apply bg-sky-400/20 border-sky-400 border-solid border;
+	}
 
-  &[data-status='3'] {
-    @apply bg-gray-400/20 border-gray-400 border-solid border;
-  }
+	&[data-status='3'] {
+		@apply bg-gray-400/20 border-gray-400 border-solid border;
+	}
 
-  &[data-status='4'] {
-    @apply bg-green-400/20 border-green-400 border-solid border;
-  }
+	&[data-status='4'] {
+		@apply bg-green-400/20 border-green-400 border-solid border;
+	}
 }
 
 .table-about {
-  display: grid;
-  grid-template-columns: auto 1fr;
+	display: grid;
+	grid-template-columns: auto 1fr;
 
-  column-gap: 10px;
+	column-gap: 10px;
 
-  row-gap: 5px;
+	row-gap: 5px;
 
-  align-items: center;
+	align-items: center;
 
-  h2 {
-    font-size: 20px;
-    font-weight: 300;
-    grid-column: span 2;
-  }
+	h2 {
+		font-size: 20px;
+		font-weight: 300;
+		grid-column: span 2;
+	}
 
-  h3 {
-    font-weight: 600;
-  }
+	h3 {
+		font-weight: 600;
+	}
 }
 
 .button {
-  @apply p-2 bg-surface bg-opacity-60 hover:bg-opacity-100 transition-colors duration-500;
+	@apply p-2 bg-surface bg-opacity-60 hover:bg-opacity-100 transition-colors duration-500;
 
-  border-radius: 0.625rem;
+	border-radius: 0.625rem;
 }
 
 .button-on-surface {
-  @apply text-on-surface w-full p-2 border-header border border-solid bg-header bg-opacity-20 hover:bg-opacity-100 transition-colors duration-500;
+	@apply text-on-surface w-full p-2 border-header border border-solid bg-header bg-opacity-20 hover:bg-opacity-100 transition-colors duration-500;
 
-  border-radius: 0.625rem;
+	border-radius: 0.625rem;
 }
 
 .form {
 
-  @apply flex flex-col gap-1 w-full;
+	@apply flex flex-col gap-1 w-full;
 
-  --border-radius-form: 0.625rem;
+	--border-radius-form: 0.625rem;
 
-  border-radius: var(--border-radius-form);
+	border-radius: var(--border-radius-form);
 
 
-  --mat-form-field-error-text-color: #FE3939;
-  --mdc-filled-button-container-color: rgb(var(--color-primary));
-  --mdc-filled-text-field-caret-color: rgb(var(--color-primary));
-  --mdc-filled-text-field-container-color: rgb(var(--color-surface));
-  --mdc-filled-text-field-error-focus-label-text-color: #FE3939;
-  --mdc-filled-text-field-error-hover-label-text-color: #FE3939;
-  --mdc-filled-text-field-error-label-text-color: #FE3939;
-  --mdc-filled-text-field-focus-active-indicator-color: rgb(var(--color-primary));
-  --mdc-filled-text-field-focus-label-text-color: rgb(var(--color-primary));
-  --mdc-filled-text-field-hover-active-indicator-color: rgb(var(--color-primary));
-  --mdc-filled-text-field-hover-label-text-color: #d5d5d5;
-  --mdc-filled-text-field-input-text-color: rgb(var(--color-on-surface));
-  --mdc-filled-text-field-label-text-color: rgb(var(--color-on-surface));
-  --mat-select-enabled-trigger-text-color: rgb(var(--color-on-surface));
-  --mat-select-focused-arrow-color: rgb(var(--color-primary));
-  --mat-select-enabled-arrow-color: rgb(var(--color-primary));
+	--mat-form-field-error-text-color: #FE3939;
+	--mdc-filled-button-container-color: rgb(var(--color-primary));
+	--mdc-filled-text-field-caret-color: rgb(var(--color-primary));
+	--mdc-filled-text-field-container-color: rgb(var(--color-surface));
+	--mdc-filled-text-field-error-focus-label-text-color: #FE3939;
+	--mdc-filled-text-field-error-hover-label-text-color: #FE3939;
+	--mdc-filled-text-field-error-label-text-color: #FE3939;
+	--mdc-filled-text-field-focus-active-indicator-color: rgb(var(--color-primary));
+	--mdc-filled-text-field-focus-label-text-color: rgb(var(--color-primary));
+	--mdc-filled-text-field-hover-active-indicator-color: rgb(var(--color-primary));
+	--mdc-filled-text-field-hover-label-text-color: #d5d5d5;
+	--mdc-filled-text-field-input-text-color: rgb(var(--color-on-surface));
+	--mdc-filled-text-field-label-text-color: rgb(var(--color-on-surface));
+	--mat-select-enabled-trigger-text-color: rgb(var(--color-on-surface));
+	--mat-select-focused-arrow-color: rgb(var(--color-primary));
+	--mat-select-enabled-arrow-color: rgb(var(--color-primary));
 
-  .mat-mdc-checkbox .mat-internal-form-field {
+	.mat-mdc-checkbox .mat-internal-form-field {
 
-    --mat-checkbox-label-text-color: rgb(var(--color-on-surface)) !important;
-  }
+		--mat-checkbox-label-text-color: rgb(var(--color-on-surface)) !important;
+	}
 
-  .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-    @apply border border-solid border-primary;
-  }
+	.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+		@apply border border-solid border-primary;
+	}
 
-  h1 {
-    @apply mb-2 text-on-surface;
-    font-size: 1.5rem;
-    text-align: center;
-  }
+	h1 {
+		@apply mb-2 text-on-surface;
+		font-size: 1.5rem;
+		text-align: center;
+	}
 
-  &__group {
-    @apply w-full mb-4 text-on-surface;
-    mat-form-field {
-      @apply w-full;
-    }
-  }
+	&__group {
+		@apply w-full mb-4 text-on-surface;
+		mat-form-field {
+			@apply w-full;
+		}
+	}
 
-  &__label {
-    @apply font-bold mb-2;
-  }
+	&__label {
+		@apply font-bold mb-2;
+	}
 
-  &__input,
-  &__textarea {
-    @apply bg-surface w-full p-2 border border-primary border-solid;
-    color: var(--color-input-text);
-    border-radius: var(--border-radius-form);
-  }
+	&__input,
+	&__textarea {
+		@apply bg-surface w-full p-2 border border-primary border-solid;
+		color: var(--color-input-text);
+		border-radius: var(--border-radius-form);
+	}
 
-  &__checkbox {
-    @apply p-2 appearance-auto bg-surface;
-  }
+	&__checkbox {
+		@apply p-2 appearance-auto bg-surface;
+	}
 
-  &__error {
-    @apply text-red-500 text-xs mt-1;
-  }
+	&__error {
+		@apply text-red-500 text-xs mt-1;
+	}
 
-  &__file {
-    @apply border border-solid border-primary p-4 hover:opacity-80 cursor-pointer;
-    border-radius: var(--mdc-filled-text-field-container-shape) var(--mdc-filled-text-field-container-shape) 0 0;
-  }
+	&__file {
+		@apply border border-solid border-primary p-4 hover:opacity-80 cursor-pointer;
+		border-radius: var(--mdc-filled-text-field-container-shape) var(--mdc-filled-text-field-container-shape) 0 0;
+	}
 
-  &__file-btn {
-  }
+	&__file-btn {
+	}
 
-  &__file-input {
-    display: none;
-  }
+	&__file-input {
+		display: none;
+	}
 
-  &__file-text {
-  }
+	&__file-text {
+	}
 
-  button {
+	button {
 
-    border-radius: var(--border-radius-form);
+		border-radius: var(--border-radius-form);
 
-    &:disabled {
-      @apply opacity-30;
-    }
-  }
+		&:disabled {
+			@apply opacity-30;
+		}
+	}
 }
 
 @media (max-width: 1280px) {
-  .form {
-    &__button {
-      @apply w-full py-3 text-sm;
-    }
-  }
+	.form {
+		&__button {
+			@apply w-full py-3 text-sm;
+		}
+	}
 }
 
 .input {
-  @apply w-full p-2 text-on-surface border border-primary border-solid;
-  border-radius: var(--border-radius-form);
+	@apply w-full p-2 text-on-surface border border-primary border-solid;
+	border-radius: var(--border-radius-form);
 }
 
 .svg-white-sort {
-  svg {
-    @apply stroke-on-surface h-8;
-  }
+	svg {
+		@apply stroke-on-surface h-8;
+	}
 
-  &.asc {
-    transform: rotate(-90deg); /* Пример поворота для asc */
-  }
+	&.asc {
+		transform: rotate(-90deg); /* Пример поворота для asc */
+	}
 
-  &.desc {
-    transform: rotate(90deg); /* Пример поворота для desc */
-  }
+	&.desc {
+		transform: rotate(90deg); /* Пример поворота для desc */
+	}
 }
 
 input {
-  &::placeholder {
-    color: rgba(var(--color-on-surface), 0.5) !important;
-  }
+	&::placeholder {
+		color: rgba(var(--color-on-surface), 0.5) !important;
+	}
 }
 
 

@@ -6,10 +6,10 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms'
-import {MatButton} from "@angular/material/button";
+import {MatButton} from '@angular/material/button'
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
-import {MatOption, MatSelect} from "@angular/material/select";
+import {MatOption, MatSelect} from '@angular/material/select'
 import {ToastrService} from 'ngx-toastr'
 import {firstValueFrom} from 'rxjs'
 import {Priority} from '../../enums/priority.enum'
@@ -64,6 +64,8 @@ export class FormAddRecordComponent {
 		},
 	]
 
+	@Output() onLoaded: EventEmitter<any> = new EventEmitter<any>()
+
 	constructor(
 		private fb: FormBuilder,
 		private _recordService: RecordsService,
@@ -83,6 +85,8 @@ export class FormAddRecordComponent {
 			} else {
 				this.setForUnAuth()
 			}
+
+			this.onLoaded.emit()
 		})
 
 		console.log(this.priorities)

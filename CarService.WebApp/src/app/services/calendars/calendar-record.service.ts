@@ -33,6 +33,6 @@ export class CalendarRecordService {
 	updateCalendar(id: string, name: string, description: string) {
 		return this._http.post(apiUrls.calendars.update, {
 			id, name, description
-		})
+		}, {withCredentials: true})
 	}
 }

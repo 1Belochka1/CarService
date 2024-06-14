@@ -20,9 +20,6 @@ import {
 	HeaderLendingComponent
 } from '../../components/header-lending/header-lending.component'
 import {SliderComponent} from '../../components/slider/slider.component'
-import {
-	CalendarRecordService
-} from '../../services/calendars/calendar-record.service'
 import {BTemplateDirective} from '../../direcrives/b-template.directive'
 import {
 	StepperLendingRecordComponent
@@ -40,6 +37,19 @@ import {SrcImagePipe} from '../../pipe/src-image.pipe'
 import {
 	FormAddRecordComponent
 } from '../../components/form-add-record/form-add-record.component'
+import {SwiperComponent} from '../../components/swiper/swiper.component'
+import {
+	MatCard,
+	MatCardActions,
+	MatCardContent,
+	MatCardHeader,
+	MatCardImage,
+	MatCardTitle
+} from '@angular/material/card'
+import {MatButton} from '@angular/material/button'
+import {
+	CalendarRecordService
+} from '../../services/calendars/calendar-record.service'
 
 @Component({
 	selector: 'app-lending-page',
@@ -62,6 +72,14 @@ import {
 		CardBookingComponent,
 		SrcImagePipe,
 		FormAddRecordComponent,
+		SwiperComponent,
+		MatCard,
+		MatCardActions,
+		MatCardContent,
+		MatCardHeader,
+		MatCardTitle,
+		MatCardImage,
+		MatButton,
 	],
 	templateUrl: './lending-page.component.html',
 	styleUrl: './lending-page.component.scss',
@@ -78,18 +96,35 @@ export class LendingPageComponent implements OnInit {
 
 	@ViewChild('defaultRecord', {static: true})
 	defaultRecord: TemplateRef<any>
+	hoveredService: any = null
 	protected readonly apiUrls = apiUrls
 
-	constructor(private _servicesService: ServicesService, private _calendarService: CalendarRecordService, private _recordService: RecordsService) {
+	constructor(private _servicesService: ServicesService,
+							private _recordService: RecordsService,
+							private _calendarService: CalendarRecordService
+	) {
 		firstValueFrom(_servicesService.getServicesLending())
 		.then((d: any) => this.services = d)
+		firstValueFrom(this._calendarService.getAll())
+		.then((calendarsRecord: any) => {
+			this.calendars = calendarsRecord
+		})
 	}
 
 	ngOnInit(): void {
-		firstValueFrom(this._calendarService.getAll())
-		.then(calendarsRecord => {
-			this.calendars = calendarsRecord
-		})
+	}
 
+	hover(service: any) {
+		this.hoveredService = service
+	}
+
+	unhover(service: any) {
+		if (this.hoveredService === service) {
+			this.hoveredService = null
+		}
+	}
+
+	isHovered(service: any): boolean {
+		return this.hoveredService === service
 	}
 }

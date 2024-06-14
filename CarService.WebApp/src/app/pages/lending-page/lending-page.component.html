@@ -1,70 +1,74 @@
 <div class="wrapper">
-    <section id='header'
-             class="section-header"
-    >
-        <div class="section-header__wrapper">
+	<section id='header'
+					 class="section-header"
+	>
+		<div class="section-header__wrapper">
 
-            <app-header-lending></app-header-lending>
+			<app-header-lending></app-header-lending>
 
-            <div class="content">
-                <h1>Автомастерская Автодоктор</h1>
+			<div class="content">
+				<h1>Автомастерская Автодоктор</h1>
 
-                <p class="description"> Добро пожаловать в нашу автомастерскую! Мы предлагаем полный спектр услуг по
-                    ремонту и обслуживанию автомобилей. Наши опытные специалисты готовы решить любую проблему с вашим
-                    авто, от мелкого ремонта до капитального обслуживания. Доверяйте свой автомобиль профессионалам!
-                </p>
-            </div>
-        </div>
-    </section>
+				<p class="description"> Добро пожаловать в нашу
+					автомастерскую! Мы предлагаем полный спектр услуг
+					по
+					ремонту и обслуживанию автомобилей. Наши опытные
+					специалисты готовы решить любую проблему с вашим
+					авто, от мелкого ремонта до капитального
+					обслуживания. Доверяйте свой автомобиль
+					профессионалам!
+				</p>
+			</div>
+		</div>
+	</section>
 
-    <section class="section-record">
+	<section id='record'
+					 class="section-record"
+	>
+		<h2>Записаться</h2>
 
-        <h2 id='record'>Записаться</h2>
+		<div class='content'>
+			<div class="new">
+				<div class='new__title'>
+					<img src='/assets/record-back.jpg'
+							 alt='фон формы'
+					>
+					<h3>
+						Оставте заявку и мы с вами свяжемся
+					</h3>
+				</div>
+				<app-form-add-record
+				></app-form-add-record>
+			</div>
 
-        <app-stepper-lending-record>
+			<div class='slider'>
+				<h3 class='slider-title'>
+					Также вы можете записать на некоторые услгуи
+					онлайн!!!
+				</h3>
+				<app-swiper>
+				</app-swiper>
+			</div>
+		</div>
 
-            <cdk-step>
-                <div class='record__new'
-                >
-                    <div class="new">
-                        <app-form-add-record
-                        ></app-form-add-record>
-                    </div>
 
-                </div>
-            </cdk-step>
+	</section>
 
-            <ng-container *ngFor='let item of calendars'>
-                <cdk-step>
-                    <app-card-booking
-                            [title]='item.name'
-                            [description]='item.description'
-                            [image]='item.service.imageId | srcImage'
-                            [link]='["/day-record-lending", item.id]'
-                    >
-                    </app-card-booking>
-                </cdk-step>
-            </ng-container>
-
-        </app-stepper-lending-record>
-
-    </section>
-
-    <section id='services'
-             class="section-services"
-    >
-        <h2>Предоставляемые услуги</h2>
-        <div class="section-services__list">
-            <app-card-lending
-                    *ngFor="let item of services"
-                    [image]='item.imageId ? apiUrls.images.getById +
+	<section id='services'
+					 class="section-services"
+	>
+		<h2>Предоставляемые услуги</h2>
+		<div class="section-services__list">
+			<app-card-lending
+				*ngFor="let item of services"
+				[image]='item.imageId ? apiUrls.images.getById +
 				item.imageId : undefined'
-                    [description]='item.description'
-                    [title]='item.name'
-                    [class.image]='item.imageId'
-            >
-            </app-card-lending>
-        </div>
-    </section>
+				[description]='item.description'
+				[title]='item.name'
+				[class.image]='item.imageId'
+			>
+			</app-card-lending>
+		</div>
+	</section>
 
 </div>

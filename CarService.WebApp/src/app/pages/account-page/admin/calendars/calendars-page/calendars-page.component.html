@@ -1,88 +1,162 @@
 <b-table [addButton]='(roleId$ | async) == 1'
-         (addButtonClick)='onAdd(addTemplate)'
-         [items]='calendars | async'
-         [searchVisible]='false'
-         headerTitle="Расписание"
+				 (addButtonClick)='onAdd(addTemplate)'
+				 [items]='calendars | async'
+				 [searchVisible]='false'
+				 headerTitle="Расписание"
 >
-    <ng-template bTemplate='head'>
-        <tr>
-            <th>Название расписания</th>
-            <th
-            >
-                Действия
-            </th>
-        </tr>
+	<ng-template bTemplate='head'>
+		<tr>
+			<th>Название расписания</th>
+			<th
+			>
+				Действия
+			</th>
+		</tr>
 
-    </ng-template>
-    <ng-template bTemplate='body'
-                 let-item
-    >
+	</ng-template>
+	<ng-template bTemplate='body'
+							 let-item
+	>
 
-        <tr>
-            <td data-name='Название расписания'
+		<tr>
+			<td data-name='Название расписания'
 
-            >
-                {{ item.name }}
-            </td>
-            <td data-name="Действия">
-                <div>
-                    <button mat-icon-button (click)="navigate(['/account','calendar',item.id])">
-                        <mat-icon>open_in_new</mat-icon>
-                    </button>
-                </div>
-            </td>
-        </tr>
-    </ng-template>
+			>
+				{{ item.name }}
+			</td>
+			<td data-name="Действия">
+				<div>
+					<button mat-icon-button
+									(click)="navigate(['/account','calendar',item.id])"
+					>
+						<mat-icon>open_in_new</mat-icon>
+					</button>
+					<button mat-icon-button
+									(click)="onUpt(updateTemplate,
+													item)"
+					>
+						<mat-icon>edit</mat-icon>
+					</button>
+				</div>
+			</td>
+		</tr>
+	</ng-template>
 </b-table>
 
 
 <ng-template #addTemplate>
-    <form class="form"
-          [formGroup]="requestForm"
-          (submit)="onSubmit()"
-    >
-        <mat-form-field>
-            <mat-label>Услуга</mat-label>
-            <input type="text"
-                   placeholder="Введите название услуги"
-                   matInput
-                   formControlName="service"
-                   [matAutocomplete]="auto"
-            >
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                <mat-option *ngFor="let opt of services$ | async" [value]="opt">
-                    {{ opt.n }}
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
+	<form class="form"
+				[formGroup]="requestForm"
+				(submit)="onSubmit()"
+	>
+		<mat-form-field>
+			<mat-label>Услуга</mat-label>
+			<input type="text"
+						 placeholder="Введите название услуги"
+						 matInput
+						 formControlName="service"
+						 [matAutocomplete]="auto"
+			>
+			<mat-autocomplete #auto="matAutocomplete"
+												[displayWith]="displayFn"
+			>
+				<mat-option *ngFor="let opt of services$ | async"
+										[value]="opt"
+				>
+					{{ opt.n }}
+				</mat-option>
+			</mat-autocomplete>
+		</mat-form-field>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Название</mat-label>
-            <input matInput id="name" type="text" formControlName="name" placeholder="Введите название услуги">
-            <mat-error *ngIf="requestForm.get('name')?.touched && requestForm.get('name')?.hasError('required')">
-                Название обязательно
-            </mat-error>
-            <mat-error *ngIf="requestForm.get('name')?.touched && requestForm.get('name')?.hasError('minlength')">
-                Название должно содержать минимум 3 символа
-            </mat-error>
-        </mat-form-field>
+		<mat-form-field appearance="fill">
+			<mat-label>Название</mat-label>
+			<input matInput
+						 id="name"
+						 type="text"
+						 formControlName="name"
+						 placeholder="Введите название услуги"
+			>
+			<mat-error *ngIf="requestForm.get('name')?.touched && requestForm.get('name')?.hasError('required')">
+				Название обязательно
+			</mat-error>
+			<mat-error *ngIf="requestForm.get('name')?.touched && requestForm.get('name')?.hasError('minlength')">
+				Название должно содержать минимум 3 символа
+			</mat-error>
+		</mat-form-field>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Описание услуги</mat-label>
-            <textarea matInput id="description" formControlName="description" placeholder="Опишите услугу"></textarea>
-            <mat-error *ngIf="requestForm.get('description')?.hasError('required')">
-                Описание услуги обязательно
-            </mat-error>
-            <mat-error *ngIf="requestForm.get('description')?.hasError('minlength')">
-                Описание услуги должно содержать минимум 5 символов
-            </mat-error>
-        </mat-form-field>
+		<mat-form-field appearance="fill">
+			<mat-label>Описание услуги</mat-label>
+			<textarea matInput
+								id="description"
+								formControlName="description"
+								placeholder="Опишите услугу"
+			></textarea>
+			<mat-error *ngIf="requestForm.get('description')?.hasError('required')">
+				Описание услуги обязательно
+			</mat-error>
+			<mat-error *ngIf="requestForm.get('description')?.hasError('minlength')">
+				Описание услуги должно содержать минимум 5 символов
+			</mat-error>
+		</mat-form-field>
 
-        <button
-                mat-flat-button
-                class="form__button"
-                type="submit"
-        >Отправить
-        </button>
-    </form>
+		<button
+			mat-flat-button
+			class="form__button"
+			type="submit"
+		>Отправить
+		</button>
+	</form>
+</ng-template>
+
+<ng-template #updateTemplate>
+	<form class="form"
+				[formGroup]="updateRequestForm"
+				(submit)="onUpdate()"
+	>
+		<mat-form-field appearance="fill">
+			<mat-label>Название</mat-label>
+			<input matInput
+						 id="updateName"
+						 type="text"
+						 formControlName="updateName"
+						 placeholder="Введите название услуги"
+			>
+			<mat-error
+				*ngIf="requestForm.get('updateName')?.touched
+			 &&
+			 requestForm.get('updateName')?.hasError('required')">
+				Название обязательно
+			</mat-error>
+			<mat-error
+				*ngIf="requestForm.get('updateName')?.touched
+			 &&
+			 requestForm.get('updateName')?.hasError('minlength')">
+				Название должно содержать минимум 3 символа
+			</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="fill">
+			<mat-label>Описание услуги</mat-label>
+			<textarea matInput
+								id="uptDescription"
+								formControlName="updateDescription"
+								placeholder="Опишите услугу"
+			></textarea>
+			<mat-error
+				*ngIf="requestForm.get('updateDescription')?.hasError('required')">D
+				Описание услуги обязательно
+			</mat-error>
+			<mat-error
+				*ngIf="requestForm.get('updateDescription')?.hasError('minlength')">D
+				Описание услуги должно содержать минимум 5 символов
+			</mat-error>
+		</mat-form-field>
+
+		<button
+			mat-flat-button
+			class="form__button"
+			type="submit"
+		>Отправить
+		</button>
+	</form>
 </ng-template>

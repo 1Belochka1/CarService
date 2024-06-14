@@ -14,7 +14,11 @@
 }
 
 .booking-card-image {
-	@apply h-full object-cover aspect-square;
+	@apply h-full aspect-square;
+
+	img {
+		@apply object-cover;
+	}
 
 	@media (max-width: 768px) {
 		@apply w-full;
